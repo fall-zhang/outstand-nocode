@@ -5,16 +5,22 @@
       <h2>图表生成</h2>
     </template>
     <div style="display: flex;overflow: hidden;">
-      <FileList></FileList>
+      <FileListGroup></FileListGroup>
     </div>
+    <!-- <HandsonTable /> -->
+    <FanTable ref="tableRef" />
   </PageLayout>
 </template>
 
 <script lang="ts" setup>
+// import HandsonTable from '@/components/module/HandsonTable.vue'
 import { PageLayout } from '@/layout'
 import FileList from './components/FileList'
+import FileListGroup from './components/FileListGroup'
+import FanTable from '@/components/module/FanTable.vue'
 const router = useRouter()
 const onClickBack = () => router.go(-1)
+
 </script>
 
 <style lang="scss" scoped></style>

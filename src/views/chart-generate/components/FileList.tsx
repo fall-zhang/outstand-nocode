@@ -1,15 +1,15 @@
-import { ref } from 'vue'
-import { Star as IconStar, MoreOne as IconMoreOne } from '@icon-park/vue-next'
+import { ref, defineProps } from 'vue'
 import s from './FileList.module.scss'
-import { usePost } from '@/utils/Request'
 import Img from '@A/images/charts-example/line-chart.png'
 
 export default {
-  components: {
-    IconStar,
+  props: {
+    label: {}
   },
-  setup() {
-    // console.log(this.udfu)
+  emits: ['submit'],
+  render(prop:any, context:any) {
+    console.log(this)
+
     const allFiles = ref([
       {
         chartName: '折线图',
@@ -24,39 +24,78 @@ export default {
     ])
     const outContainer = ref()
     const rowCount = ref()
-    function resizeContainer() {
-      const out = outContainer.value.getBoundingClientRect()
-      rowCount.value = Math.ceil(Number(out.width) / 360)
+    const onClickMenu = () => {
+      console.log(prop)
+      console.log(this)
+      // console.log(attrs)
     }
-    onMounted(() => {
-      window.addEventListener('resize', resizeContainer)
-      resizeContainer()
-    })
-    onUnmounted(() => {
-      window.removeEventListener('resize', resizeContainer)
-    })
-    return () => (<>
+    return (<>
       <div class={s.chartFileGroup} ref={outContainer} style={
-        { gridTemplateColumns: 'repeat(' + rowCount.value + ',1fr)' }
+        { gridTemplateColumns: 'repeat(' + rowCount.value + '1fr)' }
       }>
         {
           allFiles.value.map((item) => {
-            return <div class={s.chartItem}>
+            return <div class={s.chartItem} onClick={onClickMenu} >
               <div class={s.headText}>
-                {item.chartType}
+                {item.chartType}（{item.chartName}）
               </div>
               <img class={s.itemImg} src={item.imgPath} />
-              {/* <div class={s.itemText}>
-                <span>图片名称</span>
-                <span class={s.option}>
-                  <IconStar class={s.star} />
-                  <IconMoreOne class={s.more}></IconMoreOne>
-                </span>
-              </div> */}
             </div>
           })
         }
       </div>
     </>)
-  },
+  }
+  // setup(props: any, { emit, attrs }) {
+  //   const allFiles = ref([
+  //     {
+  //       chartName: '折线图',
+  //       chartType: 'line',
+  //       imgPath: Img
+  //     },
+  //     {
+  //       chartName: '折线图',
+  //       chartType: 'line-stack',
+  //       imgPath: Img
+  //     }
+  //   ])
+  //   const outContainer = ref()
+  //   const rowCount = ref()
+  //   // function resizeContainer() {
+  //   //   const out = outContainer.value.getBoundingClientRect()
+  //   //   rowCount.value = Math.ceil(Number(out.width) / 360)
+  //   // }
+  //   // onMounted(() => {
+  //   //   window.addEventListener('resize', resizeContainer)
+  //   //   resizeContainer()
+  //   // })
+  //   // onUnmounted(() => {
+  //   //   window.removeEventListener('resize', resizeContainer)
+  //   // })
+
+  //   // const emit = defineEmits(['submit'])
+  //   function onClickMenu() {
+  //     // console.log(props)
+  //     // console.log(emit)
+  //     // console.log(attrs)
+  //     emit('submit', 45454)
+  //   }
+  //   return () => (<>
+  //     <div class={s.chartFileGroup} ref={outContainer} style={
+  //       { gridTemplateColumns: 'repeat(' + rowCount.value + '1fr)' }
+  //     }>
+  //       {props.label}
+  //       {
+  //         allFiles.value.map((item) => {
+  //           return <div class={s.chartItem} onClick={onClickMenu} >
+  //             <div class={s.headText}>
+  //               {item.chartType}（{item.chartName}）
+  //             </div>
+  //             <img class={s.itemImg} src={item.imgPath} />
+  //           </div>
+  //         })
+  //       }
+  //     </div>
+  //   </>)
+  // }
 }
