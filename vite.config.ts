@@ -2,10 +2,12 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 
-import { resolve as pathResolve } from 'path'
+import { resolve as pathResolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
 // https://vitejs.dev/config/
 export default defineConfig({
