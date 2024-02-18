@@ -34,7 +34,7 @@ export default {
           {/* 回头制作视图切换的效果 */}
         </div>
       </div>
-      <GridColumn width={280} class={s.chartFileGroup} >
+      <GridColumn width={220} class={s.chartFileGroup} >
         {
           allFiles.value.map((item) => {
             return <div class={s.chartItem} onClick={() => onEnterChart(item)} >

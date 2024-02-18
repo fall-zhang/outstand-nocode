@@ -12,7 +12,7 @@ const prop = defineProps({
     type: Number,
     default: 260
   },
-  // 单个最大宽度
+  // 最小的宽度
   width: {
     require: true,
     type: Number,
