@@ -6,7 +6,7 @@ const constRouters: RouteRecordRaw[] = [
     component: () =>/* 首页 */ import('@V/home-page/HomePage.vue')
   },
   {
-    path: '/mind-map',
+    path: '/flow-page',
     component: () => /* 流程设计 */import('@V/flow-page/FlowPage.vue')
   },
   {

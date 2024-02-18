@@ -2,6 +2,7 @@ import { ref } from 'vue'
 import { Star as IconStar, MoreOne as IconMoreOne } from '@icon-park/vue-next'
 import s from './FileList.module.scss'
 import { usePost } from '@/utils/Request'
+import barImage from '@/assets/images/charts-example/bar-chart.png'
 import GridColumn from '@/layout/GridColumn.vue'
 
 export default {
@@ -37,7 +38,10 @@ export default {
         {
           allFiles.value.map((item) => {
             return <div class={s.chartItem} onClick={() => onEnterChart(item)} >
-              <div class={s.itemImg}>图片位置</div>
+              <div class={s.itemImg} >
+                {/* <img src='@/assets/images/charts-example/bar-chart.png'></img> */}
+                <img src={barImage} style={{ height: '100%', width: '100%' }}></img>
+                图片位置</div>
               <div class={s.itemText}>
                 <span>图片名称</span>
                 <span class={s.option}>
