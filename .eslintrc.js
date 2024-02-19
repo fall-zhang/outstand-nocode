@@ -14,6 +14,9 @@ module.exports = {
   extends: ['plugin:vue/vue3-strongly-recommended', 'eslint:recommended'],
   parserOptions: {
     ecmaVersion: 'latest',
+    ecmaFeatures: { // ecma 特性，比如支持 jsx
+      jsx: true
+    },
     parser: '@typescript-eslint/parser',
     sourceType: 'module'
   },
