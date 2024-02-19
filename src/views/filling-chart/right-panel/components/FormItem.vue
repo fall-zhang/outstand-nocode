@@ -16,7 +16,7 @@
       <div v-else-if="currentSetter == 'color'">
         <el-input v-model="formValue" style="width: 68px;" size="small" type="color" @change="onChangeValue"></el-input>
       </div>
-      <el-input-number v-else-if="currentSetter == 'number'" v-model="formValue" size="small"
+      <el-input-number v-else-if="currentSetter == 'number'" v-model="formValue" style="width: 88px;" size="small"
         @change="onChangeValue"></el-input-number>
       <el-switch v-else-if="currentSetter == 'switch'" v-model="formValue" size="small"
         @change="onChangeValue"></el-switch>

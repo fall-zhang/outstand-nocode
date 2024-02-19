@@ -35,10 +35,10 @@ function onGenCode() {
 //   changeState = true
 // })
 onMounted(() => {
-  console.log(chartOption)
+  // console.log(chartOption)
 })
 function openedDialog() {
-  console.log(6464)
+  // console.log(6464)
 
   showMonaco.value = true
 }

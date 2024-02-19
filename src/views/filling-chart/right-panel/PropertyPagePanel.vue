@@ -16,8 +16,11 @@
     </div>
     <ul class="cell-group">
       <template v-for="option in currentOptionList" :key="option.keyId">
-        <el-popover v-if="option.setters.includes('array')" placement="left">
-          <el-button>添加</el-button>
+        <el-popover v-if="option.setters.includes('array')" placement="left" width="160px">
+          <template #default>
+            <el-button type="primary">添加</el-button>
+            <el-button type="danger">删除</el-button>
+          </template>
           <template #reference>
             <li class="cell-item link-cell" @click="onChangeSetting(option)">
               <span style="display: flex;">
