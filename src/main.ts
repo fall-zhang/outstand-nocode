@@ -4,7 +4,7 @@ import Router from '@/router'
 import '@/assets/styles/main.scss'
 // import ElementPlus from 'element-plus'
 // console.log(import.meta.env)
-
+import 'vue-fantable/libs/theme-default.css'
 import FanTable from 'vue-fantable'
 
 const app = createApp(App)
