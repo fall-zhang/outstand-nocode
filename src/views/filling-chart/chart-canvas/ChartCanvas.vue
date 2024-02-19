@@ -1,6 +1,6 @@
 <template>
   <!-- 可以自定义容器的大小，允许用户拖拽以查看表现效果 -->
-  <div style="height: 600px;width: 860px;">
+  <div class="chart-container">
     <!-- {{ option }} -->
     <div ref="chartZoom" style="height: 100%;width: 100%;"></div>
   </div>
@@ -40,4 +40,10 @@ onMounted(() => {
 })
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.chart-container {
+  height: 600px;
+  width: 860px;
+  width: calc(100% - 360px);
+}
+</style>

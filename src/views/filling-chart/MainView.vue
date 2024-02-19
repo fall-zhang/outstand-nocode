@@ -5,8 +5,13 @@
     </template>
     <div style="display: flex;overflow: hidden;">
       <div class="main-graph">
+        <!-- 头部工具 -->
         <HeaderTools :option="chartOption" @change="onChangeHistory"></HeaderTools>
+        <!-- echart 工具 -->
         <ChartCanvas :option="chartOption" :chartId="chartId"></ChartCanvas>
+        <div style="width: calc(100% - 360px);">
+          <MonacoEditor ref="jsonEditor" :text="monacoCode"></MonacoEditor>
+        </div>
       </div>
       <!-- 负责修改 chartOption -->
       <RightPanel :key="currentKey" class="right-panel" :chartOption="chartOption" @change="onChangeOption"></RightPanel>
@@ -18,10 +23,12 @@
 // import ChartCanvas from './chart-canvas/ChartCanvas.vue'
 // import RightPanel from './right-panel/RightPanel.vue'
 import HeaderTools from './header-tools/HeaderTools.vue'
+import MonacoEditor from '@/components/module/MonacoEditor.vue'
 import { Return as IconReturn } from '@icon-park/vue-next'
 import { PageLayout } from '@/layout'
 import { v4 as uuid } from 'uuid'
 
+const jsonEditor = ref(null)
 const ChartCanvas = defineAsyncComponent(() => import('./chart-canvas/ChartCanvas.vue'))
 const RightPanel = defineAsyncComponent(() => import('./right-panel/RightPanel.vue'))
 const router = useRouter()
@@ -46,6 +53,7 @@ let chartOption = ref({
   ]
 })
 provide('chartOption', chartOption)
+const monacoCode = ref(JSON.stringify(toRaw(chartOption.value), null, 2))
 const chartId = ref('')
 
 // id 用来判断内容是否修改了，option表示
@@ -69,6 +77,7 @@ export default {
 .main-graph {
   flex-grow: 1;
   flex-shrink: 1;
+  overflow: auto;
 }
 
 .right-panel {

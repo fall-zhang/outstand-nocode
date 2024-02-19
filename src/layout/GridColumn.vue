@@ -1,3 +1,5 @@
+<!-- 组件功能：根据提供的宽度，自适应多列 -->
+
 <template>
   <div class="chartFileGroup" ref="outContainer" :style="{ gridTemplateColumns: 'repeat(' + rowCount + ',1fr)' }">
     <slot></slot>
