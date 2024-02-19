@@ -9,9 +9,10 @@
         <HeaderTools :option="chartOption" @change="onChangeHistory"></HeaderTools>
         <!-- echart 工具 -->
         <ChartCanvas :option="chartOption" :chartId="chartId"></ChartCanvas>
-        <div style="width: calc(100% - 360px);">
+        <!-- <div style="width: calc(100% - 360px);">
           <MonacoEditor ref="jsonEditor" :text="monacoCode"></MonacoEditor>
-        </div>
+        </div> -->
+        <DataGrasper></DataGrasper>
       </div>
       <!-- 负责修改 chartOption -->
       <RightPanel :key="currentKey" class="right-panel" :chartOption="chartOption" @change="onChangeOption"></RightPanel>
@@ -23,6 +24,8 @@
 // import ChartCanvas from './chart-canvas/ChartCanvas.vue'
 // import RightPanel from './right-panel/RightPanel.vue'
 import HeaderTools from './header-tools/HeaderTools.vue'
+// import MonacoEditor from '@/components/module/MonacoEditor.vue'
+import DataGrasper from './data-grasper/index.vue'
 import MonacoEditor from '@/components/module/MonacoEditor.vue'
 import { Return as IconReturn } from '@icon-park/vue-next'
 import { PageLayout } from '@/layout'
