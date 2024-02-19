@@ -7,7 +7,7 @@
       <el-tab-pane label="Vue3"></el-tab-pane>
       <el-tab-pane label="Vue3 setup"></el-tab-pane>
     </el-tabs>
-    <MonacoEditor v-if="showMonaco" ref="editorView" />
+    <MonacoEditor v-if="showMonaco" ref="editorView" :text="code" />
     <div v-else style="width: 600px;height: 600px;"></div>
   </el-dialog>
 </template>
@@ -35,23 +35,24 @@ function onGenCode() {
 //   changeState = true
 // })
 onMounted(() => {
-  // console.log(chartOption)
+  // console.log(toRaw(chartOption))
+  // onSelectTab('Vue2')
 })
+const code = ref('')
 function openedDialog() {
-  // console.log(6464)
-
   showMonaco.value = true
+  code.value = genVue2Code(toRaw(chartOption.value))
 }
 function onSelectTab(label: any) {
   if (label.props.label === 'Vue2') {
-    const code = genVue2Code(chartOption)
-    editorView.value?.setEditCode(code)
+    code.value = genVue2Code(toRaw(chartOption.value))
+    editorView.value?.setEditCode(code.value)
   } else if (label.props.label === 'Vue3') {
-    const code = genVue3Code(chartOption)
-    editorView.value?.setEditCode(code)
+    code.value = genVue3Code(toRaw(chartOption.value))
+    editorView.value?.setEditCode(code.value)
   } else if (label.props.label === 'Vue3 setup') {
-    const code = genVue3SetupCode(chartOption)
-    editorView.value?.setEditCode(code)
+    code.value = genVue3SetupCode(toRaw(chartOption.value))
+    editorView.value?.setEditCode(code.value)
   }
 }
 function onValueChange() {

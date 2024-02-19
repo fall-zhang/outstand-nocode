@@ -43,6 +43,9 @@ function onChangeHistory(newVal: any) {
   currentKey.value = newId
   chartOption.value = newVal
 }
+function onCheckType() {
+
+}
 </script>
 
 <script lang="ts">
