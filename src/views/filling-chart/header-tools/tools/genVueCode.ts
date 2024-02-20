@@ -6,7 +6,7 @@ import { genTemplateCode } from './genSplitPart'
 export function genVue3Code(option: any) {
   const templateCode = genTemplateCode(option)
   const jsCode = `
-  <script>
+<script>
   import { init } from 'echarts';
   export default {
     name: 'GenChartCanvas',
@@ -34,8 +34,7 @@ export function genVue3Code(option: any) {
       }
     }
   }
-  </script>
-    `
+</script>`
   return templateCode + jsCode
 }
 
@@ -70,40 +69,38 @@ export default{
 export const genVue2Code = (option: any) => {
   const chartOption = JSON.stringify(option, null, 2)
   // console.log(chartOption)
-  return `
-    <template>
-    <div style="height: 600px;width: 860px;">
-      <div ref="chart-zoom" style="height: 100%;width: 100%;"></div>
-    </div>
-  </template>
-  <script>
-  import { init } from 'echarts';
-  export default {
-    name: 'GenChartCanvas',
-    props: {
-      option: {
-        require: true
-      }
+  return `<template>
+  <div style="height: 600px;width: 860px;">
+    <div ref="chart-zoom" style="height: 100%;width: 100%;"></div>
+  </div>
+</template>
+<script>
+import { init } from 'echarts';
+export default {
+  name: 'GenChartCanvas',
+  props: {
+    option: {
+      require: true
+    }
+  },
+  data() {
+    return {
+      currentChart: null
+    }
+  },
+  mounted() {
+    this.renderChart()
+  },
+  methods: {
+    renderChart(){
+      this.currentChart = init(this.$refs['chart-zoom'])
+      this.currentChart.setOption(${chartOption})
     },
-    data() {
-      return {
-        currentChart: null
-      }
-    },
-    mounted() {
-      this.renderChart()
-    },
-    methods: {
-      renderChart(){
-        this.currentChart = init(this.$refs['chart-zoom'])
-        this.currentChart.setOption(${chartOption})
-      },
-      updateOption(option){
-        if(!option) return
-        this.currentChart.setOption(option)
-      }
+    updateOption(option){
+      if(!option) return
+      this.currentChart.setOption(option)
     }
   }
-  </script>
-    `
+}
+</script>`
 }

@@ -2,7 +2,7 @@
   <el-button v-bind="$attrs" type="primary" size="small" @click="onGenCode">出码</el-button>
 
   <el-dialog class="dialog-custom" v-model="codeGenShow" title="代码生成" width="68%" top="48px" @opened="openedDialog">
-    <el-tabs @tab-click="onSelectTab">
+    <el-tabs @tab-click="onSelectTab" style="padding: 0 24px;">
       <el-tab-pane label="Vue2"></el-tab-pane>
       <el-tab-pane label="Vue3"></el-tab-pane>
       <el-tab-pane label="Vue3 setup"></el-tab-pane>
@@ -41,17 +41,17 @@ onMounted(() => {
 const code = ref('')
 function openedDialog() {
   showMonaco.value = true
-  code.value = genVue2Code(toRaw(chartOption.value))
+  code.value = genVue2Code(unref(chartOption))
 }
 function onSelectTab(label: any) {
   if (label.props.label === 'Vue2') {
-    code.value = genVue2Code(toRaw(chartOption.value))
+    code.value = genVue2Code(unref(chartOption))
     editorView.value?.setEditCode(code.value)
   } else if (label.props.label === 'Vue3') {
-    code.value = genVue3Code(toRaw(chartOption.value))
+    code.value = genVue3Code(unref(chartOption))
     editorView.value?.setEditCode(code.value)
   } else if (label.props.label === 'Vue3 setup') {
-    code.value = genVue3SetupCode(toRaw(chartOption.value))
+    code.value = genVue3SetupCode(unref(chartOption))
     editorView.value?.setEditCode(code.value)
   }
 }
@@ -72,8 +72,3 @@ function onValueChange() {
   padding: 0;
 }
 </style>
-<!-- <style lang="scss">
-.el-dialog__body {
-  padding: 0;
-}
-</style> -->
