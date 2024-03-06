@@ -9,40 +9,18 @@
 
 <script setup lang="ts">
 import { Return as IconReturn } from '@icon-park/vue-next'
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, MaybeRef } from 'vue'
 import { v4 as uuid } from 'uuid'
-
-
+import { genRequireButton } from './tool'
+const colorSeries = ['#5470c6', '#91cc75', '#fac858', '#ee6666', '#73c0de', '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc']
+const chartOption = inject<Ref<any>>('chartOption')
 const currentKey = ref(uuid())
-let chartOption = ref({
-  xAxis: {
-    show: true,
-    type: 'category',
-    data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-  },
-  yAxis: {
-    type: 'value'
-  },
-  series: [
-    {
-      data: [150, 230, 224, 218, 135, 147, 260],
-      type: 'bar'
-    }
-  ]
+
+genRequireButton(unref(currentKey), {
+  color: colorSeries
 })
 const chartId = ref('')
 
-// id 用来判断内容是否修改了，option表示
-function onChangeOption(id: string, option: any) {
-  chartOption.value = option
-  chartId.value = id
-}
-function onChangeHistory(newVal: any) {
-  const newId = uuid()
-  chartId.value = newId
-  currentKey.value = newId
-  chartOption.value = newVal
-}
 function onCheckType() {
 
 }
