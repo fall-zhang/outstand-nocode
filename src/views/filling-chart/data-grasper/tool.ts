@@ -8,6 +8,7 @@ export const genRequireButton: GenRequireButton = (chartOption, setting) => {
   let colorIndex = 0
   const lefu = colorIndex % setting.color.length
   const currentColor = setting.color[lefu]
+  colorIndex++
   const result: any[] = []
   if (chartOption.xAxis) {
     result.push()
