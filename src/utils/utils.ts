@@ -7,6 +7,7 @@ export function isNull(value: unknown) {
 export function isNotNull(value: unknown) {
   return (value !== null) && (value !== undefined)
 }
+export const isEmpty = (v:unknown) => (v === '' || v === null || v === undefined || (Array.isArray(v) && !v.length))
 
 export function deepClone<T>(receive: T): T {
   let middle: unknown = null

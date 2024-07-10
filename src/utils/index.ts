@@ -7,3 +7,20 @@ import { deepClone } from './DeepClone'
 export {
   deepClone
 }
+const importModules = import.meta.glob('./*.js', { eager: true })
+const modules:Record<string,unknown> = {}
+
+// 将 forIn 转换为原生写法
+Object.values(importModules).forEach((func:any) => {
+  Object.keys(func).forEach((key) => {
+    modules[key] = func[key]
+  })
+})
+// _.forIn(importModules, (func) => {
+//   Object.keys(func).forEach((key) => {
+//     modules[key] = func[key]
+//   })
+// })
+export default {
+  ...modules
+}

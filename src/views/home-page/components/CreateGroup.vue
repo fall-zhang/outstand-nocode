@@ -5,6 +5,11 @@
       <span class="add-text">新建导图</span>
       <IconPlus class="menu-icon"></IconPlus>
     </div> -->
+    <div class="add-item" @click="$router.push('/rich-form')">
+      <IconKagiMap class="menu-icon left" />
+      <span class="add-text">表单生成</span>
+      <IconPlus class="menu-icon"></IconPlus>
+    </div>
     <!-- <div class="add-item" @click="onAddNewChart('图表生成')">
       <IconKagiMap class="menu-icon left" />
       <span class="add-text">图表生成</span>

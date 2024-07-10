@@ -6,7 +6,8 @@ import { resolve as pathResolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
-import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+import { ElementPlusResolver ,VantResolver } from 'unplugin-vue-components/resolvers'
+import svgLoader from 'vite-svg-loader'
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
 // https://vitejs.dev/config/
@@ -30,16 +31,29 @@ export default defineConfig({
       '@V': pathResolve(__dirname, 'src/views')
     }
   },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `
+        @use 'sass:math';
+        @use 'sass:map';
+        @use '@/styles/er-base.scss' as *;
+        `
+
+      }
+    }
+  },
   plugins: [
     vue(),
     vueJsx(),
+    svgLoader(),
     AutoImport({
-      resolvers: [ElementPlusResolver()],
+      resolvers: [ElementPlusResolver(),VantResolver()],
       dts: './src/global/auto-imports.d.ts',
       imports: ['vue', 'vue-router']
     }),
     Components({
-      resolvers: [ElementPlusResolver()],
+      resolvers: [ElementPlusResolver(),VantResolver()],
       dts: './src/global/components.d.ts'
     })
   ]

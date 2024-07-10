@@ -14,6 +14,14 @@ const constRouters: RouteRecordRaw[] = [
     component: () => /* 图表生成 */import('@V/chart-generate/ChartGenerate.vue')
   },
   {
+    path: '/rich-form',
+    component: () => /* 图表生成 */import('@V/rich-form/RichForm.vue')
+  },
+  {
+    path: '/rich-table',
+    component: () => /* 图表生成 */import('@V/rich-table/RichTable.vue')
+  },
+  {
     path: '/filling-chart',
     name: 'filling-chart',
     // route level code-splitting
