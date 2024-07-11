@@ -6,9 +6,12 @@ import '@/assets/styles/main.scss'
 // console.log(import.meta.env)
 import 'vue-fantable/libs/theme-default.css'
 import FanTable from 'vue-fantable'
-
+import ElementUI from 'element-plus'
+// import VantUI from 'vant'
 const app = createApp(App)
 app.use(Router)
 app.use(FanTable)
+app.use(ElementUI)
+// app.use(VantUI)
 app.mount('#app')
 // app.use(ElementPlus, { size: 'small', zIndex: 3000 })

@@ -4,6 +4,7 @@ import {
   useAttrs,
   useSlots,
   unref,
+  VueElement,
 } from 'vue'
 import { isHTMLTag } from '@/utils/browser'
 import VueDraggable from 'vuedraggable'
@@ -31,18 +32,21 @@ export const DraggableWrap = defineComponent({
           </VueDraggable>
         )
       } else {
-        const tag = isHTMLTag(attrs.tag) ? attrs.tag : resolveComponent(attrs.tag)
+        const RecTag:JSX.Element =  function() {
+          const result = isHTMLTag(attrs.tag) ? attrs.tag : resolveComponent(attrs.tag)
+          return result
+        }
         const {
           item
         } = useSlots()
         node = (
-          <tag {...attrs.componentData}>
+          <RecTag {...attrs.componentData}>
             {attrs.list.map(e => {
               return item({
                 element: e
               })
             })}
-          </tag>
+          </RecTag>
         )
       }
       return node

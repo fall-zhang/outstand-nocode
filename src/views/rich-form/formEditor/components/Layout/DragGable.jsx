@@ -1,11 +1,18 @@
 import {
   defineComponent,
+  resolveComponent,
   watch,
   useAttrs,
+  useSlots,
   defineAsyncComponent,
   unref,
+  nextTick,
+  ref,
   inject,
+  reactive
 } from 'vue'
+import { isHTMLTag } from '@/utils/browser'
+import DragGable from 'vuedraggable'
 import hooks from '@/hooks'
 import _ from 'lodash-es'
 import LayoutGridLayout from './GridLayout'
@@ -15,11 +22,16 @@ import LayoutTableLayout from './TableLayout'
 import LayoutInlineLayout from './InlineLayout'
 import Selection from '@/views/rich-form/formEditor/components/Selection/selectElement.jsx'
 import ControlInsertionPlugin from './ControlInsertionPlugin'
-import { DraggableWrap } from './DraggableWrap'
-import { ElFormItem } from 'element-plus'
-export const dragGableWrap  = DraggableWrap
+import { DraggableWrap } from './DraggableWrap.tsx'
+const dragGableWrap = DraggableWrap
+export {
+  dragGableWrap
+}
 export default defineComponent({
   name: 'DragGableLayout',
+  components: {
+    // DragGable
+  },
   props: {
     isRoot: {
       type: Boolean,
@@ -92,7 +104,7 @@ export default defineComponent({
         case 'inline':
           node = (<LayoutInlineLayout key={element.id} data={element} parent={props.data}></LayoutInlineLayout>)
           break
-        default:
+        default:{
           let TypeComponent = ''
           if (unref(isEditModel) || _.get(state.fieldsLogicState.get(element), 'visible', undefined) !== 0) {
             const typeProps = hooks.useProps(state, element, unref(isPc))
@@ -110,11 +122,11 @@ export default defineComponent({
                 <Selection hasWidthScale hasCopy hasDel hasDrag hasMask { ...params }>
                   {
                     element.type !== 'divider'
-                      ? (<ElFormItem
+                      ? (<el-form-item
                         {...typeProps.value}
                       >
                         <TypeComponent data={element} params={typeProps.value}></TypeComponent>
-                      </ElFormItem>)
+                      </el-form-item>)
                       : <TypeComponent data={element} params={typeProps.value}></TypeComponent>
                   }
                 </Selection>
@@ -128,6 +140,7 @@ export default defineComponent({
             }
           }
           break
+        }
         }
         return node
       },

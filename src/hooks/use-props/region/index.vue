@@ -1,5 +1,5 @@
-<script>
-import { defineProps, ref, reactive, computed, provide, getCurrentInstance, watch, nextTick, onMounted, isReactive, readonly, toRefs, unref } from 'vue'
+<script setup>
+import { defineProps, ref, reactive, computed, provide, watch, nextTick, onMounted, unref } from 'vue'
 import { ClickOutside as vClickOutside } from 'element-plus'
 import hooks from '@/hooks'
 import _ from 'lodash-es'
@@ -7,11 +7,10 @@ import _ from 'lodash-es'
 import { areaList } from '@vant/area-data'
 import Region from './Region'
 import Store from './store'
-export default {
+import { ArrowDown } from '@icon-park/vue-next'
+defineOptions({
   name: 'EverrightRegion'
-}
-</script>
-<script setup>
+})
 const props = defineProps({
   multiple: {
     type: Boolean,
@@ -270,93 +269,44 @@ onMounted(() => {
 })
 </script>
 <template>
-  <div
-    :class="[ns.b()]"
-  >
-    <el-tooltip
-      ref="tooltipRef"
-      :popper-class="[ns.e('dropdown')]"
-      effect="light"
-      placement="bottom-start"
-      :visible="state.popperVisible"
-    >
-      <div
-        :class="[ns.e('regin')]"
-        v-click-outside:[popperPaneRef]="() => togglePopperVisible(false)"
-        @mouseenter="inputHover = true"
-        @mouseleave="inputHover = false"
-        @click="() => togglePopperVisible(true)"
-      >
-        <el-input
-          :readonly="multiple"
-          ref="input"
-          :placeholder="searchInputValue ? '' : placeholder"
-          v-model="state.value0"
-          @input="handleInput"
-        >
+  <div :class="[ns.b()]">
+    <el-tooltip ref="tooltipRef" :popper-class="[ns.e('dropdown')]" effect="light" placement="bottom-start"
+      :visible="state.popperVisible">
+      <div :class="[ns.e('regin')]" v-click-outside:[popperPaneRef]="() => togglePopperVisible(false)"
+        @mouseenter="inputHover = true" @mouseleave="inputHover = false" @click="() => togglePopperVisible(true)">
+        <el-input :readonly="multiple" ref="input" :placeholder="searchInputValue ? '' : placeholder"
+          v-model="state.value0" @input="handleInput">
           <template #suffix>
-            <el-icon
-              v-if="clearBtnVisible"
-              key="clear"
-              :class="[ns.e('icon'), 'icon-circle-close']"
-              @click.stop="handleClear"
-            >
+            <el-icon v-if="clearBtnVisible" key="clear" :class="[ns.e('icon'), 'icon-circle-close']"
+              @click.stop="handleClear">
               <circle-close />
             </el-icon>
-            <el-icon
-              v-else
-              key="arrow-down"
-              :class="[
-                ns.e('icon'),
-                'icon-arrow-down',
-                state.popperVisible && ns.e('reverse')
-              ]"
-              @click.stop="togglePopperVisible()"
-            >
-              <arrow-down />
+            <el-icon v-else key="arrow-down" :class="[
+              ns.e('icon'),
+              'icon-arrow-down',
+              state.popperVisible && ns.e('reverse')
+            ]" @click.stop="togglePopperVisible()">
+              <ArrowDown />
             </el-icon>
           </template>
         </el-input>
         <div v-if="multiple" ref="tagWrapper" :class="ns.e('tagsWrap')">
-          <el-tag
-            v-for="tag in presentTags"
-            :key="tag.key"
-            type="info"
-            size="default"
-            :closable="tag.closable"
-            disable-transitions
-            @close="deleteTag(tag)"
-          >
+          <el-tag v-for="tag in presentTags" :key="tag.key" type="info" size="default" :closable="tag.closable"
+            disable-transitions @close="deleteTag(tag)">
             <template v-if="tag.isCollapseTag === false">
               <span>{{ tag.text }}</span>
             </template>
             <template v-else>
-              <el-tooltip
-                :teleported="false"
-                :disabled="state.popperVisible"
-                :fallback-placements="['bottom', 'top', 'right', 'left']"
-                placement="bottom"
-                effect="light"
-              >
+              <el-tooltip :teleported="false" :disabled="state.popperVisible"
+                :fallback-placements="['bottom', 'top', 'right', 'left']" placement="bottom" effect="light">
                 <template #default>
                   <span>{{ tag.text }}</span>
                 </template>
                 <template #content>
                   <div :class="ns.e('collapse-tags')">
-                    <div
-                      v-for="(tag2, idx) in allPresentTags.slice(1)"
-                      :key="idx"
-                      :class="ns.e('collapse-tag')"
-                    >
-                      <el-tag
-                        :key="tag2.key"
-                        class="in-tooltip"
-                        type="info"
-                        size="default"
-                        :closable="tag2.closable"
-                        disable-transitions
-                        @close="deleteTag(tag2)"
-                      >
+                    <div v-for="(tag2, idx) in allPresentTags.slice(1)" :key="idx" :class="ns.e('collapse-tag')">
+                      <el-tag :key="tag2.key" class="in-tooltip" type="info" size="default" :closable="tag2.closable"
+                        disable-transitions @close="deleteTag(tag2)">
                         <span>{{ tag2.text }}</span>
                       </el-tag>
                     </div>
@@ -365,36 +315,20 @@ onMounted(() => {
               </el-tooltip>
             </template>
           </el-tag>
-          <input
-            v-model="searchInputValue"
-            type="text"
-            :class="ns.e('search-input')"
-            @input="(e) => handleInput(searchInputValue, e)"
-            @click.stop="togglePopperVisible(true)"
-          />
+          <input v-model="searchInputValue" type="text" :class="ns.e('search-input')"
+            @input="(e) => handleInput(searchInputValue, e)" @click.stop="togglePopperVisible(true)" />
         </div>
       </div>
       <template #content>
         <div>
           <el-tabs v-show="!filtering" v-model="state.activeName" class="demo-tabs">
             <el-tab-pane v-for="(item, index) in state.menus" :key="item.name" :label="item.label" :name="item.name">
-              <el-scrollbar
-                tag="ul"
-                :wrap-class="ns.e('wrap')"
-                :view-class="ns.e('list')"
-              >
-                <li
-                  v-for="node in item.nodes"
-                  :key="node.value"
-                  :class="[inCheckedPath(node) && ns.is('Selected')]"
+              <el-scrollbar tag="ul" :wrap-class="ns.e('wrap')" :view-class="ns.e('list')">
+                <li v-for="node in item.nodes" :key="node.value" :class="[inCheckedPath(node) && ns.is('Selected')]"
                   @click.stop="() => handleEvent('click', node, index)">
-                  <el-checkbox
-                    :disabled="node.isDisabled"
-                    :model-value="node.checked"
-                    @click.stop
-                    @update:model-value="(val) => handleEvent('checkbox', node, index, val)"
-                  />
-                  <span :class="[ns.e('label')]">{{node.label}}</span>
+                  <el-checkbox :disabled="node.isDisabled" :model-value="node.checked" @click.stop
+                    @update:model-value="(val) => handleEvent('checkbox', node, index, val)" />
+                  <span :class="[ns.e('label')]">{{ node.label }}</span>
                   <template v-if="!node.isLeaf">
                     <el-icon :class="['arrow-right', ns.e('postfix')]">
                       <arrow-right />
@@ -404,25 +338,14 @@ onMounted(() => {
               </el-scrollbar>
             </el-tab-pane>
           </el-tabs>
-          <el-scrollbar
-            v-show="filtering"
-            ref="suggestionPanel"
-            tag="ul"
-            :wrap-class="ns.e('wrap')"
-            :view-class="ns.e('list')"
-          >
+          <el-scrollbar v-show="filtering" ref="suggestionPanel" tag="ul" :wrap-class="ns.e('wrap')"
+            :view-class="ns.e('list')">
             <template v-if="suggestions.length">
-              <li
-                v-for="node in suggestions"
-                :class="[inCheckedPath(node) && ns.is('Selected')]"
-                :key="node.value">
-                <el-checkbox
-                  :disabled="node.isDisabled"
-                  @update:model-value="(val) => handleEvent('checkbox', node, -1, val)"
-                  :model-value="node.checked"
-                  @click.stop
-                />
-                <span :class="[ns.e('label')]">{{node.text}}</span>
+              <li v-for="node in suggestions" :class="[inCheckedPath(node) && ns.is('Selected')]" :key="node.value">
+                <el-checkbox :disabled="node.isDisabled"
+                  @update:model-value="(val) => handleEvent('checkbox', node, -1, val)" :model-value="node.checked"
+                  @click.stop />
+                <span :class="[ns.e('label')]">{{ node.text }}</span>
               </li>
             </template>
             <slot v-else name="empty">
