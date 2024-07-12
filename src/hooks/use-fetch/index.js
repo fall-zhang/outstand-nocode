@@ -13,14 +13,14 @@ export const useFetch = (url, config = {}) => {
       ...config
     }).then(({ data: { data, code, msg } }) => {
       switch (code) {
-      case 0: // success
-        resolve({ code, msg, data })
-        break
-      default:
+        case 0: // success
+          resolve({ code, msg, data })
+          break
+        default:
         // other code
-        ElMessage.error(msg)
-        reject(new Error(msg))
-        break
+          ElMessage.error(msg)
+          reject(new Error(msg))
+          break
       }
     }).catch((e) => {
       if (_.get(e, 'code', '') !== 'ERR_CANCELED') {

@@ -378,153 +378,153 @@ export const addContext = (node, parent, fn) => {
           result.label = node.label
         }
         switch (node.type) {
-        case 'input':
-          if (options.isShowWordLimit) {
-            result.maxlength = options.max
-            result['show-word-limit'] = options.isShowWordLimit
-          }
-          if (isPc) {
-            result.showPassword = options.showPassword
-            result.prepend = options.prepend
-            result.append = options.append
-          } else {
-            if (options.showPassword) {
-              result.type = 'password'
+          case 'input':
+            if (options.isShowWordLimit) {
+              result.maxlength = options.max
+              result['show-word-limit'] = options.isShowWordLimit
             }
-            if (options.renderType === 4) {
-              result.type = 'tel'
+            if (isPc) {
+              result.showPassword = options.showPassword
+              result.prepend = options.prepend
+              result.append = options.append
+            } else {
+              if (options.showPassword) {
+                result.type = 'password'
+              }
+              if (options.renderType === 4) {
+                result.type = 'tel'
+              }
             }
-          }
-          break
-        case 'textarea':
-          result.type = 'textarea'
-          result.rows = options.rows
-          break
-        case 'number':
-          if (isPc) {
-            result.controls = options.controls
-            if (options.controls) {
-              result['controls-position'] = options.controlsPosition ? 'right' : ''
+            break
+          case 'textarea':
+            result.type = 'textarea'
+            result.rows = options.rows
+            break
+          case 'number':
+            if (isPc) {
+              result.controls = options.controls
+              if (options.controls) {
+                result['controls-position'] = options.controlsPosition ? 'right' : ''
+              }
             }
-          }
-          if (options.isShowWordLimit) {
-            result.min = options.min
-            result.max = options.max
-          }
-          result.step = options.step
-          result.precision = options.precision
-          break
-        case 'radio':
-        case 'checkbox':
-          break
-        case 'select':
-          break
-        case 'time':
-          result.format = options.format
-          if (isPc) {
-            result.valueFormat = options.valueFormat
-          }
-          break
-        case 'date':
-          result.placeholder = options.placeholder
-          result.startPlaceholder = options.startPlaceholder
-          result.endPlaceholder = options.endPlaceholder
-          result.format = options.format
-          result.type = options.type
-          if (isPc) {
-            result.disabledDate = (time) => {
+            if (options.isShowWordLimit) {
+              result.min = options.min
+              result.max = options.max
+            }
+            result.step = options.step
+            result.precision = options.precision
+            break
+          case 'radio':
+          case 'checkbox':
+            break
+          case 'select':
+            break
+          case 'time':
+            result.format = options.format
+            if (isPc) {
+              result.valueFormat = options.valueFormat
+            }
+            break
+          case 'date':
+            result.placeholder = options.placeholder
+            result.startPlaceholder = options.startPlaceholder
+            result.endPlaceholder = options.endPlaceholder
+            result.format = options.format
+            result.type = options.type
+            if (isPc) {
+              result.disabledDate = (time) => {
+                const {
+                  startTime,
+                  endTime,
+                  weeks,
+                  isShowWeeksLimit
+                } = options
+                const startDate = dayjs.unix(startTime)
+                const endDate = dayjs.unix(endTime)
+                const currentDate = dayjs(time)
+                const result = currentDate.isBefore(startDate) || currentDate.isAfter(endDate)
+                return result
+              }
+            } else {
               const {
                 startTime,
                 endTime,
                 weeks,
                 isShowWeeksLimit
               } = options
-              const startDate = dayjs.unix(startTime)
-              const endDate = dayjs.unix(endTime)
-              const currentDate = dayjs(time)
-              const result = currentDate.isBefore(startDate) || currentDate.isAfter(endDate)
-              return result
+              switch (options.type) {
+                case 'date':
+                case 'datetime':
+                  if (startTime) {
+                    result.minDate = dayjs.unix(startTime).toDate()
+                  } else {
+                    result.minDate = dayjs.unix(0).toDate()
+                  }
+                  if (endTime) {
+                    result.maxDate = dayjs.unix(endTime).toDate()
+                  } else {
+                    result.maxDate = dayjs().add(20, 'year').toDate()
+                  }
+                  break
+                case 'dates':
+                  if (options.defaultValue) {
+                    result.defaultDate = options.defaultValue.map(e => dayjs.unix(e).toDate())
+                  } else {
+                    result.defaultDate = null
+                  }
+                  if (startTime) {
+                    result.minDate = dayjs.unix(startTime).toDate()
+                  } else {
+                    result.minDate = dayjs().subtract(1, 'year').toDate()
+                  }
+                  if (endTime) {
+                    result.maxDate = dayjs.unix(endTime).toDate()
+                  } else {
+                    result.maxDate = dayjs().add(1, 'year').toDate()
+                  }
+                  break
+                case 'daterange':
+                  if (options.defaultValue) {
+                    result.defaultDate = options.defaultValue.map(e => dayjs.unix(e).toDate())
+                  } else {
+                    result.defaultDate = null
+                  }
+                  if (startTime) {
+                    result.minDate = dayjs.unix(startTime).toDate()
+                  } else {
+                    result.minDate = dayjs().subtract(1, 'year').toDate()
+                  }
+                  if (endTime) {
+                    result.maxDate = dayjs.unix(endTime).toDate()
+                  } else {
+                    result.maxDate = dayjs().add(1, 'year').toDate()
+                  }
+                  break
+              }
             }
-          } else {
-            const {
-              startTime,
-              endTime,
-              weeks,
-              isShowWeeksLimit
-            } = options
-            switch (options.type) {
-            case 'date':
-            case 'datetime':
-              if (startTime) {
-                result.minDate = dayjs.unix(startTime).toDate()
-              } else {
-                result.minDate = dayjs.unix(0).toDate()
-              }
-              if (endTime) {
-                result.maxDate = dayjs.unix(endTime).toDate()
-              } else {
-                result.maxDate = dayjs().add(20, 'year').toDate()
-              }
-              break
-            case 'dates':
-              if (options.defaultValue) {
-                result.defaultDate = options.defaultValue.map(e => dayjs.unix(e).toDate())
-              } else {
-                result.defaultDate = null
-              }
-              if (startTime) {
-                result.minDate = dayjs.unix(startTime).toDate()
-              } else {
-                result.minDate = dayjs().subtract(1, 'year').toDate()
-              }
-              if (endTime) {
-                result.maxDate = dayjs.unix(endTime).toDate()
-              } else {
-                result.maxDate = dayjs().add(1, 'year').toDate()
-              }
-              break
-            case 'daterange':
-              if (options.defaultValue) {
-                result.defaultDate = options.defaultValue.map(e => dayjs.unix(e).toDate())
-              } else {
-                result.defaultDate = null
-              }
-              if (startTime) {
-                result.minDate = dayjs.unix(startTime).toDate()
-              } else {
-                result.minDate = dayjs().subtract(1, 'year').toDate()
-              }
-              if (endTime) {
-                result.maxDate = dayjs.unix(endTime).toDate()
-              } else {
-                result.maxDate = dayjs().add(1, 'year').toDate()
-              }
-              break
+            break
+          case 'cascader':
+            result.props = {
+              multiple: options.multiple,
+              checkStrictly: options.checkStrictly
             }
-          }
-          break
-        case 'cascader':
-          result.props = {
-            multiple: options.multiple,
-            checkStrictly: options.checkStrictly
-          }
-          result.options = options.options
-          break
-        case 'slider':
-          result.step = options.step
-          result.min = options.min
-          result.max = options.max
-          break
-        case 'divider':
-          result.contentPosition = options.contentPosition
-          break
-        case 'uploadfile':
-          result.multiple = options.multiple
-          result.action = options.action
-          result.limit = options.limit
-          result.size = options.size
-          result.accept = options.accept
-          break
+            result.options = options.options
+            break
+          case 'slider':
+            result.step = options.step
+            result.min = options.min
+            result.max = options.max
+            break
+          case 'divider':
+            result.contentPosition = options.contentPosition
+            break
+          case 'uploadfile':
+            result.multiple = options.multiple
+            result.action = options.action
+            result.limit = options.limit
+            result.size = options.size
+            result.accept = options.accept
+            break
         }
         return result
       })
@@ -552,12 +552,12 @@ export const addContext = (node, parent, fn) => {
     get root () {
       let result = {}
       switch (node.type) {
-      case 'grid':
-      case 'table':
-        result = node
-        break
-      default:
-        result = parent.context.root
+        case 'grid':
+        case 'table':
+          result = node
+          break
+        default:
+          result = parent.context.root
       }
       return result
     },
@@ -613,17 +613,17 @@ export const addContext = (node, parent, fn) => {
     get columns () {
       const result = []
       switch (node.type) {
-      case 'table':
-        node.rows.forEach((item0, index0) => {
-          item0.columns.forEach((item1, index1) => {
-            if (!index0) {
-              result.push([])
-            }
-            result[index1].push(item1)
+        case 'table':
+          node.rows.forEach((item0, index0) => {
+            item0.columns.forEach((item1, index1) => {
+              if (!index0) {
+                result.push([])
+              }
+              result[index1].push(item1)
+            })
           })
-        })
-        break
-      default:
+          break
+        default:
       }
       return result
     },
@@ -736,41 +736,41 @@ export const addContext = (node, parent, fn) => {
         }
       } = node
       switch (type) {
-      case 'left':
-        findNode(node, 'before', 'colspan', (nodes, callBack) => {
-          callBack()
-        })
-        break
-      case 'right':
-        findNode(node, 'after', 'colspan', (nodes, callBack) => {
-          callBack()
-        })
-        break
-      case 'top':
-        findNode(node, 'before', 'rowspan', (nodes, callBack) => {
-          callBack()
-        })
-        break
-      case 'bottom':
-        findNode(node, 'after', 'rowspan', (nodes, callBack) => {
-          callBack()
-        })
-        break
-      case 'row':
-        while (root.rows[row].columns.length > root.rows[row].columns[0].options.colspan) {
-          findNode(root.rows[row].columns[0], 'after', 'colspan', (nodes, callBack) => {
+        case 'left':
+          findNode(node, 'before', 'colspan', (nodes, callBack) => {
             callBack()
           })
-        }
-        break
-      case 'column':
-        while (root.context.columns[col].length > root.context.columns[col][0].options.rowspan) {
-          findNode(root.context.columns[col][0], 'after', 'rowspan', (nodes, callBack) => {
+          break
+        case 'right':
+          findNode(node, 'after', 'colspan', (nodes, callBack) => {
             callBack()
           })
-        }
-        break
-      default:
+          break
+        case 'top':
+          findNode(node, 'before', 'rowspan', (nodes, callBack) => {
+            callBack()
+          })
+          break
+        case 'bottom':
+          findNode(node, 'after', 'rowspan', (nodes, callBack) => {
+            callBack()
+          })
+          break
+        case 'row':
+          while (root.rows[row].columns.length > root.rows[row].columns[0].options.colspan) {
+            findNode(root.rows[row].columns[0], 'after', 'colspan', (nodes, callBack) => {
+              callBack()
+            })
+          }
+          break
+        case 'column':
+          while (root.context.columns[col].length > root.context.columns[col][0].options.rowspan) {
+            findNode(root.context.columns[col][0], 'after', 'rowspan', (nodes, callBack) => {
+              callBack()
+            })
+          }
+          break
+        default:
       }
     },
     insert (type) {
@@ -782,21 +782,21 @@ export const addContext = (node, parent, fn) => {
         }
       } = node
       switch (type) {
-      case 'left':
-        appendNodes(node, 'before', 'colspan')
-        // root.rows.forEach(e => {
-        //   addContext(e, root, false)
-        // })
-        break
-      case 'right':
-        appendNodes(node, 'after', 'colspan')
-        break
-      case 'top':
-        appendNodes(node, 'before', 'rowspan')
-        break
-      case 'bottom':
-        appendNodes(node, 'after', 'rowspan')
-        break
+        case 'left':
+          appendNodes(node, 'before', 'colspan')
+          // root.rows.forEach(e => {
+          //   addContext(e, root, false)
+          // })
+          break
+        case 'right':
+          appendNodes(node, 'after', 'colspan')
+          break
+        case 'top':
+          appendNodes(node, 'before', 'rowspan')
+          break
+        case 'bottom':
+          appendNodes(node, 'after', 'rowspan')
+          break
       }
     },
     split (type) {
@@ -809,31 +809,31 @@ export const addContext = (node, parent, fn) => {
       } = node
       const nodes = getNodes(node, type === 'column' ? 'colspan' : 'rowspan')
       switch (type) {
-      case 'column':
+        case 'column':
         //  zheliyoudu  没有考虑底层
-        nodes.slice(col, col + node.options.colspan).forEach(e => {
-          e.options.colspan = 1
-          e.options.isMerged = false
-          if (e.options.rowspan > 1) {
-            const nodes = getNodes(e, 'rowspan')
-            nodes.slice(row + 1, row + e.options.rowspan).forEach((e) => {
-              e.options.colspan = 1
-            })
-          }
-        })
-        break
-      case 'row':
-        nodes.slice(row, row + node.options.rowspan).forEach(e => {
-          e.options.rowspan = 1
-          e.options.isMerged = false
-          if (e.options.colspan > 1) {
-            const nodes = getNodes(e, 'colspan')
-            nodes.slice(col + 1, col + e.options.colspan).forEach((e) => {
-              e.options.rowspan = 1
-            })
-          }
-        })
-        break
+          nodes.slice(col, col + node.options.colspan).forEach(e => {
+            e.options.colspan = 1
+            e.options.isMerged = false
+            if (e.options.rowspan > 1) {
+              const nodes = getNodes(e, 'rowspan')
+              nodes.slice(row + 1, row + e.options.rowspan).forEach((e) => {
+                e.options.colspan = 1
+              })
+            }
+          })
+          break
+        case 'row':
+          nodes.slice(row, row + node.options.rowspan).forEach(e => {
+            e.options.rowspan = 1
+            e.options.isMerged = false
+            if (e.options.colspan > 1) {
+              const nodes = getNodes(e, 'colspan')
+              nodes.slice(col + 1, col + e.options.colspan).forEach((e) => {
+                e.options.rowspan = 1
+              })
+            }
+          })
+          break
       }
     },
     del (type) {
@@ -847,18 +847,18 @@ export const addContext = (node, parent, fn) => {
       const nodes = getNodes(node, type === 'column' ? 'colspan' : 'rowspan')
       // let result = false
       switch (type) {
-      case 'column':
-        root.rows.forEach(e => {
-          e.columns.splice(col, node.options.colspan)
-          addContext(e, root)
-        })
-        break
-      case 'row':
-        root.rows.splice(row, node.options.rowspan)
-        root.rows.forEach(e => {
-          addContext(e, root)
-        })
-        break
+        case 'column':
+          root.rows.forEach(e => {
+            e.columns.splice(col, node.options.colspan)
+            addContext(e, root)
+          })
+          break
+        case 'row':
+          root.rows.splice(row, node.options.rowspan)
+          root.rows.forEach(e => {
+            addContext(e, root)
+          })
+          break
       }
     }
   }

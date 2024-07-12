@@ -1,23 +1,13 @@
-import { defineProps, ref, reactive, computed, provide, getCurrentInstance, inject, onBeforeUnmount, unref } from 'vue'
+import {  computed, inject } from 'vue'
 import _ from 'lodash-es'
 import utils from '@/utils'
+import { isEmpty } from '@/utils/utils'
 export const useTarget = () => {
-  // const Instance = getCurrentInstance()
-  // const {
-  //   type: {
-  //     name
-  //   }
-  // } = Instance
   const {
     state,
     setSelection,
     props
   } = inject('Everright')
-  // onBeforeUnmount(() => {
-  //   state.children.splice(state.children.indexOf(Instance), 1)
-  // })
-  // state.children.push(Instance)
-  // console.log(props.checkTypeBySelected)
   const selection = computed(() => {
     return state.selected
   })
@@ -36,7 +26,6 @@ export const useTarget = () => {
   })
   const isSelectField = computed({
     get () {
-      // return utils.checkIsField(type.value)
       return utils.checkIsField(state.selected)
     }
   })
@@ -47,24 +36,19 @@ export const useTarget = () => {
   })
   const col = computed({
     get () {
-      return !_.isEmpty(state.selected) && state.selected.context.col
+      return !isEmpty(state.selected) && state.selected.context.col
     }
   })
   const checkTypeBySelected = (nodes = [], propType) => {
     let result = false
-    if (!_.isEmpty(state.selected)) {
+    if (!isEmpty(state.selected)) {
       if (type.value) {
         const fn = props.checkPropsBySelected(state.selected, propType)
-        // console.log(fn !== undefined ? fn : nodes.includes(type.value))
         result = fn !== undefined ? fn : nodes.includes(type.value)
       } else {
         result = nodes.includes(type.value)
       }
     }
-    // props.checkTypeBySelected
-    // if (!unref(isSelectRoot)) {
-    //   result = nodes.includes(type.value)
-    // }
     return result
   }
   const isSelectGrid = computed({

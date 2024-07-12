@@ -136,15 +136,15 @@ const belongOneOf = (logicValue, value, field) => {
       let result = false
       const type = getAreaType(code)
       switch (type) {
-      case 1:
-        result = code.substring(0, 2) === value.substring(0, 2)
-        break
-      case 2:
-        result = code.substring(0, 2) === value.substring(0, 2) && code.substring(2, 4) === value.substring(2, 4)
-        break
-      case 3:
-        result = code === value
-        break
+        case 1:
+          result = code.substring(0, 2) === value.substring(0, 2)
+          break
+        case 2:
+          result = code.substring(0, 2) === value.substring(0, 2) && code.substring(2, 4) === value.substring(2, 4)
+          break
+        case 3:
+          result = code === value
+          break
       }
       return result
     })
@@ -155,51 +155,51 @@ const notBelongOneOf = (...e) => {
 export const validator = (logic, value, field) => {
   let result = false
   switch (logic.operator) {
-  case 'equal':
-    result = equal(logic.value, value, field)
-    break
-  case 'not_equal':
-    result = notEqual(logic.value, value, field)
-    break
-  case 'contains':
-    result = contains(logic.value, value, field)
-    break
-  case 'not_contain':
-    result = notContains(logic.value, value, field)
-    break
-  case 'empty':
-    result = empty(logic.value, value, field)
-    break
-  case 'not_empty':
-    result = notEmpty(logic.value, value, field)
-    break
-  case 'greater_than':
-    result = gt(logic.value, value, field)
-    break
-  case 'greater_than_equal':
-    result = gte(logic.value, value, field)
-    break
-  case 'less_than':
-    result = lt(logic.value, value, field)
-    break
-  case 'less_than_equal':
-    result = lte(logic.value, value, field)
-    break
-  case 'between':
-    result = between(logic.value, value, field)
-    break
-  case 'one_of':
-    result = oneOf(logic.value, value, field)
-    break
-  case 'not_one_of':
-    result = notOneOf(logic.value, value, field)
-    break
-  case 'belong_one_of':
-    result = belongOneOf(logic.value, value, field)
-    break
-  case 'not_belong_one_of':
-    result = notBelongOneOf(logic.value, value, field)
-    break
+    case 'equal':
+      result = equal(logic.value, value, field)
+      break
+    case 'not_equal':
+      result = notEqual(logic.value, value, field)
+      break
+    case 'contains':
+      result = contains(logic.value, value, field)
+      break
+    case 'not_contain':
+      result = notContains(logic.value, value, field)
+      break
+    case 'empty':
+      result = empty(logic.value, value, field)
+      break
+    case 'not_empty':
+      result = notEmpty(logic.value, value, field)
+      break
+    case 'greater_than':
+      result = gt(logic.value, value, field)
+      break
+    case 'greater_than_equal':
+      result = gte(logic.value, value, field)
+      break
+    case 'less_than':
+      result = lt(logic.value, value, field)
+      break
+    case 'less_than_equal':
+      result = lte(logic.value, value, field)
+      break
+    case 'between':
+      result = between(logic.value, value, field)
+      break
+    case 'one_of':
+      result = oneOf(logic.value, value, field)
+      break
+    case 'not_one_of':
+      result = notOneOf(logic.value, value, field)
+      break
+    case 'belong_one_of':
+      result = belongOneOf(logic.value, value, field)
+      break
+    case 'not_belong_one_of':
+      result = notBelongOneOf(logic.value, value, field)
+      break
   }
   return result
 }
@@ -212,88 +212,88 @@ const changeState = (fieldsLogicState, field, key, value) => {
 const operatingVisible = (isValidation, rule, fields, fieldsLogicState) => {
   _.get(rule, 'then.conditions', []).forEach(condition => {
     switch (condition.property) {
-    case 'show':
-      if (isValidation) {
-        findFieldsByid(condition.value, fields).forEach(field => {
-          changeState(fieldsLogicState, field, 'visible', 1)
-        })
-      } else {
-        findFieldsByid(condition.value, fields).forEach(field => {
-          changeState(fieldsLogicState, field, 'visible', 0)
-        })
-      }
-      break
-    case 'hide':
-      if (isValidation) {
-        findFieldsByid(condition.value, fields).forEach(field => {
-          changeState(fieldsLogicState, field, 'visible', 0)
-        })
-      } else {
-        findFieldsByid(condition.value, fields).forEach(field => {
-          changeState(fieldsLogicState, field, 'visible', 1)
-        })
-      }
-      break
+      case 'show':
+        if (isValidation) {
+          findFieldsByid(condition.value, fields).forEach(field => {
+            changeState(fieldsLogicState, field, 'visible', 1)
+          })
+        } else {
+          findFieldsByid(condition.value, fields).forEach(field => {
+            changeState(fieldsLogicState, field, 'visible', 0)
+          })
+        }
+        break
+      case 'hide':
+        if (isValidation) {
+          findFieldsByid(condition.value, fields).forEach(field => {
+            changeState(fieldsLogicState, field, 'visible', 0)
+          })
+        } else {
+          findFieldsByid(condition.value, fields).forEach(field => {
+            changeState(fieldsLogicState, field, 'visible', 1)
+          })
+        }
+        break
     }
   })
 }
 const operatingRequired = (isValidation, rule, fields, fieldsLogicState) => {
   _.get(rule, 'then.conditions', []).forEach(condition => {
     switch (condition.operator) {
-    case 'required':
-      if (isValidation) {
-        findFieldsByid(condition.value, fields).forEach(field => {
+      case 'required':
+        if (isValidation) {
+          findFieldsByid(condition.value, fields).forEach(field => {
           // fieldsRequired.set(field, 1)
-          changeState(fieldsLogicState, field, 'required', 1)
-        })
-      } else {
-        findFieldsByid(condition.value, fields).forEach(field => {
+            changeState(fieldsLogicState, field, 'required', 1)
+          })
+        } else {
+          findFieldsByid(condition.value, fields).forEach(field => {
           // fieldsRequired.set(field, 0)
-          changeState(fieldsLogicState, field, 'required', 0)
-        })
-      }
-      break
-    case 'not_required':
-      if (isValidation) {
-        findFieldsByid(condition.value, fields).forEach(field => {
+            changeState(fieldsLogicState, field, 'required', 0)
+          })
+        }
+        break
+      case 'not_required':
+        if (isValidation) {
+          findFieldsByid(condition.value, fields).forEach(field => {
           // fieldsRequired.set(field, 0)
-          changeState(fieldsLogicState, field, 'required', 0)
-        })
-      } else {
-        findFieldsByid(condition.value, fields).forEach(field => {
+            changeState(fieldsLogicState, field, 'required', 0)
+          })
+        } else {
+          findFieldsByid(condition.value, fields).forEach(field => {
           // fieldsRequired.set(field, 1)
-          changeState(fieldsLogicState, field, 'required', 1)
-        })
-      }
-      break
+            changeState(fieldsLogicState, field, 'required', 1)
+          })
+        }
+        break
     }
   })
 }
 const operatingReadOnly = (isValidation, rule, fields, fieldsLogicState) => {
   _.get(rule, 'then.conditions', []).forEach(condition => {
     switch (condition.operator) {
-    case 'readOnly':
-      if (isValidation) {
-        findFieldsByid(condition.value, fields).forEach(field => {
-          changeState(fieldsLogicState, field, 'readOnly', 1)
-        })
-      } else {
-        findFieldsByid(condition.value, fields).forEach(field => {
-          changeState(fieldsLogicState, field, 'readOnly', 0)
-        })
-      }
-      break
-    case 'editable':
-      if (isValidation) {
-        findFieldsByid(condition.value, fields).forEach(field => {
-          changeState(fieldsLogicState, field, 'readOnly', 0)
-        })
-      } else {
-        findFieldsByid(condition.value, fields).forEach(field => {
-          changeState(fieldsLogicState, field, 'readOnly', 1)
-        })
-      }
-      break
+      case 'readOnly':
+        if (isValidation) {
+          findFieldsByid(condition.value, fields).forEach(field => {
+            changeState(fieldsLogicState, field, 'readOnly', 1)
+          })
+        } else {
+          findFieldsByid(condition.value, fields).forEach(field => {
+            changeState(fieldsLogicState, field, 'readOnly', 0)
+          })
+        }
+        break
+      case 'editable':
+        if (isValidation) {
+          findFieldsByid(condition.value, fields).forEach(field => {
+            changeState(fieldsLogicState, field, 'readOnly', 0)
+          })
+        } else {
+          findFieldsByid(condition.value, fields).forEach(field => {
+            changeState(fieldsLogicState, field, 'readOnly', 1)
+          })
+        }
+        break
     }
   })
 }
@@ -316,15 +316,15 @@ const listenEvent = (state) => {
       watch(() => targetFields.map(e => e.options.defaultValue), (values) => {
         // console.log(operator(values.map((value, index) => validator(rule.if.conditions[index], value, targetFields[index]))))
         switch (type) {
-        case 'visible':
-          operatingVisible(operator(values.map((value, index) => validator(rule.if.conditions[index], value, targetFields[index]))), rule, state.fields, state.fieldsLogicState)
-          break
-        case 'required':
-          operatingRequired(operator(values.map((value, index) => validator(rule.if.conditions[index], value, targetFields[index]))), rule, state.fields, state.fieldsLogicState)
-          break
-        case 'readOnly':
-          operatingReadOnly(operator(values.map((value, index) => validator(rule.if.conditions[index], value, targetFields[index]))), rule, state.fields, state.fieldsLogicState)
-          break
+          case 'visible':
+            operatingVisible(operator(values.map((value, index) => validator(rule.if.conditions[index], value, targetFields[index]))), rule, state.fields, state.fieldsLogicState)
+            break
+          case 'required':
+            operatingRequired(operator(values.map((value, index) => validator(rule.if.conditions[index], value, targetFields[index]))), rule, state.fields, state.fieldsLogicState)
+            break
+          case 'readOnly':
+            operatingReadOnly(operator(values.map((value, index) => validator(rule.if.conditions[index], value, targetFields[index]))), rule, state.fields, state.fieldsLogicState)
+            break
           // case 'validation':
           //   operatingValidation(operator(values.map((value, index) => validator(rule.if.conditions[index], value, targetFields[index]))), rule, state.fields, state.fieldsValidation)
           //   break

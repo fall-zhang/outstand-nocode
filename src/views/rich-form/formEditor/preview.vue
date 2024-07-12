@@ -1,17 +1,13 @@
-<script>
-import { defineProps, ref, reactive, computed, provide, getCurrentInstance, watch, nextTick, onMounted } from 'vue'
-import CanvesPanel from '@/views/rich-form/formEditor/components/Panels/Canves'
+<script setup>
+import { defineProps,  reactive, provide } from 'vue'
+import CanvesPanel from './components/Panels/Canves'
 import hooks from '@/hooks'
 import utils from '@/utils'
 import _ from 'lodash-es'
 import defaultProps from './defaultProps'
-import { ElMessage } from 'element-plus'
-import { showNotify } from 'vant'
-export default {
-  name: 'Everright-form-preview'
-}
-</script>
-<script setup>
+defineOptions({
+  name: 'FormPreview'
+})
 const emit = defineEmits(['listener'])
 const props = defineProps(defaultProps)
 const layout = {
@@ -31,25 +27,7 @@ const state = reactive({
   logic: {},
   fieldsLogicState: new Map()
 })
-const ns = hooks.useNamespace('Main', state.Namespace)
 hooks.useLogic(state)
-// const checkFieldsValidation = async () => {
-//   for (const [key, value] of state.fieldsValidation) {
-//     if (value) {
-//       if (utils.isPc()) {
-//         ElMessage({
-//           message: key.value,
-//           type: 'warning'
-//         })
-//       } else {
-//         showNotify({ type: 'warning', message: key.value })
-//       }
-//       return Promise.reject(key)
-//     }
-//   }
-//   return Promise.resolve()
-// }
-// window.checkFieldsValidation = checkFieldsValidation
 const getData = () => {
   const result = {}
   state.fields.forEach(e => {
@@ -68,7 +46,6 @@ provide('Everright', {
   getData,
   props,
   fireEvent
-  // checkFieldsValidation
 })
 const setData2 = (data, value) => {
   const newData = _.cloneDeep(data)

@@ -1,4 +1,4 @@
-import locale from '@/views/rich-form/formEditor/locale'
+import locale from './locale/index'
 import utils from '@/utils'
 export default function (node, isWrap = true, lang = 'zh-cn', isCreateLabel = true, eachBack) {
   const newNode = isWrap

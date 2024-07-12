@@ -24,107 +24,107 @@ const renderTableBorder = (style) => {
     color: style.borderColor
   }
   switch (style.borderType) {
-  case 0:
-    break
-  case 1:
-    result = {
-      '&>table': {
-        border: value,
-        '& td': {
-          border: value
-        }
-      }
-    }
-    break
-  case 2:
-    result = {
-      '&>table': {
-        border: value,
-        '& td': {
-          border: {
-            style: 'none'
-          }
-        }
-      }
-    }
-    break
-  case 3:
-    result = {
-      '&>table': {
-        border: {
-          style: 'none'
-        },
-        '& td:not(`:last-child`)': {
-          borderRight: value
-        },
-        '& tr:not(:last-child)': {
+    case 0:
+      break
+    case 1:
+      result = {
+        '&>table': {
+          border: value,
           '& td': {
-            borderBottom: value
+            border: value
           }
         }
       }
-    }
-    break
-  case 4:
-    result = {
-      '&>table': {
-        border: {
-          style: 'none'
-        },
-        borderLeft: value,
-        '& td': {
+      break
+    case 2:
+      result = {
+        '&>table': {
+          border: value,
+          '& td': {
+            border: {
+              style: 'none'
+            }
+          }
+        }
+      }
+      break
+    case 3:
+      result = {
+        '&>table': {
           border: {
             style: 'none'
+          },
+          '& td:not(`:last-child`)': {
+            borderRight: value
+          },
+          '& tr:not(:last-child)': {
+            '& td': {
+              borderBottom: value
+            }
           }
         }
       }
-    }
-    break
-  case 5:
-    result = {
-      '&>table': {
-        border: {
-          style: 'none'
-        },
-        borderRight: value,
-        '& td': {
+      break
+    case 4:
+      result = {
+        '&>table': {
           border: {
             style: 'none'
+          },
+          borderLeft: value,
+          '& td': {
+            border: {
+              style: 'none'
+            }
           }
         }
       }
-    }
-    break
-  case 6:
-    result = {
-      '&>table': {
-        border: {
-          style: 'none'
-        },
-        borderTop: value,
-        '& td': {
+      break
+    case 5:
+      result = {
+        '&>table': {
           border: {
             style: 'none'
+          },
+          borderRight: value,
+          '& td': {
+            border: {
+              style: 'none'
+            }
           }
         }
       }
-    }
-    break
-  case 7:
-    result = {
-      '&>table': {
-        border: {
-          style: 'none'
-        },
-        borderBottom: value,
-        '& td': {
+      break
+    case 6:
+      result = {
+        '&>table': {
           border: {
             style: 'none'
+          },
+          borderTop: value,
+          '& td': {
+            border: {
+              style: 'none'
+            }
           }
         }
       }
-    }
-    break
+      break
+    case 7:
+      result = {
+        '&>table': {
+          border: {
+            style: 'none'
+          },
+          borderBottom: value,
+          '& td': {
+            border: {
+              style: 'none'
+            }
+          }
+        }
+      }
+      break
   }
   return result
 }

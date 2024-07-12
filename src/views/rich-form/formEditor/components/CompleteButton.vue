@@ -16,12 +16,10 @@ const props = defineProps({
     default: 'edit'
   }
 })
-const ns = hooks.useNamespace('CompleteButton')
 const {
   state,
   isPc
 } = hooks.useTarget()
-const element = ref('')
 const handleClick = async (type) => {
   if (props.mode === 'preview') return false
   try {

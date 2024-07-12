@@ -1,6 +1,6 @@
 <script>
 import { ElMessage } from 'element-plus'
-import { ref, computed, reactive, watchEffect, watch, unref, provide, onMounted, inject } from 'vue'
+import { ref, computed, unref, provide, onMounted, inject } from 'vue'
 import utils from '@/utils'
 import hooks from '@/hooks'
 import PanelsConfigComponentsCheckboxComponent from './CheckboxComponent.vue'
@@ -132,12 +132,12 @@ const options1 = computed(() => {
     }
     const otherNodes = target.value.context.parent.columns
     switch (otherNodes.length) {
-    case 2:
-      result.disabled = /^(1)$/.test(result.value)
-      break
-    case 3:
-      result.disabled = /^(1|3\/4|2\/3|1\/4)$/.test(result.value)
-      break
+      case 2:
+        result.disabled = /^(1)$/.test(result.value)
+        break
+      case 3:
+        result.disabled = /^(1|3\/4|2\/3|1\/4)$/.test(result.value)
+        break
     }
     return result
   })
@@ -286,15 +286,15 @@ const options10 = computed(() => {
 // })
 const typeProps = hooks.useProps(state, target, true, false, (type, props) => {
   switch (type) {
-  case 'time':
-  case 'cascader':
-  case 'number':
-  case 'date':
-  case 'rate':
-  case 'switch':
-  case 'slider':
-    delete props.disabled
-    break
+    case 'time':
+    case 'cascader':
+    case 'number':
+    case 'date':
+    case 'rate':
+    case 'switch':
+    case 'slider':
+      delete props.disabled
+      break
   }
 })
 const checkLogicData = () => {
@@ -333,60 +333,60 @@ const handleMultipleChange = (value) => {
 }
 const handleAction = (type, value) => {
   switch (type) {
-  case 1:
-    if (state.mode === 'config') {
-      unref(dataRef).getData().then(({ data }) => {
-        dialogVisible.value = false
-      })
-      return false
-    }
-    if (checkTypeBySelected(['cascader'])) {
-      unref(dataRef).getData().then(({ data }) => {
-        state.data[target.value.options.dataKey].list = data
-        dialogVisible.value = false
-      })
-    } else {
-      unref(dataRef).getData().then(({ data, defaultValue }) => {
-        state.data[target.value.options.dataKey].list = data
-        target.value.options.defaultValue = defaultValue
-        dialogVisible.value = false
-      })
-    }
-    break
-  case 2:
-    dialogVisible.value = false
-    break
+    case 1:
+      if (state.mode === 'config') {
+        unref(dataRef).getData().then(({ data }) => {
+          dialogVisible.value = false
+        })
+        return false
+      }
+      if (checkTypeBySelected(['cascader'])) {
+        unref(dataRef).getData().then(({ data }) => {
+          state.data[target.value.options.dataKey].list = data
+          dialogVisible.value = false
+        })
+      } else {
+        unref(dataRef).getData().then(({ data, defaultValue }) => {
+          state.data[target.value.options.dataKey].list = data
+          target.value.options.defaultValue = defaultValue
+          dialogVisible.value = false
+        })
+      }
+      break
+    case 2:
+      dialogVisible.value = false
+      break
   }
 }
 const handleTypeListener = ({ property, data }) => {
   switch (property) {
-  case 'width':
-    // eslint-disable-next-line
+    case 'width':
+      // eslint-disable-next-line
       const val = Number((eval(data.value) * 100).toFixed(2))
-    utils.syncWidthByPlatform(target.value, state.platform, false, val)
-    break
-  case 'type':
-    target.value.options.type = data.value
-    break
-  case 'tabPosition':
-    target.value.options.tabPosition = data.value
-    break
-  case 'justify':
-    target.value.options.justify = data.value
-    break
-  case 'displayStyle':
-    target.value.options.displayStyle = data.value
-    break
-  case 'selectType':
-    target.value.options.selectType = data.value
-    target.value.options.defaultValue = ''
-    break
-  case 'controlsPosition':
-    target.value.options.controlsPosition = data.value
-    break
-  case 'contentPosition':
-    target.value.options.contentPosition = data.value
-    break
+      utils.syncWidthByPlatform(target.value, state.platform, false, val)
+      break
+    case 'type':
+      target.value.options.type = data.value
+      break
+    case 'tabPosition':
+      target.value.options.tabPosition = data.value
+      break
+    case 'justify':
+      target.value.options.justify = data.value
+      break
+    case 'displayStyle':
+      target.value.options.displayStyle = data.value
+      break
+    case 'selectType':
+      target.value.options.selectType = data.value
+      target.value.options.defaultValue = ''
+      break
+    case 'controlsPosition':
+      target.value.options.controlsPosition = data.value
+      break
+    case 'contentPosition':
+      target.value.options.contentPosition = data.value
+      break
   }
 }
 onMounted(() => {
@@ -463,8 +463,8 @@ onMounted(() => {
       </template>
       <template v-else-if="checkTypeBySelected(['rate'], 'defaultValue')">
         <el-rate v-bind="typeProps" v-model="target.options.defaultValue" />
-        <el-button v-if="target.options.defaultValue > 0" link
-          @click="target.options.defaultValue = 0">{{ t('er.public.clear') }}</el-button>
+        <el-button v-if="target.options.defaultValue > 0" link @click="target.options.defaultValue = 0">{{
+          t('er.public.clear') }}</el-button>
       </template>
       <template v-else-if="checkTypeBySelected(['switch'], 'defaultValue')">
         <el-switch v-bind="typeProps" v-model="target.options.defaultValue" />
@@ -475,8 +475,8 @@ onMounted(() => {
     </PanelsConfigComponentsTypeComponent>
     <PanelsConfigComponentsTypeComponent :label="t('er.public.Data')" :layoutType="0"
       v-if="checkTypeBySelected(['select', 'radio', 'checkbox', 'cascader'], 'dataEntry')">
-      <el-button style="width: 100%;" type="primary"
-        @click="dialogVisible = true">{{ t('er.public.dataEntry') }}</el-button>
+      <el-button style="width: 100%;" type="primary" @click="dialogVisible = true">{{ t('er.public.dataEntry')
+        }}</el-button>
     </PanelsConfigComponentsTypeComponent>
     <PanelsConfigComponentsTypeComponent :label="t('er.config.propsPanel.star')" :layoutType="0"
       v-if="checkTypeBySelected(['rate'], 'star')">

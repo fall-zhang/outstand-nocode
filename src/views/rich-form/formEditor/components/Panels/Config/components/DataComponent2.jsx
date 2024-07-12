@@ -29,17 +29,17 @@ export default defineComponent({
         type
       } = hooks.useTarget()
       switch (type.value) {
-      case 'checkbox':
-        result = true
-        break
-      case 'select':
-      case 'cascader':
-        result = target.value.options.multiple
-        break
-      case 'tabs':
-      case 'radio':
-        result = false
-        break
+        case 'checkbox':
+          result = true
+          break
+        case 'select':
+        case 'cascader':
+          result = target.value.options.multiple
+          break
+        case 'tabs':
+        case 'radio':
+          result = false
+          break
       }
       return result
     }
@@ -88,40 +88,40 @@ export default defineComponent({
     const ns = hooks.useNamespace('ConfigData2')
     const handleAction = (type, x, data) => {
       switch (type) {
-      case 1:
-        data.push(...utils.generateOptions(1))
-        nextTick(() => {
-          this.scrollbars[x].setScrollTop(this.scrollbars[x].wrapRef.scrollHeight)
-        })
-        break
-      case 2:
-        if (x >= this.len) return false
-        this.selected[x] = data.value
-        this.shows.forEach((e, i) => {
-          if (i > x + 1) {
-            this.shows[i] = false
-            this.data[i] = []
+        case 1:
+          data.push(...utils.generateOptions(1))
+          nextTick(() => {
+            this.scrollbars[x].setScrollTop(this.scrollbars[x].wrapRef.scrollHeight)
+          })
+          break
+        case 2:
+          if (x >= this.len) return false
+          this.selected[x] = data.value
+          this.shows.forEach((e, i) => {
+            if (i > x + 1) {
+              this.shows[i] = false
+              this.data[i] = []
+            }
+            if (i > x) {
+              this.selected[i] = ''
+            }
+          })
+          this.shows[x + 1] = true
+          if (!data.children) {
+            data.children = []
           }
-          if (i > x) {
-            this.selected[i] = ''
-          }
-        })
-        this.shows[x + 1] = true
-        if (!data.children) {
-          data.children = []
-        }
-        this.data[x + 1] = data.children
-        break
-      case 3:
-        data.disabled = !data.disabled
-        this.shows.forEach((e, i) => {
-          if (i > x) {
-            this.shows[i] = false
-            this.data[i] = []
-            this.selected[i] = ''
-          }
-        })
-        break
+          this.data[x + 1] = data.children
+          break
+        case 3:
+          data.disabled = !data.disabled
+          this.shows.forEach((e, i) => {
+            if (i > x) {
+              this.shows[i] = false
+              this.data[i] = []
+              this.selected[i] = ''
+            }
+          })
+          break
       }
     }
     const listComponent = ({ items, index }) => {

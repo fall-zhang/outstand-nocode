@@ -62,55 +62,55 @@ const addValidate = (result, node, isPc, t) => {
       return
     }
     switch (node.type) {
-    case 'input':
-      switch (options.renderType) {
-      case 1:
+      case 'input':
+        switch (options.renderType) {
+          case 1:
+            if (!!newValue && options.isShowWordLimit && newValue.length < options.min) {
+              reject(t('er.validateMsg.limitWord', { min: options.min }))
+            } else {
+              resolve()
+            }
+            break
+          case 2:
+            if (!!newValue && !/\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/.test(newValue)) {
+              reject(t('er.validateMsg.email'))
+            } else {
+              resolve()
+            }
+            break
+          case 3:
+            if (!!newValue && !/^(^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$)|(^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])((\d{4})|\d{3}[Xx])$)$/.test(newValue)) {
+              reject(t('er.validateMsg.IdNumber'))
+            } else {
+              resolve()
+            }
+            break
+          case 4:
+            if (!!newValue && !/^(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/.test(newValue)) {
+              reject(t('er.validateMsg.phone'))
+            } else {
+              resolve()
+            }
+            break
+          case 5:
+            if (!!newValue && !/^https?:\/\/(([a-zA-Z0-9_-])+(\.)?)*(:\d+)?(\/((\.)?(\?)?=?&?[a-zA-Z0-9_-](\?)?)*)*$/i.test(newValue)) {
+              reject(t('er.validateMsg.http'))
+            } else {
+              resolve()
+            }
+            break
+        }
+        break
+      case 'textarea':
         if (!!newValue && options.isShowWordLimit && newValue.length < options.min) {
           reject(t('er.validateMsg.limitWord', { min: options.min }))
         } else {
           resolve()
         }
         break
-      case 2:
-        if (!!newValue && !/\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/.test(newValue)) {
-          reject(t('er.validateMsg.email'))
-        } else {
-          resolve()
-        }
-        break
-      case 3:
-        if (!!newValue && !/^(^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$)|(^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])((\d{4})|\d{3}[Xx])$)$/.test(newValue)) {
-          reject(t('er.validateMsg.IdNumber'))
-        } else {
-          resolve()
-        }
-        break
-      case 4:
-        if (!!newValue && !/^(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/.test(newValue)) {
-          reject(t('er.validateMsg.phone'))
-        } else {
-          resolve()
-        }
-        break
-      case 5:
-        if (!!newValue && !/^https?:\/\/(([a-zA-Z0-9_-])+(\.)?)*(:\d+)?(\/((\.)?(\?)?=?&?[a-zA-Z0-9_-](\?)?)*)*$/i.test(newValue)) {
-          reject(t('er.validateMsg.http'))
-        } else {
-          resolve()
-        }
-        break
-      }
-      break
-    case 'textarea':
-      if (!!newValue && options.isShowWordLimit && newValue.length < options.min) {
-        reject(t('er.validateMsg.limitWord', { min: options.min }))
-      } else {
+      default:
         resolve()
-      }
-      break
-    default:
-      resolve()
-      break
+        break
     }
   })
   if (isPc) {
@@ -172,250 +172,250 @@ export const useProps = (state, data, isPc = true, isRoot = false, specialHandli
       result.labelWidth = options.isShowLabel ? options.labelWidth + 'px' : 'auto'
     }
     switch (node.type) {
-    case 'input':
-      if (options.isShowWordLimit) {
-        result.maxlength = options.max
-        result['show-word-limit'] = options.isShowWordLimit
-      }
-      if (isPc) {
-        result.showPassword = options.showPassword
-        result.prepend = options.prepend
-        result.append = options.append
-      } else {
-        if (options.showPassword) {
-          result.type = 'password'
+      case 'input':
+        if (options.isShowWordLimit) {
+          result.maxlength = options.max
+          result['show-word-limit'] = options.isShowWordLimit
         }
-        if (options.renderType === 4) {
-          result.type = 'tel'
+        if (isPc) {
+          result.showPassword = options.showPassword
+          result.prepend = options.prepend
+          result.append = options.append
+        } else {
+          if (options.showPassword) {
+            result.type = 'password'
+          }
+          if (options.renderType === 4) {
+            result.type = 'tel'
+          }
         }
-      }
-      break
-    case 'textarea':
-      if (options.isShowWordLimit) {
-        result.maxlength = options.max
-        result['show-word-limit'] = options.isShowWordLimit
-      }
-      result.type = 'textarea'
-      result.rows = options.rows
-      break
-    case 'number':
-      if (isPc) {
-        result.controls = options.controls
-        if (options.controls) {
-          result['controls-position'] = options.controlsPosition ? 'right' : ''
+        break
+      case 'textarea':
+        if (options.isShowWordLimit) {
+          result.maxlength = options.max
+          result['show-word-limit'] = options.isShowWordLimit
         }
-      } else {
+        result.type = 'textarea'
+        result.rows = options.rows
+        break
+      case 'number':
+        if (isPc) {
+          result.controls = options.controls
+          if (options.controls) {
+            result['controls-position'] = options.controlsPosition ? 'right' : ''
+          }
+        } else {
         // result.inputWidth = '100px'
-        result.defaultValue = null
-        result.allowEmpty = true
-      }
-      if (options.isShowWordLimit) {
-        result.min = options.min
-        result.max = options.max
-      } else {
-        result.min = Number.NEGATIVE_INFINITY
-        result.max = Number.POSITIVE_INFINITY
-      }
-      result.step = options.step
-      result.precision = options.precision
-      break
-    case 'radio':
-    case 'checkbox':
-      result.options = _.get(state, `data[${options.dataKey}].list`, [])
-      break
-    case 'select':
-      result.options = _.get(state, `data[${options.dataKey}].list`, [])
-      result.multiple = options.multiple
-      result.filterable = options.filterable
-      break
-    case 'time':
-      result.format = options.format
-      if (isPc) {
-        result.valueFormat = options.valueFormat
-      }
-      break
-    case 'date':
-      result.placeholder = options.placeholder
-      // result.startPlaceholder = options.startPlaceholder
-      // result.endPlaceholder = options.endPlaceholder
-      result.format = options.format
-      result.type = options.type
-      if (isPc) {
-        result.valueFormat = 'X'
-        if (options.type === 'daterange') {
-          result.rangeSeparator = ''
-          result.startPlaceholder = options.placeholder
+          result.defaultValue = null
+          result.allowEmpty = true
         }
-        result.disabledDate = (time) => {
+        if (options.isShowWordLimit) {
+          result.min = options.min
+          result.max = options.max
+        } else {
+          result.min = Number.NEGATIVE_INFINITY
+          result.max = Number.POSITIVE_INFINITY
+        }
+        result.step = options.step
+        result.precision = options.precision
+        break
+      case 'radio':
+      case 'checkbox':
+        result.options = _.get(state, `data[${options.dataKey}].list`, [])
+        break
+      case 'select':
+        result.options = _.get(state, `data[${options.dataKey}].list`, [])
+        result.multiple = options.multiple
+        result.filterable = options.filterable
+        break
+      case 'time':
+        result.format = options.format
+        if (isPc) {
+          result.valueFormat = options.valueFormat
+        }
+        break
+      case 'date':
+        result.placeholder = options.placeholder
+        // result.startPlaceholder = options.startPlaceholder
+        // result.endPlaceholder = options.endPlaceholder
+        result.format = options.format
+        result.type = options.type
+        if (isPc) {
+          result.valueFormat = 'X'
+          if (options.type === 'daterange') {
+            result.rangeSeparator = ''
+            result.startPlaceholder = options.placeholder
+          }
+          result.disabledDate = (time) => {
+            const {
+              startTime,
+              endTime,
+              isShowWeeksLimit
+            } = options
+            const startDate = dayjs.unix(startTime)
+            const endDate = dayjs.unix(endTime)
+            const currentDate = dayjs(time)
+            let result = false
+            if (options.isShowWordLimit) {
+              result = currentDate.isBefore(startDate) || currentDate.isAfter(endDate)
+            }
+            return result
+          }
+        } else {
           const {
             startTime,
             endTime,
             isShowWeeksLimit
           } = options
-          const startDate = dayjs.unix(startTime)
-          const endDate = dayjs.unix(endTime)
-          const currentDate = dayjs(time)
-          let result = false
-          if (options.isShowWordLimit) {
-            result = currentDate.isBefore(startDate) || currentDate.isAfter(endDate)
+          switch (options.type) {
+            case 'date':
+            case 'datetime':
+              if (startTime && options.isShowWordLimit) {
+                result.minDate = dayjs.unix(startTime).toDate()
+              } else {
+                result.minDate = dayjs.unix(0).toDate()
+              }
+              if (endTime && options.isShowWordLimit) {
+                result.maxDate = dayjs.unix(endTime).toDate()
+              } else {
+                result.maxDate = dayjs().add(20, 'year').toDate()
+              }
+              break
+            case 'dates':
+              if (_.isEmpty(options.defaultValue)) {
+                result.defaultDate = null
+              } else {
+                options.defaultValue.map(e => dayjs.unix(e).toDate())
+              }
+              if (startTime && options.isShowWordLimit) {
+                result.minDate = dayjs.unix(startTime).toDate()
+              } else {
+                result.minDate = dayjs().subtract(1, 'year').toDate()
+              }
+              if (endTime && options.isShowWordLimit) {
+                result.maxDate = dayjs.unix(endTime).toDate()
+              } else {
+                result.maxDate = dayjs().add(1, 'year').toDate()
+              }
+              break
+            case 'daterange':
+              if (options.defaultValue) {
+                result.defaultDate = options.defaultValue.map(e => dayjs.unix(e).toDate())
+              } else {
+                result.defaultDate = null
+              }
+              if (startTime && options.isShowWordLimit) {
+                result.minDate = dayjs.unix(startTime).toDate()
+              } else {
+                result.minDate = dayjs().subtract(1, 'year').toDate()
+              }
+              if (endTime && options.isShowWordLimit) {
+                result.maxDate = dayjs.unix(endTime).toDate()
+              } else {
+                result.maxDate = dayjs().add(1, 'year').toDate()
+              }
+              break
           }
-          return result
         }
-      } else {
-        const {
-          startTime,
-          endTime,
-          isShowWeeksLimit
-        } = options
-        switch (options.type) {
-        case 'date':
-        case 'datetime':
-          if (startTime && options.isShowWordLimit) {
-            result.minDate = dayjs.unix(startTime).toDate()
-          } else {
-            result.minDate = dayjs.unix(0).toDate()
-          }
-          if (endTime && options.isShowWordLimit) {
-            result.maxDate = dayjs.unix(endTime).toDate()
-          } else {
-            result.maxDate = dayjs().add(20, 'year').toDate()
-          }
-          break
-        case 'dates':
-          if (_.isEmpty(options.defaultValue)) {
-            result.defaultDate = null
-          } else {
-            options.defaultValue.map(e => dayjs.unix(e).toDate())
-          }
-          if (startTime && options.isShowWordLimit) {
-            result.minDate = dayjs.unix(startTime).toDate()
-          } else {
-            result.minDate = dayjs().subtract(1, 'year').toDate()
-          }
-          if (endTime && options.isShowWordLimit) {
-            result.maxDate = dayjs.unix(endTime).toDate()
-          } else {
-            result.maxDate = dayjs().add(1, 'year').toDate()
-          }
-          break
-        case 'daterange':
-          if (options.defaultValue) {
-            result.defaultDate = options.defaultValue.map(e => dayjs.unix(e).toDate())
-          } else {
-            result.defaultDate = null
-          }
-          if (startTime && options.isShowWordLimit) {
-            result.minDate = dayjs.unix(startTime).toDate()
-          } else {
-            result.minDate = dayjs().subtract(1, 'year').toDate()
-          }
-          if (endTime && options.isShowWordLimit) {
-            result.maxDate = dayjs.unix(endTime).toDate()
-          } else {
-            result.maxDate = dayjs().add(1, 'year').toDate()
-          }
-          break
+        break
+      case 'cascader':
+        result.options = _.get(state, `data[${options.dataKey}].list`, [])
+        result.props = {
+          multiple: options.multiple,
+          checkStrictly: options.checkStrictly
         }
-      }
-      break
-    case 'cascader':
-      result.options = _.get(state, `data[${options.dataKey}].list`, [])
-      result.props = {
-        multiple: options.multiple,
-        checkStrictly: options.checkStrictly
-      }
-      // result.options = options.options
-      break
-    case 'slider':
-      result.step = options.step
-      result.min = options.min
-      result.max = options.max
-      break
-    case 'divider':
-      result.contentPosition = options.contentPosition
-      break
-    case 'rate':
-      result.allowHalf = options.allowHalf
-      if (!isPc) {
-        result.count = options.max
-      } else {
+        // result.options = options.options
+        break
+      case 'slider':
+        result.step = options.step
+        result.min = options.min
         result.max = options.max
-      }
-      break
-    case 'html':
-      result.type = 'textarea'
-      result.rows = 4
-      result.action = options.action
-      result.maxSize = options.size * 1024 * 1024
-      result.config = {
-        placeholder: options.placeholder
-      }
-      if (!isPc) {
-        result.config.toolbar = {
-          items: [
-            'formattingOptions',
+        break
+      case 'divider':
+        result.contentPosition = options.contentPosition
+        break
+      case 'rate':
+        result.allowHalf = options.allowHalf
+        if (!isPc) {
+          result.count = options.max
+        } else {
+          result.max = options.max
+        }
+        break
+      case 'html':
+        result.type = 'textarea'
+        result.rows = 4
+        result.action = options.action
+        result.maxSize = options.size * 1024 * 1024
+        result.config = {
+          placeholder: options.placeholder
+        }
+        if (!isPc) {
+          result.config.toolbar = {
+            items: [
+              'formattingOptions',
+              '|',
+              'uploadImage',
+              'bold',
+              'italic',
+              'underline',
+              'strikethrough',
+              'link',
+              'undo',
+              'redo'
+            ]
+          }
+          result.config.formattingOptions = [
+            'fontFamily',
+            'fontSize',
+            'fontColor',
+            'fontBackgroundColor',
             '|',
-            'uploadImage',
-            'bold',
-            'italic',
-            'underline',
-            'strikethrough',
-            'link',
-            'undo',
-            'redo'
+            'alignment',
+            'blockQuote',
+            '|',
+            'bulletedList',
+            'numberedList',
+            '|',
+            'outdent',
+            'indent',
+            '|',
+            'insertTable',
+            'removeFormat'
           ]
         }
-        result.config.formattingOptions = [
-          'fontFamily',
-          'fontSize',
-          'fontColor',
-          'fontBackgroundColor',
-          '|',
-          'alignment',
-          'blockQuote',
-          '|',
-          'bulletedList',
-          'numberedList',
-          '|',
-          'outdent',
-          'indent',
-          '|',
-          'insertTable',
-          'removeFormat'
-        ]
-      }
-      break
-    case 'uploadfile':
-      result.multiple = options.multiple
-      result.action = options.action
-      // result.size = options.size
-      result.accept = options.accept
-      result.maxSize = options.size * 1024 * 1024
-      if (isPc) {
-        result.limit = options.limit
-      } else {
-        result.maxCount = options.limit
-        result.onOversize = (file) => {
-          showToast(t('er.validateMsg.fileSize', { size: options.size }))
+        break
+      case 'uploadfile':
+        result.multiple = options.multiple
+        result.action = options.action
+        // result.size = options.size
+        result.accept = options.accept
+        result.maxSize = options.size * 1024 * 1024
+        if (isPc) {
+          result.limit = options.limit
+        } else {
+          result.maxCount = options.limit
+          result.onOversize = (file) => {
+            showToast(t('er.validateMsg.fileSize', { size: options.size }))
+          }
         }
-      }
-      break
-    case 'region':
-      if (isPc) {
-        const region = new Region(areaList, {
-          isFilter: false,
-          selectType: options.selectType
-        })
-        result.options = region.getAll()
-        result.props = {
-          emitPath: false
+        break
+      case 'region':
+        if (isPc) {
+          const region = new Region(areaList, {
+            isFilter: false,
+            selectType: options.selectType
+          })
+          result.options = region.getAll()
+          result.props = {
+            emitPath: false
+          }
+          result.filterable = options.filterable
+        } else {
+          result.areaList = areaList
+          result.columnsNum = options.selectType
         }
-        result.filterable = options.filterable
-      } else {
-        result.areaList = areaList
-        result.columnsNum = options.selectType
-      }
-      break
+        break
     }
     specialHandling && specialHandling(node.type, result)
     return result

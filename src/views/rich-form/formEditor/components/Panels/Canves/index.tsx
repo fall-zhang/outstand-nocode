@@ -1,12 +1,12 @@
-import { defineComponent, inject, ref, resolveComponent, unref } from 'vue'
-import LayoutDragGable from '@/views/rich-form/formEditor/components/Layout/DragGable'
+import { defineComponent, inject, ref,  unref } from 'vue'
+import LayoutDragGable from '../../Layout/DragGable'
 import CompleteButton from '@/views/rich-form/formEditor/components/CompleteButton.vue'
 import hooks from '@/hooks'
-import _ from 'lodash-es'
 import { ElForm, ElMain, ElScrollbar } from 'element-plus'
 import { Form as VanForm } from 'vant'
+import { isEmpty } from '@/utils/utils'
 export default defineComponent({
-  name: 'Canves',
+  name: 'PanelsCanvas',
   inheritAttrs: false,
   customOptions: {},
   setup () {
@@ -23,7 +23,6 @@ export default defineComponent({
       setSelection('root')
     }
     const renderContent = () => {
-      // const TagComponent = resolveComponent(unref(isPc) ? 'el-form' : 'van-form')
       const TagComponent = unref(isPc) ? ElForm : VanForm
       const typeProps = hooks.useProps(state, state, unref(isPc), true)
       const Layout = (<LayoutDragGable data-layout-type={'root'} class={[unref(isEditModel) && ns.e('wrap')]} data={state.store} parent={state.store} isRoot></LayoutDragGable>)
@@ -34,34 +33,32 @@ export default defineComponent({
               unref(isEditModel) ? Layout : Layout
             }
           </TagComponent>
-          {!unref(isEditModel) && !_.isEmpty(state.config) && ER.props.isShowCompleteButton && <CompleteButton handle={form}/>}
+          {!unref(isEditModel) && !isEmpty(state.config) && ER.props.isShowCompleteButton && <CompleteButton handle={form}/>}
         </div>
       )
     }
-    return () => {
-      return (
-        <ElMain
-          class={
-            [
-              ns.b(),
-              isEditModel.value && ns.e('editModel'),
-              !unref(isPc) && ns.e('mobile'),
-              !unref(isPc) && ns.e(`mobile_layoutType${ER.props.layoutType}`)
-              // ER.props.layoutType === 1  && ns.e('layoutType1')
-            ]}>
-          {unref(isEditModel)
-            ? (
-              <div class={[ns.e('container')]}>
-                <ElScrollbar ref={ER.canvesScrollRef}>
-                  <div class={[ns.e('subject')]}>
-                    {renderContent()}
-                  </div>
-                </ElScrollbar>
-              </div>
-            )
-            : renderContent()}
-        </ElMain>
-      )
-    }
+    return () => (
+      <ElMain
+        class={
+          [
+            ns.b(),
+            isEditModel.value && ns.e('editModel'),
+            !unref(isPc) && ns.e('mobile'),
+            !unref(isPc) && ns.e(`mobile_layoutType${ER.props.layoutType}`)
+            // ER.props.layoutType === 1  && ns.e('layoutType1')
+          ]}>
+        {unref(isEditModel)
+          ? (
+            <div class={[ns.e('container')]}>
+              <ElScrollbar ref={ER.canvesScrollRef}>
+                <div class={[ns.e('subject')]}>
+                  {renderContent()}
+                </div>
+              </ElScrollbar>
+            </div>
+          )
+          : renderContent()}
+      </ElMain>
+    )
   }
 })

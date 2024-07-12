@@ -214,88 +214,88 @@ const setStates = (newTarget, ev, ER) => {
     }
   }
   switch (direction) {
-  case 1:
-    if ((list.length === 1 && rows[rowIndex - 1] && rows[rowIndex - 1].contains(dragEl)) || !sortable.el.parentNode.parentNode.__draggable_component__) {
-      prevEl = ''
-      return false
-    }
-    prevSortable = (sortable.el.parentNode.parentNode.__draggable_component__)._sortable
-    prevEl = targetContainer
-    inserRowIndex = utils.index(prevEl)
-    setBorder(prevEl, 'drag-line-top')
-    break
-  case 2:
-    if (cols[utils.index(target) + 1] !== dragEl) {
-      if (colIndex === targetList.length - 1) {
-        prevEl = newTarget
-        prevSortable = sortable
-        inserColIndex = utils.index(prevEl) + 1
-        setBorder(prevEl, 'drag-line-right')
-      } else {
-        prevSortable = sortable
-        prevEl = cols[colIndex + 1]
-        inserColIndex = utils.index(prevEl)
-        setBorder(prevEl, 'drag-line-left')
-      }
-    }
-    break
-  case 3:
-    if (sortable.el.dataset.layoutType === 'root') {
-      return false
-    }
-    prevSortable = (sortable.el.parentNode.parentNode.__draggable_component__)._sortable
-    if (rowIndex === rows.length - 1) {
-      prevEl = targetContainer
-      setBorder(prevEl, 'drag-line-bottom')
-    } else {
-      prevEl = rows[rowIndex + 1]
-      if (list.length === 1 && rows[rowIndex + 1].contains(dragEl)) {
+    case 1:
+      if ((list.length === 1 && rows[rowIndex - 1] && rows[rowIndex - 1].contains(dragEl)) || !sortable.el.parentNode.parentNode.__draggable_component__) {
         prevEl = ''
         return false
       }
+      prevSortable = (sortable.el.parentNode.parentNode.__draggable_component__)._sortable
+      prevEl = targetContainer
+      inserRowIndex = utils.index(prevEl)
       setBorder(prevEl, 'drag-line-top')
-    }
-    inserRowIndex = utils.index(targetContainer) + 1
-    break
-  case 4:
-    if (cols[utils.index(target) - 1] !== dragEl) {
-      prevEl = newTarget
-      prevSortable = sortable
-      inserColIndex = utils.index(prevEl)
-      setBorder(prevEl, 'drag-line-left')
-    }
-    break
-  case 5:
-    // console.log('上')
-    if (targetList.length === ER.props.inlineMax && !el.contains(dragEl)) {
-      return false
-    }
-    if (cols[utils.index(target) - 1] !== dragEl) {
-      prevEl = newTarget
-      prevSortable = sortable
-      inserColIndex = utils.index(prevEl)
-      setBorder(prevEl, 'drag-line-top')
-    }
-    break
-  case 6:
-    // console.log('下')
-    if (targetList.length === ER.props.inlineMax && !el.contains(dragEl)) {
-      return false
-    }
-    if (cols[utils.index(target) + 1] !== dragEl) {
-      if (colIndex === targetList.length - 1) {
-        prevEl = newTarget
-        prevSortable = sortable
-        inserColIndex = utils.index(prevEl) + 1
+      break
+    case 2:
+      if (cols[utils.index(target) + 1] !== dragEl) {
+        if (colIndex === targetList.length - 1) {
+          prevEl = newTarget
+          prevSortable = sortable
+          inserColIndex = utils.index(prevEl) + 1
+          setBorder(prevEl, 'drag-line-right')
+        } else {
+          prevSortable = sortable
+          prevEl = cols[colIndex + 1]
+          inserColIndex = utils.index(prevEl)
+          setBorder(prevEl, 'drag-line-left')
+        }
+      }
+      break
+    case 3:
+      if (sortable.el.dataset.layoutType === 'root') {
+        return false
+      }
+      prevSortable = (sortable.el.parentNode.parentNode.__draggable_component__)._sortable
+      if (rowIndex === rows.length - 1) {
+        prevEl = targetContainer
         setBorder(prevEl, 'drag-line-bottom')
       } else {
+        prevEl = rows[rowIndex + 1]
+        if (list.length === 1 && rows[rowIndex + 1].contains(dragEl)) {
+          prevEl = ''
+          return false
+        }
+        setBorder(prevEl, 'drag-line-top')
+      }
+      inserRowIndex = utils.index(targetContainer) + 1
+      break
+    case 4:
+      if (cols[utils.index(target) - 1] !== dragEl) {
+        prevEl = newTarget
         prevSortable = sortable
-        prevEl = cols[colIndex + 1]
+        inserColIndex = utils.index(prevEl)
+        setBorder(prevEl, 'drag-line-left')
+      }
+      break
+    case 5:
+    // console.log('上')
+      if (targetList.length === ER.props.inlineMax && !el.contains(dragEl)) {
+        return false
+      }
+      if (cols[utils.index(target) - 1] !== dragEl) {
+        prevEl = newTarget
+        prevSortable = sortable
         inserColIndex = utils.index(prevEl)
         setBorder(prevEl, 'drag-line-top')
       }
-    }
-    break
+      break
+    case 6:
+    // console.log('下')
+      if (targetList.length === ER.props.inlineMax && !el.contains(dragEl)) {
+        return false
+      }
+      if (cols[utils.index(target) + 1] !== dragEl) {
+        if (colIndex === targetList.length - 1) {
+          prevEl = newTarget
+          prevSortable = sortable
+          inserColIndex = utils.index(prevEl) + 1
+          setBorder(prevEl, 'drag-line-bottom')
+        } else {
+          prevSortable = sortable
+          prevEl = cols[colIndex + 1]
+          inserColIndex = utils.index(prevEl)
+          setBorder(prevEl, 'drag-line-top')
+        }
+      }
+      break
   }
 }
 const getNodes = (node) => {

@@ -28,17 +28,17 @@ export default defineComponent({
         type
       } = hooks.useTarget()
       switch (type.value) {
-      case 'checkbox':
-        result = true
-        break
-      case 'select':
-      case 'cascader':
-        result = target.value.options.multiple
-        break
-      case 'tabs':
-      case 'radio':
-        result = false
-        break
+        case 'checkbox':
+          result = true
+          break
+        case 'select':
+        case 'cascader':
+          result = target.value.options.multiple
+          break
+        case 'tabs':
+        case 'radio':
+          result = false
+          break
       }
       return result
     }
@@ -132,15 +132,15 @@ export default defineComponent({
     }
     const handleAction = (type) => {
       switch (type) {
-      case 1:
-        this.data.push(...utils.generateOptions(1))
-        nextTick(() => {
-          this.$refs.scrollbar.setScrollTop(this.$refs.scrollbar.wrapRef.scrollHeight)
-        })
-        break
-      case 2:
+        case 1:
+          this.data.push(...utils.generateOptions(1))
+          nextTick(() => {
+            this.$refs.scrollbar.setScrollTop(this.$refs.scrollbar.wrapRef.scrollHeight)
+          })
+          break
+        case 2:
         // target.value.options.defaultValue = isMultiple.value ? [] : ''
-        break
+          break
       }
     }
     const handleChange = (value, item) => {

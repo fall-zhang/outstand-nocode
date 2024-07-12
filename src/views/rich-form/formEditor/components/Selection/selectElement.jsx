@@ -77,11 +77,9 @@ export default {
       setSelection,
       state,
       isEditModel,
-      isSelectRoot,
       isPc
     } = hooks.useTarget()
     const id = hooks.useCss(props.data, state.platform)
-    const visible = ref(false)
     const slots = useSlots()
     const isWarning = ref(false)
     const isField = utils.checkIsField(props.data)
@@ -150,57 +148,57 @@ export default {
     const handleAction = (type) => {
       const index = type !== 5 && props.parent.indexOf(props.data)
       switch (type) {
-      case 1:
-        if (ER.props.delHandle(props.data) === false) return false
-        props.data.context.delete()
-        utils.deepTraversal(props.data, (node) => {
-          if (utils.checkIsField(node)) {
-            ER.delField(node)
+        case 1:
+          if (ER.props.delHandle(props.data) === false) return false
+          props.data.context.delete()
+          utils.deepTraversal(props.data, (node) => {
+            if (utils.checkIsField(node)) {
+              ER.delField(node)
+            }
+          })
+          if (/^(radio|checkbox|select)$/.test(props.data.type)) {
+            delete state.data[props.data.options.dataKey]
           }
-        })
-        if (/^(radio|checkbox|select)$/.test(props.data.type)) {
-          delete state.data[props.data.options.dataKey]
-        }
-        if (props.parent.length > 0) {
-          if (index === props.parent.length) {
-            setSelection(props.parent[index - 1])
+          if (props.parent.length > 0) {
+            if (index === props.parent.length) {
+              setSelection(props.parent[index - 1])
+            } else {
+              setSelection(props.parent[index])
+            }
           } else {
-            setSelection(props.parent[index])
+            setSelection('root')
           }
-        } else {
-          setSelection('root')
+          break
+        case 2:{
+          if (ER.props.copyHandle(props.data) === false) return false
+          props.data.context.copy()
+          const copyData = props.parent[index + 1]
+          setSelection(copyData)
+          utils.deepTraversal(copyData, (node) => {
+            ER.addFieldData(node, true)
+            if (utils.checkIsField(node)) {
+              ER.addField(node)
+            }
+          })
+          break
         }
-        break
-      case 2:{
-        if (ER.props.copyHandle(props.data) === false) return false
-        props.data.context.copy()
-        const copyData = props.parent[index + 1]
-        setSelection(copyData)
-        utils.deepTraversal(copyData, (node) => {
-          ER.addFieldData(node, true)
-          if (utils.checkIsField(node)) {
-            ER.addField(node)
+        case 3:
+          _.last(props.data.context.columns[0]).context.insert('bottom')
+          break
+        case 4:
+          _.last(props.data.context.columns)[0].context.insert('right')
+          break
+        case 5:{
+          let parent = props.data.context.parent
+          if (/^(inline|tr)$/.test(parent.type)) {
+            parent = parent.context.parent
           }
-        })
-        break
-      }
-      case 3:
-        _.last(props.data.context.columns[0]).context.insert('bottom')
-        break
-      case 4:
-        _.last(props.data.context.columns)[0].context.insert('right')
-        break
-      case 5:{
-        let parent = props.data.context.parent
-        if (/^(inline|tr)$/.test(parent.type)) {
-          parent = parent.context.parent
+          setSelection(Array.isArray(parent) ? 'root' : parent)
+          break
         }
-        setSelection(Array.isArray(parent) ? 'root' : parent)
-        break
-      }
-      case 6:
-        props.data.context.appendCol()
-        break
+        case 6:
+          props.data.context.appendCol()
+          break
       }
     }
     const elementRef = ref()
@@ -244,6 +242,7 @@ export default {
               if (offset <= 6) {
                 offset = 6
               }
+              // eslint-disable-next-line vue/no-mutating-props
               props.data.options.span = offset
             } else {
               // const isFieldWidth = _.isObject(props.data.style.width)
@@ -267,9 +266,6 @@ export default {
       </div>
     )
     const isShowCopy = computed(() => isInlineChildren ? props.hasCopy && props.data.context.parent.columns.length < ER.props.inlineMax : props.hasCopy)
-    // const isShowSelectParent = computed(() => {
-    //   return !isSelectRoot.value
-    // })
     return () => {
       return (
         <TagComponent

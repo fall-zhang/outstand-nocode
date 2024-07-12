@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- RichForm -->
     <erFormEditor />
   </div>
 </template>

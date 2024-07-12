@@ -26,12 +26,12 @@
 import HeaderTools from './header-tools/HeaderTools.vue'
 // import MonacoEditor from '@/components/module/MonacoEditor.vue'
 import DataGrasper from './data-grasper/index.vue'
-import MonacoEditor from '@/components/module/MonacoEditor.vue'
+// import MonacoEditor from '@/components/module/MonacoEditor.vue'
 import { Return as IconReturn } from '@icon-park/vue-next'
 import { PageLayout } from '@/layout'
 import { v4 as uuid } from 'uuid'
 
-const jsonEditor = ref(null)
+// const jsonEditor = ref(null)
 const ChartCanvas = defineAsyncComponent(() => import('./chart-canvas/ChartCanvas.vue'))
 const RightPanel = defineAsyncComponent(() => import('./right-panel/RightPanel.vue'))
 const router = useRouter()
@@ -56,7 +56,7 @@ let chartOption = ref({
   ]
 })
 provide('chartOption', chartOption)
-const monacoCode = ref(JSON.stringify(toRaw(chartOption.value), null, 2))
+// const monacoCode = ref(JSON.stringify(toRaw(chartOption.value), null, 2))
 const chartId = ref('')
 
 // id 用来判断内容是否修改了，option表示

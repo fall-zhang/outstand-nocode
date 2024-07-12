@@ -14,6 +14,7 @@ export default defineComponent({
   setup (props) {
     const ns = hooks.useNamespace('CollapseLayout')
     if (!props.data.options.defaultValue.length) {
+      // eslint-disable-next-line vue/no-mutating-props
       props.data.options.defaultValue.push(props.data.columns[0].id)
     }
     return () => {

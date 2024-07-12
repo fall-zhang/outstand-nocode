@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import hooks from '@/hooks'
 export default {
-  name: 'er-icon'
+  name: 'FeIcon'
 }
 </script>
 <script setup>
@@ -18,18 +18,13 @@ const props = defineProps({
 })
 const ns = hooks.useNamespace('Icon')
 const element = ref('')
-// defineExpose({
-//   $el: element
-// })
 </script>
 <template>
   <i ref="element" :class="[
     ns.b(),
     `er-editor-icon-${props.icon}`,
     props.disabled && ns.e('disabled')
-    ]"/>
+  ]"></i>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

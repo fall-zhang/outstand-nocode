@@ -1,6 +1,6 @@
 <script>
 import { ClickOutside as vClickOutside, ElMessage } from 'element-plus'
-import { defineProps, ref, reactive, computed, provide, getCurrentInstance, nextTick, onMounted, watch } from 'vue'
+import { defineProps, ref, reactive, provide, nextTick, watch } from 'vue'
 import FieldsPanel from './components/Panels/Fields'
 import CanvasPanel from './components/Panels/Canves'
 import ConfigPanel from './components/Panels/Config/index.vue'
@@ -10,6 +10,7 @@ import Icon from '@/assets'
 import hooks from '@/hooks'
 import utils from '@/utils'
 import _ from 'lodash-es'
+import { isEmpty } from '@/utils/utils'
 import defaultProps from './defaultProps'
 import generatorData from './generatorData'
 export default {
@@ -199,10 +200,6 @@ const wrapElement = (el, isWrap = true, isSetSelection = true, sourceBlock = tru
       } else {
         el.style.width.mobile = '100%'
       }
-      // el.style.width = {
-      //   pc: '100%',
-      //   mobile: '100%'
-      // }
     } else {
       el.style.width = '100%'
     }
@@ -219,7 +216,7 @@ const syncLayout = (platform, fn) => {
   const original = _.cloneDeep(state.store)
   utils.disassemblyData2(original)
   layout[isPc ? 'mobile' : 'pc'] = original
-  if (_.isEmpty(isPc ? layout.pc : layout.mobile)) {
+  if (isEmpty(isPc ? layout.pc : layout.mobile)) {
     // const newData = _.cloneDeep(state.fields.map(e => wrapElement(e, true, false)))
     const newData = state.fields.map(e => wrapElement(e, true, false, false, false))
     fn && fn(newData)
@@ -234,9 +231,7 @@ const syncLayout = (platform, fn) => {
     const addFields = _.differenceBy(state.fields, layoutFields, 'id')
     const delFields = _.differenceBy(layoutFields, state.fields, 'id')
     utils.repairLayout(copyData, delFields)
-    // console.log(JSON.stringify(copyData, '', 2))
     utils.combinationData2(copyData, state.fields)
-    // console.log(JSON.stringify(copyData, '', 2))
     copyData.push(...addFields.map(e => wrapElement(e, true, false, false, false)))
     // copyData.push(...addFields)
     fn && fn(copyData)
@@ -244,7 +239,7 @@ const syncLayout = (platform, fn) => {
 }
 const getLayoutDataByplatform = (platform) => {
   const isPc = platform === 'pc'
-  if (_.isEmpty(isPc ? layout.pc : layout.mobile)) {
+  if (isEmpty(isPc ? layout.pc : layout.mobile)) {
     if (platform === state.platform) {
       const original = _.cloneDeep(state.store)
       utils.disassemblyData2(original)
@@ -280,7 +275,6 @@ const switchPlatform = (platform) => {
   if (props.layoutType === 2) {
     syncLayout(platform, (newData) => {
       state.store = newData
-      // console.log(JSON.stringify(newData, '', 2))
       state.store.forEach((e) => {
         utils.addContext(e, state.store)
       })
@@ -307,7 +301,10 @@ provide('Everright', {
   canvesScrollRef,
   fireEvent
 })
+
+// Namespace: formEditor
 const ns = hooks.useNamespace('Main', state.Namespace)
+console.log('🚀 ~ state.Namespace:', state.Namespace)
 const getData1 = () => {
   return Object.assign(utils.disassemblyData1(_.cloneDeep({
     list: state.store,
@@ -329,13 +326,11 @@ const getData2 = () => {
   })
 }
 const setData1 = (data) => {
-  if (_.isEmpty(data)) return false
+  if (isEmpty(data)) return false
   // stop()
   const newData = utils.combinationData1(_.cloneDeep(data))
   isShow.value = false
-  // console.log(data.list.slice(data.list.length - 1))
   state.store = newData.list
-  // state.store = data.list.slice(data.list.length - 1)
   state.config = newData.config
   state.data = newData.data
   state.fields = newData.fields
@@ -346,12 +341,10 @@ const setData1 = (data) => {
   })
   nextTick(() => {
     isShow.value = true
-    // restart()
   })
 }
 const setData2 = (data) => {
-  if (_.isEmpty(data)) return false
-  // stop()
+  if (isEmpty(data)) return false
   const newData = _.cloneDeep(data)
   layout.pc = newData.layout.pc
   layout.mobile = newData.layout.mobile
@@ -369,14 +362,7 @@ const setData2 = (data) => {
   })
   nextTick(() => {
     isShow.value = true
-    // restart()
   })
-}
-const clearData = () => {
-  // layout.pc = []
-  // layout.mobile = []
-  // state.fields.splice(0)
-  // state.store.splice(0)
 }
 const getData = () => {
   if (!state.validateStates.every(e => !e.isWarning)) {

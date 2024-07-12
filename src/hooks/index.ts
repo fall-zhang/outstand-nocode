@@ -1,5 +1,5 @@
 import _ from 'lodash-es'
-const importModules = import.meta.glob('./*/index.js', { eager: true })
+const importModules = import.meta.glob('./*/index.*', { eager: true })
 const modules = {}
 _.forIn(importModules, (func, path) => {
   // console.log(func)

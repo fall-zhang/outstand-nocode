@@ -1,13 +1,12 @@
 <script>
-import { defineProps, ref, reactive, computed, provide, getCurrentInstance, watch, nextTick, onMounted } from 'vue'
-import ConfigPanel from '@/views/rich-form/formEditor/components/Panels/Config/index.vue'
-import hooks from '@/hooks'
+import { defineProps, reactive, provide, watch } from 'vue'
+import ConfigPanel from './components/Panels/Config/index.vue'
 import utils from '@/utils'
 import _ from 'lodash-es'
 import defaultProps from './defaultProps'
 import { globalConfig } from './componentsConfig'
 export default {
-  name: 'Everright-form-config'
+  name: 'FeFormConfig'
 }
 </script>
 <script setup>
@@ -22,10 +21,7 @@ const props = defineProps(_.merge({
     default: () => ([])
   }
 }, defaultProps))
-const layout = {
-  pc: [],
-  mobile: []
-}
+
 const state = reactive({
   store: [],
   selected: {},
@@ -38,20 +34,16 @@ const state = reactive({
   fields: props.fields,
   logic: {}
 })
-const element = ref('')
-const ns = hooks.useNamespace('Main', state.Namespace)
-const loading = ref(false)
 const setSelection = (node) => {
   let result = ''
   if (node === 'root') {
     result = state.config
+  } else if (node.type === 'inline') {
+    result = node.columns[0]
   } else {
-    if (node.type === 'inline') {
-      result = node.columns[0]
-    } else {
-      result = node
-    }
+    result = node
   }
+
   state.selected = result
 }
 const switchPlatform = (platform) => {
@@ -81,7 +73,7 @@ watch(() => props.field, (newVal) => {
   immediate: true
 })
 defineExpose({
-  switchPlatform (platform) {
+  switchPlatform(platform) {
     state.platform = platform
   }
 })

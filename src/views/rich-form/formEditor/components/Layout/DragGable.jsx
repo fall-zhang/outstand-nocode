@@ -1,18 +1,11 @@
 import {
   defineComponent,
-  resolveComponent,
   watch,
   useAttrs,
-  useSlots,
   defineAsyncComponent,
   unref,
-  nextTick,
-  ref,
   inject,
-  reactive
 } from 'vue'
-import { isHTMLTag } from '@/utils/browser'
-import DragGable from 'vuedraggable'
 import hooks from '@/hooks'
 import _ from 'lodash-es'
 import LayoutGridLayout from './GridLayout'
@@ -29,9 +22,6 @@ export {
 }
 export default defineComponent({
   name: 'DragGableLayout',
-  components: {
-    // DragGable
-  },
   props: {
     isRoot: {
       type: Boolean,
@@ -49,13 +39,11 @@ export default defineComponent({
   },
   setup (props) {
     const ER = inject('Everright')
-    const isInline = props.type === 'inline'
     const ns = hooks.useNamespace('DragGableLayout')
     const {
       state,
       isEditModel,
       isPc,
-      setSelection
     } = hooks.useTarget()
     const handleMove = (e) => {
       return true
@@ -89,58 +77,58 @@ export default defineComponent({
       item: ({ element }) => {
         let node = ''
         switch (element.type) {
-        case 'grid':
-          node = (<LayoutGridLayout key={element.id} data={element} parent={props.data}></LayoutGridLayout>)
-          break
-        case 'table':
-          node = (<LayoutTableLayout key={element.id} data={element} parent={props.data}></LayoutTableLayout>)
-          break
-        case 'tabs':
-          node = (<LayoutTabsLayout key={element.id} data={element} parent={props.data}></LayoutTabsLayout>)
-          break
-        case 'collapse':
-          node = (<LayoutCollapseLayout key={element.id} data={element} parent={props.data}></LayoutCollapseLayout>)
-          break
-        case 'inline':
-          node = (<LayoutInlineLayout key={element.id} data={element} parent={props.data}></LayoutInlineLayout>)
-          break
-        default:{
-          let TypeComponent = ''
-          if (unref(isEditModel) || _.get(state.fieldsLogicState.get(element), 'visible', undefined) !== 0) {
-            const typeProps = hooks.useProps(state, element, unref(isPc))
-            TypeComponent = load.findComponent('FormTypes', element.type)
-            const params = {
-              data: element,
-              parent: props.data
-            }
-            if (process.env.NODE_ENV === 'test') {
-              params['data-field-id'] = `${element.id}`
-            }
-            if (unref(isPc)) {
-              node = (
+          case 'grid':
+            node = (<LayoutGridLayout key={element.id} data={element} parent={props.data}></LayoutGridLayout>)
+            break
+          case 'table':
+            node = (<LayoutTableLayout key={element.id} data={element} parent={props.data}></LayoutTableLayout>)
+            break
+          case 'tabs':
+            node = (<LayoutTabsLayout key={element.id} data={element} parent={props.data}></LayoutTabsLayout>)
+            break
+          case 'collapse':
+            node = (<LayoutCollapseLayout key={element.id} data={element} parent={props.data}></LayoutCollapseLayout>)
+            break
+          case 'inline':
+            node = (<LayoutInlineLayout key={element.id} data={element} parent={props.data}></LayoutInlineLayout>)
+            break
+          default:{
+            let TypeComponent = ''
+            if (unref(isEditModel) || _.get(state.fieldsLogicState.get(element), 'visible', undefined) !== 0) {
+              const typeProps = hooks.useProps(state, element, unref(isPc))
+              TypeComponent = load.findComponent('FormTypes', element.type)
+              const params = {
+                data: element,
+                parent: props.data
+              }
+              if (process.env.NODE_ENV === 'test') {
+                params['data-field-id'] = `${element.id}`
+              }
+              if (unref(isPc)) {
+                node = (
                 // <Selection hasWidthScale hasCopy hasDel hasDrag hasMask data={element} parent={props.data}>
-                <Selection hasWidthScale hasCopy hasDel hasDrag hasMask { ...params }>
-                  {
-                    element.type !== 'divider'
-                      ? (<el-form-item
-                        {...typeProps.value}
-                      >
-                        <TypeComponent data={element} params={typeProps.value}></TypeComponent>
-                      </el-form-item>)
-                      : <TypeComponent data={element} params={typeProps.value}></TypeComponent>
-                  }
-                </Selection>
-              )
-            } else {
-              node = (
-                <Selection hasWidthScale hasCopy hasDel hasDrag hasMask { ...params }>
-                  <TypeComponent data={element} params={typeProps.value}></TypeComponent>
-                </Selection>
-              )
+                  <Selection hasWidthScale hasCopy hasDel hasDrag hasMask { ...params }>
+                    {
+                      element.type !== 'divider'
+                        ? (<el-form-item
+                          {...typeProps.value}
+                        >
+                          <TypeComponent data={element} params={typeProps.value}></TypeComponent>
+                        </el-form-item>)
+                        : <TypeComponent data={element} params={typeProps.value}></TypeComponent>
+                    }
+                  </Selection>
+                )
+              } else {
+                node = (
+                  <Selection hasWidthScale hasCopy hasDel hasDrag hasMask { ...params }>
+                    <TypeComponent data={element} params={typeProps.value}></TypeComponent>
+                  </Selection>
+                )
+              }
             }
+            break
           }
-          break
-        }
         }
         return node
       },
