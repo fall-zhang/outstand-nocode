@@ -14,7 +14,7 @@ const statePrefix = 'is-'
 export const useNamespace = (block, Namespace) => {
   const defaultNamespace = Namespace || inject('Everright').state.Namespace
   const namespace = `ER-${defaultNamespace}`
-  const b = () => _bem(namespace, block, '')
+  const b = () => `${namespace}-${block}`
   const e = (element) => element ? _bem(namespace, block, element) : ''
   const is = (name, ...args) => {
     const state = args.length >= 1 ? args[0] : true

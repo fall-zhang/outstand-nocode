@@ -1,5 +1,5 @@
 import { computed, inject } from 'vue'
-import locale from '@/views/rich-form/formEditor/locale'
+import locale from '@/views/rich-form/form-editor/locale'
 import utils from '@/utils'
 import { get, template, isEmpty } from 'lodash-es'
 // const transferData = (lang, path, options = {}) => {

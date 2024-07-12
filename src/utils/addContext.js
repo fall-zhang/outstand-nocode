@@ -112,13 +112,7 @@ const findNode = (node, dir, key, fn, ignore = false) => {
 }
 
 const getValidNode = (node) => {
-  const {
-    context: {
-      root,
-      col,
-      row
-    }
-  } = node
+  const { root } = node.context
   const result = []
   const rows = root.rows
   for (let i0 = 0; i0 < rows.length; i0++) {
@@ -209,8 +203,6 @@ const getNodeRange = (node) => {
     }
   } = node
   let count = row
-  const xNodes = root.rows[row].columns
-  const yNodes = root.context.columns[col]
   const result = [] // x , y
   while (count < row + rowspan) {
     result.push([...root.rows[count].columns.slice(col, col + colspan)])
@@ -345,11 +337,6 @@ const appendNodes = (node, dir, key) => {
   }
 }
 export const addContext = (node, parent, fn) => {
-  // console.log(node)
-  // if (isAddId) {
-  //   node.id = nanoid()
-  //   node.key = `${node.type}_${nanoid()}`
-  // }
   let arr = []
   const isArray = Array.isArray(parent)
   if (isArray) {
@@ -359,7 +346,7 @@ export const addContext = (node, parent, fn) => {
   }
   fn && fn(node)
   const context = {
-    get props () {
+    get props() {
       return (isPc) => computed(() => {
         const {
           options
@@ -436,8 +423,6 @@ export const addContext = (node, parent, fn) => {
                 const {
                   startTime,
                   endTime,
-                  weeks,
-                  isShowWeeksLimit
                 } = options
                 const startDate = dayjs.unix(startTime)
                 const endDate = dayjs.unix(endTime)
@@ -449,8 +434,6 @@ export const addContext = (node, parent, fn) => {
               const {
                 startTime,
                 endTime,
-                weeks,
-                isShowWeeksLimit
               } = options
               switch (options.type) {
                 case 'date':
@@ -529,7 +512,7 @@ export const addContext = (node, parent, fn) => {
         return result
       })
     },
-    get row () {
+    get row() {
       let result = ''
       if (isArray || node.type === 'tr') {
         result = arr.indexOf(node)
@@ -538,7 +521,7 @@ export const addContext = (node, parent, fn) => {
       }
       return result
     },
-    get col () {
+    get col() {
       let result = ''
       if (isArray) {
         result = 0
@@ -549,7 +532,7 @@ export const addContext = (node, parent, fn) => {
       }
       return result
     },
-    get root () {
+    get root() {
       let result = {}
       switch (node.type) {
         case 'grid':
@@ -563,7 +546,7 @@ export const addContext = (node, parent, fn) => {
     },
     state: node,
     parent,
-    get parents () {
+    get parents() {
       const result = []
       let cursor = node
       while (cursor) {
@@ -576,7 +559,7 @@ export const addContext = (node, parent, fn) => {
       }
       return result
     },
-    copy () {
+    copy() {
       const index = arr.indexOf(node)
       const newNode = reactive(_.cloneDeep(toRaw(node)))
       delete newNode.context
@@ -588,14 +571,14 @@ export const addContext = (node, parent, fn) => {
       })
       arr.splice(index + 1, 0, newNode)
     },
-    delete () {
+    delete() {
       // console.log(123123)
       arr.splice(arr.indexOf(node), 1)
       // if (node.context.parent.type === 'inline' && !arr.length) {
       //   node.context.parent.context.delete()
       // }
     },
-    appendCol () {
+    appendCol() {
       const newNode = wrapElement({
         options: {
           span: 6,
@@ -610,7 +593,7 @@ export const addContext = (node, parent, fn) => {
       node.columns.push(newNode)
       addContext(newNode, node)
     },
-    get columns () {
+    get columns() {
       const result = []
       switch (node.type) {
         case 'table':
@@ -627,7 +610,7 @@ export const addContext = (node, parent, fn) => {
       }
       return result
     },
-    get isDisableMargeLeft () {
+    get isDisableMargeLeft() {
       const {
         context: {
           root,
@@ -646,7 +629,7 @@ export const addContext = (node, parent, fn) => {
       }
       return result
     },
-    get isDisableMargeRight () {
+    get isDisableMargeRight() {
       const {
         context: {
           root,
@@ -665,15 +648,15 @@ export const addContext = (node, parent, fn) => {
       }
       return result
     },
-    get isDisableMargeRow () {
+    get isDisableMargeRow() {
       const nodes = getNodes(node, 'colspan')
       return this.isDisableDelRow || nodes.length === node.options.colspan
     },
-    get isDisableMargeColumn () {
+    get isDisableMargeColumn() {
       const nodes = getNodes(node, 'rowspan')
       return this.isDisableDelColumn || nodes.length === node.options.rowspan
     },
-    get isDisableMargeBottom () {
+    get isDisableMargeBottom() {
       const {
         context: {
           root,
@@ -692,7 +675,7 @@ export const addContext = (node, parent, fn) => {
       }
       return result
     },
-    get isDisableMargeTop () {
+    get isDisableMargeTop() {
       const {
         context: {
           root,
@@ -711,23 +694,23 @@ export const addContext = (node, parent, fn) => {
       }
       return result
     },
-    get isDisableSplitColumn () {
+    get isDisableSplitColumn() {
       return node.options.colspan === 1
     },
-    get isDisableSplitRow () {
+    get isDisableSplitRow() {
       return node.options.rowspan === 1
     },
-    get isDisableDelRow () {
+    get isDisableDelRow() {
       const nodes = getNodes(node, 'colspan')
       const rowspanNodes = getNodes(node, 'rowspan')
       return (rowspanNodes.length === 1 || rowspanNodes.filter(e => !e.options.isMerged).length === 1) || !nodes.every(e => e.options.rowspan === node.options.rowspan)
     },
-    get isDisableDelColumn () {
+    get isDisableDelColumn() {
       const nodes = getNodes(node, 'rowspan')
       const colspanNodes = getNodes(node, 'colspan')
       return (colspanNodes.length === 1 || colspanNodes.filter(e => !e.options.isMerged).length === 1) || !nodes.every(e => e.options.colspan === node.options.colspan)
     },
-    merge (type) {
+    merge(type) {
       const {
         context: {
           root,
@@ -773,7 +756,7 @@ export const addContext = (node, parent, fn) => {
         default:
       }
     },
-    insert (type) {
+    insert(type) {
       const {
         context: {
           root,
@@ -799,7 +782,7 @@ export const addContext = (node, parent, fn) => {
           break
       }
     },
-    split (type) {
+    split(type) {
       const {
         context: {
           root,
@@ -810,7 +793,7 @@ export const addContext = (node, parent, fn) => {
       const nodes = getNodes(node, type === 'column' ? 'colspan' : 'rowspan')
       switch (type) {
         case 'column':
-        //  zheliyoudu  没有考虑底层
+          //  zheliyoudu  没有考虑底层
           nodes.slice(col, col + node.options.colspan).forEach(e => {
             e.options.colspan = 1
             e.options.isMerged = false
@@ -836,7 +819,7 @@ export const addContext = (node, parent, fn) => {
           break
       }
     },
-    del (type) {
+    del(type) {
       const {
         context: {
           root,

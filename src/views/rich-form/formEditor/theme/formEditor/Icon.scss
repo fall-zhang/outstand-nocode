@@ -1,6 +1,0 @@
-@include b(Icon) {
-  @include e(disabled) {
-    color: $disabled-color;
-    cursor: not-allowed;
-  }
-}

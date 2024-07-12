@@ -1,11 +1,12 @@
 <template>
-  <div>
-    <erFormEditor />
-  </div>
+  <FormEditor />
 </template>
 
 <script lang="ts" setup>
-import { erFormEditor } from './formEditor/index'
+import './form-editor/theme/icon.scss'
+import 'everright-filter/dist/style.css'
+import './form-editor/theme/formEditor/index.scss'
+import FormEditor from './form-editor/FormEditor.vue'
 
 </script>
 
