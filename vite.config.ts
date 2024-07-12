@@ -9,6 +9,7 @@ import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver ,VantResolver } from 'unplugin-vue-components/resolvers'
 import svgLoader from 'vite-svg-loader'
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
+import VueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -47,12 +48,25 @@ export default defineConfig({
     vue(),
     vueJsx(),
     svgLoader(),
+    VueDevTools(),
     AutoImport({
+      include: [
+        /\.[tj]sx?$/, // .ts, .tsx, .js, .jsx
+        /\.vue$/,
+        /\.vue\?vue/, // .vue
+        /\.md$/, // .md
+      ],
       resolvers: [ElementPlusResolver(),VantResolver()],
       dts: './src/global/auto-imports.d.ts',
       imports: ['vue', 'vue-router']
     }),
     Components({
+      include: [
+        /\.[tj]sx?$/, // .ts, .tsx, .js, .jsx
+        /\.vue$/,
+        /\.vue\?vue/, // .vue
+        /\.md$/, // .md
+      ],
       resolvers: [ElementPlusResolver(),VantResolver()],
       dts: './src/global/components.d.ts'
     })

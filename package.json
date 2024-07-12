@@ -53,6 +53,7 @@
     "signature_pad": "^5.0.2",
     "uuid": "^9.0.1",
     "vant": "^4.9.1",
+    "vite-plugin-vue-devtools": "^7.3.5",
     "vite-svg-loader": "^5.1.0",
     "vue": "^3.4.30",
     "vue-fantable": "^0.2.5",

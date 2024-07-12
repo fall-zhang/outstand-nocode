@@ -35,7 +35,7 @@ module.exports = {
     'vue/attribute-hyphenation': 0, // 使用 - 分割去代替标签中大写的属性
     'vue/no-multiple-template-root': 0,
     // js
-    indent: ['warn', 2], // 2 行缩进，防止与默认格式化功能冲突，关闭
+    indent: ['warn', 2,{ SwitchCase: 1 }], // 2 行缩进，防止与默认格式化功能冲突，关闭
     semi: ['error', 'never'], // 禁止使用分号
     'no-unused-vars': 1,
     'no-else-return': 'error', // 如果 if 语句里面有 return ,后面不能跟 else 语句，减少括号
