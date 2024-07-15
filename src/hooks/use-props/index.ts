@@ -68,35 +68,35 @@ const addValidate = (result, node, isPc, t) => {
             if (!!newValue && options.isShowWordLimit && newValue.length < options.min) {
               reject(t('er.validateMsg.limitWord', { min: options.min }))
             } else {
-              resolve()
+              resolve('empty-resolve')
             }
             break
           case 2:
             if (!!newValue && !/\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/.test(newValue)) {
               reject(t('er.validateMsg.email'))
             } else {
-              resolve()
+              resolve('empty-resolve')
             }
             break
           case 3:
             if (!!newValue && !/^(^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$)|(^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])((\d{4})|\d{3}[Xx])$)$/.test(newValue)) {
               reject(t('er.validateMsg.IdNumber'))
             } else {
-              resolve()
+              resolve('empty-resolve')
             }
             break
           case 4:
             if (!!newValue && !/^(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/.test(newValue)) {
               reject(t('er.validateMsg.phone'))
             } else {
-              resolve()
+              resolve('empty-resolve')
             }
             break
           case 5:
             if (!!newValue && !/^https?:\/\/(([a-zA-Z0-9_-])+(\.)?)*(:\d+)?(\/((\.)?(\?)?=?&?[a-zA-Z0-9_-](\?)?)*)*$/i.test(newValue)) {
               reject(t('er.validateMsg.http'))
             } else {
-              resolve()
+              resolve('empty-resolve')
             }
             break
         }
@@ -105,11 +105,11 @@ const addValidate = (result, node, isPc, t) => {
         if (!!newValue && options.isShowWordLimit && newValue.length < options.min) {
           reject(t('er.validateMsg.limitWord', { min: options.min }))
         } else {
-          resolve()
+          resolve('empty-resolve')
         }
         break
       default:
-        resolve()
+        resolve('empty-resolve')
         break
     }
   })
@@ -121,7 +121,7 @@ const addValidate = (result, node, isPc, t) => {
   }
   result.rules = [obj]
 }
-export const useProps = (state, data, isPc = true, isRoot = false, specialHandling) => {
+export const useProps = (state, data, isPc = true, isRoot = false, specialHandling?:unknown) => {
   const {
     t
   } = useI18n()
@@ -205,7 +205,7 @@ export const useProps = (state, data, isPc = true, isRoot = false, specialHandli
             result['controls-position'] = options.controlsPosition ? 'right' : ''
           }
         } else {
-        // result.inputWidth = '100px'
+          // result.inputWidth = '100px'
           result.defaultValue = null
           result.allowEmpty = true
         }
@@ -250,7 +250,6 @@ export const useProps = (state, data, isPc = true, isRoot = false, specialHandli
             const {
               startTime,
               endTime,
-              isShowWeeksLimit
             } = options
             const startDate = dayjs.unix(startTime)
             const endDate = dayjs.unix(endTime)
@@ -265,7 +264,6 @@ export const useProps = (state, data, isPc = true, isRoot = false, specialHandli
           const {
             startTime,
             endTime,
-            isShowWeeksLimit
           } = options
           switch (options.type) {
             case 'date':

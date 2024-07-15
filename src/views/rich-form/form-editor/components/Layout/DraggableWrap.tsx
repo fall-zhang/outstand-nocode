@@ -10,27 +10,35 @@ import { useTarget } from '@/hooks/use-target'
 export const DraggableWrap = defineComponent({
   inheritAttrs: false,
   name: 'CustomDragGable',
+  props:{
+    group:{
+      type:Object,
+      default:() => ({}) // name:string, pull:'clone',put:boolean
+    },
+    list:{
+      type:Array,
+      default:() => ([])
+    }
+  },
   customOptions: {},
   components: {
     VueDraggable
   },
   setup(props, { slots ,attrs }) {
+    // console.log('🚀 ~ setup ~ attrs:', attrs)
     const { isEditModel } = useTarget()
 
     let node: JSX.Element = <></>
     if (unref(isEditModel)) {
       node = (
         <VueDraggable
-          {...attrs}>
+          {...attrs}  {...props}>
           {slots}
         </VueDraggable>
       )
     } else {
-      const RecTag = function () {
-        const tagName = attrs.tag as string
-        let result = isHTMLTag(tagName) ? tagName : resolveComponent(tagName)
-        return result
-      }
+      const tagName = attrs.tag as string
+      let RecTag = isHTMLTag(tagName) ? tagName : resolveComponent(tagName)
       const { item } = slots
       node = (
         <RecTag {...attrs.componentData}>

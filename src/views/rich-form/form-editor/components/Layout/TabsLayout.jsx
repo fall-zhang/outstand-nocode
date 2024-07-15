@@ -1,6 +1,6 @@
-import { defineComponent, resolveComponent, watch, useAttrs, defineAsyncComponent } from 'vue'
-import Selection from '@/views/rich-form/form-editor/components/Selection/selectElement.jsx'
-import LayoutDragGable from './DragGable.jsx'
+import { defineComponent, useAttrs } from 'vue'
+import Selection from '@/views/rich-form/form-editor/components/Selection/selectElement'
+import LayoutDragGable from './DragGable'
 import hooks from '@/hooks'
 import { ElTabs } from 'element-plus'
 export default defineComponent({
@@ -8,8 +8,14 @@ export default defineComponent({
   inheritAttrs: false,
   customOptions: {},
   props: {
-    data: Object,
-    parent: Array
+    data: {
+      type:Object,
+      default:() => ({})
+    },
+    parent: {
+      type:Array,
+      default:() => ([])
+    }
   },
   setup (props) {
     const ns = hooks.useNamespace('TabsLayout')

@@ -1,9 +1,9 @@
-<script setup>
+<script setup lang="ts">
 import { defineProps, reactive, provide } from 'vue'
-import CanvasPanel from '../formEditor/components/Panels/Canvas/CenterCanvas'
+import CanvasPanel from '../form-editor/components/Panels/Canvas/CenterCanvas'
 import { useLogic } from '@/hooks/use-logic'
 import utils, { deepClone } from '@/utils'
-import defaultProps from './defaultProps'
+import defaultProps from '../form-editor/defaultProps'
 import { isEmpty } from '@/utils/utils'
 defineOptions({
   name: 'FormPreview'
@@ -41,6 +41,7 @@ const fireEvent = (type, data) => {
     data
   })
 }
+// 提供给预览功能的所有数据
 provide('Everright', {
   state,
   getData,

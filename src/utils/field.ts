@@ -144,7 +144,13 @@ const disassemblyData2 = (list) => {
     nodes[currentIndex] = node.id && node.id
   })
 }
-const checkIslineChildren = (node) => node.context.parent.type === 'inline'
+const checkIslineChildren = (node) => {
+  // console.log(node)
+  if(node.context) {
+    return node.context.parent.type === 'inline'
+  }
+  return false
+}
 const checkIsField = (node) => fieldsRe.test(node.type)
 const calculateAverage = (count, total = 100) => {
   const base = Number((total / count).toFixed(2))

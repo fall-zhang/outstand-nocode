@@ -7,7 +7,7 @@ import { deepClone } from './DeepClone'
 export {
   deepClone
 }
-const importModules = import.meta.glob('./*.js', { eager: true })
+const importModules = import.meta.glob('./*.ts', { eager: true })
 const modules:Record<string,unknown> = {}
 
 // 将 forIn 转换为原生写法

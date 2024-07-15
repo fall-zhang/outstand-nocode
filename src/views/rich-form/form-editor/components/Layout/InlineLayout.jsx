@@ -1,9 +1,7 @@
-import { defineComponent, resolveComponent, watch, useAttrs, defineAsyncComponent, unref, nextTick, inject } from 'vue'
-import Selection from '@/views/rich-form/form-editor/components/Selection/selectElement.jsx'
-import LayoutDragGable, { dragGableWrap } from './DragGable.jsx'
+import { defineComponent, watch, inject } from 'vue'
+import LayoutDragGable from './DragGable'
 import hooks from '@/hooks'
 import utils from '@/utils'
-import ControlInsertionPlugin from './ControlInsertionPlugin.js'
 export default defineComponent({
   name: 'InlineLayout',
   props: {

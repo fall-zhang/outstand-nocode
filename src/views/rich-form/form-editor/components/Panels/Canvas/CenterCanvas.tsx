@@ -1,4 +1,3 @@
-import { defineComponent, inject, ref,  unref } from 'vue'
 import LayoutDragGable from '../../Layout/DragGable'
 import CompleteButton from '@/views/rich-form/form-editor/components/CompleteButton.vue'
 import { useTarget } from '@/hooks/use-target'
@@ -26,29 +25,33 @@ export default defineComponent({
     }
     const renderContent = () => {
       const TagComponent = unref(isPc) ? ElForm : VanForm
-      const typeProps = useProps(state, state, unref(isPc), true)
+      const typeProps = useProps(state, state, unref(isPc) as boolean, true)
       const Layout = (<LayoutDragGable data-layout-type={'root'} class={[unref(isEditModel) && ns.e('wrap')]} data={state.store} parent={state.store} isRoot></LayoutDragGable>)
       return (
         <div>
           <TagComponent ref={form} onClick={unref(isEditModel) && handleClick} {...typeProps.value}>
             {
-              unref(isEditModel) ? Layout : Layout
+              Layout
             }
           </TagComponent>
-          {!unref(isEditModel) && !isEmpty(state.config) && ER.props.isShowCompleteButton && <CompleteButton handle={form}/>}
+          {
+            !unref(isEditModel) && !isEmpty(state.config) && ER.props.isShowCompleteButton && <CompleteButton handle={form}/>
+          }
         </div>
       )
     }
     return () => (
-      <ElMain
+      <div
         class={
           [
+            'center-canvas',
             ns.b(),
             isEditModel.value && ns.e('editModel'),
             !unref(isPc) && ns.e('mobile'),
             !unref(isPc) && ns.e(`mobile_layoutType${ER.props.layoutType}`)
             // ER.props.layoutType === 1  && ns.e('layoutType1')
-          ]}>
+          ]
+        }>
         {unref(isEditModel)
           ? (
             <div class={[ns.e('container')]}>
@@ -60,7 +63,7 @@ export default defineComponent({
             </div>
           )
           : renderContent()}
-      </ElMain>
+      </div>
     )
   }
 })

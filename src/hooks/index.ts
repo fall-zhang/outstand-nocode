@@ -13,3 +13,7 @@ _.forIn(importModules, (func, path) => {
 export default {
   ...modules
 }
+
+export { useTarget } from './use-target'
+export { useNamespace } from './use-namespace'
+export { useI18n } from './use-i18n'

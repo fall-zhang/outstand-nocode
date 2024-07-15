@@ -13,9 +13,9 @@ import LayoutTabsLayout from './TabsLayout'
 import LayoutCollapseLayout from './CollapseLayout'
 import LayoutTableLayout from './TableLayout'
 import LayoutInlineLayout from './InlineLayout'
-import Selection from '@/views/rich-form/form-editor/components/Selection/selectElement.jsx'
+import Selection from '@/views/rich-form/form-editor/components/Selection/selectElement'
 import ControlInsertionPlugin from './ControlInsertionPlugin'
-import { DraggableWrap } from './DraggableWrap.tsx'
+import { DraggableWrap } from './DraggableWrap'
 const dragGableWrap = DraggableWrap
 export {
   dragGableWrap
@@ -75,7 +75,7 @@ export default defineComponent({
     const load = loadComponent()
     const slots = {
       item: ({ element }) => {
-        let node = ''
+        let node:JSX.Element|string = ''
         switch (element.type) {
           case 'grid':
             node = (<LayoutGridLayout key={element.id} data={element} parent={props.data}></LayoutGridLayout>)
@@ -133,7 +133,7 @@ export default defineComponent({
         return node
       },
       footer () {
-        let node = ''
+        let node:JSX.Element|string = ''
         if (_.isEmpty(props.data)) {
           if (!props.isRoot) {
             node = (
@@ -148,7 +148,7 @@ export default defineComponent({
     }
     return () => {
       return (
-        <dragGableWrap
+        <DraggableWrap
           list={props.data}
           handle=".handle"
           class={[ns.b(), unref(isEditModel) && ns.e('edit')]}
@@ -159,7 +159,7 @@ export default defineComponent({
           v-slots={slots}
           componentData={useAttrs()}
         >
-        </dragGableWrap>
+        </DraggableWrap>
       )
     }
   }

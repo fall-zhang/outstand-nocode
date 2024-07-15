@@ -1,6 +1,6 @@
 import { defineComponent,  useAttrs,  } from 'vue'
-import Selection from '@/views/rich-form/form-editor/components/Selection/selectElement.jsx'
-import LayoutDragGable from './DragGable.jsx'
+import Selection from '@/views/rich-form/form-editor/components/Selection/selectElement'
+import LayoutDragGable from './DragGable'
 import hooks from '@/hooks'
 import { ElCollapse,ElCollapseItem } from 'element-plus'
 export default defineComponent({

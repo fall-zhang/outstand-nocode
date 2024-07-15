@@ -34,6 +34,7 @@ module.exports = {
     'vue/max-attributes-per-line': 0, // 每行最多多少个属性
     'vue/attribute-hyphenation': 0, // 使用 - 分割去代替标签中大写的属性
     'vue/no-multiple-template-root': 0,
+    'vue/v-on-event-hyphenation':0, // vue 事件必须使用 - 连接
     // js
     indent: ['warn', 2,{ SwitchCase: 1 }], // 2 行缩进，防止与默认格式化功能冲突，关闭
     semi: ['error', 'never'], // 禁止使用分号

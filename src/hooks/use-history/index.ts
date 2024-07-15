@@ -1,5 +1,5 @@
 import { ref, markRaw, computed, nextTick, watch } from 'vue'
-import utils from '@/utils'
+import { addContext } from '@/utils/addContext'
 import _ from 'lodash-es'
 export const useHistory = (source) => {
   const onOff = ref(true)
@@ -21,7 +21,7 @@ export const useHistory = (source) => {
     nextTick(() => {
       source.store = JSON.parse(state.snapshot)
       source.store.forEach((e) => {
-        utils.addContext(e, source.store, false, (node) => {
+        addContext(e, source.store, false, (node) => {
           if (source.sector && source.sector.id === node.id) {
             source.sector = node
           }

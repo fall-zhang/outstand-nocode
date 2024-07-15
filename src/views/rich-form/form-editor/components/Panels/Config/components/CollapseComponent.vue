@@ -1,5 +1,4 @@
 <script>
-import utils from '@/utils'
 import hooks from '@/hooks'
 import Icon from '@/assets'
 export default {
@@ -31,13 +30,14 @@ const props = defineProps({
 <template>
   <div :class="ns.b()">
     <el-form-item>
-      <template v-slot:label>
+      <template #label>
         <div :class="ns.e('label')">
           <div>
-            <div>{{label}}</div>
+            <div>{{ label }}</div>
             <slot name="subSelect" v-if="target[operationKey][field]"></slot>
           </div>
-          <Icon :icon="target[operationKey][field] ? 'minus' : 'plus'" @click="target[operationKey][field] = !target[operationKey][field]"></Icon>
+          <Icon :icon="target[operationKey][field] ? 'minus' : 'plus'"
+            @click="target[operationKey][field] = !target[operationKey][field]"></Icon>
         </div>
       </template>
       <slot name="content" v-if="target[operationKey][field]"></slot>

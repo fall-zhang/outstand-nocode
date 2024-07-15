@@ -11,7 +11,7 @@ const _bem = (
   return cls
 }
 const statePrefix = 'is-'
-export const useNamespace = (block, Namespace) => {
+export const useNamespace = (block:string, Namespace?:string) => {
   const defaultNamespace = Namespace || inject('Everright').state.Namespace
   const namespace = `ER-${defaultNamespace}`
   const b = () => `${namespace}-${block}`

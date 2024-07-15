@@ -1,6 +1,5 @@
-<script>
+<script setup lang="ts">
 import hooks from '@/hooks'
-import DeviceSwitch from '@/views/rich-form/form-editor/components/DeviceSwitch.vue'
 import _ from 'lodash-es'
 import { ref, unref, computed, inject } from 'vue'
 import { ClickOutside as vClickOutside } from 'element-plus'
@@ -8,13 +7,11 @@ import CompleteButton from '@/views/rich-form/form-editor/components/CompleteBut
 import PanelsConfigComponentsTypeComponent from './TypeComponent.vue'
 import PanelsConfigComponentsLogicComponent from './LogicComponent.vue'
 import { FileQuestion } from '@icon-park/vue-next'
-export default {
+defineOptions({
   name: 'GlobalConfigPanel',
   inheritAttrs: false,
   customOptions: {}
-}
-</script>
-<script setup>
+})
 const {
   target,
   state,
@@ -59,12 +56,13 @@ const onClickOutside = () => {
 const handleClick = (type) => {
   visible.value = false
   switch (type) {
-    case 2:
+    case 2: {
       const targetObj = target.value[radio1.value === 'pc' ? 'mobile' : 'pc']
       const sourceObj = _.pick(unref(target)[radio1.value], compareKeys)
       Object.assign(targetObj, _.cloneDeep(sourceObj))
       handleConfirm(true)
       break
+    }
   }
 }
 const options0 = computed(() => {
@@ -87,9 +85,6 @@ const options0 = computed(() => {
   ]
 })
 
-//   <el-radio-button label="large">{{t('er.config.globalConfig.componentSize.large')}}</el-radio-button>
-// <el-radio-button label="default" >{{t('er.config.globalConfig.componentSize.default')}}</el-radio-button>
-// <el-radio-button label="small" >{{t('er.config.globalConfig.componentSize.small')}}</el-radio-button>
 const options1 = computed(() => {
   return [
     {
@@ -119,13 +114,8 @@ const handleTypeListener = ({ property, data }) => {
 </script>
 <template>
   <div>
-    <el-popover
-      virtual-triggering
-      :visible="visible"
-      ref="popoverRef"
-      :virtual-ref="buttonRef"
-      :width="200">
-      <div>
+    <el-popover virtual-triggering :visible="visible" ref="popoverRef" :virtual-ref="buttonRef" :width="200">
+      <template>
         <div :class="[ns.e('syncContent')]">
           <el-icon color="#f90">
             <FileQuestion />
@@ -133,94 +123,59 @@ const handleTypeListener = ({ property, data }) => {
           {{ t('er.config.globalConfig.sync.warning') }}
         </div>
         <el-radio-group :class="[ns.e('syncType')]" v-model="radio1" class="ml-4">
-          <el-radio label="pc">pc</el-radio>
-          <el-radio label="mobile">mobile</el-radio>
+          <el-radio value="pc">pc</el-radio>
+          <el-radio value="mobile">mobile</el-radio>
         </el-radio-group>
-      </div>
+      </template>
       <div :class="[ns.e('syncActions')]">
-        <el-button
-          size="small"
-          :text="true"
-          @click="handleClick(1)"
-        >{{t('er.public.cancel')}}</el-button>
-        <el-button
-          size="small"
-          type="primary"
-          @click="handleClick(2)"
-        >
+        <el-button size="small" :text="true" @click="handleClick(1)">{{ t('er.public.cancel') }}</el-button>
+        <el-button size="small" type="primary" @click="handleClick(2)">
           {{ t('er.public.confirm') }}
         </el-button>
       </div>
     </el-popover>
-<!--    <DeviceSwitch justify-content="center"></DeviceSwitch>-->
     <el-form-item :label="t('er.config.globalConfig.sync.label')" label-position="left">
-      <el-switch
-        ref="buttonRef"
-        v-click-outside:[popperPaneRef]="onClickOutside"
-        :before-change="handleBeforeChange"
-        v-model="target.isSync"/>
+      <el-switch ref="buttonRef" v-click-outside:[popperPaneRef]="onClickOutside" :before-change="handleBeforeChange"
+        v-model="target.isSync" />
     </el-form-item>
-    <PanelsConfigComponentsTypeComponent
-      v-if="isPc"
-      @listener="handleTypeListener"
-      property="size"
-      :layoutType="2"
-      :label="t('er.config.globalConfig.componentSize.label')"
-      :val="target[state.platform].size"
-      :nodes="options1"
-    />
-    <PanelsConfigComponentsTypeComponent
-      @listener="handleTypeListener"
-      property="labelPosition"
-      :label="t('er.config.globalConfig.labelPosition.label')"
-      :height="66"
-      :fontSize="80"
-      :val="target[state.platform].labelPosition"
-      :nodes="options0"
-    />
+    <PanelsConfigComponentsTypeComponent v-if="isPc" @listener="handleTypeListener" property="size" :layoutType="2"
+      :label="t('er.config.globalConfig.componentSize.label')" :val="target[state.platform].size" :nodes="options1" />
+    <PanelsConfigComponentsTypeComponent @listener="handleTypeListener" property="labelPosition"
+      :label="t('er.config.globalConfig.labelPosition.label')" :height="66" :fontSize="80"
+      :val="target[state.platform].labelPosition" :nodes="options0" />
     <el-form-item v-if="ER.props.isShowCompleteButton" :label="t('er.public.button')">
       <div style="width: 100%;">
         <div>
-          <CompleteButton mode="preview"/>
+          <CompleteButton mode="preview" />
         </div>
         <div>
           <el-row :gutter="8">
             <el-col>
               <el-form-item :label="t('er.public.text')">
-                <el-input
-                  :model-value="target[state.platform].completeButton.text"
-                  show-word-limit
-                  :maxlength="20"
-                  @update:modelValue="(e) => handleModelValue('completeButton.text', e)"
-                ></el-input>
+                <el-input :model-value="target[state.platform].completeButton.text" show-word-limit :maxlength="20"
+                  @update:modelValue="(e) => handleModelValue('completeButton.text', e)"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row :gutter="8" style="margin-top: 20px;">
             <el-col :span="12">
               <el-form-item :label="t('er.public.color')">
-                <el-color-picker
-                  :popper-class="ns.e('completeButtonColor')"
+                <el-color-picker :popper-class="ns.e('completeButtonColor')"
                   :model-value="target[state.platform].completeButton.color"
-                  @update:modelValue="(e) => handleModelValue('completeButton.color', e)"
-                  show-alpha
-                />
+                  @update:modelValue="(e) => handleModelValue('completeButton.color', e)" show-alpha />
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item :label="t('er.public.backgroundColor')">
-                <el-color-picker
-                  :popper-class="ns.e('completeButtonColor')"
+                <el-color-picker :popper-class="ns.e('completeButtonColor')"
                   :model-value="target[state.platform].completeButton.backgroundColor"
-                  @update:modelValue="(e) => handleModelValue('completeButton.backgroundColor', e)"
-                  show-alpha
-                />
+                  @update:modelValue="(e) => handleModelValue('completeButton.backgroundColor', e)" show-alpha />
               </el-form-item>
             </el-col>
           </el-row>
         </div>
       </div>
     </el-form-item>
-    <PanelsConfigComponentsLogicComponent/>
+    <PanelsConfigComponentsLogicComponent />
   </div>
 </template>

@@ -7,6 +7,8 @@ import '@/assets/styles/main.scss'
 import 'vue-fantable/libs/theme-default.css'
 import FanTable from 'vue-fantable'
 import ElementUI from 'element-plus'
+import 'element-plus/dist/index.css'
+import 'vant/lib/index.css'
 // import VantUI from 'vant'
 const app = createApp(App)
 app.use(Router)

@@ -6,14 +6,15 @@ import CanvasPanel from './components/Panels/Canvas/CenterCanvas'
 import ConfigPanel from './components/Panels/Config/index.vue'
 import DeviceSwitch from './components/DeviceSwitch.vue'
 import Icon from '@/assets'
-import hooks from '@/hooks'
+import hooks, { useI18n } from '@/hooks'
 import utils from '@/utils'
 import _ from 'lodash-es'
 import { isEmpty } from '@/utils/utils'
 import defaultProps from './defaultProps'
 import generatorData from './generatorData'
+import FormPreview from '../form-preview/form-preview.vue'
 export default {
-  name: 'EverrightFormEditor'
+  name: 'FeFormEditor'
 }
 </script>
 <script setup>
@@ -103,13 +104,11 @@ state.validator = (target, fn) => {
 //   undoStack,
 //   redoStack,
 //   last
-//   // stop,
-//   // restart
 // } = hooks.useHistory(state)
 const {
   t,
   lang
-} = hooks.useI18n(props)
+} = useI18n('zh-cn')
 const EReditorPreviewRef = ref('')
 const isShow = ref(true)
 const isShowConfig = ref(true)
@@ -202,11 +201,6 @@ const wrapElement = (el, isWrap = true, isSetSelection = true, sourceBlock = tru
     } else {
       el.style.width = '100%'
     }
-  }
-  if (isSetSelection) {
-    // nextTick(() => {
-    //   setSelection(node)
-    // })
   }
   return node
 }

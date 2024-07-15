@@ -5,7 +5,7 @@ import { DraggableWrap } from '../../Layout/DraggableWrap'
 import { inject,  reactive, nextTick } from 'vue'
 import { deepClone } from '@/utils'
 import Icon from '@/assets'
-import ControlInsertionPlugin from '../../Layout/ControlInsertionPlugin.js'
+import ControlInsertionPlugin from '../../Layout/ControlInsertionPlugin.ts'
 import { ElAside, ElScrollbar, ElMenu, ElSubMenu } from 'element-plus'
 export default defineComponent({
   name: 'FeFields',

@@ -6,7 +6,7 @@ import {
 import utils from '@/utils'
 import hooks from '@/hooks'
 import Icon from '@/assets'
-import { dragGableWrap } from '@/views/rich-form/form-editor/components/Layout/DragGable.jsx'
+import { dragGableWrap } from '@/views/rich-form/form-editor/components/Layout/DragGable'
 import _ from 'lodash-es'
 import { ElCheckbox, ElCheckboxGroup, ElForm, ElFormItem, ElScrollbar,ElInput } from 'element-plus'
 export default defineComponent({
@@ -23,7 +23,6 @@ export default defineComponent({
     isMultiple () {
       let result = false
       const {
-        state,
         target,
         type
       } = hooks.useTarget()
@@ -155,6 +154,7 @@ export default defineComponent({
     }
     return (
       <div>
+        64444444444444
         <table class={[ns.e('tableThead')]}>
           <thead>
             <tr>

@@ -1,21 +1,13 @@
-<script>
-import { resolveComponent } from 'vue'
-import utils from '@/utils'
-import hooks from '@/hooks'
+<!-- 右侧用于选择多个内容的输入框 -->
+<script setup lang="ts">
+import { useNamespace } from '@/hooks'
 import Icon from '@/assets'
-export default {
+defineOptions({
   name: 'ConfigTypeComponent'
-}
-</script>
-<script setup>
+})
 const emit = defineEmits(['listener'])
-const {
-  target
-} = hooks.useTarget()
-const {
-  t
-} = hooks.useI18n()
-const ns = hooks.useNamespace('ConfigTypeComponent')
+
+const ns = useNamespace('ConfigTypeComponent')
 const props = defineProps({
   label: {
     type: String
@@ -50,32 +42,26 @@ const fireEvent = (property, item) => {
 <template>
   <div :class="ns.b()">
     <el-form-item>
-      <template v-if="label" v-slot:label>
+      <template v-if="label" #label>
         <div :class="ns.e('label')">
           <div>
-            <div>{{label}}</div>
+            <div>{{ label }}</div>
           </div>
           <template v-if="layoutType === 2">
             <el-radio-group size="small" :modelValue="val" @change="(curVal) => fireEvent(property, { value: curVal })">
-              <el-radio-button v-for="item in nodes" :label="item.value" :key="item.value">{{ item.label }}</el-radio-button>
+              <el-radio-button v-for="item in nodes" :value="item.value" :key="item.value">
+                {{ item.label }}
+              </el-radio-button>
             </el-radio-group>
           </template>
         </div>
       </template>
-      <ul v-if="layoutType === 1" ref="elements" :class="[ns.e('content')]" :style="{ height: height + 2 + 'px'}">
-        <li
-          @click="() => !item.disabled && fireEvent(property, item)"
-          v-for="item in nodes"
-          :key="item.value"
-          :class="[
-            val !== undefined && item.value === val && ns.is('Selected'),
-            item.disabled && ns.is('Disabled')
-          ]"
-        >
-          <Icon
-            :icon="item.icon"
-            :fontSize="fontSize"
-          />
+      <ul v-if="layoutType === 1" ref="elements" :class="[ns.e('content')]" :style="{ height: height + 2 + 'px' }">
+        <li @click="() => !item.disabled && fireEvent(property, item)" v-for="item in nodes" :key="item.value" :class="[
+          val !== undefined && item.value === val && ns.is('Selected'),
+          item.disabled && ns.is('Disabled')
+        ]">
+          <Icon :icon="item.icon" :fontSize="fontSize" />
         </li>
       </ul>
       <div :class="[ns.e('slot')]">

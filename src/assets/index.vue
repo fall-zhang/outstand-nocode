@@ -1,10 +1,8 @@
 <script>
 import { ref, computed } from 'vue'
-import hooks from '@/hooks'
 import svg from './svg'
-import _ from 'lodash-es'
 export default {
-  name: 'er-icon'
+  name: 'FeIcon'
 }
 </script>
 <script setup>
@@ -23,29 +21,21 @@ const props = defineProps({
 })
 const style = computed(() => {
   const result = {}
-  if (!_.isUndefined(props.fontSize)) {
+  if (props.fontSize !== undefined) {
     result.fontSize = `${props.fontSize}px`
   }
   return result
 })
 const element = ref('')
-// defineExpose({
-//   $el: element
-// })
+
 </script>
 <template>
-<i ref="element" :class="[
-  `ER-icon`,
-  // `ER-icon-${props.icon}`,
-  props.disabled && 'is-disabled'
-  // props.disabled && ns.e('disabled')
-  ]"
-   :style="style"
->
-  <component :is="svg[props.icon]"></component>
-</i>
+  <i ref="element" :class="[
+    `ER-icon`,
+    props.disabled && 'is-disabled'
+  ]" :style="style">
+    <component :is="svg[props.icon]"></component>
+  </i>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

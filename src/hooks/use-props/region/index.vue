@@ -3,7 +3,6 @@ import { defineProps, ref, reactive, computed, provide, watch, nextTick, onMount
 import { ClickOutside as vClickOutside } from 'element-plus'
 import hooks from '@/hooks'
 import _ from 'lodash-es'
-// import regionData from './data/regionData'
 import { areaList } from '@vant/area-data'
 import Region from './Region'
 import Store from './store'
@@ -134,9 +133,6 @@ const calculatePresentTags = () => {
   presentTags.value = tags
 }
 const handleEvent = (type, node, index, checked) => {
-  const {
-    multiple
-  } = props
   if (type === 'click') {
     // eslint-disable-next-line
     if (index === -1 || node.isLeaf || !node.isLeaf && node.level === index) {

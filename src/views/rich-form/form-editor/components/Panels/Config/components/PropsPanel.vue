@@ -1,3 +1,5 @@
+<!-- 右侧面板 -->
+
 <script>
 import { ElMessage } from 'element-plus'
 import { ref, computed, unref, provide, onMounted, inject } from 'vue'
@@ -36,7 +38,6 @@ const {
   isSelectGrid,
   isSelectTabs,
   isSelectCollapse,
-  isSelectTable,
   isPc
 } = hooks.useTarget()
 defineEmits(['changePanel'])
@@ -281,9 +282,6 @@ const options10 = computed(() => {
     }
   ]
 })
-// const typeProps = computed(() => {
-//   return utils.bindProps(target.value, true)
-// })
 const typeProps = hooks.useProps(state, target, true, false, (type, props) => {
   switch (type) {
     case 'time':
@@ -395,11 +393,6 @@ onMounted(() => {
 </script>
 <template>
   <div :class="ns.b()">
-    <!--    <el-form-item label="唯一标识" prop="id">-->
-    <!--      <el-tag type="warning">-->
-    <!--        {{target.id}}-->
-    <!--      </el-tag>-->
-    <!--    </el-form-item>-->
     <el-form-item v-if="isSelectField" :label="t('er.config.propsPanel.id')" prop="key">
       <el-input v-model="target.key" />
     </el-form-item>
@@ -731,15 +724,6 @@ onMounted(() => {
         :label="t('er.config.propsPanel.numberControls.label')" field="controls">
         <PanelsConfigComponentsTypeComponent @listener="handleTypeListener" property="controlsPosition" :height="30"
           :fontSize="50" :nodes="options9" :val="target.options.controlsPosition" />
-        <!--      <el-row align="middle">-->
-        <!--        <el-col :span="10">{{ t('er.config.propsPanel.numberControls.position') }}</el-col>-->
-        <!--        <el-col :span="14">-->
-        <!--          <el-radio-group v-model="target.options.controlsPosition">-->
-        <!--            <el-radio-button :label="false">{{ t('er.config.propsPanel.numberControls.options[0]') }}</el-radio-button>-->
-        <!--            <el-radio-button :label="true">{{ t('er.config.propsPanel.numberControls.options[1]') }}</el-radio-button>-->
-        <!--          </el-radio-group>-->
-        <!--        </el-col>-->
-        <!--      </el-row>-->
       </PanelsConfigComponentsCheckboxComponent>
       <PanelsConfigComponentsCheckboxComponent v-if="checkTypeBySelected(['rate'], 'allowHalf')"
         :label="t('er.config.propsPanel.allowHalf')" field="allowHalf">

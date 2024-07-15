@@ -81,23 +81,11 @@ const generateIfFilterOptionsData = (activeTab, fields) => {
         filterNode.renderType = 'SELECT'
         filterNode.operatorKey = 'Text'
         filterNode.multiple = true
-        // filterNode.excludeOperator = {
-        //   operator: [
-        //     'contains',
-        //     'not_contain'
-        //   ]
-        // }
         break
       case 'select':
         filterNode.renderType = 'SELECT'
         filterNode.operatorKey = 'Text'
         filterNode.multiple = node.options.multiple
-        // filterNode.excludeOperator = {
-        //   operator: [
-        //     'contains',
-        //     'not_contain'
-        //   ]
-        // }
         break
       case 'switch':
         filterNode.renderType = 'SELECT'
@@ -379,26 +367,6 @@ const generateThenFilterOptionsData = (activeTab) => {
       }
       break
     case 'validation':
-    // result = {
-    //   options: [
-    //     {
-    //       label: utils.transferData('zh-cn', 'er.logic.filter.message', locale),
-    //       en_label: utils.transferData('en', 'er.logic.filter.message', locale),
-    //       renderType: 'TEXT',
-    //       isShowOperator: false,
-    //       operatorKey: 'Text'
-    //     }
-    //   ],
-    //   operators: {
-    //     Text: [
-    //       {
-    //         label: '',
-    //         value: 'required',
-    //         style: 'noop'
-    //       }
-    //     ]
-    //   }
-    // }
       break
   }
   return result

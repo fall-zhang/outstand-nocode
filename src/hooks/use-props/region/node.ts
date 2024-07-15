@@ -1,4 +1,3 @@
-// import { isFunction } from '@vue/shared'
 const isFunction: (val: unknown) => val is Function
 const uid = 0
 const isUndefined = (val) => val === undefined

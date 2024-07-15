@@ -1,18 +1,18 @@
-<script>
+<!-- 右侧的面包屑和全局配置面板 -->
+
+<script setup lang="ts">
 import utils from '@/utils'
-import hooks from '@/hooks'
+import { useTarget } from '@/hooks/use-target'
+import { useI18n, useNamespace } from '@/hooks'
 import { ref, computed, reactive, watch, onMounted, inject } from 'vue'
-import _ from 'lodash-es'
-import Icon from '@/assets'
-import PanelsConfigComponentsPropsPanel from '@/views/rich-form/form-editor/components/Panels/Config/components/PropsPanel.vue'
+import PanelsConfigComponentsPropsPanel from './components/PropsPanel.vue'
 import GlobalConfigPanel from './components/GlobalConfigPanel.vue'
-export default {
-  name: 'Config',
+import { isNull } from '@/utils/utils'
+defineOptions({
+  name: 'ConfigPanel',
   inheritAttrs: false,
   customOptions: {}
-}
-</script>
-<script setup>
+})
 const props = defineProps({
   mode: {
     type: String,
@@ -22,30 +22,16 @@ const props = defineProps({
 const {
   state,
   isSelectAnyElement,
-  isSelectField,
   isSelectRoot,
   setSelection,
-  type,
-  checkTypeBySelected,
   target,
-  isSelectGrid,
-  isSelectTabs,
-  isSelectCollapse,
-  isSelectTable
-} = hooks.useTarget()
+} = useTarget()
 const ER = inject('Everright')
-const {
-  t
-} = hooks.useI18n()
+const { t } = useI18n()
 const activeName0 = ref('props')
-const isShow = computed(() => {
-  return !_.isEmpty(state.selected) && state.selected.type !== 'grid'
-})
-const ns = hooks.useNamespace('Config')
+const ns = useNamespace('Config')
 const form = ref()
-const handleChangePanel = (panel) => {
-  // activeName0.value = panel
-}
+
 const validator = (rule, value, callback) => {
   const newValue = value.trim()
   const fn = (type) => {
@@ -63,27 +49,11 @@ const validator = (rule, value, callback) => {
   }
   if (props.mode === 'editor') {
     state.validator(target.value, fn)
+  } else if (isNull(newValue)) {
+    fn(0)
   } else {
-    if (utils.isNull(newValue)) {
-      fn(0)
-    } else {
-      fn(1)
-    }
+    fn(1)
   }
-
-  // if (newValue === '' || newValue === null || newValue === undefined) {
-  //   callback(new Error('必填'))
-  //   return false
-  // } else {
-  //   state.validator(newValue, (valid) => {
-  //     if (valid) {
-  //       callback()
-  //     } else {
-  //       callback(new Error('重复'))
-  //     }
-  //   })
-  //
-  // }
 }
 onMounted(() => {
   form.value.validate()
@@ -97,14 +67,11 @@ const rules = reactive({
     }
   ]
 })
-const bars = computed(() => {
+const breadcrumbList = computed(() => {
   let nodes = ['root']
   let result = []
-  // if (!_.isEmpty(target.value)) {
-  //   result = result.concat(target.value.context.parents)
-  // }
   if (!isSelectRoot.value) {
-    nodes = nodes.concat(target.value.context.parents.filter(e => !/^(inline|tr)$/.test(e.type)))
+    nodes = nodes.concat(target.value?.context?.parents.filter(e => !/^(inline|tr)$/.test(e.type)))
   }
   if (nodes.length > 4) {
     result.push(nodes[0])
@@ -134,11 +101,13 @@ const bars = computed(() => {
     return result
   })
 })
-const handleBreadcrumbClick = (item) => {
-  if (item !== 'root') {
-    setSelection(item)
-  } else {
-    setSelection('root')
+const handleBreadcrumbClick = (item: unknown, index: number) => {
+  if (index !== breadcrumbList.value.length - 1 && item.node.value !== 'placeholder') {
+    if (item !== 'root') {
+      setSelection(item)
+    } else {
+      setSelection('root')
+    }
   }
 }
 watch(target, () => {
@@ -152,24 +121,18 @@ watch(target, () => {
 })
 </script>
 <template>
-  <el-aside :class="[ns.b()]" :width="ER.props.configPanelWidth">
+  <el-aside :class="['right-panel', ns.b()]" :width="ER.props.configPanelWidth">
     <el-breadcrumb :class="[ns.e('breadcrumb')]" separator-icon="ArrowRight">
-      <el-breadcrumb-item @click="(index !== bars.length - 1 && item.node.value !== 'placeholder') && handleBreadcrumbClick(item.node)" v-for="(item, index) in bars" :key="index">
-        {{item.node.value === 'placeholder' ? '...' : item.label}}
+      <el-breadcrumb-item @click="handleBreadcrumbClick(item.node, index)" v-for="(item, index) in breadcrumbList"
+        :key="index">
+        {{ item.node.value === 'placeholder' ? '...' : item.label }}
       </el-breadcrumb-item>
     </el-breadcrumb>
-    <el-form
-      ref="form"
-      :model="target"
-      :rules="rules"
-      label-width="120px"
-      label-position="top">
+    <el-form ref="form" :model="target" :rules="rules" label-width="120px" label-position="top">
       <el-scrollbar>
         <div :class="[ns.e('wrap')]">
           <div v-if="isSelectAnyElement">
-            <PanelsConfigComponentsPropsPanel
-              :key="target.id"
-            />
+            <PanelsConfigComponentsPropsPanel :key="target.id" />
           </div>
           <div v-if="isSelectRoot">
             <GlobalConfigPanel></GlobalConfigPanel>

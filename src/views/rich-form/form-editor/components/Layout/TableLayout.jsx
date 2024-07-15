@@ -1,7 +1,7 @@
 import { defineComponent, resolveComponent, watch, useAttrs, unref } from 'vue'
 import hooks from '@/hooks'
-import Selection from '@/views/rich-form/form-editor/components/Selection/selectElement.jsx'
-import LayoutDragGable from './DragGable.jsx'
+import Selection from '@/views/rich-form/form-editor/components/Selection/selectElement'
+import LayoutDragGable from './DragGable'
 const isTrTag = (tagName) => tagName.toLocaleLowerCase() === 'td'
 export default defineComponent({
   name: 'TableLayout',
