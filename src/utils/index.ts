@@ -16,11 +16,9 @@ Object.values(importModules).forEach((func:any) => {
     modules[key] = func[key]
   })
 })
-// _.forIn(importModules, (func) => {
-//   Object.keys(func).forEach((key) => {
-//     modules[key] = func[key]
-//   })
-// })
+
 export default {
   ...modules
 }
+
+export { wrapElement ,transferData,transferLabelPath } from './field'

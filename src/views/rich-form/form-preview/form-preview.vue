@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { defineProps, reactive, provide } from 'vue'
-import CanvasPanel from '../form-editor/components/Panels/Canvas/CenterCanvas'
+import CanvasPanel from '../components/Panels/Canvas/CenterCanvas'
 import { useLogic } from '@/hooks/use-logic'
 import utils, { deepClone } from '@/utils'
-import defaultProps from '../form-editor/defaultProps'
+import defaultProps from '../defaultProps'
 import { isEmpty } from '@/utils/utils'
 defineOptions({
   name: 'FormPreview'

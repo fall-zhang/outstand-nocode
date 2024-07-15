@@ -1,11 +1,9 @@
-<script>
-import { ref, computed } from 'vue'
+<script lang="ts" setup>
+import { ref, computed, StyleValue } from 'vue'
 import svg from './svg'
-export default {
+defineOptions({
   name: 'FeIcon'
-}
-</script>
-<script setup>
+})
 const props = defineProps({
   disabled: {
     type: Boolean,
@@ -16,11 +14,13 @@ const props = defineProps({
     required: true
   },
   fontSize: {
+    require: false,
+    default: 14,
     type: Number
   }
 })
 const style = computed(() => {
-  const result = {}
+  const result: StyleValue = {}
   if (props.fontSize !== undefined) {
     result.fontSize = `${props.fontSize}px`
   }

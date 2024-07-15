@@ -1,1 +1,0 @@
-export const addPrefix = (formType:string,deviceType:string) => `Fe-pc-${formType}`

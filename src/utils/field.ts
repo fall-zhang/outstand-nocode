@@ -1,5 +1,23 @@
 import _ from 'lodash-es'
 import { nanoid } from './nanoid'
+
+// WARNING: This is not a drop in replacement solution and
+// it might not work for some edge cases. Test your code!
+// const get = (obj, path, defValue) => {
+//   // If path is not defined or it has false value
+//   if (!path) return undefined
+//   // Check if path is string or array. Regex : ensure that we do not have '.' and brackets.
+//   // Regex explained: https://regexr.com/58j0k
+//   const pathArray = Array.isArray(path) ? path : path.match(/([^[.\]])+/g)
+//   // Find value
+//   const result = pathArray.reduce(
+//     (prevObj, key) => prevObj && prevObj[key],
+//     obj
+//   )
+//   // If found value is undefined return default value; otherwise return the value
+//   return result === undefined ? defValue : result
+// }
+
 const fieldsRe = /^(input|textarea|number|radio|checkbox|select|time|date|rate|switch|slider|html|cascader|uploadfile|signature|region)$/
 const deepTraversal = (node, fn) => {
   fn(node)
@@ -192,7 +210,10 @@ const syncWidthByPlatform = (node, platform, syncFullplatform = false, value) =>
 }
 const transferLabelPath = (node) => `er.fields.${node.type === 'input' ? `${node.type}.${node.options.renderType - 1}` : `${node.type}`}`
 const fieldLabel = (t, node) => t(transferLabelPath(node))
-const transferData = (lang, path, locale, options = {}) => {
+/**
+ * 获取当前语言的信息
+ */
+const transferData = (lang:string, path:string, locale:any, options = {}) => {
   let result = ''
   if (_.isEmpty(options)) {
     result = _.get(locale[lang], path, '')
@@ -201,7 +222,7 @@ const transferData = (lang, path, locale, options = {}) => {
   }
   return result
 }
-const isNull = (e) => e === '' || e === null || e === undefined
+const isNull = (e:unknown) => e === '' || e === null || e === undefined
 export {
   syncWidthByPlatform,
   wrapElement,
