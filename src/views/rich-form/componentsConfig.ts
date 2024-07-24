@@ -183,7 +183,7 @@ export const fieldsConfig = [
     list: [
       {
         type: 'input',
-        label: '单行文本',
+        label: '单行ss文本',
         icon: 'input',
         key: '',
         id: '',

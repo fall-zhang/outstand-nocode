@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+console.log(646464,'usuuuuuuuuuuuuuuuuuuuu');
+
 import { defineProps, reactive, provide, watch } from 'vue'
 import ConfigPanel from './components/Panels/Config/ConfigPanel.vue'
 import utils from '@/utils'
@@ -84,5 +86,6 @@ watch(() => state.selected, (newVal) => {
 })
 </script>
 <template>
+  64444444444444444466464
   <ConfigPanel mode="config"></ConfigPanel>
 </template>

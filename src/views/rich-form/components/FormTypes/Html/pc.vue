@@ -1,11 +1,7 @@
 <script>
-import hooks from '@/hooks'
-// import * as dd from '/external/ckeditor5/build/ckeditor.js'
-// import CKEDITOR from '/external/ckeditor5/build/ckeditor.js'
-// import { component } from '@ckeditor/ckeditor5-vue'
 import CKEditor from '@/componets/module/ckeditor'
 export default {
-  name: 'er-html',
+  name: 'FeEditor',
   inheritAttrs: false,
   customOptions: {}
 }

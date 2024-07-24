@@ -20,10 +20,12 @@ const props = defineProps({
 })
 </script>
 <template>
-  <el-input :model-value="data.options.defaultValue" v-bind="params">
-    <template #prepend v-if="params.prepend">{{ params.prepend }}</template>
-    <template #append v-if="params.append">{{ params.append }}</template>
-  </el-input>
+  <el-form-item :label="params.label">
+    <el-input :model-value="data.options.defaultValue" v-bind="params">
+      <template #prepend v-if="params.prepend">{{ params.prepend }}</template>
+      <template #append v-if="params.append">{{ params.append }}</template>
+    </el-input>
+  </el-form-item>
 </template>
 
 <style scoped></style>

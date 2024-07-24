@@ -4,7 +4,7 @@
  */
 
 import { ElMessage } from 'element-plus'
-import CKEDITOR from '/external/ckeditor5/build/ckeditor.js'
+import CKEDITOR from 'ckeditor5/build/ckeditor.js'
 import { markRaw, defineComponent, onMounted,  ref, onBeforeUnmount, watch } from 'vue'
 import { debounce } from 'lodash-es'
 import './style/index.js'
@@ -223,14 +223,12 @@ export default defineComponent({
           console.error(error)
         })
     })
-    return () => {
-      return (
-        <div class={[ns.b(), props.platform === 'mobile' && ns.e('mobile'), 'formatted']}>
-          <div class={[ns.e('toolbar')]} ref={toolbar}></div>
-          <div class={[ns.e('container')]} ref={container}></div>
-          <div ref={element}></div>
-        </div>
-      )
-    }
+    return () =>  (
+      <div class={[ns.b(), props.platform === 'mobile' && ns.e('mobile'), 'formatted']}>
+        <div class={[ns.e('toolbar')]} ref={toolbar}></div>
+        <div class={[ns.e('container')]} ref={container}></div>
+        <div ref={element}></div>
+      </div>
+    )
   }
 })
