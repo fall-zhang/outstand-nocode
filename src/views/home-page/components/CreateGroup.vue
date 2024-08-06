@@ -53,6 +53,7 @@ const onAddNewChart = (type: string) => {
 
 <style lang="scss" scoped>
 .working-item {
+  cursor: pointer;
   height: 64px;
   margin-right: 24px;
   box-sizing: border-box;
@@ -67,8 +68,6 @@ const onAddNewChart = (type: string) => {
     background-color: var(--gray-1);
     transition: .5s;
   }
-
-  cursor: pointer;
 }
 
 .add-item {

@@ -1,29 +1,31 @@
-<script>
+<script setup>
 import hooks from '@/hooks'
 import { ref } from 'vue'
-export default {
-  name: 'er-checkbox',
+defineOptions({
+  name: 'FeCheckbox',
   inheritAttrs: false,
   customOptions: {}
-}
-</script>
-<script setup>
-const props = defineProps(['data', 'params'])
+})
+const props = defineProps({
+  data: {
+    type: Object,
+    default: () => ({})
+  },
+  params: {
+    type: Object,
+    default: () => ({})
+  }
+})
+const defaultValue = ref()
 const ns = hooks.useNamespace('FormTypesCheckbox')
 const element = ref()
 </script>
 <template>
-  <van-field
-    readonly
-    v-bind="params"
-    ref="element"
-  >
+  <van-field readonly v-bind="params" ref="element">
     <template #input>
-      <el-checkbox-group
-        @change="element.resetValidation()"
+      <el-checkbox-group @change="element.resetValidation()"
         :class="[ns.e('radioGroup'), data.options.displayStyle === 'block' && ns.e('blockLayout')]"
-        v-model="data.options.defaultValue"
-        v-bind="params">
+        v-model="defaultValue" v-bind="params">
         <el-checkbox v-for="item in params.options" :key="item.value" :label="item.value">
           {{ item.label }}
         </el-checkbox>
@@ -32,6 +34,4 @@ const element = ref()
   </van-field>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
