@@ -1,13 +1,24 @@
 <script>
 import { useNamespace } from '@/hooks/use-namespace'
 export default {
-  name: 'FeCascader',
+  name: 'FeCascaderMobile',
   inheritAttrs: false,
   customOptions: {}
 }
 </script>
 <script setup>
-const props = defineProps(['data', 'params'])
+const props = defineProps({
+  data: {
+    require: true,
+    type: Object,
+    default: () => ({})
+  },
+  params: {
+    require: true,
+    type: Object,
+    default: () => ({})
+  }
+})
 const ns = useNamespace('FormTypesCascader_mobile')
 const onClear = () => {
   props.data.options.defaultValue = []

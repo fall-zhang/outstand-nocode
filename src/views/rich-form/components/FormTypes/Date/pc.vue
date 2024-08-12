@@ -1,6 +1,6 @@
 <script>
 export default {
-  name: 'ErDate',
+  name: 'FeDateDesktop',
   inheritAttrs: false,
   customOptions: {}
 }

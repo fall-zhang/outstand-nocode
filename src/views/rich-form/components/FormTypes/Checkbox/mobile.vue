@@ -2,7 +2,7 @@
 import hooks from '@/hooks'
 import { ref } from 'vue'
 defineOptions({
-  name: 'FeCheckbox',
+  name: 'FeCheckboxMobile',
   inheritAttrs: false,
   customOptions: {}
 })

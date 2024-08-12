@@ -1,13 +1,24 @@
 <script>
 import hooks from '@/hooks'
 export default {
-  name: 'er-number',
+  name: 'FeNumberDesktop',
   inheritAttrs: false,
   customOptions: {}
 }
 </script>
 <script setup>
-const props = defineProps(['data', 'params'])
+const props = defineProps({
+  data: {
+    require: true,
+    type: Object,
+    default: () => ({})
+  },
+  params: {
+    require: true,
+    type: Object,
+    default: () => ({})
+  }
+})
 const ns = hooks.useNamespace('FormTypesNumber_pc')
 </script>
 <template>

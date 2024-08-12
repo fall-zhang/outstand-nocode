@@ -1,13 +1,24 @@
 <script>
 import hooks from '@/hooks'
 export default {
-  name: 'er-divider',
+  name: 'FeDividerDesktop',
   inheritAttrs: false,
   customOptions: {}
 }
 </script>
 <script setup>
-const props = defineProps(['data', 'params'])
+const props = defineProps({
+  data: {
+    require: true,
+    type: Object,
+    default: () => ({})
+  },
+  params: {
+    require: true,
+    type: Object,
+    default: () => ({})
+  }
+})
 const ns = hooks.useNamespace('FormTypesDivider_pc')
 </script>
 <template>

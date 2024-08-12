@@ -9,7 +9,18 @@ export default {
 }
 </script>
 <script setup>
-const props = defineProps(['data', 'params'])
+const props = defineProps({
+  data: {
+    require: true,
+    type: Object,
+    default: () => ({})
+  },
+  params: {
+    require: true,
+    type: Object,
+    default: () => ({})
+  }
+})
 const dialogVisible = ref(false)
 const popup = ref()
 const currentArea = ref()

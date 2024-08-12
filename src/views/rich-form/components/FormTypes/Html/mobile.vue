@@ -1,10 +1,9 @@
 <script>
-import { ElMessage } from 'element-plus'
 import hooks from '@/hooks'
 import { ref, computed, watch, nextTick } from 'vue'
 import CKEditor from '@/componets/module/ckeditor'
 export default {
-  name: 'er-html',
+  name: 'FeHtmlMobile',
   inheritAttrs: false,
   customOptions: {}
 }
@@ -13,7 +12,18 @@ export default {
 const {
   t
 } = hooks.useI18n()
-const props = defineProps(['data', 'params'])
+const props = defineProps({
+  data: {
+    require: true,
+    type: Object,
+    default: () => ({})
+  },
+  params: {
+    require: true,
+    type: Object,
+    default: () => ({})
+  }
+})
 const dialogVisible = ref(false)
 const popup = ref()
 const ns = hooks.useNamespace('FormTypesHtml_mobile')
@@ -33,7 +43,6 @@ const handleAction = async (type) => {
 }
 </script>
 <template>
-<!--  />-->
   <van-field
     readonly
     v-model="currentValue"

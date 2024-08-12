@@ -1,17 +1,27 @@
 <script>
-import hooks from '@/hooks'
 import { ref, computed, watch } from 'vue'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat.js'
 dayjs.extend(customParseFormat)
 export default {
-  name: 'er-time',
+  name: 'FeTimeMobile',
   inheritAttrs: false,
   customOptions: {}
 }
 </script>
 <script setup>
-const props = defineProps(['data', 'params'])
+const props = defineProps({
+  data: {
+    require: true,
+    type: Object,
+    default: () => ({})
+  },
+  params: {
+    require: true,
+    type: Object,
+    default: () => ({})
+  }
+})
 const showPicker = ref(false)
 const currentTime = ref()
 const columnsType = ['hour', 'minute', 'second']
@@ -27,14 +37,14 @@ watch(() => props.data.options.defaultValue, (newVal) => {
   immediate: true
 })
 const currentValue = computed({
-  get () {
+  get() {
     let result = ''
     if (props.data.options.defaultValue) {
       result = dayjs(props.data.options.defaultValue, props.data.options.valueFormat).format(props.data.options.format)
     }
     return result
   },
-  set (value) {
+  set(value) {
     props.data.options.defaultValue = value.join(':')
   }
 })
@@ -50,27 +60,15 @@ const onClear = () => {
 }
 </script>
 <template>
-  <van-field
-    readonly
-    v-model="currentValue"
-    v-bind="params"
-    @click="!params.disabled && (showPicker = true)"
-  >
+  <van-field readonly v-model="currentValue" v-bind="params" @click="!params.disabled && (showPicker = true)">
     <template v-if="!params.disabled && currentValue && params.clearable" #button>
       <van-icon @click.stop="onClear" name="clear" />
     </template>
   </van-field>
   <van-popup v-model:show="showPicker" round position="bottom">
-    <van-time-picker
-      v-bind="params"
-      @confirm="onConfirm"
-      @cancel="onCancel"
-      :columns-type="columnsType"
-      v-model="currentTime"
-    />
+    <van-time-picker v-bind="params" @confirm="onConfirm" @cancel="onCancel" :columns-type="columnsType"
+      v-model="currentTime" />
   </van-popup>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
