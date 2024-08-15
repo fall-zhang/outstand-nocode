@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-console.log(646464,'usuuuuuuuuuuuuuuuuuuuu');
 
 import { defineProps, reactive, provide, watch } from 'vue'
 import ConfigPanel from './components/Panels/Config/ConfigPanel.vue'
@@ -7,6 +6,7 @@ import utils from '@/utils'
 import defaultProps from './defaultProps'
 import { globalConfig } from './componentsConfig'
 import { deepClone } from '@/utils/utils'
+
 defineOptions({
   name: 'FeFormConfig'
 })

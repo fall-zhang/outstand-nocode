@@ -6,10 +6,10 @@ import { resolve as pathResolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
-import { ElementPlusResolver ,VantResolver } from 'unplugin-vue-components/resolvers'
+import { ElementPlusResolver, VantResolver } from 'unplugin-vue-components/resolvers'
 import svgLoader from 'vite-svg-loader'
-const __dirname = fileURLToPath(new URL('.', import.meta.url))
 import VueDevTools from 'vite-plugin-vue-devtools'
+const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
 // const isProduction = import.meta.env.MODE
 // console.log("🚀 ~ isProduction:", isProduction)
@@ -39,7 +39,7 @@ import VueDevTools from 'vite-plugin-vue-devtools'
 //     plugins.push(plugin);`, (...e) => {
 //             return `if (!plugins.filter(e => e.pluginName === plugin.pluginName).length) {
 //           window.plugins = plugins;
-// 			    plugins.push(plugin);}`
+//           plugins.push(plugin);}`
 //           })
 //         }
 //       } else {
@@ -56,7 +56,7 @@ import VueDevTools from 'vite-plugin-vue-devtools'
 //         plugins.push(plugin);`, (...e) => {
 //             return `if (!plugins.filter(e => e.pluginName === plugin.pluginName).length) {
 //           window.plugins = plugins;
-// 			    plugins.push(plugin);}`
+//           plugins.push(plugin);}`
 //           })
 //           return result
 //         }
@@ -109,7 +109,7 @@ export default defineConfig({
         /\.vue\?vue/, // .vue
         /\.md$/, // .md
       ],
-      resolvers: [ElementPlusResolver(),VantResolver()],
+      resolvers: [ElementPlusResolver(), VantResolver()],
       dts: './src/global/auto-imports.d.ts',
       imports: ['vue', 'vue-router']
     }),
@@ -120,7 +120,7 @@ export default defineConfig({
         /\.vue\?vue/, // .vue
         /\.md$/, // .md
       ],
-      resolvers: [ElementPlusResolver(),VantResolver()],
+      resolvers: [ElementPlusResolver(), VantResolver()],
       dts: './src/global/components.d.ts'
     })
   ]

@@ -1,4 +1,4 @@
-import { defineComponent,  nextTick } from 'vue'
+import { defineComponent, nextTick } from 'vue'
 import utils from '@/utils'
 import hooks from '@/hooks'
 import _ from 'lodash-es'

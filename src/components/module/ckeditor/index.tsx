@@ -5,13 +5,13 @@
 
 import { ElMessage } from 'element-plus'
 import CKEDITOR from 'ckeditor5/build/ckeditor.js'
-import { markRaw, defineComponent, onMounted,  ref, onBeforeUnmount, watch } from 'vue'
+import { markRaw, defineComponent, onMounted, ref, onBeforeUnmount, watch } from 'vue'
 import { debounce } from 'lodash-es'
 import './style/index.js'
-import hooks from '@/hooks'
+import { useNamespace } from '@/hooks'
 const SAMPLE_READ_ONLY_LOCK_ID = 'Integration Sample'
 const INPUT_EVENT_DEBOUNCE_WAIT = 300
-const ns = hooks.useNamespace('Main', 'ckeditor')
+const ns = useNamespace('Main', 'ckeditor')
 
 class MyUploadAdapter {
   constructor (editor, loader) {
@@ -223,7 +223,7 @@ export default defineComponent({
           console.error(error)
         })
     })
-    return () =>  (
+    return () => (
       <div class={[ns.b(), props.platform === 'mobile' && ns.e('mobile'), 'formatted']}>
         <div class={[ns.e('toolbar')]} ref={toolbar}></div>
         <div class={[ns.e('container')]} ref={container}></div>

@@ -1,5 +1,5 @@
 import locale from '@/locale/rich-form'
-import { wrapElement,transferData,transferLabelPath } from '@/utils'
+import { wrapElement, transferData, transferLabelPath } from '@/utils'
 export default function (node, isWrap = true, lang = 'zh-cn', isCreateLabel = true, eachBack) {
   const newNode = isWrap
     ? {
@@ -13,10 +13,10 @@ export default function (node, isWrap = true, lang = 'zh-cn', isCreateLabel = tr
   if (isCreateLabel) {
     node.label = transferData(lang, transferLabelPath(node), locale)
     if (/^(select|cascader|region|date|time)$/.test(node.type)) {
-      node.options.placeholder = transferData(lang, 'er.validateMsg.placeholder2', locale) // 选择式 - 请选择
+      node.options.placeholder = transferData(lang, 'validateMsg.placeholder2', locale) // 选择式 - 请选择
     }
     if (/^(input|textarea|html)$/.test(node.type)) {
-      node.options.placeholder = transferData(lang, 'er.validateMsg.placeholder1', locale) // 输入式 - 请输入
+      node.options.placeholder = transferData(lang, 'validateMsg.placeholder1', locale) // 输入式 - 请输入
     }
   }
   return result
