@@ -8,7 +8,10 @@
     "strict": true,
     "jsx": "preserve",
     "jsxImportSource": "vue",
+    "noEmit": true, // 编译时取消生成 js 文件
+    "declaration": false, // 生成 .d.ts 文件
     "sourceMap": true,
+    "allowJs": true,
     "skipLibCheck": true, // 跳过 lib 检查
     "resolveJsonModule": true,
     // "isolatedModules": true, // 因为 esbuild 暂时不支持 enum，所以，暂时设置为 false
