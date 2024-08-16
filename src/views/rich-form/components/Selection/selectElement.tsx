@@ -14,18 +14,26 @@ import hooks from '@/hooks'
 import utils from '@/utils'
 import _ from 'lodash-es'
 import Icon from '@/assets'
-import { ElDropdownMenu,ElDropdownItem ,ElDropdown } from 'element-plus'
-export default {
+import { ElDropdownMenu, ElDropdownItem, ElDropdown } from 'element-plus'
+export default defineComponent({
   name: 'SelectElement',
   inheritAttrs: false,
   customOptions: {},
   props: {
-    data: Object,
+    data: {
+      type: Object,
+      require: true,
+      default: () => ({})
+    },
+    parent: {
+      type: Object,
+      require: true,
+      default: () => ({})
+    },
     tag: {
       type: String,
       default: 'div'
     },
-    parent: Object,
     hasMask: {
       type: Boolean,
       default: false
@@ -50,11 +58,11 @@ export default {
       type: Boolean,
       default: false
     },
-    hasInserColumn: {
+    hasInsertColumn: {
       type: Boolean,
       default: false
     },
-    hasInserRow: {
+    hasInsertRow: {
       type: Boolean,
       default: false
     },
@@ -63,7 +71,7 @@ export default {
       default: false
     }
   },
-  setup(props,{ slots }) {
+  setup(props, { slots }) {
     const ER = inject('Everright')
     const {
       t
@@ -76,7 +84,7 @@ export default {
       setSelection,
       state,
       isEditModel,
-      isPc
+      isPC
     } = hooks.useTarget()
     const id = hooks.useCss(props.data, state.platform)
     const isWarning = ref(false)
@@ -123,7 +131,7 @@ export default {
             </ElDropdownMenu>
           )
           if (!isShowCell.value) {
-            node = ''
+            node = <></>
           }
           return node
         }
@@ -202,7 +210,7 @@ export default {
     const elementRef = ref()
     const widthScaleElement = ref()
     const isScale = ref(false)
-    const isShowWidthScale = computed(() => props.hasWidthScale && !(ER.props.layoutType === 1 && !isPc.value))
+    const isShowWidthScale = computed(() => props.hasWidthScale && !(ER.props.layoutType === 1 && !isPC.value))
     onMounted(() => {
       if (!unref(isEditModel)) return false
       const hoverEl = elementRef.value.$el || elementRef.value
@@ -299,12 +307,12 @@ export default {
                 }, ['stop'])} icon="delete"></Icon>
               )}
               {
-                props.hasInserColumn && (<Icon class={[ns.e('charulieIcon')]} onClick={withModifiers((e) => {
+                props.hasInsertColumn && (<Icon class={[ns.e('charulieIcon')]} onClick={withModifiers((e) => {
                   handleAction(4)
                 }, ['stop'])} icon="tableInsertCol"></Icon>)
               }
               {
-                props.hasInserRow && (<Icon class={[ns.e('charuhangIcon')]} onClick={withModifiers((e) => {
+                props.hasInsertRow && (<Icon class={[ns.e('charuhangIcon')]} onClick={withModifiers((e) => {
                   handleAction(3)
                 }, ['stop'])} icon="tableInsertRow"></Icon>)
               }
@@ -324,7 +332,6 @@ export default {
             </div>
           )
         }
-
         {
           unref(isEditModel) && props.hasMask && maskNode
         }
@@ -332,3 +339,4 @@ export default {
     )
   }
 }
+)

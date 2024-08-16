@@ -17,15 +17,15 @@ export default defineComponent({
       state,
       setSelection,
       isEditModel,
-      isPc
+      isPC
     } = useTarget()
     const form = ref('')
     const handleClick = () => {
       setSelection('root')
     }
     const renderContent = () => {
-      const TagComponent = unref(isPc) ? ElForm : VanForm
-      const typeProps = useProps(state, state, unref(isPc) as boolean, true)
+      const TagComponent = unref(isPC) ? ElForm : VanForm
+      const typeProps = useProps(state, state, unref(isPC) as boolean, true)
       const Layout = (<LayoutDragGable data-layout-type={'root'} class={[unref(isEditModel) && ns.e('wrap')]} data={state.store} parent={state.store} isRoot></LayoutDragGable>)
       return (
         <div>
@@ -47,8 +47,8 @@ export default defineComponent({
             'center-canvas',
             ns.b(),
             isEditModel.value && ns.e('editModel'),
-            !unref(isPc) && ns.e('mobile'),
-            !unref(isPc) && ns.e(`mobile_layoutType${ER.props.layoutType}`)
+            !unref(isPC) && ns.e('mobile'),
+            !unref(isPC) && ns.e(`mobile_layoutType${ER.props.layoutType}`)
             // ER.props.layoutType === 1  && ns.e('layoutType1')
           ]
         }>

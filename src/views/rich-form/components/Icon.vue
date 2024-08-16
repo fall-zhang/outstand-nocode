@@ -1,6 +1,6 @@
 <script>
 import { ref } from 'vue'
-import hooks from '@/hooks'
+import { useNamespace } from '@/hooks'
 export default {
   name: 'FeIcon'
 }
@@ -16,7 +16,7 @@ const props = defineProps({
     required: true
   }
 })
-const ns = hooks.useNamespace('Icon')
+const ns = useNamespace('Icon')
 const element = ref('')
 </script>
 <template>

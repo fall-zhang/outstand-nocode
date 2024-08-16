@@ -1,9 +1,9 @@
-import hooks from '@/hooks'
+import hooks, { useNamespace } from '@/hooks'
 import { useTarget } from '@/hooks/use-target'
-import utils from '@/utils'
+import utils, { deepClone } from '@/utils'
 import { DraggableWrap } from '../../Layout/DraggableWrap'
-import { inject,  reactive, nextTick } from 'vue'
-import { deepClone } from '@/utils'
+import { inject, reactive, nextTick } from 'vue'
+
 import Icon from '@/assets'
 import ControlInsertionPlugin from '../../Layout/ControlInsertionPlugin.ts'
 import { ElAside, ElScrollbar, ElMenu, ElSubMenu } from 'element-plus'
@@ -20,7 +20,7 @@ export default defineComponent({
   },
   setup(props) {
     const ER = inject('Everright')
-    const ns = hooks.useNamespace('Fields')
+    const ns = useNamespace('Fields')
     const {
       t
     } = hooks.useI18n()

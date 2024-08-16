@@ -43,7 +43,7 @@ export default defineComponent({
     const {
       state,
       isEditModel,
-      isPc,
+      isPC,
     } = hooks.useTarget()
     const handleMove = (e) => {
       return true
@@ -95,7 +95,7 @@ export default defineComponent({
           default:{
             let TypeComponent = ''
             if (unref(isEditModel) || _.get(state.fieldsLogicState.get(element), 'visible', undefined) !== 0) {
-              const typeProps = hooks.useProps(state, element, unref(isPc))
+              const typeProps = hooks.useProps(state, element, unref(isPC))
               TypeComponent = load.findComponent('FormTypes', element.type)
               const params = {
                 data: element,
@@ -104,7 +104,7 @@ export default defineComponent({
               if (process.env.NODE_ENV === 'test') {
                 params['data-field-id'] = `${element.id}`
               }
-              if (unref(isPc)) {
+              if (unref(isPC)) {
                 node = (
                 // <Selection hasWidthScale hasCopy hasDel hasDrag hasMask data={element} parent={props.data}>
                   <Selection hasWidthScale hasCopy hasDel hasDrag hasMask { ...params }>

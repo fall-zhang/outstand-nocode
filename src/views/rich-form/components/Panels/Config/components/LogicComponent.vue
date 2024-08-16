@@ -1,6 +1,10 @@
 <script>
 import { ref, inject, nextTick, reactive, computed, watch, onMounted } from 'vue'
-import hooks from '@/hooks'
+import {
+  useI18n,
+  useNamespace,
+  useTarget
+} from '@/hooks'
 import {
   generateIfFilterOptionsData,
   generateIfFilterConditionsData,
@@ -18,7 +22,7 @@ export default {
 const {
   t,
   lang
-} = hooks.useI18n()
+} = useI18n()
 const tabs = ref([
   {
     value: 'visible',
@@ -50,11 +54,11 @@ const tabs = ref([
 const activeTab = ref('visible')
 const ER = inject('Everright')
 const scrollbarRef = ref()
-const ns = hooks.useNamespace('ConfigLogicComponent')
+const ns = useNamespace('ConfigLogicComponent')
 const dialogVisible = ref(false)
 const {
   state
-} = hooks.useTarget()
+} = useTarget()
 const getIfOptions = (type) => async () => {
   return new Promise((resolve, reject) => {
     resolve({
@@ -186,21 +190,21 @@ const handleListener = (ruleType, index, tab, { type, data }) => {
       })
       remoteCount = remoteCount - 1
     } else if (ruleType === 'then') {
-        switch (activeTab.value) {
-          // case 'validation':
-          //   _.last(tab.thenRefs).pushData('message')
-          //   break
-          case 'visible':
-            _.last(tab.thenRefs).pushData('show')
-            break
-          case 'required':
-            _.last(tab.thenRefs).pushData('required')
-            break
-          case 'readOnly':
-            _.last(tab.thenRefs).pushData('readOnly')
-            break
-        }
+      switch (activeTab.value) {
+        // case 'validation':
+        //   _.last(tab.thenRefs).pushData('message')
+        //   break
+        case 'visible':
+          _.last(tab.thenRefs).pushData('show')
+          break
+        case 'required':
+          _.last(tab.thenRefs).pushData('required')
+          break
+        case 'readOnly':
+          _.last(tab.thenRefs).pushData('readOnly')
+          break
       }
+    }
   }
 }
 const addRuleHandler = (tab, index) => {
@@ -227,16 +231,8 @@ const handleClosed = () => {
 }
 </script>
 <template>
-  <el-drawer
-    destroy-on-close
-    size="60%"
-    :modal="false"
-    append-to-body
-    :close-on-press-escape="false"
-    :with-header="false"
-    @closed="handleClosed"
-    :class="[ns.b()]"
-    v-model="dialogVisible">
+  <el-drawer destroy-on-close size="60%" :modal="false" append-to-body :close-on-press-escape="false"
+    :with-header="false" @closed="handleClosed" :class="[ns.b()]" v-model="dialogVisible">
     <div>
       <el-tabs v-model="activeTab" class="demo-tabs">
         <el-tab-pane v-for="tab in tabs" :label="t(`er.logic.tabs.${tab.value}`)" :name="tab.value" :key="tab.value">
@@ -250,25 +246,17 @@ const handleClosed = () => {
                   <Icon @click="tab.rules.splice(index, 1)" :class="[ns.e('delRule')]" icon="delete" />
                   <div :class="ns.e('if')">
                     <h3>{{ t('er.logic.filterLabel.if') }}</h3>
-                    <EverrightFilter
-                      :ref="relationalRef(tab, 'ifRefs', index)"
-                      @listener="(e) => handleListener('if', index, tab, e)"
-                      :lang="lang"
-                      :getOptions="getIfOptions(tab.value)"
-                      :getConditions="getIfConditions(tab.value)"
-                    />
+                    <EverrightFilter :ref="relationalRef(tab, 'ifRefs', index)"
+                      @listener="(e) => handleListener('if', index, tab, e)" :lang="lang"
+                      :getOptions="getIfOptions(tab.value)" :getConditions="getIfConditions(tab.value)" />
                   </div>
                   <div :class="[ns.e('then'), ns.e(`${tab.value}then`)]">
                     <h3>{{ t('er.logic.filterLabel.then') }}</h3>
-                    <EverrightFilter
-                      :ref="relationalRef(tab, 'thenRefs', index)"
-                      :lang="lang"
+                    <EverrightFilter :ref="relationalRef(tab, 'thenRefs', index)" :lang="lang"
                       :canAddRule="() => addRuleHandler(tab, index)"
-                      @listener="(e) => handleListener('then', index, tab, e)"
-                      :getOptions="getThenOptions(tab.value)"
+                      @listener="(e) => handleListener('then', index, tab, e)" :getOptions="getThenOptions(tab.value)"
                       :rule-limit="tab.value === 'required' ? 2 : tab.value === 'validation' ? 1 : -1"
-                      :getConditions="getThenConditions(tab.value)"
-                    />
+                      :getConditions="getThenConditions(tab.value)" />
                   </div>
                 </div>
               </transition-group>

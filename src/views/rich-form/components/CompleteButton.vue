@@ -1,6 +1,6 @@
 <script>
-import { ref, unref, inject } from 'vue'
-import hooks from '@/hooks'
+import { unref, inject } from 'vue'
+import { useTarget } from '@/hooks'
 export default {
   name: 'CompleteButton'
 }
@@ -18,8 +18,8 @@ const props = defineProps({
 })
 const {
   state,
-  isPc
-} = hooks.useTarget()
+  isPC
+} = useTarget()
 const handleClick = async (type) => {
   if (props.mode === 'preview') return false
   try {
@@ -34,7 +34,7 @@ const dataset = process.env.NODE_ENV === 'test' ? { 'data-test': 'er-complete-bu
 </script>
 <template>
   <div v-bind="dataset">
-    <div v-if="isPc" style="text-align: center;">
+    <div v-if="isPC" style="text-align: center;">
       <el-button @click="handleClick" :color="state.config[state.platform].completeButton.backgroundColor"
         type="primary">
         <span :style="{ color: state.config[state.platform].completeButton.color }">{{
