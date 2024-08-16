@@ -1,11 +1,8 @@
-<script>
-import { ref } from 'vue'
-import hooks from '@/hooks'
-export default {
-  name: 'er-icon'
-}
-</script>
 <script setup>
+import { ref } from 'vue'
+defineOptions({
+  name: 'FeIcon'
+})
 const props = defineProps({
   disabled: {
     type: Boolean,
