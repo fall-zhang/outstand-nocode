@@ -1,8 +1,8 @@
 import { computed, reactive, toRaw } from 'vue'
 import dayjs from 'dayjs'
-import _ from 'lodash-es'
 import { nanoid } from './nanoid'
 import { wrapElement } from './field'
+import { deepClone } from './DeepClone'
 
 const getNodes = (node, key) => {
   const {
@@ -110,7 +110,6 @@ const findNode = (node, dir, key, fn, ignore = false) => {
     }
   }
 }
-
 const getValidNode = (node) => {
   const { root } = node.context
   const result = []
@@ -347,7 +346,7 @@ export const addContext = (node, parent, fn) => {
   fn && fn(node)
   const context = {
     get props() {
-      return (isPc) => computed(() => {
+      return (isPC) => computed(() => {
         const {
           options
         } = node
@@ -357,11 +356,7 @@ export const addContext = (node, parent, fn) => {
           clearable: options.clearable,
           required: options.required
         }
-        if (isPc) {
-          // result.style = {
-          //   width: options.width + options.widthType
-          // }
-        } else {
+        if (!isPC) {
           result.label = node.label
         }
         switch (node.type) {
@@ -370,7 +365,7 @@ export const addContext = (node, parent, fn) => {
               result.maxlength = options.max
               result['show-word-limit'] = options.isShowWordLimit
             }
-            if (isPc) {
+            if (isPC) {
               result.showPassword = options.showPassword
               result.prepend = options.prepend
               result.append = options.append
@@ -388,7 +383,7 @@ export const addContext = (node, parent, fn) => {
             result.rows = options.rows
             break
           case 'number':
-            if (isPc) {
+            if (isPC) {
               result.controls = options.controls
               if (options.controls) {
                 result['controls-position'] = options.controlsPosition ? 'right' : ''
@@ -408,7 +403,7 @@ export const addContext = (node, parent, fn) => {
             break
           case 'time':
             result.format = options.format
-            if (isPc) {
+            if (isPC) {
               result.valueFormat = options.valueFormat
             }
             break
@@ -418,7 +413,7 @@ export const addContext = (node, parent, fn) => {
             result.endPlaceholder = options.endPlaceholder
             result.format = options.format
             result.type = options.type
-            if (isPc) {
+            if (isPC) {
               result.disabledDate = (time) => {
                 const {
                   startTime,
@@ -551,7 +546,7 @@ export const addContext = (node, parent, fn) => {
       let cursor = node
       while (cursor) {
         result.unshift(cursor)
-        if (cursor.context.parent && !_.isArray(cursor.context.parent)) {
+        if (cursor.context.parent && !Array.isArray(cursor.context.parent)) {
           cursor = cursor.context.parent
         } else {
           cursor = ''
@@ -561,7 +556,7 @@ export const addContext = (node, parent, fn) => {
     },
     copy() {
       const index = arr.indexOf(node)
-      const newNode = reactive(_.cloneDeep(toRaw(node)))
+      const newNode = reactive(deepClone(toRaw(node)))
       delete newNode.context
       newNode.id = nanoid()
       newNode.key = `${newNode.type}_${newNode.id}`
@@ -572,11 +567,7 @@ export const addContext = (node, parent, fn) => {
       arr.splice(index + 1, 0, newNode)
     },
     delete() {
-      // console.log(123123)
       arr.splice(arr.indexOf(node), 1)
-      // if (node.context.parent.type === 'inline' && !arr.length) {
-      //   node.context.parent.context.delete()
-      // }
     },
     appendCol() {
       const newNode = wrapElement({
@@ -757,19 +748,10 @@ export const addContext = (node, parent, fn) => {
       }
     },
     insert(type) {
-      const {
-        context: {
-          root,
-          col,
-          row
-        }
-      } = node
+      const { context: { root, col, row } } = node
       switch (type) {
         case 'left':
           appendNodes(node, 'before', 'colspan')
-          // root.rows.forEach(e => {
-          //   addContext(e, root, false)
-          // })
           break
         case 'right':
           appendNodes(node, 'after', 'colspan')
@@ -827,8 +809,6 @@ export const addContext = (node, parent, fn) => {
           row
         }
       } = node
-      const nodes = getNodes(node, type === 'column' ? 'colspan' : 'rowspan')
-      // let result = false
       switch (type) {
         case 'column':
           root.rows.forEach(e => {

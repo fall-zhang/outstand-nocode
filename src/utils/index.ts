@@ -3,12 +3,13 @@
  * 做到任何项目都可以使用，避免多次开发工具
  */
 import { deepClone } from './DeepClone'
-
+import { isPC } from './device'
 export {
-  deepClone
+  deepClone,
+  isPC
 }
 const importModules = import.meta.glob('./*.ts', { eager: true })
-const modules:Record<string,unknown> = {}
+const modules:Record<string, unknown> = {}
 
 // 将 forIn 转换为原生写法
 Object.values(importModules).forEach((func:any) => {
@@ -21,4 +22,4 @@ export default {
   ...modules
 }
 
-export { wrapElement ,transferData,transferLabelPath } from './field'
+export { wrapElement, transferData, transferLabelPath } from './field'

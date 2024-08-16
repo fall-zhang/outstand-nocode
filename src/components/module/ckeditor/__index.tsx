@@ -3,7 +3,7 @@
  * For licensing, see LICENSE.md.
  */
 
-import CKEDITOR from '/external/ckeditor5/build/ckeditor.js'
+import CKEDITOR from 'ckeditor5/build/ckeditor.js'
 import { h, markRaw, defineComponent } from 'vue'
 import { debounce } from 'lodash-es'
 
