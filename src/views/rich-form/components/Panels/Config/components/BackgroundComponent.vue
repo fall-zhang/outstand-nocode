@@ -1,7 +1,6 @@
 <script>
 import { reactive, ref, onMounted, inject, watch, computed, nextTick } from 'vue'
 import { ElMessage } from 'element-plus'
-import utils from '@/utils'
 import hooks from '@/hooks'
 export default {
   name: 'ConfigBackground',
@@ -17,9 +16,7 @@ const {
 const {
   target
 } = hooks.useTarget()
-const nums = reactive([0, 0, 0, 0])
 const ns = hooks.useNamespace('ConfigBackground')
-const fileList = ref([])
 const element = ref()
 const state = reactive({
   visible: false,
@@ -166,18 +163,6 @@ const handleChange = (value) => {
     }
   }
 }
-const handleClick = (type) => {
-  switch (type) {
-    case 1:
-      target.value.style.background.color = target.value.style.background.image = ''
-      state.defaultBackground = {}
-      break
-    case 2:
-      state.visible = false
-      break
-    default:
-  }
-}
 const checkIsSelected = (key) => {
   const curVal = state.value0 ? state.defaultBackground.backgroundImage : state.defaultBackground.backgroundColor
   return key === curVal
@@ -205,7 +190,6 @@ const handleSuccess = (response, uploadFile) => {
 <template>
   <div style="width: 100%">
     <div :class="[ns.e('background')]">
-<!--      <div v-if="!state.value0" :class="[target.style.isCustomBackground && ns.e('selecteColor')]">-->
       <div v-if="!state.value0">
         <el-color-picker
           size="large"

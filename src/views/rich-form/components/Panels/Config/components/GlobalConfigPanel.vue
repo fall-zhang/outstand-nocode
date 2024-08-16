@@ -15,7 +15,7 @@ defineOptions({
 const {
   target,
   state,
-  isPc
+  isPC
 } = hooks.useTarget()
 const {
   t
@@ -138,7 +138,7 @@ const handleTypeListener = ({ property, data }) => {
       <el-switch ref="buttonRef" v-click-outside:[popperPaneRef]="onClickOutside" :before-change="handleBeforeChange"
         v-model="target.isSync" />
     </el-form-item>
-    <PanelsConfigComponentsTypeComponent v-if="isPc" @listener="handleTypeListener" property="size" :layoutType="2"
+    <PanelsConfigComponentsTypeComponent v-if="isPC" @listener="handleTypeListener" property="size" :layoutType="2"
       :label="t('er.config.globalConfig.componentSize.label')" :val="target[state.platform].size" :nodes="options1" />
     <PanelsConfigComponentsTypeComponent @listener="handleTypeListener" property="labelPosition"
       :label="t('er.config.globalConfig.labelPosition.label')" :height="66" :fontSize="80"

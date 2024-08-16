@@ -6,7 +6,7 @@ import {
   generateIfFilterConditionsData,
   generateThenFilterOptionsData,
   generateThenFilterConditionsData
-} from './generateFilterdata.js'
+} from './generateFilterdata'
 import _ from 'lodash-es'
 import { EverrightFilter } from 'everright-filter'
 import Icon from '@/assets'

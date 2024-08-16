@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useTarget, useNamespace } from '@/hooks'
 defineOptions({
-  name: 'ConfigAllsides',
+  name: 'ConfigAllSides',
   inheritAttrs: false,
   customOptions: {}
 })
@@ -31,7 +31,6 @@ if (!target.value.style[props.field]) {
 </script>
 <template>
   <div>
-    99787
     <div :class="[ns.b()]">
       <el-row :gutter="14" justify="center">
         <el-col :span="12">

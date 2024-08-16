@@ -38,7 +38,7 @@ const {
   isSelectGrid,
   isSelectTabs,
   isSelectCollapse,
-  isPc
+  isPC
 } = hooks.useTarget()
 defineEmits(['changePanel'])
 const bgStatus = ref(false)
@@ -401,7 +401,7 @@ onMounted(() => {
       <template #content>
         <div :class="[ns.e('collapseWrap'), ns.e('collapseWrap-left')]">
           <el-row justify="space-between" align="middle">
-            <el-col :span="isPc ? 11 : 24">
+            <el-col :span="isPC ? 11 : 24">
               <el-form-item>
                 <template #label>
                   <Icon icon="title" />
@@ -409,7 +409,7 @@ onMounted(() => {
                 <el-input ref="titleRef" clearable v-model="target.label" />
               </el-form-item>
             </el-col>
-            <el-col :span="12" v-if="isPc">
+            <el-col :span="12" v-if="isPC">
               <el-form-item>
                 <template #label>
                   <Icon icon="dragWidth" />
@@ -535,7 +535,7 @@ onMounted(() => {
         </el-col>
       </el-row>
     </div>
-    <el-row v-if="checkTypeBySelected(['input'], 'affix') && target.options.renderType === 1 && isPc" :gutter="8">
+    <el-row v-if="checkTypeBySelected(['input'], 'affix') && target.options.renderType === 1 && isPC" :gutter="8">
       <el-col :span="12">
         <el-form-item :label="t('er.config.propsPanel.prepend')">
           <el-input style="width: 100%;" v-model="target.options.prepend" />
@@ -578,7 +578,7 @@ onMounted(() => {
       </el-select>
     </PanelsConfigComponentsTypeComponent>
     <PanelsConfigComponentsTypeComponent
-      v-if="utils.checkIslineChildren(target) && target.context.parent.columns.length !== 4 && !(ER.props.layoutType === 1 && !isPc)"
+      v-if="utils.checkIslineChildren(target) && target.context.parent.columns.length !== 4 && !(ER.props.layoutType === 1 && !isPC)"
       @listener="handleTypeListener" property="width" :label="t('er.public.width')" :height="40" :fontSize="28"
       :nodes="options1" />
     <PanelsConfigComponentsCheckboxComponent v-if="checkTypeBySelected(['input', 'textarea'], 'isShowTrim')"
@@ -712,7 +712,7 @@ onMounted(() => {
         v-if="checkTypeBySelected(['select', 'cascader', 'transfer', 'region'], 'filterable')"
         :label="t('er.config.propsPanel.filterable')" field="filterable">
       </PanelsConfigComponentsCheckboxComponent>
-      <PanelsConfigComponentsCheckboxComponent v-if="isPc && checkTypeBySelected(['number'], 'controls')"
+      <PanelsConfigComponentsCheckboxComponent v-if="isPC && checkTypeBySelected(['number'], 'controls')"
         :label="t('er.config.propsPanel.numberControls.label')" field="controls">
         <PanelsConfigComponentsTypeComponent @listener="handleTypeListener" property="controlsPosition" :height="30"
           :fontSize="50" :nodes="options9" :val="target.options.controlsPosition" />
