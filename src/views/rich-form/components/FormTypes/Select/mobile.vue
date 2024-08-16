@@ -1,13 +1,11 @@
-<script>
+<script setup>
 import { ref } from 'vue'
 import hooks from '@/hooks'
-export default {
-  name: 'er-select',
+defineOptions({
+  name: 'FeSelectMobile',
   inheritAttrs: false,
   customOptions: {}
-}
-</script>
-<script setup>
+})
 const props = defineProps({
   data: {
     require: true,
@@ -27,24 +25,10 @@ const onClear = () => {
 }
 </script>
 <template>
-  <van-field
-    readonly
-    :class="[ns.b()]"
-    v-bind="params"
-    ref="element"
-  >
+  <van-field readonly :class="[ns.b()]" v-bind="params" ref="element">
     <template #input>
-      <el-select
-        @change="element.resetValidation()"
-        v-model="data.options.defaultValue"
-        v-bind="params"
-      >
-        <el-option
-          v-for="item in params.options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        />
+      <el-select @change="element.resetValidation()" v-model="data.options.defaultValue" v-bind="params">
+        <el-option v-for="item in params.options" :key="item.value" :label="item.label" :value="item.value" />
       </el-select>
     </template>
     <template v-if="data.options.defaultValue.length && params.clearable" #button>
@@ -53,6 +37,4 @@ const onClear = () => {
   </van-field>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

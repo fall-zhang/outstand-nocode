@@ -1,12 +1,9 @@
-<script>
-import hooks from '@/hooks'
-export default {
-  name: 'er-switch',
+<script setup>
+defineOptions({
+  name: 'FeSwitchMobile',
   inheritAttrs: false,
   customOptions: {}
-}
-</script>
-<script setup>
+})
 const props = defineProps({
   data: {
     require: true,
@@ -21,19 +18,11 @@ const props = defineProps({
 })
 </script>
 <template>
-  <van-field
-    readonly
-    v-bind="params"
-  >
+  <van-field readonly v-bind="params">
     <template #input>
-      <van-switch
-        v-model="data.options.defaultValue"
-        v-bind="params"
-      />
+      <van-switch v-model="data.options.defaultValue" v-bind="params" />
     </template>
   </van-field>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

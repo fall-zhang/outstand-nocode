@@ -1,7 +1,6 @@
 <script>
-import hooks from '@/hooks'
 export default {
-  name: 'er-slider',
+  name: 'FeSliderDesktop',
   inheritAttrs: false,
   customOptions: {}
 }

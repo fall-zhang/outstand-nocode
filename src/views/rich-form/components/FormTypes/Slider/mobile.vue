@@ -1,7 +1,6 @@
 <script>
-import hooks from '@/hooks'
 export default {
-  name: 'er-slider',
+  name: 'FeSliderMobile',
   inheritAttrs: false,
   customOptions: {}
 }
@@ -19,18 +18,11 @@ const props = defineProps({
     default: () => ({})
   }
 })
-const ns = hooks.useNamespace('FormTypesSlider_mobile')
 </script>
 <template>
-  <van-field
-    readonly
-    :class="ns.b()"
-    v-bind="params"
-  >
+  <van-field readonly class="FormTypesSlider_mobile" v-bind="params">
     <template #input>
-      <van-slider
-        v-model="data.options.defaultValue"
-        v-bind="params">
+      <van-slider v-model="data.options.defaultValue" v-bind="params">
         <template #button>
           <div :class="ns.e('customButton')">{{ data.options.defaultValue }}</div>
         </template>
@@ -40,5 +32,13 @@ const ns = hooks.useNamespace('FormTypesSlider_mobile')
 </template>
 
 <style scoped>
-
+.FormTypesSlider_mobile {
+  width: 26px;
+  color: #fff;
+  font-size: 10px;
+  line-height: 18px;
+  text-align: center;
+  background-color: var(--van-primary-color);
+  border-radius: 100px;
+}
 </style>

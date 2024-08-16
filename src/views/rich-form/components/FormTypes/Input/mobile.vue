@@ -1,12 +1,10 @@
-<script>
-import hooks from '@/hooks'
-export default {
+<script setup lang="ts">
+defineOptions({
   name: 'FeInputMobile',
   inheritAttrs: false,
   customOptions: {}
-}
-</script>
-<script setup>
+})
+
 const props = defineProps({
   data: {
     require: true,
@@ -21,11 +19,7 @@ const props = defineProps({
 })
 </script>
 <template>
-  <van-field
-    v-model="data.options.defaultValue"
-    v-bind="params" />
+  <van-field v-model="data.options.defaultValue" v-bind="params" />
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

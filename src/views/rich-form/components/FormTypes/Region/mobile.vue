@@ -1,14 +1,12 @@
-<script>
-import { computed, ref, nextTick, watch } from 'vue'
+<!-- 省市区 -->
+<script setup lang="ts">
+import { computed, ref, watch } from 'vue'
 import hooks from '@/hooks'
-import _ from 'lodash-es'
-export default {
-  name: 'er-region',
+defineOptions({
+  name: 'FeRegionMobile',
   inheritAttrs: false,
   customOptions: {}
-}
-</script>
-<script setup>
+})
 const props = defineProps({
   data: {
     require: true,
@@ -32,17 +30,17 @@ watch(() => props.data.options.defaultValue, (newVal) => {
   immediate: true
 })
 const currentValue = computed({
-  get () {
+  get() {
     let result = ''
     if (props.data.options.defaultValue) {
-      const getSelectedOptions = _.get(areaRef, 'value.getSelectedOptions', false)
+      const getSelectedOptions = areaRef.value.getSelectedOptions || false
       if (getSelectedOptions) {
         result = getSelectedOptions().map(e => e.text).join('/')
       }
     }
     return result
   },
-  set (value) {
+  set(value) {
     props.data.options.defaultValue = value
   }
 })
@@ -59,34 +57,15 @@ const onClear = () => {
 }
 </script>
 <template>
-  <van-field
-    readonly
-    v-model="currentValue"
-    @click="!params.disabled && (dialogVisible = true)"
-    v-bind="params">
+  <van-field readonly v-model="currentValue" @click="!params.disabled && (dialogVisible = true)" v-bind="params">
     <template v-if="!params.disabled && data.options.defaultValue && params.clearable" #button>
       <van-icon @click.stop="onClear" name="clear" />
     </template>
   </van-field>
-  <van-popup
-    ref="popup"
-    :lock-scroll="false"
-    :lazy-render="false"
-    :class="ns.e('popup')"
-    teleport="body"
-    v-model:show="dialogVisible"
-    position="bottom"
-    :safe-area-inset-bottom="true"
-  >
-    <van-area
-      ref="areaRef"
-      @confirm="onConfirm"
-      @cancel="onCancel"
-      v-model="currentArea"
-      v-bind="params" />
+  <van-popup ref="popup" :lock-scroll="false" :lazy-render="false" :class="ns.e('popup')" teleport="body"
+    v-model:show="dialogVisible" position="bottom" :safe-area-inset-bottom="true">
+    <van-area ref="areaRef" @confirm="onConfirm" @cancel="onCancel" v-model="currentArea" v-bind="params" />
   </van-popup>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

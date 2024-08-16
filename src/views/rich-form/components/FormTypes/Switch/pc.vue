@@ -1,12 +1,9 @@
-<script>
-import hooks from '@/hooks'
-export default {
-  name: 'er-switch',
+<script setup>
+defineOptions({
+  name: 'FeSwitchDesktop',
   inheritAttrs: false,
   customOptions: {}
-}
-</script>
-<script setup>
+})
 const props = defineProps({
   data: {
     require: true,
@@ -21,12 +18,7 @@ const props = defineProps({
 })
 </script>
 <template>
-  <el-switch
-    v-model="data.options.defaultValue"
-    v-bind="params"
-  />
+  <el-switch v-model="data.options.defaultValue" v-bind="params" />
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -5,7 +5,7 @@ import Icon from '@/assets'
 import utils from '@/utils'
 import hooks from '@/hooks'
 export default {
-  name: 'FeButton',
+  name: 'FeFeSignatureDesktop',
   inheritAttrs: false,
   customOptions: {}
 }

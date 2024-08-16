@@ -1,12 +1,12 @@
 <script>
 import { ElLoading } from 'element-plus'
-import { ref, nextTick, watch, onBeforeUnmount, unref } from 'vue'
+import { ref, nextTick, watch, unref } from 'vue'
 import SignaturePad from 'signature_pad'
 import Icon from '@/assets'
 import utils from '@/utils'
 import hooks from '@/hooks'
 export default {
-  name: 'er-button',
+  name: 'FeSignatureMobile',
   inheritAttrs: false,
   customOptions: {}
 }
@@ -110,32 +110,14 @@ const handleAction = async (type) => {
 }
 </script>
 <template>
-  <van-field
-    readonly
-    v-bind="params"
-    @click="handleOpen"
-  >
+  <van-field readonly v-bind="params" @click="handleOpen">
     <template #input>
-      <template
-        v-if="data.options.defaultValue"
-      >
-<!--        <img-->
-<!--          :src="data.options.defaultValue.url"-->
-<!--          style="object-fit: contain; width: 100%; height: 100%;"-->
-<!--        >-->
-        <van-image
-          width="100%"
-          height="100"
-          fit="contain"
-          :src="data.options.defaultValue.url"
-        />
+      <template v-if="data.options.defaultValue">
+        <van-image width="100%" height="100" fit="contain" :src="data.options.defaultValue.url" />
       </template>
-      <div
-        v-else
-        :class="[ns.e('noData')]"
-      >
+      <div v-else :class="[ns.e('noData')]">
         <el-button text type="primary" icon="Edit" circle>
-          {{t('er.form.addSignature')}}
+          {{ t('er.form.addSignature') }}
         </el-button>
       </div>
     </template>
@@ -143,30 +125,18 @@ const handleAction = async (type) => {
       <van-icon @click.stop="data.options.defaultValue = ''" name="clear" />
     </template>
   </van-field>
-  <van-popup
-    v-model:show="dialogVisible"
-    position="right"
-    :style="{ width: '100%', height: '100%' }"
-  >
-    <van-nav-bar
-      :title="t('er.form.addSignature')"
-      :left-text="t('er.public.back')"
-      left-arrow
+  <van-popup v-model:show="dialogVisible" position="right" :style="{ width: '100%', height: '100%' }">
+    <van-nav-bar :title="t('er.form.addSignature')" :left-text="t('er.public.back')" left-arrow
       @click-left="handleAction(1)">
       <template v-if="showClear" #right>
         <span @click="handleAction(2)" class="van-nav-bar__text">{{ t('er.form.useSignature') }}</span>
       </template>
     </van-nav-bar>
-    <div
-      :class="[ns.e('canvasWrap')]">
-      <canvas
-        ref="element"
-      ></canvas>
+    <div :class="[ns.e('canvasWrap')]">
+      <canvas ref="element"></canvas>
       <Icon v-if="showClear" @click="handleClear" :class="[ns.e('clear')]" icon="delete"></Icon>
     </div>
   </van-popup>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

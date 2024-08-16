@@ -1,7 +1,6 @@
 <script>
-import hooks from '@/hooks'
 export default {
-  name: 'er-rate',
+  name: 'FeRateDesktop',
   inheritAttrs: false,
   customOptions: {}
 }

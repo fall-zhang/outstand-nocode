@@ -3,8 +3,9 @@ import { ref, nextTick, watch, unref } from 'vue'
 import { ElMessage } from 'element-plus'
 import hooks from '@/hooks'
 import _ from 'lodash-es'
+import { deepClone } from '@/utils'
 export default {
-  name: 'er-uploadfile',
+  name: 'FeUploadDesktop',
   inheritAttrs: false,
   customOptions: {}
 }
@@ -25,7 +26,7 @@ const props = defineProps({
     default: () => ({})
   }
 })
-const fileList = ref(_.cloneDeep(props.data.options.defaultValue))
+const fileList = ref(deepClone(props.data.options.defaultValue))
 const dialogImageUrl = ref(0)
 const dialogVisible = ref(false)
 const element = ref()
@@ -40,7 +41,7 @@ watch(fileList, (arr) => {
     return result
   })
   if (!_.isEqual(list, arr) || !list.length) {
-    props.data.options.defaultValue = _.cloneDeep(list)
+    props.data.options.defaultValue = deepClone(list)
   }
 }, {
   immediate: true,
@@ -82,23 +83,14 @@ const handleError = (error) => {
 }
 </script>
 <template>
-  <el-upload
-    v-model:file-list="fileList"
-    v-bind="params"
-    list-type="picture-card"
-    ref="element"
-    :on-preview="handlePictureCardPreview"
-    :before-upload="beforeAvatarUpload"
-    :on-error="handleError"
-  >
-    <el-icon><Plus /></el-icon>
+  <el-upload v-model:file-list="fileList" v-bind="params" list-type="picture-card" ref="element"
+    :on-preview="handlePictureCardPreview" :before-upload="beforeAvatarUpload" :on-error="handleError">
+    <el-icon>
+      <Plus />
+    </el-icon>
   </el-upload>
 
-  <el-image-viewer
-    v-if="dialogVisible"
-    :initial-index="dialogImageUrl"
-    :url-list="data.options.defaultValue.map(e => e.url)"
-    @close="dialogVisible = false"
-  ></el-image-viewer>
+  <el-image-viewer v-if="dialogVisible" :initial-index="dialogImageUrl"
+    :url-list="data.options.defaultValue.map(e => e.url)" @close="dialogVisible = false"></el-image-viewer>
 
 </template>

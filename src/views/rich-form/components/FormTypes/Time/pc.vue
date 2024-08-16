@@ -1,12 +1,9 @@
-<script lang="ts">
-import hooks from '@/hooks'
-export default {
+<script setup>
+defineOptions({
   name: 'FeTimeDesktop',
   inheritAttrs: false,
   customOptions: {}
-}
-</script>
-<script setup>
+})
 const props = defineProps({
   data: {
     require: true,
@@ -19,10 +16,13 @@ const props = defineProps({
     default: () => ({})
   }
 })
-const ns = hooks.useNamespace('FormTypesTime_pc')
 </script>
 <template>
-  <el-time-picker :class="[ns.b()]" v-model="data.options.defaultValue" v-bind="params" />
+  <el-time-picker class="fe-time_pc" v-model="data.options.defaultValue" v-bind="params" />
 </template>
 
-<style scoped></style>
+<style scoped>
+.fe-time_pc {
+  width: 100% !important;
+}
+</style>

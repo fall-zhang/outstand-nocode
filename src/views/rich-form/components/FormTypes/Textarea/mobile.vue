@@ -1,11 +1,10 @@
-<script>
-export default {
-  name: 'FeTextarea',
+
+<script setup>
+defineOptions({
+  name: 'FeTextareaMobile',
   inheritAttrs: false,
   customOptions: {}
-}
-</script>
-<script setup>
+})
 const props = defineProps({
   data: {
     require: true,

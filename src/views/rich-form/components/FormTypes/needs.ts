@@ -5,10 +5,23 @@ import {
   ElCheckbox,
   ElCheckboxGroup,
   ElInputNumber,
-  ElInput
+  ElInput,
+  ElRadio,
+  ElRadioGroup,
+  ElRate,
+  ElSlider,
+  ElSwitch,
+  ElUpload,
+  ElImageViewer
 } from 'element-plus'
 import {
   Field,
   Icon,
-  Stepper
+  Stepper,
+  Rate,
+  Popup,
+  Area,
+  Slider,
+  Switch,
+  Uploader
 } from 'vant'

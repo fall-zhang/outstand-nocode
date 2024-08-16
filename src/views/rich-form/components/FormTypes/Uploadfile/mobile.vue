@@ -3,9 +3,8 @@ import { ref, nextTick, watch } from 'vue'
 import { showToast } from 'vant'
 import _ from 'lodash-es'
 import hooks from '@/hooks'
-import utils from '@/utils'
 export default {
-  name: 'er-uploadfile',
+  name: 'FeUploadMobile',
   inheritAttrs: false,
   customOptions: {}
 }

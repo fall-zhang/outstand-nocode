@@ -1,6 +1,6 @@
 <script>
 export default {
-  name: 'FeTextarea',
+  name: 'FeTextareaDesktop',
   inheritAttrs: false,
   customOptions: {}
 }

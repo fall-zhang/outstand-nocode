@@ -1,8 +1,8 @@
+<!-- 省市区 -->
 <script>
-import { computed } from 'vue'
 import hooks from '@/hooks'
 export default {
-  name: 'er-region',
+  name: 'FeRegionDesktop',
   inheritAttrs: false,
   customOptions: {}
 }
