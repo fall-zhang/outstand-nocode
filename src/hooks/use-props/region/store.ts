@@ -1,6 +1,5 @@
 import { capitalize } from 'vue'
 import _ from 'lodash-es'
-const isUndefined = (val) => val === undefined
 const calculatePathNodes = (node) => {
   const nodes = [node]
   let { parent } = node

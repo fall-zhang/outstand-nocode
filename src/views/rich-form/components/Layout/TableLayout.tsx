@@ -44,7 +44,7 @@ export default defineComponent({
         }
       }
       return (
-        <Selection class={ns.b()} {...useAttrs()} hasWidthScale hasCopy hasDel hasDrag hasInserColumn hasInserRow data={props.data} parent={props.parent}>
+        <Selection class={ns.b()} {...useAttrs()} hasWidthScale hasCopy hasDel hasDrag hasInsertColumn hasInsertRow data={props.data} parent={props.parent}>
           <table>
             <tbody>
               {
