@@ -39,12 +39,9 @@
     padding-top: 10px;
     min-height: calc(100vh - 60px);
     box-sizing: border-box;
-    //height: 100%;
   }
-  //@include e(mobile) {
-  //}
+
   @include e(mobile_layoutType1) {
-    //[data-layout-type="grid"] {}
     .#{$namespace}-GridLayout {
       width: 100%;
       .el-col {
