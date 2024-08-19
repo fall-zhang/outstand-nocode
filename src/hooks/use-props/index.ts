@@ -5,11 +5,11 @@ import _ from 'lodash-es'
 import Region from './region/Region'
 import { areaList } from '@vant/area-data'
 import { useI18n } from '../use-i18n'
-const addValidate = (result, node, isPc, t) => {
+const addValidate = (result, node, isPC, t) => {
   const {
     options
   } = node
-  if (isPc) {
+  if (isPC) {
     result.prop = node.context && node.context.parents.map((e, index) => {
       let result = ''
       if (!index) {
@@ -40,17 +40,17 @@ const addValidate = (result, node, isPc, t) => {
   // }
   const validator = (...arg0) => new Promise((...arg1) => {
     const resolve = arg1[0]
-    const reject = isPc
+    const reject = isPC
       ? arg1[1]
       : (message) => {
         obj.message = message
         arg1[0](false)
       }
-    // const value = options.isShowTrim ? (isPc ? arg0[1] : arg0[0]).trim() : (isPc ? arg0[1] : arg0[0])
+    // const value = options.isShowTrim ? (isPC ? arg0[1] : arg0[0]).trim() : (isPC ? arg0[1] : arg0[0])
     // let message
     // let result = true
     // let msg = ''
-    let value = isPc ? arg0[1] : arg0[0]
+    let value = isPC ? arg0[1] : arg0[0]
     // only for mobile
     if (/^(signature|radio|checkbox|select|html)$/.test(node.type)) {
       value = options.defaultValue
@@ -113,7 +113,7 @@ const addValidate = (result, node, isPc, t) => {
         break
     }
   })
-  if (isPc) {
+  if (isPC) {
     obj.required = options.required
     obj.asyncValidator = validator
   } else {
@@ -121,16 +121,16 @@ const addValidate = (result, node, isPc, t) => {
   }
   result.rules = [obj]
 }
-export const useProps = (state, data, isPc = true, isRoot = false, specialHandling?:unknown) => {
+export const useProps = (state, data, isPC = true, isRoot = false, specialHandling?:unknown) => {
   const {
     t
   } = useI18n()
   return computed(() => {
     let node = isRoot ? data.config : data
     let result = {}
-    const platform = isPc ? 'pc' : 'mobile'
+    const platform = isPC ? 'pc' : 'mobile'
     if (isRoot) {
-      if (isPc) {
+      if (isPC) {
         result.model = data.store
         result.size = node.pc.size
         result.labelPosition = node[platform].labelPosition
@@ -167,8 +167,8 @@ export const useProps = (state, data, isPc = true, isRoot = false, specialHandli
         result.required = result.disabled ? false : required === 1
       }
     }
-    addValidate(result, node, isPc, t)
-    if (isPc) {
+    addValidate(result, node, isPC, t)
+    if (isPC) {
       result.labelWidth = options.isShowLabel ? options.labelWidth + 'px' : 'auto'
     }
     switch (node.type) {
@@ -177,7 +177,7 @@ export const useProps = (state, data, isPc = true, isRoot = false, specialHandli
           result.maxlength = options.max
           result['show-word-limit'] = options.isShowWordLimit
         }
-        if (isPc) {
+        if (isPC) {
           result.showPassword = options.showPassword
           result.prepend = options.prepend
           result.append = options.append
@@ -199,7 +199,7 @@ export const useProps = (state, data, isPc = true, isRoot = false, specialHandli
         result.rows = options.rows
         break
       case 'number':
-        if (isPc) {
+        if (isPC) {
           result.controls = options.controls
           if (options.controls) {
             result['controls-position'] = options.controlsPosition ? 'right' : ''
@@ -230,7 +230,7 @@ export const useProps = (state, data, isPc = true, isRoot = false, specialHandli
         break
       case 'time':
         result.format = options.format
-        if (isPc) {
+        if (isPC) {
           result.valueFormat = options.valueFormat
         }
         break
@@ -240,7 +240,7 @@ export const useProps = (state, data, isPc = true, isRoot = false, specialHandli
         // result.endPlaceholder = options.endPlaceholder
         result.format = options.format
         result.type = options.type
-        if (isPc) {
+        if (isPC) {
           result.valueFormat = 'X'
           if (options.type === 'daterange') {
             result.rangeSeparator = ''
@@ -334,7 +334,7 @@ export const useProps = (state, data, isPc = true, isRoot = false, specialHandli
         break
       case 'rate':
         result.allowHalf = options.allowHalf
-        if (!isPc) {
+        if (!isPC) {
           result.count = options.max
         } else {
           result.max = options.max
@@ -348,7 +348,7 @@ export const useProps = (state, data, isPc = true, isRoot = false, specialHandli
         result.config = {
           placeholder: options.placeholder
         }
-        if (!isPc) {
+        if (!isPC) {
           result.config.toolbar = {
             items: [
               'formattingOptions',
@@ -389,7 +389,7 @@ export const useProps = (state, data, isPc = true, isRoot = false, specialHandli
         // result.size = options.size
         result.accept = options.accept
         result.maxSize = options.size * 1024 * 1024
-        if (isPc) {
+        if (isPC) {
           result.limit = options.limit
         } else {
           result.maxCount = options.limit
@@ -399,7 +399,7 @@ export const useProps = (state, data, isPc = true, isRoot = false, specialHandli
         }
         break
       case 'region':
-        if (isPc) {
+        if (isPC) {
           const region = new Region(areaList, {
             isFilter: false,
             selectType: options.selectType

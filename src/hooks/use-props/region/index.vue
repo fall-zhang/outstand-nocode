@@ -1,7 +1,7 @@
 <script setup>
 import { defineProps, ref, reactive, computed, provide, watch, nextTick, onMounted, unref } from 'vue'
 import { ClickOutside as vClickOutside } from 'element-plus'
-import hooks from '@/hooks'
+import { useNamespace } from '@/hooks'
 import _ from 'lodash-es'
 import { areaList } from '@vant/area-data'
 import Region from './Region'
@@ -60,7 +60,7 @@ const state = reactive({
   value0: '',
   checkedValue: []
 })
-const ns = hooks.useNamespace('Main', state.Namespace)
+const ns = useNamespace('Main', state.Namespace)
 provide('Everright', {
   state
 })

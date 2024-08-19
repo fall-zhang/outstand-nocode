@@ -61,7 +61,7 @@ export const useTarget = () => {
     return checkTypeBySelected(['table'])
   }
   )
-  const isPc = computed(() => {
+  const isPC = computed(() => {
     return state.platform === 'pc'
   }
   )
@@ -84,7 +84,7 @@ export const useTarget = () => {
     isSelectCollapse,
     isSelectTable,
     isSelectRoot,
-    isPc,
+    isPC,
     isEditModel
   }
 }

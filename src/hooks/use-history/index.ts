@@ -1,6 +1,6 @@
 import { ref, markRaw, computed, nextTick, watch } from 'vue'
 import { addContext } from '@/utils/addContext'
-import _ from 'lodash-es'
+import debounce from '@/utils/debounce'
 export const useHistory = (source) => {
   const onOff = ref(true)
   const createRecord = () => {
@@ -56,10 +56,9 @@ export const useHistory = (source) => {
     //   redoStack.value.splice(0, redoStack.value.length)
     // }
   }
-  const fn = _.debounce(commit, 400)
   watch(() => source.store, (newValue) => {
     if (onOff.value) {
-      fn()
+      debounce(commit, 400)
     }
   }, {
     flush: 'post',
