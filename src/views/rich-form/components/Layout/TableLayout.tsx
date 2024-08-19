@@ -1,5 +1,5 @@
 import { defineComponent, resolveComponent, watch, useAttrs, unref } from 'vue'
-import hooks from '@/hooks'
+import { useNamespace, useTarget } from '@/hooks'
 import Selection from '@/views/rich-form/components/Selection/selectElement'
 import LayoutDragGable from './DragGable'
 const isTrTag = (tagName) => tagName.toLocaleLowerCase() === 'td'
@@ -12,10 +12,10 @@ export default defineComponent({
     parent: Array
   },
   setup (props) {
-    const ns = hooks.useNamespace('TableLayout')
+    const ns = useNamespace('TableLayout')
     const {
       isEditModel
-    } = hooks.useTarget()
+    } = useTarget()
     return () => {
       const handleMousedown = (e, node) => {
         if (!isTrTag(e.target.tagName)) return false

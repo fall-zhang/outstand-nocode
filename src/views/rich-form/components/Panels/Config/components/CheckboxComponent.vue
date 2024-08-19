@@ -1,5 +1,8 @@
 <script>
-import hooks from '@/hooks'
+import {
+  useTarget,
+  useNamespace
+} from '@/hooks'
 export default {
   name: 'ConfigCheckboxComponent',
   inheritAttrs: false,
@@ -9,8 +12,8 @@ export default {
 <script setup>
 const {
   target
-} = hooks.useTarget()
-const ns = hooks.useNamespace('ConfigCheckboxComponent')
+} = useTarget()
+const ns = useNamespace('ConfigCheckboxComponent')
 const props = defineProps({
   field: {
     type: String,
@@ -24,9 +27,12 @@ const props = defineProps({
 </script>
 <template>
   <div :class="[ns.b(), target.options[field] && ns.e('open')]">
-    <el-checkbox v-model="target.options[field]" @change="(newValue) => $emit('change', newValue)" :label="label" ></el-checkbox>
+    <el-checkbox v-model="target.options[field]" @change="(newValue) => $emit('change', newValue)"
+      :label="label"></el-checkbox>
     <template v-if="$slots.default">
-      <div :class="[ns.e('slot')]" v-show="target.options[field]"><slot></slot></div>
+      <div :class="[ns.e('slot')]" v-show="target.options[field]">
+        <slot></slot>
+      </div>
     </template>
   </div>
 </template>

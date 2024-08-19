@@ -1,5 +1,5 @@
 <script>
-import hooks from '@/hooks'
+import { useTarget, useNamespace } from '@/hooks'
 import Icon from '@/assets'
 export default {
   name: 'ConfigCollapseComponent',
@@ -10,8 +10,8 @@ export default {
 <script setup>
 const {
   target
-} = hooks.useTarget()
-const ns = hooks.useNamespace('ConfigCollapseComponent')
+} = useTarget()
+const ns = useNamespace('ConfigCollapseComponent')
 const props = defineProps({
   field: {
     type: String,

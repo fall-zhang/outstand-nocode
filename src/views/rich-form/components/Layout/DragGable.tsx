@@ -6,7 +6,7 @@ import {
   unref,
   inject,
 } from 'vue'
-import hooks from '@/hooks'
+import { useNamespace, useTarget, useProps } from '@/hooks'
 import _ from 'lodash-es'
 import LayoutGridLayout from './GridLayout'
 import LayoutTabsLayout from './TabsLayout'
@@ -39,12 +39,12 @@ export default defineComponent({
   },
   setup (props) {
     const ER = inject('Everright')
-    const ns = hooks.useNamespace('DragGableLayout')
+    const ns = useNamespace('DragGableLayout')
     const {
       state,
       isEditModel,
       isPC,
-    } = hooks.useTarget()
+    } = useTarget()
     const handleMove = (e) => {
       return true
     }
@@ -75,7 +75,7 @@ export default defineComponent({
     const load = loadComponent()
     const slots = {
       item: ({ element }) => {
-        let node:JSX.Element|string = ''
+        let node:JSX.Element|string = <></>
         switch (element.type) {
           case 'grid':
             node = (<LayoutGridLayout key={element.id} data={element} parent={props.data}></LayoutGridLayout>)
@@ -95,7 +95,7 @@ export default defineComponent({
           default:{
             let TypeComponent = ''
             if (unref(isEditModel) || _.get(state.fieldsLogicState.get(element), 'visible', undefined) !== 0) {
-              const typeProps = hooks.useProps(state, element, unref(isPC))
+              const typeProps = useProps(state, element, unref(isPC))
               TypeComponent = load.findComponent('FormTypes', element.type)
               const params = {
                 data: element,

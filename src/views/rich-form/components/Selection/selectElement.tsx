@@ -10,7 +10,7 @@ import {
   computed
 } from 'vue'
 import { isHTMLTag } from '@/utils/browser'
-import hooks from '@/hooks'
+import { useI18n, useNamespace, useTarget, useCss } from '@/hooks'
 import utils from '@/utils'
 import _ from 'lodash-es'
 import Icon from '@/assets'
@@ -75,8 +75,8 @@ export default defineComponent({
     const ER = inject('Everright')
     const {
       t
-    } = hooks.useI18n()
-    const ns = hooks.useNamespace('selectElement')
+    } = useI18n()
+    const ns = useNamespace('selectElement')
     const isHover = ref(false)
     const isInlineChildren = utils.checkIslineChildren(props.data)
     const {
@@ -85,8 +85,8 @@ export default defineComponent({
       state,
       isEditModel,
       isPC
-    } = hooks.useTarget()
-    const id = hooks.useCss(props.data, state.platform)
+    } = useTarget()
+    const id = useCss(props.data, state.platform)
     const isWarning = ref(false)
     const isField = utils.checkIsField(props.data)
     const handleClick = (e) => {

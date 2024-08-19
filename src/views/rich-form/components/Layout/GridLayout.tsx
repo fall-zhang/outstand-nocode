@@ -1,5 +1,5 @@
 import { defineComponent, useAttrs } from 'vue'
-import hooks from '@/hooks'
+import { useNamespace } from '@/hooks'
 import Selection from '@/views/rich-form/components/Selection/selectElement'
 import LayoutDragGable from './DragGable'
 export default defineComponent({
@@ -11,7 +11,7 @@ export default defineComponent({
     parent: Array
   },
   setup (props) {
-    const ns = hooks.useNamespace('GridLayout')
+    const ns = useNamespace('GridLayout')
     return () => (
       <Selection {...useAttrs()} hasWidthScale hasCopy hasAddCol hasDel hasDrag data={props.data} parent={props.parent}>
         <ElRow data-layout-type={'grid'} {...{

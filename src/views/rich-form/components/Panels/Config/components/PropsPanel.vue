@@ -4,7 +4,7 @@
 import { ElMessage } from 'element-plus'
 import { ref, computed, unref, provide, onMounted, inject } from 'vue'
 import utils from '@/utils'
-import hooks from '@/hooks'
+import { useNamespace, useI18n, useTarget, useProps } from '@/hooks'
 import PanelsConfigComponentsCheckboxComponent from './CheckboxComponent.vue'
 import PanelsConfigComponentsCollapseComponent from './CollapseComponent.vue'
 import PanelsConfigComponentsTypeComponent from './TypeComponent.vue'
@@ -25,10 +25,10 @@ export default {
 </script>
 <script setup>
 const ER = inject('Everright')
-const ns = hooks.useNamespace('PropsPanel')
+const ns = useNamespace('PropsPanel')
 const {
   t
-} = hooks.useI18n()
+} = useI18n()
 const {
   type,
   state,
@@ -39,7 +39,7 @@ const {
   isSelectTabs,
   isSelectCollapse,
   isPC
-} = hooks.useTarget()
+} = useTarget()
 defineEmits(['changePanel'])
 const bgStatus = ref(false)
 provide('Everright-propsPanel', {
@@ -282,7 +282,7 @@ const options10 = computed(() => {
     }
   ]
 })
-const typeProps = hooks.useProps(state, target, true, false, (type, props) => {
+const typeProps = useProps(state, target, true, false, (type, props) => {
   switch (type) {
     case 'time':
     case 'cascader':

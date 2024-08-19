@@ -1,6 +1,6 @@
 import { defineComponent, watch, inject } from 'vue'
 import LayoutDragGable from './DragGable'
-import hooks from '@/hooks'
+import { useNamespace } from '@/hooks'
 import utils from '@/utils'
 export default defineComponent({
   name: 'InlineLayout',
@@ -10,7 +10,7 @@ export default defineComponent({
   },
   setup (props) {
     const ER = inject('Everright')
-    const ns = hooks.useNamespace('InlineLayout')
+    const ns = useNamespace('InlineLayout')
     // watch(() => props.data.columns, (newVal) => {
     //   if (!newVal.length) {
     //     props.data.context.delete()

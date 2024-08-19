@@ -1,4 +1,4 @@
-import hooks, { useNamespace } from '@/hooks'
+import { useI18n, useNamespace } from '@/hooks'
 import { useTarget } from '@/hooks/use-target'
 import utils, { deepClone } from '@/utils'
 import { DraggableWrap } from '../../Layout/DraggableWrap'
@@ -23,7 +23,7 @@ export default defineComponent({
     const ns = useNamespace('Fields')
     const {
       t
-    } = hooks.useI18n()
+    } = useI18n()
     const {
       state,
       setSelection

@@ -1,6 +1,6 @@
 <script>
 import utils from '@/utils'
-import hooks from '@/hooks'
+import { useTarget, useI18n, useNamespace } from '@/hooks'
 import { unref } from 'vue'
 import { dragGableWrap } from '@/views/rich-form/components/Layout/DragGable'
 import Icon from '@/assets'
@@ -11,11 +11,11 @@ export default {
 <script setup>
 const {
   target
-} = hooks.useTarget()
+} = useTarget()
 const {
   t
-} = hooks.useI18n()
-const ns = hooks.useNamespace('ConfigData3')
+} = useI18n()
+const ns = useNamespace('ConfigData3')
 const addTab = (type) => {
   const data = utils.renderFieldData(`${target.value.type}Col`)
   data.label = `Tab ${unref(target).columns.length + 1}`

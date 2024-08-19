@@ -1,6 +1,6 @@
 import { defineComponent, nextTick } from 'vue'
 import utils from '@/utils'
-import hooks from '@/hooks'
+import { useTarget, useI18n, useNamespace } from '@/hooks'
 import _ from 'lodash-es'
 import nzhcn from 'nzh/cn'
 import { ElButton, ElIcon, ElInput, ElScrollbar } from 'element-plus'
@@ -25,7 +25,7 @@ export default defineComponent({
         state,
         target,
         type
-      } = hooks.useTarget()
+      } = useTarget()
       switch (type.value) {
         case 'checkbox':
           result = true
@@ -46,7 +46,7 @@ export default defineComponent({
     const {
       state,
       target
-    } = hooks.useTarget()
+    } = useTarget()
     if (state.mode === 'config') {
       this.data[0] = target.value.options.data = target.value.options.data || [...utils.generateOptions(3)]
     } else {
@@ -82,8 +82,8 @@ export default defineComponent({
     const {
       t,
       lang
-    } = hooks.useI18n()
-    const ns = hooks.useNamespace('ConfigData2')
+    } = useI18n()
+    const ns = useNamespace('ConfigData2')
     const handleAction = (type, x, data) => {
       switch (type) {
         case 1:

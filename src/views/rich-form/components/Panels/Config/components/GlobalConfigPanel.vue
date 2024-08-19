@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import hooks from '@/hooks'
+import { useTarget, useI18n, useNamespace } from '@/hooks'
 import _ from 'lodash-es'
 import { ref, unref, computed, inject } from 'vue'
 import { ClickOutside as vClickOutside } from 'element-plus'
@@ -16,12 +16,12 @@ const {
   target,
   state,
   isPC
-} = hooks.useTarget()
+} = useTarget()
 const {
   t
-} = hooks.useI18n()
+} = useI18n()
 const ER = inject('Everright')
-const ns = hooks.useNamespace('GlobalConfigPanel')
+const ns = useNamespace('GlobalConfigPanel')
 const compareKeys = ['labelPosition', 'completeButton']
 const visible = ref(false)
 const buttonRef = ref()

@@ -1,7 +1,11 @@
 <script>
 import { reactive, ref, onMounted, inject, watch, computed, nextTick } from 'vue'
 import { ElMessage } from 'element-plus'
-import hooks from '@/hooks'
+import {
+  useI18n,
+  useTarget,
+  useNamespace
+} from '@/hooks'
 export default {
   name: 'ConfigBackground',
   inheritAttrs: false,
@@ -12,11 +16,11 @@ export default {
 <script setup>
 const {
   t
-} = hooks.useI18n()
+} = useI18n()
 const {
   target
-} = hooks.useTarget()
-const ns = hooks.useNamespace('ConfigBackground')
+} = useTarget()
+const ns = useNamespace('ConfigBackground')
 const element = ref()
 const state = reactive({
   visible: false,
@@ -191,36 +195,22 @@ const handleSuccess = (response, uploadFile) => {
   <div style="width: 100%">
     <div :class="[ns.e('background')]">
       <div v-if="!state.value0">
-        <el-color-picker
-          size="large"
-          @active-change="handleActiveChange"
-          @change="handleChange"
-          v-model="target.style.background.color"
-          show-alpha
-        />
+        <el-color-picker size="large" @active-change="handleActiveChange" @change="handleChange"
+          v-model="target.style.background.color" show-alpha />
       </div>
       <ul :class="[!state.value0 ? ns.e('quickColor') : ns.e('quickImage')]" ref="element">
         <li v-if="state.value0" :class="ns.e('uploadFile')">
-          <el-upload
-            accept=".png,.jpg"
-            :action="ER.props.fileUploadURI"
-            list-type="picture-card"
-            ref="element"
-            :show-file-list="false"
-            :before-upload="beforeAvatarUpload"
-            :on-success="handleSuccess"
-            :on-error="handleError"
-          >
-            <el-icon><Plus /></el-icon>
+          <el-upload accept=".png,.jpg" :action="ER.props.fileUploadURI" list-type="picture-card" ref="element"
+            :show-file-list="false" :before-upload="beforeAvatarUpload" :on-success="handleSuccess"
+            :on-error="handleError">
+            <el-icon>
+              <Plus />
+            </el-icon>
           </el-upload>
         </li>
-        <li
-          v-for="(item0, index0) in state.value0 ? quickImages : quickColors"
-          :key="index0"
-          :data-value="item0"
+        <li v-for="(item0, index0) in state.value0 ? quickImages : quickColors" :key="index0" :data-value="item0"
           :style="!state.value0 && { backgroundColor: item0 }"
-          :class="[checkIsSelected(item0) && 'selectedBg', 'selectColorFirst']"
-        >
+          :class="[checkIsSelected(item0) && 'selectedBg', 'selectColorFirst']">
           <el-image v-if="state.value0" :data-value="item0" :src="item0" lazy />
         </li>
       </ul>
@@ -230,23 +220,13 @@ const handleSuccess = (response, uploadFile) => {
         <el-col :span="12">
           <div>Reapeat</div>
           <el-select v-model="target.style.background.repeat" placeholder="Select" size="large">
-            <el-option
-              v-for="item in options0[0]"
-              :key="item"
-              :label="item"
-              :value="item"
-            />
+            <el-option v-for="item in options0[0]" :key="item" :label="item" :value="item" />
           </el-select>
         </el-col>
         <el-col :span="12">
           <div>Position</div>
           <el-select v-model="target.style.background.position" placeholder="Select" size="large">
-            <el-option
-              v-for="item in options0[1]"
-              :key="item"
-              :label="item"
-              :value="item"
-            />
+            <el-option v-for="item in options0[1]" :key="item" :label="item" :value="item" />
           </el-select>
         </el-col>
       </el-row>
@@ -254,23 +234,13 @@ const handleSuccess = (response, uploadFile) => {
         <el-col :span="12">
           <div>Attachment</div>
           <el-select v-model="target.style.background.attachment" placeholder="Select" size="large">
-            <el-option
-              v-for="item in options0[2]"
-              :key="item"
-              :label="item"
-              :value="item"
-            />
+            <el-option v-for="item in options0[2]" :key="item" :label="item" :value="item" />
           </el-select>
         </el-col>
         <el-col :span="12">
           <div>Size</div>
           <el-select v-model="target.style.background.size" placeholder="Select" size="large">
-            <el-option
-              v-for="item in options0[3]"
-              :key="item"
-              :label="item"
-              :value="item"
-            />
+            <el-option v-for="item in options0[3]" :key="item" :label="item" :value="item" />
           </el-select>
         </el-col>
       </el-row>

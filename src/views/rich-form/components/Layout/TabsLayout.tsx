@@ -1,7 +1,7 @@
 import { defineComponent, useAttrs } from 'vue'
 import Selection from '@/views/rich-form/components/Selection/selectElement'
 import LayoutDragGable from './DragGable'
-import hooks from '@/hooks'
+import { useNamespace } from '@/hooks'
 import { ElTabs } from 'element-plus'
 export default defineComponent({
   name: 'TabsLayout',
@@ -9,16 +9,16 @@ export default defineComponent({
   customOptions: {},
   props: {
     data: {
-      type:Object,
-      default:() => ({})
+      type: Object,
+      default: () => ({})
     },
     parent: {
-      type:Array,
-      default:() => ([])
+      type: Array,
+      default: () => ([])
     }
   },
   setup (props) {
-    const ns = hooks.useNamespace('TabsLayout')
+    const ns = useNamespace('TabsLayout')
     return () => {
       return (
         <Selection {...useAttrs()} data={props.data} parent={props.parent} hasCopy hasDel hasDrag hasWidthScale>

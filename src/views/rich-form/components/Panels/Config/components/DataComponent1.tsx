@@ -4,11 +4,11 @@ import {
   nextTick,
 } from 'vue'
 import utils from '@/utils'
-import hooks from '@/hooks'
+import { useTarget, useI18n, useNamespace } from '@/hooks'
 import Icon from '@/assets'
 import { dragGableWrap } from '@/views/rich-form/components/Layout/DragGable'
 import _ from 'lodash-es'
-import { ElCheckbox, ElCheckboxGroup, ElForm, ElFormItem, ElScrollbar,ElInput } from 'element-plus'
+import { ElCheckbox, ElCheckboxGroup, ElForm, ElFormItem, ElScrollbar, ElInput } from 'element-plus'
 export default defineComponent({
   name: 'ConfigData1',
   inheritAttrs: false,
@@ -25,7 +25,7 @@ export default defineComponent({
       const {
         target,
         type
-      } = hooks.useTarget()
+      } = useTarget()
       switch (type.value) {
         case 'checkbox':
           result = true
@@ -46,7 +46,7 @@ export default defineComponent({
     const {
       state,
       target
-    } = hooks.useTarget()
+    } = useTarget()
     if (state.mode === 'config') {
       this.data = target.value.options.data = target.value.options.data || [...utils.generateOptions(3)]
     } else {
@@ -83,8 +83,8 @@ export default defineComponent({
   render (props) {
     const {
       t
-    } = hooks.useI18n()
-    const ns = hooks.useNamespace('ConfigData1')
+    } = useI18n()
+    const ns = useNamespace('ConfigData1')
     const validator = ({ field }, value, callback) => {
       const newValue = value.trim()
       if (newValue === '' || newValue === null || newValue === undefined) {
@@ -97,7 +97,6 @@ export default defineComponent({
           return false
         }
         callback()
-
       } else {
         callback()
       }

@@ -1,6 +1,10 @@
 <script>
 import PanelsConfigComponentsTypeComponent from './TypeComponent.vue'
-import hooks from '@/hooks'
+import {
+  useTarget,
+  useI18n,
+  useNamespace
+} from '@/hooks'
 import Icon from '@/assets'
 import _ from 'lodash-es'
 export default {
@@ -13,11 +17,11 @@ export default {
 const {
   target,
   checkTypeBySelected
-} = hooks.useTarget()
+} = useTarget()
 const {
   t
-} = hooks.useI18n()
-const ns = hooks.useNamespace('ConfigBorder')
+} = useI18n()
+const ns = useNamespace('ConfigBorder')
 
 const borderActions = new Array(8).fill('tableStokeP').map((e, i) => {
   return {
@@ -48,28 +52,16 @@ const handleTypeListener = ({ property, data }) => {
 <template>
   <div :class="[ns.b()]">
     <div v-if="checkTypeBySelected(['table'])">
-      <PanelsConfigComponentsTypeComponent
-        @listener="handleTypeListener"
-        property="borderType"
-        :height="30"
-        :fontSize="18"
-        :val="target.style.borderType"
-        :nodes="borderActions"
-      />
+      <PanelsConfigComponentsTypeComponent @listener="handleTypeListener" property="borderType" :height="30"
+        :fontSize="18" :val="target.style.borderType" :nodes="borderActions" />
       <el-row justify="space-between" align="middle">
         <el-col :span="5">
-          <el-color-picker
-            v-model="target.style.borderColor"
-          />
+          <el-color-picker v-model="target.style.borderColor" />
         </el-col>
         <el-col :span="18">
           <el-form-item size="default" :label="t('er.config.borderComponent.borderWidth')">
-            <el-input-number
-              style="width: 100%;"
-              :min="0"
-              v-model="target.style.borderWidth"
-              controls-position="right"
-            />
+            <el-input-number style="width: 100%;" :min="0" v-model="target.style.borderWidth"
+              controls-position="right" />
           </el-form-item>
         </el-col>
       </el-row>
@@ -78,9 +70,7 @@ const handleTypeListener = ({ property, data }) => {
       <el-row justify="space-between" align="middle">
         <el-col :span="3">
           <el-form-item>
-            <el-color-picker
-              v-model="target.style.border.color"
-            />
+            <el-color-picker v-model="target.style.border.color" />
           </el-form-item>
         </el-col>
         <el-col :span="10">
@@ -88,12 +78,7 @@ const handleTypeListener = ({ property, data }) => {
             <template #label>
               <Icon icon="lineThickness" />
             </template>
-            <el-input-number
-              :step="1"
-              :min="0"
-              v-model="target.style.border.width"
-              controls-position="right"
-            />
+            <el-input-number :step="1" :min="0" v-model="target.style.border.width" controls-position="right" />
           </el-form-item>
         </el-col>
         <el-col :span="10">
@@ -101,12 +86,7 @@ const handleTypeListener = ({ property, data }) => {
             <template #label>
               <Icon icon="radius" />
             </template>
-            <el-input-number
-              :step="1"
-              :min="0"
-              v-model="target.style.borderRadius"
-              controls-position="right"
-            />
+            <el-input-number :step="1" :min="0" v-model="target.style.borderRadius" controls-position="right" />
           </el-form-item>
         </el-col>
       </el-row>
