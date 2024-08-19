@@ -3,21 +3,21 @@ import './theme/icon.scss'
 import 'everright-filter/dist/style.css'
 import './theme/formEditor/index.scss'
 import { ClickOutside as vClickOutside, ElMessage } from 'element-plus'
-import { defineProps, ref, reactive, provide, nextTick, watch } from 'vue'
+import { defineProps, ref, reactive, nextTick, watch } from 'vue'
 import FieldsPanel from './components/Panels/Fields'
 import CanvasPanel from './components/Panels/Canvas/CenterCanvas'
 import ConfigPanel from './components/Panels/Config/ConfigPanel.vue'
 import DeviceSwitch from './components/DeviceSwitch.vue'
 import Icon from '@/assets'
-import { useI18n, useHistory, useNamespace } from '@/hooks'
-import utils from '@/utils'
+import { useI18n, useNamespace } from '@/hooks'
+import utils, { deepClone } from '@/utils'
 import _ from 'lodash-es'
 import { isEmpty } from '@/utils/utils'
 import defaultProps from './defaultProps'
 import generatorData from './generatorData'
 import FormPreview from './form-preview/form-preview.vue'
 defineOptions({
-  name: 'FeFormEditor'
+  name: 'FormEditor'
 })
 const emit = defineEmits(['listener'])
 const props = defineProps({
@@ -55,30 +55,14 @@ const layout = {
   pc: [],
   mobile: []
 }
-const previewPlatform = ref('pc')
+const previewPlatform = ref<'pc' | 'mobile'>('pc')
 const previewLoading = ref(true)
-const state = reactive({
-  store: [],
-  selected: {},
-  mode: 'edit',
-  platform: 'pc',
-  children: [],
-  config: props.globalConfig,
-  previewVisible: false,
-  widthScaleLock: false,
-  data: {},
-  validateStates: [],
-  fields: [],
-  Namespace: 'formEditor',
-  logic: {}
-})
-const isFoldFields = ref(true)
-const isFoldConfig = ref(true)
-state.validator = (target, fn) => {
+const validator = (target, fn) => {
+  console.log('start validate 🚀 ~ validator ~ target:', target)
   if (target) {
     const count = _.countBy(state.validateStates, 'data.key')
     const newValue = target.key.trim()
-    if (utils.isNull(newValue)) {
+    if (isEmpty(newValue)) {
       _.find(state.validateStates, { data: { key: target.key } }).isWarning = true
       fn && fn(0)
       return false
@@ -97,6 +81,25 @@ state.validator = (target, fn) => {
     fn(state.validateStates.every(e => !e.isWarning))
   }
 }
+const state = reactive({
+  store: [],
+  selected: {},
+  mode: 'edit',
+  platform: 'pc',
+  children: [],
+  config: props.globalConfig,
+  previewVisible: false,
+  widthScaleLock: false,
+  data: {},
+  validateStates: [],
+  fields: [],
+  Namespace: 'formEditor',
+  logic: {},
+  validator
+})
+const isFoldFields = ref(true)
+const isFoldConfig = ref(true)
+
 // const {
 //   canUndo,
 //   canRedo,
@@ -161,7 +164,7 @@ const delField = (node) => {
 const addFieldData = (node, isCopy = false) => {
   if (/^(radio|cascader|checkbox|select)$/.test(node.type)) {
     if (isCopy) {
-      state.data[node.id] = _.cloneDeep(state.data[node.options.dataKey])
+      state.data[node.id] = deepClone(state.data[node.options.dataKey])
       node.options.dataKey = node.id
     } else if (!state.data[node.id]) {
       node.options.dataKey = node.id
@@ -207,11 +210,11 @@ const wrapElement = (el, isWrap = true, isSetSelection = true, sourceBlock = tru
 }
 const syncLayout = (platform, fn) => {
   const isPC = platform === 'pc'
-  const original = _.cloneDeep(state.store)
+  const original = deepClone(state.store)
   utils.disassemblyData2(original)
   layout[isPC ? 'mobile' : 'pc'] = original
   if (isEmpty(isPC ? layout.pc : layout.mobile)) {
-    // const newData = _.cloneDeep(state.fields.map(e => wrapElement(e, true, false)))
+    // const newData = deepClone(state.fields.map(e => wrapElement(e, true, false)))
     const newData = state.fields.map(e => wrapElement(e, true, false, false, false))
     fn && fn(newData)
   } else {
@@ -221,7 +224,7 @@ const syncLayout = (platform, fn) => {
         id: e
       }
     })
-    const copyData = _.cloneDeep(isPC ? layout.pc : layout.mobile)
+    const copyData = deepClone(isPC ? layout.pc : layout.mobile)
     const addFields = _.differenceBy(state.fields, layoutFields, 'id')
     const delFields = _.differenceBy(layoutFields, state.fields, 'id')
     utils.repairLayout(copyData, delFields)
@@ -235,16 +238,16 @@ const getLayoutDataByplatform = (platform) => {
   const isPC = platform === 'pc'
   if (isEmpty(isPC ? layout.pc : layout.mobile)) {
     if (platform === state.platform) {
-      const original = _.cloneDeep(state.store)
+      const original = deepClone(state.store)
       utils.disassemblyData2(original)
       return original
     }
-    const newData = _.cloneDeep(state.fields.map(e => wrapElement(e, true, false, false, false)))
+    const newData = deepClone(state.fields.map(e => wrapElement(e, true, false, false, false)))
     utils.disassemblyData2(newData)
     return newData
   }
   if (platform === state.platform) {
-    const original = _.cloneDeep(state.store)
+    const original = deepClone(state.store)
     utils.disassemblyData2(original)
     layout[isPC ? 'pc' : 'mobile'] = original
   }
@@ -253,8 +256,8 @@ const getLayoutDataByplatform = (platform) => {
       id: e
     }
   })
-  const copyData = _.cloneDeep(isPC ? layout.pc : layout.mobile)
-  const addFields = _.cloneDeep(_.differenceBy(state.fields, layoutFields, 'id').map(e => wrapElement(e, true, false, false, false)))
+  const copyData = deepClone(isPC ? layout.pc : layout.mobile)
+  const addFields = deepClone(_.differenceBy(state.fields, layoutFields, 'id').map(e => wrapElement(e, true, false, false, false)))
   const delFields = _.differenceBy(layoutFields, state.fields, 'id')
   utils.repairLayout(copyData, delFields)
   utils.disassemblyData2(addFields)
@@ -298,7 +301,7 @@ provide('Everright', {
 // Namespace: formEditor
 const ns = useNamespace('Main', state.Namespace)
 const getData1 = () => {
-  return Object.assign(utils.disassemblyData1(_.cloneDeep({
+  return Object.assign(utils.disassemblyData1(deepClone({
     list: state.store,
     config: state.config,
     data: state.data
@@ -309,7 +312,7 @@ const getData1 = () => {
 const getData2 = () => {
   layout.pc = getLayoutDataByplatform('pc')
   layout.mobile = getLayoutDataByplatform('mobile')
-  return _.cloneDeep({
+  return deepClone({
     layout,
     data: state.data,
     config: state.config,
@@ -319,7 +322,7 @@ const getData2 = () => {
 }
 const setData1 = (data) => {
   if (isEmpty(data)) return false
-  const newData = utils.combinationData1(_.cloneDeep(data))
+  const newData = utils.combinationData1(deepClone(data))
   isShow.value = false
   state.store = newData.list
   state.config = newData.config
@@ -336,13 +339,13 @@ const setData1 = (data) => {
 }
 const setData2 = (data) => {
   if (isEmpty(data)) return false
-  const newData = _.cloneDeep(data)
+  const newData = deepClone(data)
   layout.pc = newData.layout.pc
   layout.mobile = newData.layout.mobile
   isShow.value = false
   state.store = newData.list
   state.fields = newData.fields
-  const curLayout = _.cloneDeep(newData.layout[state.platform])
+  const curLayout = deepClone(newData.layout[state.platform])
   utils.combinationData2(curLayout, state.fields)
   state.store = curLayout
   state.config = newData.config
@@ -369,7 +372,7 @@ defineExpose({
   setData,
   getData
 })
-const handleOperation = (type, val) => {
+const handleOperation = (type: string | number) => {
   switch (type) {
     case 1:
       break
@@ -400,21 +403,21 @@ const handleOperation = (type, val) => {
     case 6:
       isFoldConfig.value = !isFoldConfig.value
       break
-    case 'device-switch':
-      previewLoading.value = true
-      previewPlatform.value = val
-      EReditorPreviewRef.value.switchPlatform(val)
-      EReditorPreviewRef.value.setData(getData())
-      nextTick(() => {
-        nextTick(() => {
-          previewLoading.value = false
-        })
-      })
-      break
   }
 }
+function onDeviceSwitch(val: any) {
+  previewLoading.value = true
+  previewPlatform.value = val
+  EReditorPreviewRef.value.switchPlatform(val)
+  EReditorPreviewRef.value.setData(getData())
+  nextTick(() => {
+    nextTick(() => {
+      previewLoading.value = false
+    })
+  })
+}
 watch(() => state.selected, (newVal) => {
-  fireEvent('changeParams', _.cloneDeep(newVal))
+  fireEvent('changeParams', deepClone(newVal))
 }, {
   deep: true,
   immediate: true
@@ -426,10 +429,10 @@ const onClickOutside = () => {
 // })
 </script>
 <template>
-  <el-dialog destroy-on-close fullscreen :class="[ns.e('previewDialog')]" @closed="previewPlatform = pc"
+  <el-dialog destroy-on-close fullscreen :class="[ns.e('previewDialog')]" @closed="previewPlatform = 'pc'"
     v-model="state.previewVisible">
     <template #header>
-      <DeviceSwitch :modelValue="previewPlatform" @update:model-value="(val) => handleOperation('device-switch', val)">
+      <DeviceSwitch :modelValue="previewPlatform" @update:model-value="onDeviceSwitch">
       </DeviceSwitch>
     </template>
     <el-scrollbar>
@@ -450,7 +453,7 @@ const onClickOutside = () => {
             <slot name="operation-left"></slot>
           </div>
           <div>
-            <DeviceSwitch :modelValue="state.platform" @update:model-value="(val) => switchPlatform(val)">
+            <DeviceSwitch :modelValue="state.platform" @update:model-value="switchPlatform">
             </DeviceSwitch>
           </div>
           <div>
