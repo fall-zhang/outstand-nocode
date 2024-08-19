@@ -1,8 +1,5 @@
 import { v4 as uuid } from 'uuid'
 
-export function isNull(value: unknown) {
-  return (value === null) || (value === undefined)
-}
 
 export function isNotNull(value: unknown) {
   return (value !== null) && (value !== undefined)

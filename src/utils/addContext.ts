@@ -4,14 +4,8 @@ import { nanoid } from './nanoid'
 import { wrapElement } from './field'
 import { deepClone } from './DeepClone'
 
-const getNodes = (node, key) => {
-  const {
-    context: {
-      root,
-      col,
-      row
-    }
-  } = node
+const getNodes = (node, key:'rowspan'|'colspan') => {
+  const { context: { root, col, row } } = node
   let nodes = []
   if (key === 'rowspan') {
     nodes = root.context.columns[col]

@@ -222,7 +222,6 @@ const transferData = (lang:string, path:string, locale:any, options = {}) => {
   }
   return result
 }
-const isNull = (e:unknown) => e === '' || e === null || e === undefined
 export {
   syncWidthByPlatform,
   wrapElement,
@@ -239,6 +238,5 @@ export {
   fieldLabel,
   transferData,
   transferLabelPath,
-  isNull,
   repairLayout
 }
