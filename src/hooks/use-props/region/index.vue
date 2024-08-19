@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps, ref, reactive, computed, provide, watch, nextTick, onMounted, unref } from 'vue'
+import { defineProps, ref, reactive, computed, watch, nextTick, onMounted, unref } from 'vue'
 import { ClickOutside as vClickOutside } from 'element-plus'
 import { useNamespace } from '@/hooks'
 import _ from 'lodash-es'
@@ -8,7 +8,7 @@ import Region from './Region'
 import Store from './store'
 import { ArrowDown } from '@icon-park/vue-next'
 defineOptions({
-  name: 'EverrightRegion'
+  name: 'FeRegion'
 })
 const props = defineProps({
   multiple: {
@@ -16,15 +16,16 @@ const props = defineProps({
     default: false
   },
   modelValue: {
-    type: Array
+    type: Array,
+    default: () => []
   },
   placeholder: {
-    type: String
+    type: String,
+    default: ''
   }
 })
 const emit = defineEmits(['update:modelValue', 'change'])
 let inputInitialHeight = 0
-const pressDeleteCount = 0
 const region = new Region(areaList, {
   isFilter: true,
   selectType: 3
@@ -61,9 +62,9 @@ const state = reactive({
   checkedValue: []
 })
 const ns = useNamespace('Main', state.Namespace)
-provide('Everright', {
-  state
-})
+// provide('Everright', {
+//   state
+// })
 const getFlattedNodes = (leafOnly) => {
   return store.getFlattedNodes(leafOnly)
 }

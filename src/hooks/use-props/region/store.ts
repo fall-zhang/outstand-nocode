@@ -24,6 +24,17 @@ const flatNodes = (nodes, leafOnly = false) => {
 class Node {
   checked = false
   disabled = false
+  config
+  data
+  parent
+  level
+  value
+  label
+  pathNodes
+  pathValues
+  pathLabels
+  childrenData
+  children
   constructor (data, config, parent, root) {
     const { value: valueKey, label: labelKey, children: childrenKey } = config
     this.data = data
@@ -51,14 +62,10 @@ class Node {
 
   get isDisabled () {
     const { data, parent, config } = this
-    const { disabled, checkStrictly, multiple } = config
+    const { disabled } = config
     const isDisabled = !!data[disabled]
-    // let result = false
-    // if (multiple) {
-    //   result = isDisabled || parent && (parent.isDisabled || parent.checked)
-    // }
-    return isDisabled || parent && (parent.isDisabled || parent.checked)
-    // return isDisabled || (parent && parent.isDisabled)
+
+    return (isDisabled || parent) && (parent.isDisabled || parent.checked)
   }
 
   get isLeaf () {

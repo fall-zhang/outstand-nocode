@@ -1,6 +1,6 @@
 import { computed, inject } from 'vue'
-import utils from '@/utils'
 import { isEmpty } from '@/utils/utils'
+import { checkIsField } from '@/utils/field'
 export const useTarget = () => {
   const {
     state,
@@ -22,7 +22,7 @@ export const useTarget = () => {
     return state.selected.type
   })
   const isSelectField = computed(() => {
-    return utils.checkIsField(state.selected)
+    return checkIsField(state.selected)
   }
   )
   const target = computed(() => {

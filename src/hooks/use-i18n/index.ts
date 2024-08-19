@@ -9,10 +9,7 @@ export const useI18n = (props?:string) => {
   })
   return {
     lang,
-    t (path, options) {
-      return transferData(lang.value, path, locale, options)
-    },
-    $t (path, options) {
+    t (path, options = {}) {
       return transferData(lang.value, path, locale, options)
     }
   }

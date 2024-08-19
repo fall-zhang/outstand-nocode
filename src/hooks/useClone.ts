@@ -16,7 +16,11 @@ export function deepClone<T>(receive: T): T {
   return result as T
 }
 
-// 递归克隆
+/**
+ * 使用递归进行克隆
+ * @param content 任意类型的数据
+ * @returns 克隆后的数据
+ */
 export function goClone(content: any): any {
   if (typeof content !== 'object') {
     return content

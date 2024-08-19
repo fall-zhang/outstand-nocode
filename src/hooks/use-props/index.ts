@@ -154,8 +154,8 @@ export const useProps = (state, data, isPC = true, isRoot = false, specialHandli
     }
     if (state.mode === 'preview') {
       const fieldState = state.fieldsLogicState.get(node)
-      const required = _.get(fieldState, 'required', undefined)
-      const readOnly = _.get(fieldState, 'readOnly', undefined)
+      const required = fieldState?.required || undefined
+      const readOnly = fieldState?.readOnly || undefined
       if (readOnly === undefined) {
         result.disabled = options.disabled
       } else {
