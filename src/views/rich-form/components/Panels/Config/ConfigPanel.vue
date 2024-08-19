@@ -6,7 +6,7 @@ import { useI18n, useNamespace } from '@/hooks'
 import { ref, computed, reactive, watch, onMounted, inject } from 'vue'
 import PanelsConfigComponentsPropsPanel from './components/PropsPanel.vue'
 import GlobalConfigPanel from './components/GlobalConfigPanel.vue'
-import { isNull } from '@/utils/utils'
+import { isEmpty } from '@/utils/utils'
 defineOptions({
   name: 'ConfigPanel',
   inheritAttrs: false,
@@ -48,7 +48,7 @@ const validator = (rule, value, callback) => {
   }
   if (props.mode === 'editor') {
     state.validator(target.value, fn)
-  } else if (isNull(newValue)) {
+  } else if (isEmpty(newValue)) {
     fn(0)
   } else {
     fn(1)

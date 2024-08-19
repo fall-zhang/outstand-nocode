@@ -2,7 +2,7 @@
 
 <script>
 import { ElMessage } from 'element-plus'
-import { ref, computed, unref, provide, onMounted, inject } from 'vue'
+import { ref, computed, unref, onMounted, inject } from 'vue'
 import utils from '@/utils'
 import { useNamespace, useI18n, useTarget, useProps } from '@/hooks'
 import PanelsConfigComponentsCheckboxComponent from './CheckboxComponent.vue'

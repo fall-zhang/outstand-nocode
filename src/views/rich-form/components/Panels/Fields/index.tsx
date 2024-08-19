@@ -50,10 +50,9 @@ export default defineComponent({
       }
     }
     const handleClone = (element) => {
-      // return wrapElement(element)
       return deepClone(element)
     }
-    const handleMove = (evt, originalEvent) => {
+    const handleMove = () => {
       return true
     }
     const dragOptions = {
@@ -102,7 +101,6 @@ export default defineComponent({
           })}
         </ElMenu>
       </ElScrollbar>
-      {/* <DeviceSwitch justifyContent={'flex-end'}></DeviceSwitch> */}
     </ElAside>)
   }
 }
