@@ -1,5 +1,5 @@
 <script>
-import hooks from '@/hooks'
+import { useNamespace } from '@/hooks'
 export default {
   name: 'FeCheckboxDesktop',
   inheritAttrs: false,
@@ -19,7 +19,7 @@ const props = defineProps({
     default: () => ({})
   }
 })
-const ns = hooks.useNamespace('FormTypesCheckbox')
+const ns = useNamespace('FormTypesCheckbox')
 </script>
 <template>
   <el-checkbox-group :class="[ns.e('radioGroup'), data.options.displayStyle === 'block' && ns.e('blockLayout')]"

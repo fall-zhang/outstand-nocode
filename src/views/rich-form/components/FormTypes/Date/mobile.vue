@@ -1,8 +1,7 @@
 <script>
 import dayjs from 'dayjs'
-import hooks from '@/hooks'
+import { useI18n } from '@/hooks'
 import { ref, computed, watch } from 'vue'
-import _ from 'lodash-es'
 // 统一交换时间戳
 export default {
   name: 'FeDateMobile',
@@ -13,7 +12,7 @@ export default {
 <script setup>
 const {
   t
-} = hooks.useI18n()
+} = useI18n()
 const props = defineProps({
   data: {
     require: true,

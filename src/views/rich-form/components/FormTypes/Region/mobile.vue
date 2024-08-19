@@ -1,7 +1,7 @@
 <!-- 省市区 -->
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import hooks from '@/hooks'
+import { useNamespace } from '@/hooks'
 defineOptions({
   name: 'FeRegionMobile',
   inheritAttrs: false,
@@ -23,7 +23,7 @@ const dialogVisible = ref(false)
 const popup = ref()
 const currentArea = ref()
 const areaRef = ref()
-const ns = hooks.useNamespace('FormTypesCascader_mobile')
+const ns = useNamespace('FormTypesCascader_mobile')
 watch(() => props.data.options.defaultValue, (newVal) => {
   currentArea.value = newVal
 }, {

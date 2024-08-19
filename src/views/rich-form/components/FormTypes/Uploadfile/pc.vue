@@ -1,7 +1,7 @@
 <script>
 import { ref, nextTick, watch, unref } from 'vue'
 import { ElMessage } from 'element-plus'
-import hooks from '@/hooks'
+import { useI18n } from '@/hooks'
 import _ from 'lodash-es'
 import { deepClone } from '@/utils'
 export default {
@@ -11,9 +11,7 @@ export default {
 }
 </script>
 <script setup>
-const {
-  t
-} = hooks.useI18n()
+const { t } = useI18n()
 const props = defineProps({
   data: {
     require: true,

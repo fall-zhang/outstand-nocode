@@ -1,5 +1,5 @@
 <script>
-import hooks from '@/hooks'
+import { useNamespace } from '@/hooks'
 export default {
   name: 'FeRadioDesktop',
   inheritAttrs: false,
@@ -19,15 +19,11 @@ const props = defineProps({
     default: () => ({})
   }
 })
-const ns = hooks.useNamespace('FormTypesRadio')
-const {
-  isEditModel
-} = hooks.useTarget()
+const ns = useNamespace('FormTypesRadio')
 </script>
 <template>
   <el-radio-group :class="[ns.e('radioGroup'), data.options.displayStyle === 'block' && ns.e('blockLayout')]"
     v-model="data.options.defaultValue" v-bind="params">
-    <!--    <el-radio v-for="item in params.options" :key="item.value" :label="isEditModel ? item.id : item.value">-->
     <el-radio v-for="item in params.options" :key="item.value" :label="item.value">
       {{ item.label }}
     </el-radio>

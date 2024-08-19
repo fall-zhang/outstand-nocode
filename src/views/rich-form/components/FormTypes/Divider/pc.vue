@@ -1,12 +1,10 @@
-<script>
-import hooks from '@/hooks'
-export default {
+<script setup>
+import { useNamespace } from '@/hooks'
+defineOptions({
   name: 'FeDividerDesktop',
   inheritAttrs: false,
   customOptions: {}
-}
-</script>
-<script setup>
+})
 const props = defineProps({
   data: {
     require: true,
@@ -19,15 +17,10 @@ const props = defineProps({
     default: () => ({})
   }
 })
-const ns = hooks.useNamespace('FormTypesDivider_pc')
+const ns = useNamespace('FormTypesDivider_pc')
 </script>
 <template>
-  <el-divider
-    :class="[ns.b()]"
-    v-bind="params"
-  >{{data.options.defaultValue}}</el-divider>
+  <el-divider :class="[ns.b()]" v-bind="params">{{ data.options.defaultValue }}</el-divider>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

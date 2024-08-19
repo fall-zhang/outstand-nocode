@@ -3,7 +3,7 @@ import { ref, nextTick, watch, onBeforeUnmount, unref } from 'vue'
 import SignaturePad from 'signature_pad'
 import Icon from '@/assets'
 import utils from '@/utils'
-import hooks from '@/hooks'
+import { useI18n, useNamespace, useFetch } from '@/hooks'
 export default {
   name: 'FeFeSignatureDesktop',
   inheritAttrs: false,
@@ -13,7 +13,7 @@ export default {
 <script setup>
 const {
   t
-} = hooks.useI18n()
+} = useI18n()
 const props = defineProps({
   data: {
     require: true,
@@ -26,7 +26,7 @@ const props = defineProps({
     default: () => ({})
   }
 })
-const ns = hooks.useNamespace('FormTypesSignature_pc')
+const ns = useNamespace('FormTypesSignature_pc')
 const element = ref()
 const dialogVisible = ref(false)
 const showClear = ref(true)
@@ -91,7 +91,7 @@ const handleCommit = async () => {
   const form = new FormData()
   form.append('file', utils.dataURLtoFile(signaturePad.toDataURL(), 'signature.png'))
   try {
-    const response = await hooks.useFetch(props.data.options.action, {
+    const response = await useFetch(props.data.options.action, {
       method: 'post',
       data: form
     })

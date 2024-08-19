@@ -1,5 +1,5 @@
 <script>
-import hooks from '@/hooks'
+import { useNamespace } from '@/hooks'
 import { ref } from 'vue'
 export default {
   name: 'FeRadioMobile',
@@ -20,7 +20,7 @@ const props = defineProps({
     default: () => ({})
   }
 })
-const ns = hooks.useNamespace('FormTypesRadio')
+const ns = useNamespace('FormTypesRadio')
 const element = ref()
 </script>
 <template>

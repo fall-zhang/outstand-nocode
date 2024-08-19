@@ -1,5 +1,5 @@
 <script>
-import hooks from '@/hooks'
+import { useNamespace } from '@/hooks'
 export default {
   name: 'FeCascaderMobile',
   inheritAttrs: false,
@@ -19,7 +19,7 @@ const props = defineProps({
     default: () => ({})
   }
 })
-const ns = hooks.useNamespace('FormTypesCascader_pc')
+const ns = useNamespace('FormTypesCascader_pc')
 </script>
 <template>
   <el-cascader :class="[ns.b()]" v-model="data.options.defaultValue" v-bind="params" />

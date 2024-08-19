@@ -1,13 +1,11 @@
 <!-- 省市区 -->
-<script>
-import hooks from '@/hooks'
-export default {
+<script setup>
+import { useNamespace } from '@/hooks'
+defineOptions({
   name: 'FeRegionDesktop',
   inheritAttrs: false,
   customOptions: {}
-}
-</script>
-<script setup>
+})
 const props = defineProps({
   data: {
     require: true,
@@ -20,16 +18,10 @@ const props = defineProps({
     default: () => ({})
   }
 })
-const ns = hooks.useNamespace('FormTypesRegion_pc')
+const ns = useNamespace('FormTypesRegion_pc')
 </script>
 <template>
-  <el-cascader
-    :class="[ns.b()]"
-    v-model="data.options.defaultValue"
-    v-bind="params"
-  />
+  <el-cascader :class="[ns.b()]" v-model="data.options.defaultValue" v-bind="params" />
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

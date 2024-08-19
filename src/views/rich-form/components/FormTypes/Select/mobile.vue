@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import hooks from '@/hooks'
+import { useNamespace } from '@/hooks'
 defineOptions({
   name: 'FeSelectMobile',
   inheritAttrs: false,
@@ -19,7 +19,7 @@ const props = defineProps({
   }
 })
 const element = ref()
-const ns = hooks.useNamespace('FormTypesSelect_mobile')
+const ns = useNamespace('FormTypesSelect_mobile')
 const onClear = () => {
   props.data.options.defaultValue = []
 }

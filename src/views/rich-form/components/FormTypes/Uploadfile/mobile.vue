@@ -2,7 +2,7 @@
 import { ref, nextTick, watch } from 'vue'
 import { showToast } from 'vant'
 import _ from 'lodash-es'
-import hooks from '@/hooks'
+import { useI18n, useFetch } from '@/hooks'
 export default {
   name: 'FeUploadMobile',
   inheritAttrs: false,
@@ -12,7 +12,7 @@ export default {
 <script setup>
 const {
   t
-} = hooks.useI18n()
+} = useI18n()
 const props = defineProps({
   data: {
     require: true,
@@ -37,7 +37,7 @@ const afterRead = async (file) => {
     form.append('file', e.file)
   })
   try {
-    const response = await hooks.useFetch(props.data.options.action, {
+    const response = await useFetch(props.data.options.action, {
       method: 'post',
       data: form
     })
@@ -63,17 +63,9 @@ const handleDel = (file) => {
 }
 </script>
 <template>
-  <van-field
-    readonly
-    v-bind="params"
-  >
+  <van-field readonly v-bind="params">
     <template #input>
-      <van-uploader
-        v-bind="params"
-        v-model="fileList"
-        :after-read="afterRead"
-        @delete="handleDel"
-      />
+      <van-uploader v-bind="params" v-model="fileList" :after-read="afterRead" @delete="handleDel" />
     </template>
   </van-field>
 </template>

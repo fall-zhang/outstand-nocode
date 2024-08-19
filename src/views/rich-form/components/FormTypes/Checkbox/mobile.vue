@@ -1,5 +1,5 @@
 <script setup>
-import hooks from '@/hooks'
+import { useNamespace } from '@/hooks'
 import { ref } from 'vue'
 defineOptions({
   name: 'FeCheckboxMobile',
@@ -17,7 +17,7 @@ const props = defineProps({
   }
 })
 const defaultValue = ref()
-const ns = hooks.useNamespace('FormTypesCheckbox')
+const ns = useNamespace('FormTypesCheckbox')
 const element = ref()
 </script>
 <template>
