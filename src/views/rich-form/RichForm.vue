@@ -9,7 +9,7 @@ import CanvasPanel from './components/Panels/Canvas/CenterCanvas'
 import ConfigPanel from './components/Panels/Config/ConfigPanel.vue'
 import DeviceSwitch from './components/DeviceSwitch.vue'
 import Icon from '@/assets'
-import hooks, { useI18n } from '@/hooks'
+import { useI18n, useHistory, useNamespace } from '@/hooks'
 import utils from '@/utils'
 import _ from 'lodash-es'
 import { isEmpty } from '@/utils/utils'
@@ -105,7 +105,7 @@ state.validator = (target, fn) => {
 //   undoStack,
 //   redoStack,
 //   last
-// } = hooks.useHistory(state)
+// } = useHistory(state)
 const {
   t,
   lang
@@ -206,22 +206,22 @@ const wrapElement = (el, isWrap = true, isSetSelection = true, sourceBlock = tru
   return node
 }
 const syncLayout = (platform, fn) => {
-  const isPc = platform === 'pc'
+  const isPC = platform === 'pc'
   const original = _.cloneDeep(state.store)
   utils.disassemblyData2(original)
-  layout[isPc ? 'mobile' : 'pc'] = original
-  if (isEmpty(isPc ? layout.pc : layout.mobile)) {
+  layout[isPC ? 'mobile' : 'pc'] = original
+  if (isEmpty(isPC ? layout.pc : layout.mobile)) {
     // const newData = _.cloneDeep(state.fields.map(e => wrapElement(e, true, false)))
     const newData = state.fields.map(e => wrapElement(e, true, false, false, false))
     fn && fn(newData)
   } else {
     // debugger
-    const layoutFields = utils.pickfields(isPc ? layout.pc : layout.mobile).map(e => {
+    const layoutFields = utils.pickfields(isPC ? layout.pc : layout.mobile).map(e => {
       return {
         id: e
       }
     })
-    const copyData = _.cloneDeep(isPc ? layout.pc : layout.mobile)
+    const copyData = _.cloneDeep(isPC ? layout.pc : layout.mobile)
     const addFields = _.differenceBy(state.fields, layoutFields, 'id')
     const delFields = _.differenceBy(layoutFields, state.fields, 'id')
     utils.repairLayout(copyData, delFields)
@@ -232,8 +232,8 @@ const syncLayout = (platform, fn) => {
   }
 }
 const getLayoutDataByplatform = (platform) => {
-  const isPc = platform === 'pc'
-  if (isEmpty(isPc ? layout.pc : layout.mobile)) {
+  const isPC = platform === 'pc'
+  if (isEmpty(isPC ? layout.pc : layout.mobile)) {
     if (platform === state.platform) {
       const original = _.cloneDeep(state.store)
       utils.disassemblyData2(original)
@@ -246,21 +246,20 @@ const getLayoutDataByplatform = (platform) => {
   if (platform === state.platform) {
     const original = _.cloneDeep(state.store)
     utils.disassemblyData2(original)
-    layout[isPc ? 'pc' : 'mobile'] = original
+    layout[isPC ? 'pc' : 'mobile'] = original
   }
-  const layoutFields = utils.pickfields(isPc ? layout.pc : layout.mobile).map(e => {
+  const layoutFields = utils.pickfields(isPC ? layout.pc : layout.mobile).map(e => {
     return {
       id: e
     }
   })
-  const copyData = _.cloneDeep(isPc ? layout.pc : layout.mobile)
+  const copyData = _.cloneDeep(isPC ? layout.pc : layout.mobile)
   const addFields = _.cloneDeep(_.differenceBy(state.fields, layoutFields, 'id').map(e => wrapElement(e, true, false, false, false)))
   const delFields = _.differenceBy(layoutFields, state.fields, 'id')
   utils.repairLayout(copyData, delFields)
   utils.disassemblyData2(addFields)
   copyData.push(...addFields)
   return copyData
-
 }
 const switchPlatform = (platform) => {
   if (state.platform === platform) {
@@ -297,7 +296,7 @@ provide('Everright', {
 })
 
 // Namespace: formEditor
-const ns = hooks.useNamespace('Main', state.Namespace)
+const ns = useNamespace('Main', state.Namespace)
 const getData1 = () => {
   return Object.assign(utils.disassemblyData1(_.cloneDeep({
     list: state.store,
@@ -320,7 +319,6 @@ const getData2 = () => {
 }
 const setData1 = (data) => {
   if (isEmpty(data)) return false
-  // stop()
   const newData = utils.combinationData1(_.cloneDeep(data))
   isShow.value = false
   state.store = newData.list
@@ -362,7 +360,6 @@ const getData = () => {
     return {}
   }
   return (props.layoutType === 1 ? getData1 : getData2)()
-
 }
 const setData = props.layoutType === 1 ? setData1 : setData2
 defineExpose({
@@ -477,7 +474,7 @@ const onClickOutside = () => {
         <Icon @click="handleOperation(6)" :class="[ns.e('arrowRight'), !isFoldConfig && ns.is('close')]"
           icon="arrowRight"></Icon>
       </el-container>
-      <ConfigPanel v-show="isFoldConfig" v-if="isShow && isShowConfig"></ConfigPanel>
+      <ConfigPanel v-show="isFoldConfig" v-if="isShow"></ConfigPanel>
     </el-container>
   </el-container>
 </template>

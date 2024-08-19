@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { defineProps, reactive, provide } from 'vue'
 import CanvasPanel from '../components/Panels/Canvas/CenterCanvas'
 import { useLogic } from '@/hooks/use-logic'
-import utils, { deepClone } from '@/utils'
+import utils, { deepClone, isPC } from '@/utils'
 import defaultProps from '../defaultProps'
 import { isEmpty } from '@/utils/utils'
 defineOptions({
@@ -17,7 +16,7 @@ const layout = {
 const state = reactive({
   store: [],
   selection: {},
-  platform: utils.isPc() ? 'pc' : 'mobile',
+  platform: isPC() ? 'pc' : 'mobile',
   mode: 'preview',
   config: {},
   Namespace: 'formEditor',
@@ -29,7 +28,7 @@ const state = reactive({
 })
 useLogic(state)
 const getData = () => {
-  const result = {}
+  const result: Record<string, any> = {}
   state.fields.forEach(e => {
     result[e.key] = e.options.defaultValue
   })

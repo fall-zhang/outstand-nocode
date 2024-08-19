@@ -154,9 +154,7 @@ const renderStyleSheets = (node, uid, platform) => {
 }
 export const useCss = (node, platform) => {
   const id = ref('')
-  const {
-    uid
-  } = getCurrentInstance()
+  const { uid } = getCurrentInstance()
   if (node.style) {
     watch(node.style, (newValue) => {
       if (!_.isEmpty(newValue)) {

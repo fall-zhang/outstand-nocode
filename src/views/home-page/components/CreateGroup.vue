@@ -80,13 +80,13 @@ const onAddNewChart = (type: string) => {
   align-items: center;
   border-radius: 10px;
   border: 1px solid var(--gray-1);
+  cursor: pointer;
 
   &:hover {
     background-color: var(--gray-1);
     transition: .5s;
   }
 
-  cursor: pointer;
 }
 
 .fun-main {

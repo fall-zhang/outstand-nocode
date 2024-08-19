@@ -1,4 +1,3 @@
-import { ref, defineProps } from 'vue'
 import s from './FileList.module.scss'
 import Img from '@A/images/charts-example/line-chart.png'
 

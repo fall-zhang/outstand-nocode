@@ -38,8 +38,7 @@ export const fieldsConfig = [
               push: 0
             },
             type: 'col',
-            list: [
-            ]
+            list: []
           },
           {
             id: '',
@@ -50,8 +49,7 @@ export const fieldsConfig = [
               push: 0
             },
             type: 'col',
-            list: [
-            ]
+            list: []
           },
           {
             id: '',
@@ -62,8 +60,7 @@ export const fieldsConfig = [
               push: 0
             },
             type: 'col',
-            list: [
-            ]
+            list: []
           }
         ],
         options: {
@@ -139,8 +136,7 @@ export const fieldsConfig = [
         label: '标签页',
         icon: 'label',
         id: '',
-        columns: [
-        ],
+        columns: [],
         options: {
           type: '',
           tabPosition: 'top',
@@ -455,22 +451,22 @@ export const fieldsConfig = [
           required: false
         }
       },
-      {
-        type: 'signature',
-        label: '签名',
-        icon: 'signature',
-        key: '',
-        id: '',
-        options: {
-          required: false,
-          isShowLabel: true,
-          labelWidth: 100,
-          defaultValue: '',
-          penColor: 'rgb(0, 0, 0)',
-          action: '',
-          disabled: false
-        }
-      }
+      // {
+      //   type: 'signature',
+      //   label: '签名',
+      //   icon: 'signature',
+      //   key: '',
+      //   id: '',
+      //   options: {
+      //     required: false,
+      //     isShowLabel: true,
+      //     labelWidth: 100,
+      //     defaultValue: '',
+      //     penColor: 'rgb(0, 0, 0)',
+      //     action: '',
+      //     disabled: false
+      //   }
+      // }
     ]
   },
   {

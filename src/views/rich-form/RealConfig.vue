@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-
-import { defineProps, reactive, provide, watch } from 'vue'
 import ConfigPanel from './components/Panels/Config/ConfigPanel.vue'
 import utils from '@/utils'
 import defaultProps from './defaultProps'
@@ -36,7 +34,7 @@ const state = reactive({
   logic: {}
 })
 const setSelection = (node) => {
-  let result = ''
+  let result: any = ''
   if (node === 'root') {
     result = state.config
   } else if (node.type === 'inline') {
@@ -47,7 +45,7 @@ const setSelection = (node) => {
 
   state.selected = result
 }
-const switchPlatform = (platform) => {
+const switchPlatform = (platform: string) => {
   state.platform = platform
 }
 const fireEvent = (type, data) => {
@@ -74,9 +72,7 @@ watch(() => props.field, (newVal) => {
   immediate: true
 })
 defineExpose({
-  switchPlatform(platform) {
-    state.platform = platform
-  }
+  switchPlatform
 })
 watch(() => state.selected, (newVal) => {
   fireEvent('changeParams', deepClone(newVal))
@@ -86,6 +82,5 @@ watch(() => state.selected, (newVal) => {
 })
 </script>
 <template>
-  64444444444444444466464
   <ConfigPanel mode="config"></ConfigPanel>
 </template>
