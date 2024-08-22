@@ -1,6 +1,6 @@
 /**
  * 历史步骤操作方法，该方法可以保证历史记录不会占据太大空间
- * @author 张博飞
+ * @author
  * @date 2023/3/27
  */
 
@@ -17,6 +17,7 @@ class History {
     this.current = {}
     this.currentIndex = -1
   }
+
   setMaxStep(stepCount: number) {
     this.maxStep = stepCount
     if (this.historyArr.length > stepCount) {
@@ -24,18 +25,22 @@ class History {
       this.historyArr = this.historyArr.slice(this.historyArr.length - stepCount)
     }
   }
+
   getHistory() {
     return this.historyArr
   }
+
   isFirst() {
     return this.currentIndex === 0
   }
+
   isLast() {
     // console.log(this.currentIndex)
     // console.log(this.historyArr.length - 1)
     // console.log(this.currentIndex === (this.historyArr.length - 1))
     return this.currentIndex === (this.historyArr.length - 1)
   }
+
   /**
    * 用于更新当前数据的列表
    */
@@ -50,9 +55,11 @@ class History {
     }
     return this.current
   }
+
   getCurrent() {
     return this.current
   }
+
   preStep() {
     if (this.currentIndex > 0) {
       this.currentIndex -= 1
@@ -60,6 +67,7 @@ class History {
     }
     return this.current
   }
+
   nextStep() {
     if (this.currentIndex < this.historyArr.length - 1) {
       this.currentIndex += 1

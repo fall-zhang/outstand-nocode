@@ -66,7 +66,7 @@ export default defineComponent({
     return () => (<ElAside class={[ns.b()]} width={ER.props.fieldsPanelWidth}>
       <ElScrollbar>
         <ElMenu
-          default-openeds={ER.props.fieldsPanelDefaultOpeneds}>
+          default-openeds={ER.props.fieldsPanelDefaultOpened}>
           {ER.props.fieldsConfig.map((element, index) => {
             return (
               <ElSubMenu

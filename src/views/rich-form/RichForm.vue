@@ -26,7 +26,7 @@ const props = defineProps({
     type: String,
     default: '220px'
   },
-  fieldsPanelDefaultOpeneds: {
+  fieldsPanelDefaultOpened: {
     type: Array,
     default: () => ['defaultField', 'field', 'container']
   },
@@ -285,6 +285,16 @@ const fireEvent = (type, data) => {
     data
   })
 }
+provide('FeOperation', {
+  setSelection,
+  wrapElement,
+  delField,
+  addField,
+  switchPlatform,
+  addFieldData,
+  fireEvent
+})
+
 provide('Everright', {
   state,
   setSelection,
@@ -298,7 +308,6 @@ provide('Everright', {
   fireEvent
 })
 
-// Namespace: formEditor
 const ns = useNamespace('Main', state.Namespace)
 const getData1 = () => {
   return Object.assign(utils.disassemblyData1(deepClone({
