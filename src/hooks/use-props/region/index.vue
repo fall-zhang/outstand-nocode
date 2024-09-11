@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps, ref, reactive, computed, watch, nextTick, onMounted, unref } from 'vue'
+import { ref, reactive, computed, watch, nextTick, onMounted, unref } from 'vue'
 import { ClickOutside as vClickOutside } from 'element-plus'
 import { useNamespace } from '@/hooks'
 import _ from 'lodash-es'
@@ -62,9 +62,6 @@ const state = reactive({
   checkedValue: []
 })
 const ns = useNamespace('Main', state.Namespace)
-// provide('Everright', {
-//   state
-// })
 const getFlattedNodes = (leafOnly) => {
   return store.getFlattedNodes(leafOnly)
 }

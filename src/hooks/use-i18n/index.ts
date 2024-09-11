@@ -1,15 +1,14 @@
-import { computed, inject } from 'vue'
+import { computed } from 'vue'
 import locale from '@/locale/rich-form'
 import { transferData } from '@/utils/field'
 
 export const useI18n = (props?:string) => {
-  const ER = inject('Everright', { props })
   const lang = computed(() => {
-    return ER.props.lang
+    return 'zh-cn'
   })
   return {
     lang,
-    t (path, options = {}) {
+    t (path:string, options = {}) {
       return transferData(lang.value, path, locale, options)
     }
   }
