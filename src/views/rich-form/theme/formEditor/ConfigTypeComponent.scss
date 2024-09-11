@@ -12,44 +12,14 @@
       align-items: center;
       cursor: pointer;
 
-      .ER-icon {
-
-        //color: $primary-color;
-        path.secondary {
-          fill: #CCCCCC;
-        }
-      }
-
       &:hover {
         border-color: $primary-color;
 
-        .ER-icon {
-          color: $primary-color;
-
-          path.secondary {
-            fill: #BAE3FF;
-          }
-        }
-      }
-
-      @include when(Selected) {
-        .ER-icon {
-          border-color: $primary-color;
-          color: $primary-color;
-
-          path.secondary {
-            fill: #BAE3FF;
-          }
-        }
       }
 
       @include when(Disabled) {
         background: #F2F2F2;
         cursor: not-allowed;
-
-        .ER-icon {
-          color: #666;
-        }
       }
     }
 

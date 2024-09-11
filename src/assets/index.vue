@@ -30,12 +30,30 @@ const element = ref('')
 
 </script>
 <template>
-  <i ref="element" :class="[
-    `ER-icon`,
-    props.disabled && 'is-disabled'
-  ]" :style="style">
+  <i ref="element" :class="[`fe-icon`, props.disabled && 'is-disabled']" :style="style">
     <component :is="svg[props.icon]"></component>
   </i>
 </template>
 
-<style scoped></style>
+<style lang="scss">
+.fe-icon {
+  font-size: 14px;
+  width: 1em;
+  height: 1em;
+  line-height: 1em;
+  display: inline-flex;
+  cursor: pointer;
+  color: #666;
+  outline: none;
+
+  svg {
+    width: 1em;
+    height: 1em;
+  }
+
+  &.is-disabled {
+    color: $disabled-color;
+    cursor: not-allowed;
+  }
+}
+</style>
