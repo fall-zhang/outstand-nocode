@@ -74,10 +74,7 @@ export default defineComponent({
   },
   setup(props, { slots }) {
     const ER = inject('Everright')
-    const {
-      t
-    } = useI18n()
-    const ns = useNamespace('selectElement')
+    const { t } = useI18n()
     const isHover = ref(false)
     const isInlineChildren = checkIslineChildren(props.data)
     const {
@@ -142,7 +139,7 @@ export default defineComponent({
             }
           }}
           v-slots={slots}>
-          <Icon class={[ns.e('tableOperator')]} icon="tableOperation"></Icon>
+          <Icon class={$style.tableOperator} icon="tableOperation"></Icon>
         </ElDropdown>
       )
     }
@@ -261,7 +258,7 @@ export default defineComponent({
       return target.value.id === props.data.id && $style.Selected
     })
     const maskNode = (
-      <div class={[ns.e('mask')]}>
+      <div class={$style.mask}>
       </div>
     )
     const isShowCopy = computed(() => isInlineChildren ? props.hasCopy && props.data.context.parent.columns.length < ER.props.inlineMax : props.hasCopy)
@@ -269,13 +266,10 @@ export default defineComponent({
       {...useAttrs()}
       class={[
         id.value,
-        ns.b(),
-        !isField && ns.e('borderless'),
-        unref(isEditModel) && ns.e('editor'),
+        $style.selectElement,
+        !isField && $style.borderless,
         unref(isEditModel) && Selected.value,
-        unref(isEditModel) && isHover.value && ns.e('hover'),
-        unref(isEditModel) && isScale.value && ns.e('isScale'),
-        unref(isEditModel) && isWarning.value && ns.is('Warning')
+        unref(isEditModel) && isWarning.value && $style.Warning
       ]}
       ref={elementRef} onClick={unref(isEditModel) && withModifiers(handleClick, ['stop'])}
     >
@@ -283,21 +277,19 @@ export default defineComponent({
       <span></span>
       {
         unref(isEditModel) && (
-          <div class={[ns.e('topLeft')]}>
-            {props.hasDrag && (<Icon class={['handle', ns.e('dragIcon')]} icon="Rank"></Icon>)}
+          <div class={$style.topLeft}>
+            {props.hasDrag && (<Icon class={['handle', $style.dragIcon]} icon="Rank"></Icon>)}
           </div>
         )
       }
       {
         unref(isEditModel) && (
-          <div class={[ns.e('bottomRight')]}>
-            {/* {isShowSelectParent.value && (<Icon class={['handle', ns.e('selectParent')]} icon="top"></Icon>)} */}
-              545454
-            <Icon class={['handle', ns.e('selectParent')]} onClick={withModifiers((e) => {
+          <div class={$style.bottomRight}>
+            <Icon class={['handle', $style.selectParent]} onClick={withModifiers((e) => {
               handleAction(5)
             }, ['stop'])} icon="top"></Icon>
             {props.hasDel && (
-              <Icon class={[ns.e('copy')]} onClick={withModifiers((e) => {
+              <Icon class={$style.copy} onClick={withModifiers((e) => {
                 handleAction(1)
               }, ['stop'])} icon="delete"></Icon>
             )}
@@ -322,7 +314,7 @@ export default defineComponent({
               }, ['stop'])} icon="copy"></Icon>)
             }
             {isShowWidthScale.value && (
-              <div ref={widthScaleElement}><Icon class={[ns.e('widthScale')]} icon="dragWidth"></Icon></div>)}
+              <div ref={widthScaleElement}><Icon class={$style.widthScale} icon="dragWidth"></Icon></div>)}
             {props.hasTableCellOperator && renderTableCellOperator()}
           </div>
         )

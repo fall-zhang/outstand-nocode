@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import CanvasPanel from '../components/Panels/Canvas/CenterCanvas'
-import { useLogic } from '@/hooks/use-logic'
-import utils, { deepClone, isPC } from '@/utils'
+import utils, { deepClone, isPC, isEmpty } from '@/utils'
 import defaultProps from '../defaultProps'
-import { isEmpty } from '@/utils/utils'
 defineOptions({
   name: 'FormPreview'
 })
@@ -26,7 +24,6 @@ const state = reactive({
   logic: {},
   fieldsLogicState: new Map()
 })
-useLogic(state)
 const getData = () => {
   const result: Record<string, any> = {}
   state.fields.forEach(e => {
@@ -41,7 +38,7 @@ const fireEvent = (type, data) => {
   })
 }
 // 提供给预览功能的所有数据
-provide('Everright', {
+provide('fe-preview', {
   state,
   getData,
   props,

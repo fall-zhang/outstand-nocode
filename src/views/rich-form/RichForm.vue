@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import './theme/icon.scss'
 import 'everright-filter/dist/style.css'
 import './theme/formEditor/index.scss'
 import { ClickOutside as vClickOutside, ElMessage } from 'element-plus'
@@ -10,16 +9,13 @@ import ConfigPanel from './components/Panels/Config/ConfigPanel.vue'
 import DeviceSwitch from './components/DeviceSwitch.vue'
 import Icon from '@/assets'
 import { useI18n, useNamespace } from '@/hooks'
-import utils, { deepClone } from '@/utils'
+import utils, { deepClone, checkIsField, disassemblyData1, repairLayout } from '@/utils'
 import _ from 'lodash-es'
 import { isEmpty } from '@/utils/utils'
 import defaultProps from './defaultProps'
 import generatorData from './generatorData'
-import FormPreview from './form-preview/form-preview.vue'
-defineOptions({
-  name: 'FormEditor'
-})
-const emit = defineEmits(['listener'])
+import { PlatformType } from './types/rich-form'
+const emit = defineEmits(['changeParams', 'save'])
 const props = defineProps({
   ...defaultProps,
   fieldsPanelWidth: {
@@ -55,32 +51,6 @@ const layout = {
   pc: [],
   mobile: []
 }
-const previewPlatform = ref<'pc' | 'mobile'>('pc')
-const previewLoading = ref(true)
-const validator = (target, fn) => {
-  console.log('start validate 🚀 ~ validator ~ target:', target)
-  if (target) {
-    const count = _.countBy(state.validateStates, 'data.key')
-    const newValue = target.key.trim()
-    if (isEmpty(newValue)) {
-      _.find(state.validateStates, { data: { key: target.key } }).isWarning = true
-      fn && fn(0)
-      return false
-    }
-    state.validateStates.forEach(e => {
-      if (count[e.data.key] > 1) {
-        e.isWarning = true
-      } else {
-        e.isWarning = false
-      }
-    })
-    if (fn) {
-      fn(!(count[newValue] > 1) ? 1 : 2)
-    }
-  } else {
-    fn(state.validateStates.every(e => !e.isWarning))
-  }
-}
 const state = reactive({
   store: [],
   selected: {},
@@ -95,29 +65,38 @@ const state = reactive({
   fields: [],
   Namespace: 'formEditor',
   logic: {},
-  validator
+  validator(target, fn) {
+    if (target) {
+      const count = _.countBy(state.validateStates, 'data.key')
+      const newValue = target.key.trim()
+      if (isEmpty(newValue)) {
+        _.find(state.validateStates, { data: { key: target.key } }).isWarning = true
+        fn && fn(0)
+        return false
+      }
+      state.validateStates.forEach(e => {
+        if (count[e.data.key] > 1) {
+          e.isWarning = true
+        } else {
+          e.isWarning = false
+        }
+      })
+      if (fn) {
+        fn(!(count[newValue] > 1) ? 1 : 2)
+      }
+    } else {
+      fn(state.validateStates.every(e => !e.isWarning))
+    }
+  }
 })
 const isFoldFields = ref(true)
 const isFoldConfig = ref(true)
 
-// const {
-//   canUndo,
-//   canRedo,
-//   undo,
-//   redo,
-//   undoStack,
-//   redoStack,
-//   last
-// } = useHistory(state)
-const {
-  t,
-  lang
-} = useI18n('zh-cn')
-const EReditorPreviewRef = ref('')
+const { t, lang } = useI18n('zh-cn')
 const isShow = ref(true)
 const isShowConfig = ref(true)
 const setSelection = (node) => {
-  let result = ''
+  let result: any = ''
   if (node === 'root') {
     result = state.config
   } else if (node.type === 'inline') {
@@ -133,7 +112,7 @@ const setSelection = (node) => {
 }
 setSelection(state.config)
 const addField = (node) => {
-  if (utils.checkIsField(node)) {
+  if (checkIsField(node)) {
     const findIndex = _.findIndex(state.fields, {
       id: node.id
     })
@@ -196,7 +175,7 @@ const wrapElement = (el, isWrap = true, isSetSelection = true, sourceBlock = tru
       }
       : el
   if (!sourceBlock && resetWidth) {
-    if (utils.checkIsField(el)) {
+    if (checkIsField(el)) {
       if (state.platform === 'pc') {
         el.style.width.pc = '100%'
       } else {
@@ -227,7 +206,7 @@ const syncLayout = (platform, fn) => {
     const copyData = deepClone(isPC ? layout.pc : layout.mobile)
     const addFields = _.differenceBy(state.fields, layoutFields, 'id')
     const delFields = _.differenceBy(layoutFields, state.fields, 'id')
-    utils.repairLayout(copyData, delFields)
+    repairLayout(copyData, delFields)
     utils.combinationData2(copyData, state.fields)
     copyData.push(...addFields.map(e => wrapElement(e, true, false, false, false)))
     // copyData.push(...addFields)
@@ -259,12 +238,12 @@ const getLayoutDataByplatform = (platform) => {
   const copyData = deepClone(isPC ? layout.pc : layout.mobile)
   const addFields = deepClone(_.differenceBy(state.fields, layoutFields, 'id').map(e => wrapElement(e, true, false, false, false)))
   const delFields = _.differenceBy(layoutFields, state.fields, 'id')
-  utils.repairLayout(copyData, delFields)
+  repairLayout(copyData, delFields)
   utils.disassemblyData2(addFields)
   copyData.push(...addFields)
   return copyData
 }
-const switchPlatform = (platform) => {
+const switchPlatform = (platform: PlatformType) => {
   if (state.platform === platform) {
     return false
   }
@@ -280,21 +259,15 @@ const switchPlatform = (platform) => {
 }
 const canvasScrollRef = ref('')
 const fireEvent = (type, data) => {
-  emit('listener', {
-    type,
-    data
-  })
+  console.log('🚀 ~ fireEvent ~ type:', type)
+  console.log('🚀 ~ fireEvent ~ data:', data)
+  emit(type, data)
 }
-provide('FeOperation', {
-  setSelection,
-  wrapElement,
-  delField,
-  addField,
-  switchPlatform,
-  addFieldData,
-  fireEvent
-})
 
+const richFormPreviewData = ref({
+
+})
+provide('rich-form-preview', richFormPreviewData)
 provide('Everright', {
   state,
   setSelection,
@@ -310,7 +283,7 @@ provide('Everright', {
 
 const ns = useNamespace('Main', state.Namespace)
 const getData1 = () => {
-  return Object.assign(utils.disassemblyData1(deepClone({
+  return Object.assign(disassemblyData1(deepClone({
     list: state.store,
     config: state.config,
     data: state.data
@@ -373,19 +346,10 @@ const getData = () => {
   }
   return (props.layoutType === 1 ? getData1 : getData2)()
 }
-const setData = props.layoutType === 1 ? setData1 : setData2
-defineExpose({
-  switchPlatform(platform) {
-    switchPlatform(platform)
-  },
-  setData,
-  getData
-})
-const handleOperation = (type: string | number) => {
+type OperationType = 'resetData' | 'preview'
+const handleOperation = (type: OperationType) => {
   switch (type) {
-    case 1:
-      break
-    case 2:
+    case 'resetData':
       layout.pc = []
       layout.mobile = []
       state.fields.splice(0)
@@ -393,37 +357,16 @@ const handleOperation = (type: string | number) => {
       state.data = {}
       setSelection('root')
       break
-    case 3:
-      state.previewVisible = true
-      previewLoading.value = true
-      nextTick(() => {
-        EReditorPreviewRef.value.setData(getData())
-        nextTick(() => {
-          previewLoading.value = false
-        })
-      })
-      break
-    case 4:
-      fireEvent('save', getData())
-      break
-    case 5:
-      isFoldFields.value = !isFoldFields.value
-      break
-    case 6:
-      isFoldConfig.value = !isFoldConfig.value
+    case 'preview':
+      richFormPreviewData.value = getData()
       break
   }
 }
-function onDeviceSwitch(val: any) {
-  previewLoading.value = true
-  previewPlatform.value = val
-  EReditorPreviewRef.value.switchPlatform(val)
-  EReditorPreviewRef.value.setData(getData())
-  nextTick(() => {
-    nextTick(() => {
-      previewLoading.value = false
-    })
-  })
+function onCollapseLeft() {
+  isFoldFields.value = !isFoldFields.value
+}
+function onCollapseRight() {
+  isFoldConfig.value = !isFoldConfig.value
 }
 watch(() => state.selected, (newVal) => {
   fireEvent('changeParams', deepClone(newVal))
@@ -433,60 +376,136 @@ watch(() => state.selected, (newVal) => {
 })
 const onClickOutside = () => {
 }
-// watch(state.store, (newVal) => {
-//   console.log('🚀 ~ watch ~ newVal:', newVal)
-// })
+const onSaveData = () => {
+  fireEvent('save', getData())
+}
 </script>
 <template>
-  <el-dialog destroy-on-close fullscreen :class="[ns.e('previewDialog')]" @closed="previewPlatform = 'pc'"
-    v-model="state.previewVisible">
-    <template #header>
-      <DeviceSwitch :modelValue="previewPlatform" @update:model-value="onDeviceSwitch">
-      </DeviceSwitch>
-    </template>
-    <el-scrollbar>
-      <div v-loading="previewLoading"
-        :class="[ns.e('previewDialogWrap'), previewPlatform === 'mobile' && ns.is('mobilePreview')]">
-        <FormPreview v-bind="props" ref="EReditorPreviewRef" />
-      </div>
-    </el-scrollbar>
-  </el-dialog>
-  <el-container :class="[ns.b()]" direction="vertical">
-    <el-container>
-      <FieldsPanel v-show="isFoldFields" />
-      <el-container :class="[ns.e('container')]">
-        <el-header :class="[ns.e('operation')]">
-          <div>
-            <Icon @click="handleOperation(4)" :class="[ns.e('icon')]" icon="save"></Icon>
-            <Icon v-if="isShowClear" @click="handleOperation(2)" :class="[ns.e('icon')]" icon="clear0"></Icon>
-            <slot name="operation-left"></slot>
-          </div>
-          <div>
-            <DeviceSwitch :modelValue="state.platform" @update:model-value="switchPlatform">
-            </DeviceSwitch>
-          </div>
-          <div>
-            <slot name="operation-right"></slot>
-            <el-dropdown v-if="isShowI18n" @command="(command) => fireEvent('lang', command)">
-              <Icon :class="[ns.e('icon')]" icon="language"></Icon>
-              <template #dropdown>
-                <el-dropdown-menu>
-                  <el-dropdown-item command="zh-cn" :disabled="lang === 'zh-cn'">中文</el-dropdown-item>
-                  <el-dropdown-item command="en" :disabled="lang === 'en'">English</el-dropdown-item>
-                </el-dropdown-menu>
-              </template>
-            </el-dropdown>
-            <Icon @click="handleOperation(3)" :class="[ns.e('icon')]" icon="preview"></Icon>
-          </div>
-        </el-header>
-        <CanvasPanel v-click-outside="onClickOutside" v-if="isShow" :data="state.store"></CanvasPanel>
-        <Icon @click="handleOperation(5)" :class="[ns.e('arrowLeft'), !isFoldFields && ns.is('close')]"
-          icon="arrowLeft">
-        </Icon>
-        <Icon @click="handleOperation(6)" :class="[ns.e('arrowRight'), !isFoldConfig && ns.is('close')]"
-          icon="arrowRight"></Icon>
-      </el-container>
-      <ConfigPanel v-show="isFoldConfig" v-if="isShow"></ConfigPanel>
+  <el-container :class="$style.mainOuter">
+    <FieldsPanel v-show="isFoldFields" />
+    <el-container :class="$style.container">
+      <el-header :class="$style.operation">
+        <div>
+          <Icon @click="onSaveData" class="fe-icon" icon="save"></Icon>
+          <Icon v-if="isShowClear" @click="handleOperation('resetData')" class="fe-icon" icon="clear0"></Icon>
+          <slot name="operation-left"></slot>
+        </div>
+        <div>
+          <DeviceSwitch :modelValue="state.platform" @update:model-value="switchPlatform">
+          </DeviceSwitch>
+        </div>
+        <div>
+          <slot name="operation-right"></slot>
+          <el-dropdown v-if="isShowI18n" @command="(command) => fireEvent('lang', command)">
+            <Icon :class="[ns.e('icon')]" icon="language"></Icon>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item command="zh-cn" :disabled="lang === 'zh-cn'">中文</el-dropdown-item>
+                <el-dropdown-item command="en" :disabled="lang === 'en'">English</el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+          <Icon @click="handleOperation('preview')" :class="[ns.e('icon')]" icon="preview"></Icon>
+        </div>
+      </el-header>
+      <CanvasPanel v-click-outside="onClickOutside" v-if="isShow" :data="state.store"></CanvasPanel>
+      <Icon @click="onCollapseLeft" :class="[$style.arrowLeft, !isFoldFields && $style.close]" icon="arrowLeft" />
+      <Icon @click="onCollapseRight" :class="[$style.arrowRight, !isFoldConfig && $style.close]" icon="arrowRight" />
     </el-container>
+    <ConfigPanel v-show="isFoldConfig" v-if="isShow"></ConfigPanel>
   </el-container>
 </template>
+
+<style lang="scss" module>
+.previewDialogWrap {
+  box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.1);
+  margin: 10px 40px;
+
+  &.mobilePreview {
+    width: 400px;
+    margin: 0 auto;
+  }
+}
+
+.mainOuter {
+  height: 100vh;
+
+  .el-container {
+    height: 100%;
+  }
+
+  .operation {
+    height: 40px;
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 3;
+
+    .fe-icon {
+      border-radius: 4px;
+      width: 24px;
+      height: 24px;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+
+      &:hover {
+        color: $primary-color;
+        background: #ECF6FF;
+      }
+    }
+  }
+
+  .container {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .arrowLeft {
+    left: 0;
+    transform: perspective(10px) rotateY(9deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 2px 0px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 0 6px 6px 0;
+  }
+
+  .arrowRight {
+    right: 0;
+    transform: perspective(10px) rotateY(-9deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: -2px 0px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 6px 0 0 6px;
+  }
+
+  .arrowLeft,
+  .arrowRight {
+    position: absolute;
+    top: 48%;
+    height: 32px;
+    width: 16px;
+    z-index: 2;
+    background: #FFFFFF;
+    transition: .3s;
+
+    &:hover {
+      color: $primary-color;
+    }
+
+    svg {
+      transition: .3s;
+    }
+
+    &.close {
+      svg {
+        transform: rotate(180deg);
+      }
+    }
+  }
+}
+</style>

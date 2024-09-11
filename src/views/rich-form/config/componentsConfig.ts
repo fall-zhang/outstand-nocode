@@ -166,7 +166,6 @@ export const fieldsConfig = [
           filterable: true,
           defaultValue: 'divider',
           labelWidth: 100,
-          labelHidden: true,
           required: false
         }
       }
@@ -179,7 +178,7 @@ export const fieldsConfig = [
     list: [
       {
         type: 'input',
-        label: '单行ss文本',
+        label: '单行文本',
         icon: 'input',
         key: '',
         id: '',

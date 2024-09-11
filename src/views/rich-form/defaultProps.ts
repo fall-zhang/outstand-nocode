@@ -1,4 +1,4 @@
-import { fieldsConfig, globalConfig } from './componentsConfig'
+import { fieldsConfig, globalConfig } from './config/componentsConfig'
 export default {
   fieldsConfig: {
     type: Array,
