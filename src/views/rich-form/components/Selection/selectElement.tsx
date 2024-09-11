@@ -11,9 +11,10 @@ import {
 } from 'vue'
 import { isHTMLTag } from '@/utils/browser'
 import { useI18n, useNamespace, useTarget, useCss } from '@/hooks'
-import utils from '@/utils'
+import utils, { syncWidthByPlatform, checkIsField, checkIslineChildren } from '@/utils'
 import _ from 'lodash-es'
 import Icon from '@/assets'
+import $style from './SelectElement.module.scss'
 import { ElDropdownMenu, ElDropdownItem, ElDropdown } from 'element-plus'
 export default defineComponent({
   name: 'SelectElement',
@@ -78,7 +79,7 @@ export default defineComponent({
     } = useI18n()
     const ns = useNamespace('selectElement')
     const isHover = ref(false)
-    const isInlineChildren = utils.checkIslineChildren(props.data)
+    const isInlineChildren = checkIslineChildren(props.data)
     const {
       target,
       setSelection,
@@ -88,7 +89,7 @@ export default defineComponent({
     } = useTarget()
     const id = useCss(props.data, state.platform)
     const isWarning = ref(false)
-    const isField = utils.checkIsField(props.data)
+    const isField = checkIsField(props.data)
     const handleClick = (e) => {
       setSelection(props.data)
     }
@@ -111,8 +112,7 @@ export default defineComponent({
     const isShowCell = ref(false)
     const renderTableCellOperator = () => {
       const slots = {
-        dropdown: () => {
-          let node = (
+        dropdown: () => (isShowCell.value &&
             <ElDropdownMenu>
               <ElDropdownItem command="insert left">{t('er.selection.insertLeft')}</ElDropdownItem>
               <ElDropdownItem command="insert right">{t('er.selection.insertRight')}</ElDropdownItem>
@@ -129,12 +129,7 @@ export default defineComponent({
               <ElDropdownItem command="split column" disabled={props.data.context.isDisableSplitColumn} divided>{t('er.selection.splitColumn')}</ElDropdownItem>
               <ElDropdownItem command="split row" disabled={props.data.context.isDisableSplitRow}>{t('er.selection.splitRow')}</ElDropdownItem>
             </ElDropdownMenu>
-          )
-          if (!isShowCell.value) {
-            node = <></>
-          }
-          return node
-        }
+        )
       }
       return (
         <ElDropdown
@@ -255,7 +250,7 @@ export default defineComponent({
               if (curWidth <= 25) {
                 curWidth = 25
               }
-              utils.syncWidthByPlatform(props.data, state.platform, false, curWidth)
+              syncWidthByPlatform(props.data, state.platform, false, curWidth)
             }
           }
         })
@@ -263,79 +258,79 @@ export default defineComponent({
     })
     const TagComponent = isHTMLTag(props.tag) ? props.tag : resolveComponent(props.tag)
     const Selected = computed(() => {
-      return target.value.id === props.data.id && ns.is('Selected')
+      return target.value.id === props.data.id && $style.Selected
     })
     const maskNode = (
       <div class={[ns.e('mask')]}>
       </div>
     )
     const isShowCopy = computed(() => isInlineChildren ? props.hasCopy && props.data.context.parent.columns.length < ER.props.inlineMax : props.hasCopy)
-    return () => (
-      <TagComponent
-        {...useAttrs()}
-        class={[
-          id.value,
-          ns.b(),
-          !isField && ns.e('borderless'),
-          unref(isEditModel) && ns.e('editor'),
-          unref(isEditModel) && Selected.value,
-          unref(isEditModel) && isHover.value && ns.e('hover'),
-          unref(isEditModel) && isScale.value && ns.e('isScale'),
-          unref(isEditModel) && isWarning.value && ns.is('Warning')
-        ]}
-        ref={elementRef} onClick={unref(isEditModel) && withModifiers(handleClick, ['stop'])}
-      >
-        {slots.default()}
-        <span></span>
-        {
-          unref(isEditModel) && (
-            <div class={[ns.e('topLeft')]}>
-              {props.hasDrag && (<Icon class={['handle', ns.e('dragIcon')]} icon="Rank"></Icon>)}
-            </div>
-          )
-        }
-        {
-          unref(isEditModel) && (
-            <div class={[ns.e('bottomRight')]}>
-              {/* {isShowSelectParent.value && (<Icon class={['handle', ns.e('selectParent')]} icon="top"></Icon>)} */}
-              <Icon class={['handle', ns.e('selectParent')]} onClick={withModifiers((e) => {
-                handleAction(5)
-              }, ['stop'])} icon="top"></Icon>
-              {props.hasDel && (
-                <Icon class={[ns.e('copy')]} onClick={withModifiers((e) => {
-                  handleAction(1)
-                }, ['stop'])} icon="delete"></Icon>
-              )}
-              {
-                props.hasInsertColumn && (<Icon class={[ns.e('charulieIcon')]} onClick={withModifiers((e) => {
-                  handleAction(4)
-                }, ['stop'])} icon="tableInsertCol"></Icon>)
-              }
-              {
-                props.hasInsertRow && (<Icon class={[ns.e('charuhangIcon')]} onClick={withModifiers((e) => {
-                  handleAction(3)
-                }, ['stop'])} icon="tableInsertRow"></Icon>)
-              }
-              {
-                props.hasAddCol && (<Icon class={[ns.e('addCol')]} onClick={withModifiers((e) => {
-                  handleAction(6)
-                }, ['stop'])} icon="plus"></Icon>)
-              }
-              {
-                isShowCopy.value && (<Icon class={[ns.e('copyIcon')]} onClick={withModifiers((e) => {
-                  handleAction(2)
-                }, ['stop'])} icon="copy"></Icon>)
-              }
-              {isShowWidthScale.value && (
-                <div ref={widthScaleElement}><Icon class={[ns.e('widthScale')]} icon="dragWidth"></Icon></div>)}
-              {props.hasTableCellOperator && renderTableCellOperator()}
-            </div>
-          )
-        }
-        {
-          unref(isEditModel) && props.hasMask && maskNode
-        }
-      </TagComponent>
+    return () => (<TagComponent
+      {...useAttrs()}
+      class={[
+        id.value,
+        ns.b(),
+        !isField && ns.e('borderless'),
+        unref(isEditModel) && ns.e('editor'),
+        unref(isEditModel) && Selected.value,
+        unref(isEditModel) && isHover.value && ns.e('hover'),
+        unref(isEditModel) && isScale.value && ns.e('isScale'),
+        unref(isEditModel) && isWarning.value && ns.is('Warning')
+      ]}
+      ref={elementRef} onClick={unref(isEditModel) && withModifiers(handleClick, ['stop'])}
+    >
+      {slots.default()}
+      <span></span>
+      {
+        unref(isEditModel) && (
+          <div class={[ns.e('topLeft')]}>
+            {props.hasDrag && (<Icon class={['handle', ns.e('dragIcon')]} icon="Rank"></Icon>)}
+          </div>
+        )
+      }
+      {
+        unref(isEditModel) && (
+          <div class={[ns.e('bottomRight')]}>
+            {/* {isShowSelectParent.value && (<Icon class={['handle', ns.e('selectParent')]} icon="top"></Icon>)} */}
+              545454
+            <Icon class={['handle', ns.e('selectParent')]} onClick={withModifiers((e) => {
+              handleAction(5)
+            }, ['stop'])} icon="top"></Icon>
+            {props.hasDel && (
+              <Icon class={[ns.e('copy')]} onClick={withModifiers((e) => {
+                handleAction(1)
+              }, ['stop'])} icon="delete"></Icon>
+            )}
+            {
+              props.hasInsertColumn && (<Icon class={$style.charulieIcon} onClick={withModifiers((e) => {
+                handleAction(4)
+              }, ['stop'])} icon="tableInsertCol"></Icon>)
+            }
+            {
+              props.hasInsertRow && (<Icon class={$style.charuhangIcon} onClick={withModifiers((e) => {
+                handleAction(3)
+              }, ['stop'])} icon="tableInsertRow"></Icon>)
+            }
+            {
+              props.hasAddCol && (<Icon class={$style.addCol} onClick={withModifiers((e) => {
+                handleAction(6)
+              }, ['stop'])} icon="plus"></Icon>)
+            }
+            {
+              isShowCopy.value && (<Icon class={$style.copyIcon} onClick={withModifiers((e) => {
+                handleAction(2)
+              }, ['stop'])} icon="copy"></Icon>)
+            }
+            {isShowWidthScale.value && (
+              <div ref={widthScaleElement}><Icon class={[ns.e('widthScale')]} icon="dragWidth"></Icon></div>)}
+            {props.hasTableCellOperator && renderTableCellOperator()}
+          </div>
+        )
+      }
+      {
+        unref(isEditModel) && props.hasMask && maskNode
+      }
+    </TagComponent>
     )
   }
 }

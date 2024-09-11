@@ -6,6 +6,11 @@ defineOptions({
 })
 
 const props = defineProps({
+  defaultValue: {
+    require: true,
+    default: '',
+    type: String
+  },
   data: {
     require: true,
     type: Object,

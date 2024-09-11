@@ -1,11 +1,10 @@
 import _ from 'lodash-es'
-import utils from '@/utils'
+import utils, { deepTraversal } from '@/utils'
 import { nextTick } from 'vue'
 let prevEl = ''
 let prevSortable = ''
-let inserRowIndex = ''
-// let prevRows = ''
-let inserColIndex = ''
+let insertRowIndex:number|string = ''
+let insertColIndex = ''
 function getWindowScrollingElement () {
   const scrollingElement = document.scrollingElement
 
@@ -13,7 +12,6 @@ function getWindowScrollingElement () {
     return scrollingElement
   }
   return document.documentElement
-
 }
 function getParentAutoScrollElement (el, includeSelf) {
   // skip to window
@@ -52,7 +50,13 @@ const getOffset = (el, key) => {
 
   return offset
 }
-function matches (/** HTMLElement */el, /** String */selector) {
+
+/**
+ * @param el HTMLElement
+ * @param selector String
+ * @returns
+ */
+function matches (el, selector:string) {
   if (!selector) return
 
   selector[0] === '>' && (selector = selector.substring(1))
@@ -75,7 +79,6 @@ function matches (/** HTMLElement */el, /** String */selector) {
 }
 function css (el, prop, val) {
   const style = el && el.style
-
   if (style) {
     // eslint-disable-next-line
     if (val === void 0) {
@@ -94,7 +97,6 @@ function css (el, prop, val) {
     }
 
     style[prop] = val + (typeof val === 'string' ? '' : 'px')
-
   }
 }
 function lastChild (el, selector) {
@@ -172,16 +174,12 @@ const setStates = (newTarget, ev, ER) => {
       constructor: {
         utils
       },
-      options: {
-        dataSource
-      },
       el: {
         __draggable_component__: {
           list
         }
       }
     },
-    activeSortable,
     target,
     originalEvent,
     dragEl,
@@ -201,8 +199,6 @@ const setStates = (newTarget, ev, ER) => {
   const colIndex = utils.index(newTarget)
   const rows = targetContainer.parentNode.children
   const rowIndex = utils.index(targetContainer)
-  // console.log(ER.props.layoutType === 1)
-  // console.log(targetContainer)
   if (/^(2|4)$/.test(direction)) {
     if (targetList.length === ER.props.inlineMax && !el.contains(dragEl)) {
       return false
@@ -221,7 +217,7 @@ const setStates = (newTarget, ev, ER) => {
       }
       prevSortable = (sortable.el.parentNode.parentNode.__draggable_component__)._sortable
       prevEl = targetContainer
-      inserRowIndex = utils.index(prevEl)
+      insertRowIndex = utils.index(prevEl)
       setBorder(prevEl, 'drag-line-top')
       break
     case 2:
@@ -229,12 +225,12 @@ const setStates = (newTarget, ev, ER) => {
         if (colIndex === targetList.length - 1) {
           prevEl = newTarget
           prevSortable = sortable
-          inserColIndex = utils.index(prevEl) + 1
+          insertColIndex = utils.index(prevEl) + 1
           setBorder(prevEl, 'drag-line-right')
         } else {
           prevSortable = sortable
           prevEl = cols[colIndex + 1]
-          inserColIndex = utils.index(prevEl)
+          insertColIndex = utils.index(prevEl)
           setBorder(prevEl, 'drag-line-left')
         }
       }
@@ -255,13 +251,13 @@ const setStates = (newTarget, ev, ER) => {
         }
         setBorder(prevEl, 'drag-line-top')
       }
-      inserRowIndex = utils.index(targetContainer) + 1
+      insertRowIndex = utils.index(targetContainer) + 1
       break
     case 4:
       if (cols[utils.index(target) - 1] !== dragEl) {
         prevEl = newTarget
         prevSortable = sortable
-        inserColIndex = utils.index(prevEl)
+        insertColIndex = utils.index(prevEl)
         setBorder(prevEl, 'drag-line-left')
       }
       break
@@ -273,7 +269,7 @@ const setStates = (newTarget, ev, ER) => {
       if (cols[utils.index(target) - 1] !== dragEl) {
         prevEl = newTarget
         prevSortable = sortable
-        inserColIndex = utils.index(prevEl)
+        insertColIndex = utils.index(prevEl)
         setBorder(prevEl, 'drag-line-top')
       }
       break
@@ -286,41 +282,29 @@ const setStates = (newTarget, ev, ER) => {
         if (colIndex === targetList.length - 1) {
           prevEl = newTarget
           prevSortable = sortable
-          inserColIndex = utils.index(prevEl) + 1
+          insertColIndex = utils.index(prevEl) + 1
           setBorder(prevEl, 'drag-line-bottom')
         } else {
           prevSortable = sortable
           prevEl = cols[colIndex + 1]
-          inserColIndex = utils.index(prevEl)
+          insertColIndex = utils.index(prevEl)
           setBorder(prevEl, 'drag-line-top')
         }
       }
       break
   }
 }
-const getNodes = (node) => {
-  const nodes = node.columns || node.list || node.rows || []
-  return Array.isArray(node) ? node : nodes
-}
 const resetStates = () => {
   if (prevEl) {
     clearBorder(prevEl)
   }
-  prevEl = prevSortable = inserColIndex = inserRowIndex = ''
+  prevEl = prevSortable = insertColIndex = insertRowIndex = ''
 }
 function ControlInsertionPlugin (ER) {
   function ControlInsertion (sortable) {
   }
   ControlInsertion.prototype = {
     dragStart (e) {
-      // const {
-      //   rootEl,
-      //   target
-      // } = e
-      // const isBlock = _.get(e, 'sortable.options.dataSource', false) === 'block'
-      // if (isBlock) return false
-      // const targetContainer = rootEl.parentNode
-      // targetContainer.style.zIndex = 2
     },
     drop (e) {
       if (!prevEl || !e.activeSortable) {
@@ -332,23 +316,23 @@ function ControlInsertionPlugin (ER) {
         target
       } = e
       const oldEl = getDragElement(dragEl)
-      const newElement = ER.wrapElement(_.cloneDeep(oldEl), inserRowIndex !== '', true, isBlock)
+      const newElement = ER.wrapElement(_.cloneDeep(oldEl), insertRowIndex !== '', true, isBlock)
       if (!isBlock) {
         if (oldEl.context) {
           oldEl.context.delete()
-          utils.deepTraversal(oldEl, (node) => {
+          deepTraversal(oldEl, (node) => {
             if (utils.checkIsField(node)) {
               ER.delField(node)
             }
           })
         }
       }
-      if (inserRowIndex !== '') {
+      if (insertRowIndex !== '') {
         const store = Array.isArray(prevSortable.options.parent) ? prevSortable.options.parent : prevSortable.options.parent.list
-        store.splice(inserRowIndex, 0, newElement)
-        utils.addContext(store[inserRowIndex], prevSortable.options.parent)
+        store.splice(insertRowIndex, 0, newElement)
+        utils.addContext(store[insertRowIndex], prevSortable.options.parent)
       }
-      if (inserColIndex !== '') {
+      if (insertColIndex !== '') {
         const {
           el: {
             __draggable_component__: {
@@ -360,11 +344,11 @@ function ControlInsertionPlugin (ER) {
             utils: sortableUtils
           }
         } = prevSortable
-        list.splice(inserColIndex, 0, newElement)
+        list.splice(insertColIndex, 0, newElement)
         utils.addContext(newElement, prevSortable.options.parent[sortableUtils.index(prevSortable.el.parentNode)])
       }
-      if (inserColIndex !== '' || inserRowIndex !== '') {
-        utils.deepTraversal(newElement, (node) => {
+      if (insertColIndex !== '' || insertRowIndex !== '') {
+        deepTraversal(newElement, (node) => {
           if (utils.checkIsField(node)) {
             ER.addField(node)
           }
@@ -376,7 +360,6 @@ function ControlInsertionPlugin (ER) {
       resetStates()
     },
     dragOver (e) {
-      // e.originalEvent && e.originalEvent.stopPropagation()
       e.cancel()
       resetStates()
       const {
@@ -384,16 +367,12 @@ function ControlInsertionPlugin (ER) {
           constructor: {
             utils
           },
-          options: {
-            dataSource
-          },
           el: {
             __draggable_component__: {
               list
             }
           }
         },
-        activeSortable,
         target,
         originalEvent,
         dragEl,
@@ -414,9 +393,6 @@ function ControlInsertionPlugin (ER) {
         return false
       }
       originalEvent.stopPropagation && originalEvent.stopPropagation()
-      const direction = ''
-      const targetContainer = el.parentNode
-      const targetOnlyOne = targetList.length === 1
       let newTarget = utils.closest(target, this.options.draggable, sortable.el)
       if (dragEl.contains(newTarget)) {
         return false
@@ -427,7 +403,7 @@ function ControlInsertionPlugin (ER) {
         if (!state.list.length) {
           prevEl = target.dataset.layoutType === 'root' ? target : newTarget.__draggable_component__ ? newTarget.children[0] : newTarget.parentNode
           prevSortable = state._sortable
-          inserRowIndex = 0
+          insertRowIndex = 0
           setBorder(prevEl, 'drag-line-top')
         } else {
           if (/^(root|grid-col)$/.test(target.dataset.layoutType)) {
@@ -441,7 +417,7 @@ function ControlInsertionPlugin (ER) {
               return false
             }
             setBorder(prevEl, 'drag-line-bottom')
-            inserRowIndex = rows.length
+            insertRowIndex = rows.length
             prevSortable = state._sortable
           }
           if (target.dataset.layoutType === 'inline') {
@@ -452,7 +428,7 @@ function ControlInsertionPlugin (ER) {
               prevEl = ''
               return false
             }
-            inserColIndex = cols.length
+            insertColIndex = cols.length
             prevSortable = state._sortable
             setBorder(prevEl, 'drag-line-right')
           }

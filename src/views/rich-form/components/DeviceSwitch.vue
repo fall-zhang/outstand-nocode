@@ -19,7 +19,7 @@ const emit = defineEmits(['update:modelValue'])
 
 <style scoped lang="scss">
 .switch-out {
-  border-top: 1px solid #DDDDDD;
+ // border-top: 1px solid #DDDDDD;
 }
 
 .device-switch {

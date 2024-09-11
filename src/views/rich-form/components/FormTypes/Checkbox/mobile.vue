@@ -1,5 +1,4 @@
 <script setup>
-import { useNamespace } from '@/hooks'
 import { ref } from 'vue'
 defineOptions({
   name: 'FeCheckboxMobile',
@@ -17,14 +16,13 @@ const props = defineProps({
   }
 })
 const defaultValue = ref()
-const ns = useNamespace('FormTypesCheckbox')
 const element = ref()
 </script>
 <template>
   <van-field readonly v-bind="params" ref="element">
     <template #input>
       <el-checkbox-group @change="element.resetValidation()"
-        :class="[ns.e('radioGroup'), data.options.displayStyle === 'block' && ns.e('blockLayout')]"
+        :class="[$style.radioGroup, data.options.displayStyle === 'block' && $style.blockLayout]"
         v-model="defaultValue" v-bind="params">
         <el-checkbox v-for="item in params.options" :key="item.value" :label="item.value">
           {{ item.label }}
@@ -34,4 +32,4 @@ const element = ref()
   </van-field>
 </template>
 
-<style scoped></style>
+<style src="./index.module.scss" module></style>
