@@ -1,5 +1,6 @@
-@include b(InlineLayout) {
+.inlineLayout {
   position: relative;
+
   &>div {
     display: flex;
   }

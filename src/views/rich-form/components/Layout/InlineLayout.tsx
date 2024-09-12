@@ -1,29 +1,27 @@
 import { defineComponent, watch, inject } from 'vue'
 import LayoutDragGable from './DragGable'
-import { useNamespace } from '@/hooks'
-import utils from '@/utils'
+import $style from './InlineLayout.module.scss'
+import { syncWidthByPlatform } from '@/utils'
 export default defineComponent({
   name: 'InlineLayout',
   props: {
-    data: Object,
-    parent: Array
+    data: {
+      type: Object,
+      default: () => ({})
+    },
+    parent: {
+      type: Array,
+      default: () => []
+    }
   },
   setup (props) {
     const ER = inject('Everright')
-    const ns = useNamespace('InlineLayout')
-    // watch(() => props.data.columns, (newVal) => {
-    //   if (!newVal.length) {
-    //     props.data.context.delete()
-    //   }
-    // }, {
-    //   deep: true
-    // })
     watch(() => props.data.columns.length, (newVal, oldVal) => {
       if (!newVal) {
         props.data.context.delete()
       }
       if (newVal !== oldVal) {
-        utils.syncWidthByPlatform(props.data.columns, ER.state.platform, ER.props.layoutType === 1)
+        syncWidthByPlatform(props.data.columns, ER.state.platform, ER.props.layoutType === 1)
       }
     })
     const dragOptions = {
@@ -32,7 +30,7 @@ export default defineComponent({
     return () => {
       return (
         <div
-          class={[ns.b()]}>
+          class={$style.inlineLayout}>
           <LayoutDragGable
             data-layout-type={'inline'}
             class={''}
@@ -40,7 +38,6 @@ export default defineComponent({
             {...dragOptions}
             data={props.data.columns}
             parent={props.parent}/>
-          {/* parent={props.data}/> */}
         </div>
       )
     }

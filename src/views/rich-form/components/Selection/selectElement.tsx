@@ -143,10 +143,11 @@ export default defineComponent({
         </ElDropdown>
       )
     }
-    const handleAction = (type) => {
-      const index = type !== 5 && props.parent.indexOf(props.data)
+    type OptAction = 'top'|'delete' | 'table-insert-col' |'table-insert-row'|'copy'|'plus'
+    const handleAction = (type:OptAction) => {
+      const index = type !== 'top' && props.parent.indexOf(props.data)
       switch (type) {
-        case 1:
+        case 'delete':
           if (ER.props.delHandle(props.data) === false) return false
           props.data.context.delete()
           utils.deepTraversal(props.data, (node) => {
@@ -167,7 +168,7 @@ export default defineComponent({
             setSelection('root')
           }
           break
-        case 2:{
+        case 'copy':{
           if (ER.props.copyHandle(props.data) === false) return false
           props.data.context.copy()
           const copyData = props.parent[index + 1]
@@ -180,13 +181,13 @@ export default defineComponent({
           })
           break
         }
-        case 3:
+        case 'table-insert-row':
           _.last(props.data.context.columns[0]).context.insert('bottom')
           break
-        case 4:
+        case 'table-insert-col':
           _.last(props.data.context.columns)[0].context.insert('right')
           break
-        case 5:{
+        case 'top':{
           let parent = props.data.context.parent
           if (/^(inline|tr)$/.test(parent.type)) {
             parent = parent.context.parent
@@ -194,7 +195,7 @@ export default defineComponent({
           setSelection(Array.isArray(parent) ? 'root' : parent)
           break
         }
-        case 6:
+        case 'plus':
           props.data.context.appendCol()
           break
       }
@@ -274,7 +275,6 @@ export default defineComponent({
       ref={elementRef} onClick={unref(isEditModel) && withModifiers(handleClick, ['stop'])}
     >
       {slots.default()}
-      <span></span>
       {
         unref(isEditModel) && (
           <div class={$style.topLeft}>
@@ -285,36 +285,25 @@ export default defineComponent({
       {
         unref(isEditModel) && (
           <div class={$style.bottomRight}>
-            <Icon class={['handle', $style.selectParent]} onClick={withModifiers((e) => {
-              handleAction(5)
-            }, ['stop'])} icon="top"></Icon>
+            <Icon class={['handle', $style.selectParent]} onClick={withModifiers((e) => handleAction('top'), ['stop'])} icon="top"/>
             {props.hasDel && (
-              <Icon class={$style.copy} onClick={withModifiers((e) => {
-                handleAction(1)
-              }, ['stop'])} icon="delete"></Icon>
+              <Icon class={$style.copy} onClick={withModifiers((e) => handleAction('delete'), ['stop'])} icon="delete"></Icon>
             )}
             {
-              props.hasInsertColumn && (<Icon class={$style.charulieIcon} onClick={withModifiers((e) => {
-                handleAction(4)
-              }, ['stop'])} icon="tableInsertCol"></Icon>)
+              props.hasInsertColumn && (<Icon class={$style.charulieIcon} onClick={withModifiers((e) => handleAction('table-insert-col'), ['stop'])} icon="tableInsertCol"></Icon>)
             }
             {
-              props.hasInsertRow && (<Icon class={$style.charuhangIcon} onClick={withModifiers((e) => {
-                handleAction(3)
-              }, ['stop'])} icon="tableInsertRow"></Icon>)
+              props.hasInsertRow && (<Icon class={$style.charuhangIcon} onClick={withModifiers((e) => handleAction('table-insert-row'), ['stop'])} icon="tableInsertRow"></Icon>)
             }
             {
-              props.hasAddCol && (<Icon class={$style.addCol} onClick={withModifiers((e) => {
-                handleAction(6)
-              }, ['stop'])} icon="plus"></Icon>)
+              props.hasAddCol && (<Icon class={$style.addCol} onClick={withModifiers((e) => handleAction('plus'), ['stop'])} icon="plus"></Icon>)
             }
             {
-              isShowCopy.value && (<Icon class={$style.copyIcon} onClick={withModifiers((e) => {
-                handleAction(2)
-              }, ['stop'])} icon="copy"></Icon>)
+              isShowCopy.value && (<Icon class={$style.copyIcon} onClick={withModifiers((e) => handleAction('copy'), ['stop'])} icon="copy"></Icon>)
             }
-            {isShowWidthScale.value && (
-              <div ref={widthScaleElement}><Icon class={$style.widthScale} icon="dragWidth"></Icon></div>)}
+            {
+              isShowWidthScale.value && (<div ref={widthScaleElement}><Icon class={$style.widthScale} icon="dragWidth"></Icon></div>)
+            }
             {props.hasTableCellOperator && renderTableCellOperator()}
           </div>
         )
