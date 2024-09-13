@@ -10,7 +10,7 @@ import {
   computed
 } from 'vue'
 import { isHTMLTag } from '@/utils/browser'
-import { useI18n, useNamespace, useTarget, useCss } from '@/hooks'
+import { useI18n, useTarget, useCss } from '@/hooks'
 import utils, { syncWidthByPlatform, checkIsField, checkIslineChildren } from '@/utils'
 import _ from 'lodash-es'
 import Icon from '@/assets'
@@ -258,10 +258,7 @@ export default defineComponent({
     const Selected = computed(() => {
       return target.value.id === props.data.id && $style.Selected
     })
-    const maskNode = (
-      <div class={$style.mask}>
-      </div>
-    )
+
     const isShowCopy = computed(() => isInlineChildren ? props.hasCopy && props.data.context.parent.columns.length < ER.props.inlineMax : props.hasCopy)
     return () => (<TagComponent
       {...useAttrs()}
@@ -276,6 +273,7 @@ export default defineComponent({
     >
       {slots.default()}
       {
+        // 排序功能
         unref(isEditModel) && (
           <div class={$style.topLeft}>
             {props.hasDrag && (<Icon class={['handle', $style.dragIcon]} icon="Rank"></Icon>)}
@@ -283,6 +281,7 @@ export default defineComponent({
         )
       }
       {
+        // 其它功能
         unref(isEditModel) && (
           <div class={$style.bottomRight}>
             <Icon class={['handle', $style.selectParent]} onClick={withModifiers((e) => handleAction('top'), ['stop'])} icon="top"/>
@@ -309,7 +308,7 @@ export default defineComponent({
         )
       }
       {
-        unref(isEditModel) && props.hasMask && maskNode
+        unref(isEditModel) && props.hasMask && <div class={$style.mask}></div>
       }
     </TagComponent>
     )

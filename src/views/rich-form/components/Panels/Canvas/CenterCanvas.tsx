@@ -3,7 +3,7 @@ import CompleteButton from '@/views/rich-form/components/CompleteButton.vue'
 import { useTarget } from '@/hooks/use-target'
 import { useNamespace } from '@/hooks/use-namespace'
 import { useProps } from '@/hooks/use-props'
-import { ElForm, ElMain, ElScrollbar } from 'element-plus'
+import { ElForm, ElScrollbar } from 'element-plus'
 import { Form as VanForm } from 'vant'
 import { isEmpty } from '@/utils/utils'
 export default defineComponent({
@@ -20,18 +20,14 @@ export default defineComponent({
       isPC
     } = useTarget()
     const form = ref('')
-    const handleClick = () => {
-      setSelection('root')
-    }
     const renderContent = () => {
       const TagComponent = unref(isPC) ? ElForm : VanForm
       const typeProps = useProps(state, state, unref(isPC) as boolean, true)
-      const Layout = (<LayoutDragGable data-layout-type={'root'} class={[unref(isEditModel) && ns.e('wrap')]} data={state.store} parent={state.store} isRoot></LayoutDragGable>)
       return (
         <div>
-          <TagComponent ref={form} onClick={unref(isEditModel) && handleClick} {...typeProps.value}>
+          <TagComponent ref={form} onClick={() => unref(isEditModel) && setSelection('root')} {...typeProps.value}>
             {
-              Layout
+              <LayoutDragGable data-layout-type={'root'} class={[unref(isEditModel) && ns.e('wrap')]} data={state.store} parent={state.store} isRoot></LayoutDragGable>
             }
           </TagComponent>
           {

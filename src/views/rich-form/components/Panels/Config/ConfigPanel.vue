@@ -25,10 +25,8 @@ const {
   setSelection,
   target,
 } = useTarget()
-const ER = inject('Everright')
 const { t } = useI18n()
 const activeName0 = ref('props')
-const ns = useNamespace('Config')
 const form = ref()
 
 const validator = (rule, value, callback) => {
@@ -92,7 +90,6 @@ const breadcrumbList = computed(() => {
     if (node === 'root') {
       result.label = t('er.panels.config')
     } else if (node && node.value !== 'placeholder') {
-
       if (/^(col|collapseCol|tabsCol|td)$/.test(node.type)) {
         result.label = t(`er.layout.${node.type}`)
       } else {
@@ -122,8 +119,8 @@ watch(target, () => {
 })
 </script>
 <template>
-  <el-aside :class="['right-panel', ns.b()]" :width="ER.props.configPanelWidth">
-    <el-breadcrumb :class="[ns.e('breadcrumb')]" separator-icon="ArrowRight">
+  <el-aside :class="['right-panel', $style.config]" width="320px">
+    <el-breadcrumb :class="$style.breadcrumb" separator-icon="ArrowRight">
       <el-breadcrumb-item @click="handleBreadcrumbClick(item.node, index)" v-for="(item, index) in breadcrumbList"
         :key="index">
         {{ item.node.value === 'placeholder' ? '...' : item.label }}
@@ -131,7 +128,7 @@ watch(target, () => {
     </el-breadcrumb>
     <el-form ref="form" :model="target" :rules="rules" label-width="120px" label-position="top">
       <el-scrollbar>
-        <div :class="[ns.e('wrap')]">
+        <div :class="$style.wrap">
           <div v-if="isSelectAnyElement">
             <PanelsConfigComponentsPropsPanel :key="target.id" />
           </div>
@@ -143,3 +140,110 @@ watch(target, () => {
     </el-form>
   </el-aside>
 </template>
+<style module lang="scss">
+.config {
+  position: relative;
+  z-index: 3;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
+
+  .el-form-item__label {
+    color: #333333;
+    font-weight: 400;
+    font-size: 14px;
+  }
+
+  .subhead {
+    font-size: 12px;
+    color: #666;
+    margin-top: -10px;
+  }
+
+  &>form {
+    height: calc(100% - 40px);
+  }
+
+  .el-tabs {
+    .el-tabs__header {
+      background: none;
+      padding: 16px 0;
+    }
+
+    &,
+    .el-tabs__header,
+    .el-tabs__item {
+      border: none !important;
+    }
+
+    .el-tabs__nav-prev,
+    .el-tabs__nav-next {
+      display: none;
+    }
+
+    .el-tabs__nav-wrap {
+      padding: 0;
+      margin: 0;
+    }
+
+    .el-tabs__nav {
+      border-radius: 4px;
+      width: 100%;
+      box-sizing: border-box;
+      display: flex;
+      padding: 2px;
+      background: #F2F2F2;
+
+      &>* {
+        flex: 1;
+      }
+
+      .el-tabs__item {
+        border-radius: 4px;
+        line-height: 36px;
+        height: 36px;
+        margin: 0;
+        color: #666666;
+        text-align: center;
+      }
+    }
+  }
+
+  .el-tabs__content,
+  .el-tab-pane {
+    padding: 0;
+  }
+
+  .breadcrumb {
+    height: 40px;
+    overflow: hidden;
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+    box-sizing: border-box;
+    padding: 12px 12px;
+
+    .el-breadcrumb__inner {
+      line-height: 18px;
+      font-size: 12px;
+    }
+
+    .el-breadcrumb__inner {
+      cursor: pointer !important;
+    }
+
+    &>span:not(:last-child) {
+      span {
+        color: #666666;
+      }
+    }
+
+    &>span:last-child {
+      span {
+        color: #303133 !important;
+      }
+    }
+  }
+
+  .wrap {
+    padding: 12px;
+  }
+}
+</style>
