@@ -1,11 +1,11 @@
-@include b(TableLayout) {
+.TableLayout {
   padding: 20px !important;
   table {
     width: 100%;
     table-layout: fixed;
     border-collapse: collapse;
   }
-  @include e(area) {
+  .area {
     outline: 1px dashed #ddd;
   }
 }

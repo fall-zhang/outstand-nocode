@@ -1,11 +1,13 @@
-@include b(DragGableLayout) {
+.DragGableLayout {
   height: 100%;
-  @include e(edit) {
+
+  &.edit {
     .el-row {
       padding: 10px;
     }
   }
-  @include e(dropHere) {
+
+  .dropHere {
     display: flex;
     background: #F2F8FF !important;
     justify-content: center;

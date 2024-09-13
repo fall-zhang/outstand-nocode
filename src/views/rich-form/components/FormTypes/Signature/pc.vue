@@ -3,7 +3,7 @@ import { ref, nextTick, watch, onBeforeUnmount, unref } from 'vue'
 import SignaturePad from 'signature_pad'
 import Icon from '@/assets'
 import utils from '@/utils'
-import { useI18n, useNamespace, useFetch } from '@/hooks'
+import { useI18n, useFetch } from '@/hooks'
 export default {
   name: 'FeFeSignatureDesktop',
   inheritAttrs: false,
@@ -26,7 +26,6 @@ const props = defineProps({
     default: () => ({})
   }
 })
-const ns = useNamespace('FormTypesSignature_pc')
 const element = ref()
 const dialogVisible = ref(false)
 const showClear = ref(true)
@@ -107,9 +106,9 @@ const handleCommit = async () => {
     <template v-if="data.options.defaultValue">
       <el-image @click="handleReOpen" :src="data.options.defaultValue.url" :fit="'contain'"
         style="width: 100%; height: 100%;" />
-      <Icon @click="data.options.defaultValue = ''" :class="[ns.e('clear')]" icon="delete"></Icon>
+      <Icon @click="data.options.defaultValue = ''" :class="$style.clear" icon="delete"></Icon>
     </template>
-    <div v-else :class="[ns.e('noData')]">
+    <div v-else :class="$style.noData">
       <el-button @click="handleOpen" text type="primary" icon="Edit" circle>
         {{ t('er.form.addSignature') }}
       </el-button>
@@ -118,7 +117,7 @@ const handleCommit = async () => {
   <el-dialog v-model="dialogVisible" :title="t('er.form.addSignature')" width="900px" destroy-on-close
     :close-on-press-escape="false" :close-on-click-modal="false">
     <div v-loading="loading">
-      <canvas :class="[ns.e('canvas')]" ref="element"></canvas>
+      <canvas :class="$style.canvas" ref="element"></canvas>
     </div>
     <template #footer>
       <span class="dialog-footer">

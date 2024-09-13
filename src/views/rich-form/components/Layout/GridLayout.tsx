@@ -1,24 +1,28 @@
 import { defineComponent, useAttrs } from 'vue'
-import { useNamespace } from '@/hooks'
 import Selection from '@/views/rich-form/components/Selection/selectElement'
 import LayoutDragGable from './DragGable'
+import { ElRow } from 'element-plus'
+import $style from './GridLayout.module.scss'
 export default defineComponent({
   name: 'GridLayout',
   inheritAttrs: false,
   customOptions: {},
   props: {
-    data: Object,
+    data: {
+      type: Object,
+      default: () => ({})
+    },
     parent: Array
   },
   setup (props) {
-    const ns = useNamespace('GridLayout')
     return () => (
       <Selection {...useAttrs()} hasWidthScale hasCopy hasAddCol hasDel hasDrag data={props.data} parent={props.parent}>
+        {'GridLayout'}
         <ElRow data-layout-type={'grid'} {...{
           gutter: props.data.options.gutter,
           justify: props.data.options.justify,
           align: props.data.options.align
-        }} class={[ns.b()]}>
+        }} class={$style.gridLayoutArea}>
           {
             props.data.columns.map((element, index) => {
               return (
@@ -30,7 +34,7 @@ export default defineComponent({
                   // hasAddContainer
                   data-layout-type={'grid-col'}
                   tag={'el-col'}
-                  class={[ns.e('area')]}
+                  class={$style.area}
                   span={element.options.span}
                   offset={element.options.offset}
                   pull={element.options.pull}

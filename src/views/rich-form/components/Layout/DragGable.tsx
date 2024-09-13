@@ -6,7 +6,7 @@ import {
   unref,
   inject,
 } from 'vue'
-import { useNamespace, useTarget, useProps } from '@/hooks'
+import { useTarget, useProps } from '@/hooks'
 import _ from 'lodash-es'
 import LayoutGridLayout from './GridLayout'
 import LayoutTabsLayout from './TabsLayout'
@@ -16,6 +16,8 @@ import LayoutInlineLayout from './InlineLayout'
 import Selection from '../Selection/selectElement'
 import ControlInsertionPlugin from './ControlInsertionPlugin'
 import { DraggableWrap } from './DraggableWrap'
+import $style from './Draggable.module.scss'
+import { isEmpty } from '@/utils/utils'
 const dragGableWrap = DraggableWrap
 export {
   dragGableWrap
@@ -32,18 +34,21 @@ export default defineComponent({
       type: Object,
       default: () => ({})
     },
-    parent: Object,
+    parent: {
+      type: Object,
+      default: () => ({})
+    },
     tag: {
       type: String,
       default: 'div'
     },
     type: {
-      type: String
+      type: Object,
+      default: () => ({})
     }
   },
   setup (props) {
     const ER = inject('Everright')
-    const ns = useNamespace('DragGableLayout')
     const {
       state,
       isEditModel,
@@ -105,9 +110,6 @@ export default defineComponent({
                 data: element,
                 parent: props.data
               }
-              if (process.env.NODE_ENV === 'test') {
-                params['data-field-id'] = `${element.id}`
-              }
               if (unref(isPC)) {
                 node = (<Selection hasWidthScale hasCopy hasDel hasDrag hasMask { ...params }>
                   {
@@ -135,11 +137,11 @@ export default defineComponent({
       },
       footer () {
         let node:JSX.Element|string = ''
-        if (_.isEmpty(props.data)) {
+        if (isEmpty(props.data)) {
           if (!props.isRoot) {
             node = (
-              <div class={ns.e('dropHere')}>
-                Drop here
+              <div class={$style.dropHere}>
+                放置在此处
               </div>
             )
           }
@@ -152,7 +154,7 @@ export default defineComponent({
         <DraggableWrap
           list={props.data}
           handle=".handle"
-          class={[ns.b(), unref(isEditModel) && ns.e('edit')]}
+          class={[$style.DragGableLayout, unref(isEditModel) && $style.edit]}
           tag={props.tag}
           item-key="id"
           move={handleMove}

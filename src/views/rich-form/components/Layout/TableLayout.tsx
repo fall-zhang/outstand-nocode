@@ -1,7 +1,8 @@
-import { defineComponent, resolveComponent, watch, useAttrs, unref } from 'vue'
-import { useNamespace, useTarget } from '@/hooks'
+import { defineComponent, useAttrs, unref } from 'vue'
+import { useTarget } from '@/hooks'
 import Selection from '@/views/rich-form/components/Selection/selectElement'
 import LayoutDragGable from './DragGable'
+import $style from './TableLayout.module.scss'
 const isTrTag = (tagName) => tagName.toLocaleLowerCase() === 'td'
 export default defineComponent({
   name: 'TableLayout',
@@ -12,7 +13,6 @@ export default defineComponent({
     parent: Array
   },
   setup (props) {
-    const ns = useNamespace('TableLayout')
     const {
       isEditModel
     } = useTarget()
@@ -43,46 +43,39 @@ export default defineComponent({
           e.target.style.cursor = 'default'
         }
       }
-      return (
-        <Selection class={ns.b()} {...useAttrs()} hasWidthScale hasCopy hasDel hasDrag hasInsertColumn hasInsertRow data={props.data} parent={props.parent}>
-          <table>
-            <tbody>
-              {
-                props.data.rows.map((element, index0) => {
-                  return (
-                    <tr key={element.id}>
-                      {
-                        element.columns.map((element1, index1) => {
-                          const node = !element1.options.isMerged && (
-                            <Selection
-                              tag="td"
-                              class={[ns.e('area')]}
-                              key={element1.id}
-                              data={element1}
-                              parent={element}
-                              hasTableCellOperator
-                              colspan={element1.options.colspan}
-                              rowspan={element1.options.rowspan}
-                              onMousedown={(e) => !index0 && unref(isEditModel) && handleMousedown(e, element1)}
-                              onMousemove={!index0 && unref(isEditModel) && handleMousemove}
-                              width={element1.style && element1.style.width}
-                            >
-                              <LayoutDragGable
-                                data-layout-type={'td'}
-                                data={element1.list}
-                                parent={element1}/>
-                            </Selection>
-                          )
-                          return node
-                        })
-                      }
-                    </tr>
+      return (<Selection class={$style.TableLayout} {...useAttrs()} hasWidthScale hasCopy hasDel hasDrag hasInsertColumn hasInsertRow data={props.data} parent={props.parent}>
+        <table>
+          <tbody>
+            { props.data.rows.map((element, rowIndex) => {
+              return (<tr key={element.id}>
+                { element.columns.map((element1) => {
+                  const node = !element1.options.isMerged && (
+                    <Selection
+                      tag="td"
+                      class={$style.area}
+                      key={element1.id}
+                      data={element1}
+                      parent={element}
+                      hasTableCellOperator
+                      colspan={element1.options.colspan}
+                      rowspan={element1.options.rowspan}
+                      onMousedown={(e) => !rowIndex && unref(isEditModel) && handleMousedown(e, element1)}
+                      onMousemove={!rowIndex && unref(isEditModel) && handleMousemove}
+                      width={element1.style && element1.style.width}
+                    >
+                      <LayoutDragGable
+                        data-layout-type={'td'}
+                        data={element1.list}
+                        parent={element1}/>
+                    </Selection>
                   )
-                })
-              }
-            </tbody>
-          </table>
-        </Selection>
+                  return node
+                }) }
+              </tr>)
+            }) }
+          </tbody>
+        </table>
+      </Selection>
       )
     }
   }
