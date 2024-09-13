@@ -1,5 +1,5 @@
 <script>
-import { useTarget, useNamespace } from '@/hooks'
+import { useTarget } from '@/hooks'
 import Icon from '@/assets'
 export default {
   name: 'ConfigCollapseComponent',
@@ -11,7 +11,6 @@ export default {
 const {
   target
 } = useTarget()
-const ns = useNamespace('ConfigCollapseComponent')
 const props = defineProps({
   field: {
     type: String,
@@ -28,10 +27,10 @@ const props = defineProps({
 })
 </script>
 <template>
-  <div :class="ns.b()">
+  <div class="ConfigCollapseComponent">
     <el-form-item>
       <template #label>
-        <div :class="ns.e('label')">
+        <div class="form-label">
           <div>
             <div>{{ label }}</div>
             <slot name="subSelect" v-if="target[operationKey][field]"></slot>
@@ -44,3 +43,34 @@ const props = defineProps({
     </el-form-item>
   </div>
 </template>
+<style lang="scss" scoped>
+.ConfigCollapseComponent {
+  .el-form-item__label {
+    padding: 0;
+  }
+
+  .form-label {
+    display: flex;
+    justify-content: space-between;
+
+    &>div {
+      display: flex;
+      align-items: baseline;
+
+      &>div:first-child {
+        margin-right: 8px;
+      }
+    }
+  }
+
+  .ER-icon {
+    cursor: pointer;
+  }
+
+  .el-dropdown {
+    :focus {
+      outline: 0;
+    }
+  }
+}
+</style>

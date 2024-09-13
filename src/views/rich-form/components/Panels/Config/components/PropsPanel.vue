@@ -4,7 +4,7 @@
 import { ElMessage } from 'element-plus'
 import { ref, computed, unref, onMounted, inject } from 'vue'
 import utils from '@/utils'
-import { useNamespace, useI18n, useTarget, useProps } from '@/hooks'
+import { useI18n, useTarget, useProps } from '@/hooks'
 import PanelsConfigComponentsCheckboxComponent from './CheckboxComponent.vue'
 import PanelsConfigComponentsCollapseComponent from './CollapseComponent.vue'
 import PanelsConfigComponentsTypeComponent from './TypeComponent.vue'
@@ -25,7 +25,6 @@ export default {
 </script>
 <script setup>
 const ER = inject('Everright')
-const ns = useNamespace('PropsPanel')
 const {
   t
 } = useI18n()
@@ -392,14 +391,14 @@ onMounted(() => {
 })
 </script>
 <template>
-  <div :class="ns.b()">
+  <div :class="$style.PropsPanel">
     <el-form-item v-if="isSelectField" :label="t('er.config.propsPanel.id')" prop="key">
       <el-input v-model="target.key" />
     </el-form-item>
     <PanelsConfigComponentsCollapseComponent v-if="isSelectField" :label="t('er.config.propsPanel.title')"
       operationKey="options" field="isShowLabel">
       <template #content>
-        <div :class="[ns.e('collapseWrap'), ns.e('collapseWrap-left')]">
+        <div :class="[$style.collapseWrap, $style.collapseWrapLeft]">
           <el-row justify="space-between" align="middle">
             <el-col :span="isPC ? 11 : 24">
               <el-form-item>
@@ -639,7 +638,7 @@ onMounted(() => {
       v-if="checkTypeBySelected(['grid', 'col', 'collapse', 'collapseCol', 'tabs', 'tabsCol', 'td', 'table'], 'background')"
       :label="t('er.public.background')" operationKey="style" field="isShowBackground">
       <template #subSelect>
-        <div :class="[ns.e('collapseSubSelect')]">
+        <div :class="$style.collapseSubSelect">
           <el-dropdown @command="(command) => { bgStatus = command }">
             <span>
               {{ bgStatus ? t('er.public.image') : t('er.public.color') }}<el-icon
@@ -662,7 +661,7 @@ onMounted(() => {
       v-if="checkTypeBySelected(['grid', 'col', 'collapse', 'collapseCol', 'tabs', 'tabsCol', 'table'], 'borderLine')"
       :label="t('er.config.borderComponent.borderLine')" operationKey="style" field="isShowBorder">
       <template v-if="!checkTypeBySelected(['table', 'borderLine'])" #subSelect>
-        <div :class="[ns.e('collapseSubSelect')]">
+        <div :class="[$style.collapseSubSelect]">
           <el-dropdown @command="(command) => target.style.border.style = command">
             <span>
               {{ target.style.border && target.style.border.style }}<el-icon
@@ -677,7 +676,7 @@ onMounted(() => {
         </div>
       </template>
       <template #content>
-        <div :class="[ns.e('collapseWrap'), ns.e('collapseWrap-left')]">
+        <div :class="[$style.collapseWrap, $style.collapseWrapLeft]">
           <PanelsConfigComponentsBorderComponent />
         </div>
       </template>
@@ -737,3 +736,42 @@ onMounted(() => {
     </template>
   </el-dialog>
 </template>
+<style lang="scss" module>
+.PropsPanel {
+  .collapseWrap {
+    width: 100%;
+
+    .el-row {
+      margin-bottom: 0 !important;
+    }
+
+    &.collapseWrapLeft {
+      .el-form-item {
+        display: flex;
+        align-items: baseline;
+
+        .el-form-item__label {
+          padding-right: 4px;
+        }
+      }
+    }
+  }
+
+
+  .collapseSubSelect {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+
+    .el-tooltip__trigger {
+      font-size: 12px;
+      color: $primary-color;
+    }
+  }
+
+  .el-rate {
+    height: auto;
+    flex-wrap: wrap;
+  }
+}
+</style>

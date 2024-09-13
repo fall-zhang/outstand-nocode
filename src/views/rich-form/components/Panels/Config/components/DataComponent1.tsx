@@ -81,9 +81,7 @@ export default defineComponent({
     }
   },
   render (props) {
-    const {
-      t
-    } = useI18n()
+    const { t } = useI18n()
     const ns = useNamespace('ConfigData1')
     const validator = ({ field }, value, callback) => {
       const newValue = value.trim()
@@ -172,7 +170,7 @@ export default defineComponent({
               <table className={[ns.e('table')]}>
                 <thead>
                   <tr>
-                    <th ></th>
+                    <th></th>
                     <th></th>
                     <th></th>
                     <th ></th>

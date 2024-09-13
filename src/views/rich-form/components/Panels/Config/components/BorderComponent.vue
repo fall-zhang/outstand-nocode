@@ -2,8 +2,7 @@
 import PanelsConfigComponentsTypeComponent from './TypeComponent.vue'
 import {
   useTarget,
-  useI18n,
-  useNamespace
+  useI18n
 } from '@/hooks'
 import Icon from '@/assets'
 import _ from 'lodash-es'
@@ -21,7 +20,6 @@ const {
 const {
   t
 } = useI18n()
-const ns = useNamespace('ConfigBorder')
 
 const borderActions = new Array(8).fill('tableStokeP').map((e, i) => {
   return {
@@ -50,7 +48,7 @@ const handleTypeListener = ({ property, data }) => {
 }
 </script>
 <template>
-  <div :class="[ns.b()]">
+  <div class="ConfigBorder">
     <div v-if="checkTypeBySelected(['table'])">
       <PanelsConfigComponentsTypeComponent @listener="handleTypeListener" property="borderType" :height="30"
         :fontSize="18" :val="target.style.borderType" :nodes="borderActions" />
@@ -96,7 +94,7 @@ const handleTypeListener = ({ property, data }) => {
 
 <style lang="scss" scoped>
 .ConfigBorder {
-  @include e(borderStyle) {
+  .borderStyle {
     display: flex;
     justify-content: space-around;
     li {

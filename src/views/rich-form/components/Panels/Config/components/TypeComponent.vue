@@ -1,4 +1,5 @@
-<!-- 右侧用于选择多个内容的输入框 -->
+<!-- 右侧用于 -->
+<!-- RadioButtonGroup -->
 <script setup lang="ts">
 import { useNamespace } from '@/hooks'
 import Icon from '@/assets'
@@ -10,22 +11,28 @@ const emit = defineEmits(['listener'])
 const ns = useNamespace('ConfigTypeComponent')
 const props = defineProps({
   label: {
-    type: String
+    type: String,
+    default: ''
   },
   nodes: {
-    type: Array
+    type: Array,
+    default: () => []
   },
   height: {
-    type: Number
+    type: Number,
+    default: 100
   },
   property: {
-    type: String
+    type: String,
+    default: ''
   },
   val: {
-    type: [String, Number, Boolean]
+    type: [String, Number, Boolean],
+    default: ''
   },
   fontSize: {
-    type: Number
+    type: Number,
+    default: 16
   },
   layoutType: {
     type: Number,
@@ -41,6 +48,7 @@ const fireEvent = (property, item) => {
 </script>
 <template>
   <div :class="ns.b()">
+    222
     <el-form-item>
       <template v-if="label" #label>
         <div :class="ns.e('label')">

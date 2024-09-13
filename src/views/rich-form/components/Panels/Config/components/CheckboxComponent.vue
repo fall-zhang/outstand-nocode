@@ -1,7 +1,6 @@
 <script>
 import {
-  useTarget,
-  useNamespace
+  useTarget
 } from '@/hooks'
 export default {
   name: 'ConfigCheckboxComponent',
@@ -13,7 +12,6 @@ export default {
 const {
   target
 } = useTarget()
-const ns = useNamespace('ConfigCheckboxComponent')
 const props = defineProps({
   field: {
     type: String,

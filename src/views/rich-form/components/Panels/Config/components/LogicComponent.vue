@@ -1,8 +1,7 @@
 <script>
-import { ref, inject, nextTick, reactive, computed, watch, onMounted } from 'vue'
+import { ref, inject, nextTick, computed } from 'vue'
 import {
   useI18n,
-  useNamespace,
   useTarget
 } from '@/hooks'
 import {
@@ -54,7 +53,6 @@ const tabs = ref([
 const activeTab = ref('visible')
 const ER = inject('Everright')
 const scrollbarRef = ref()
-const ns = useNamespace('ConfigLogicComponent')
 const dialogVisible = ref(false)
 const {
   state
@@ -232,7 +230,7 @@ const handleClosed = () => {
 </script>
 <template>
   <el-drawer destroy-on-close size="60%" :modal="false" append-to-body :close-on-press-escape="false"
-    :with-header="false" @closed="handleClosed" :class="[ns.b()]" v-model="dialogVisible">
+    :with-header="false" @closed="handleClosed" class="ConfigLogicComponent" v-model="dialogVisible">
     <div>
       <el-tabs v-model="activeTab" class="demo-tabs">
         <el-tab-pane v-for="tab in tabs" :label="t(`er.logic.tabs.${tab.value}`)" :name="tab.value" :key="tab.value">
@@ -242,15 +240,15 @@ const handleClosed = () => {
             </el-empty>
             <div v-else>
               <transition-group name="el-fade-in">
-                <div :class="ns.e('rule')" v-for="(key, index) in tab.rules" :key="key">
-                  <Icon @click="tab.rules.splice(index, 1)" :class="[ns.e('delRule')]" icon="delete" />
-                  <div :class="ns.e('if')">
+                <div class="rule" v-for="(key, index) in tab.rules" :key="key">
+                  <Icon @click="tab.rules.splice(index, 1)" class="delRule" icon="delete" />
+                  <div class="filter-if">
                     <h3>{{ t('er.logic.filterLabel.if') }}</h3>
                     <EverrightFilter :ref="relationalRef(tab, 'ifRefs', index)"
                       @listener="(e) => handleListener('if', index, tab, e)" :lang="lang"
                       :getOptions="getIfOptions(tab.value)" :getConditions="getIfConditions(tab.value)" />
                   </div>
-                  <div :class="[ns.e('then'), ns.e(`${tab.value}then`)]">
+                  <div :class="['then', `${tab.value}then`]">
                     <h3>{{ t('er.logic.filterLabel.then') }}</h3>
                     <EverrightFilter :ref="relationalRef(tab, 'thenRefs', index)" :lang="lang"
                       :canAddRule="() => addRuleHandler(tab, index)"
@@ -264,7 +262,7 @@ const handleClosed = () => {
           </el-scrollbar>
         </el-tab-pane>
       </el-tabs>
-      <el-button v-show="tabs[curIndex].rules.length" :class="[ns.e('button')]" @click="handleAction(1)">
+      <el-button v-show="tabs[curIndex].rules.length" class="button" @click="handleAction(1)">
         {{ t('er.public.add') }}
       </el-button>
     </div>
@@ -283,3 +281,87 @@ const handleClosed = () => {
     {{ t('er.logic.button') }}
   </el-button>
 </template>
+<style lang="scss" scoped>
+.ConfigLogicComponent {
+  .rule {
+    margin: 10px;
+    border-radius: 6px;
+    padding: 10px 20px;
+    box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.1);
+    position: relative;
+
+    &>div {
+      &:first-child {
+        margin-top: 0;
+      }
+
+      h3 {
+        padding: 10px 0 0;
+        margin: 0;
+        color: #333333;
+      }
+    }
+  }
+
+  .delRule {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+  }
+
+  .then {
+    .LogicalOperatorComponent {
+      display: none;
+    }
+  }
+
+
+  .requiredThen,
+  .readOnlyThen {
+    .Component {
+      display: none;
+    }
+  }
+
+  .FilterItem {
+    background: none;
+    margin-top: 0;
+    padding-top: 10px;
+    padding-bottom: 40px;
+  }
+
+  .Main {
+    padding: 0;
+  }
+
+  @include e(button) {
+    width: calc(100% - 20px);
+    border: none;
+    margin: 10px;
+    box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.1) !important;
+
+    &:focus {
+      background-color: transparent;
+    }
+
+    &:hover {
+      background: var(--el-button-hover-bg-color);
+    }
+  }
+
+  .OperatorComponent__width {
+    width: 120px;
+  }
+
+  .TriggerComponent,
+  .TextType__width,
+  .SelectType__width,
+  .RegionType__width {
+    width: 200px !important;
+  }
+
+  .NumberType__width {
+    width: 150px;
+  }
+}
+</style>

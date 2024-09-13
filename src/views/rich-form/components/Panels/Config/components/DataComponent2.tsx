@@ -22,7 +22,6 @@ export default defineComponent({
     isMultiple () {
       let result = false
       const {
-        state,
         target,
         type
       } = useTarget()
@@ -52,22 +51,7 @@ export default defineComponent({
     } else {
       this.data[0] = _.cloneDeep(state.data[target.value.options.dataKey].list)
     }
-    // this.data[0].forEach(e => {
-    //   utils.deepTraversal(e, (node) => {
-    //     Object.defineProperty(node, 'Selected', {
-    //       value: false,
-    //       writable: true,
-    //       enumerable: false,
-    //       configurable: true
-    //     })
-    //   })
-    // })
     this.shows[0] = true
-    // if (this.isMultiple) {
-    //   this.checkList = _.cloneDeep(target.value.options.defaultValue)
-    // } else {
-    //   this.checkList = [target.value.options.defaultValue]
-    // }
   },
   methods: {
     getData () {
@@ -122,7 +106,7 @@ export default defineComponent({
           break
       }
     }
-    const listComponent = ({ items, index }) => {
+    const ListComponent = ({ items, index }) => {
       return (
         <div class={[ns.e('item')]}>
           <div class={ns.e('title')}>{lang.value === 'zh-cn' ? `${nzhcn.encodeS(index + 1)}${t('er.config.dataComponent2.level')}` : `${t('er.config.dataComponent2.level')} ${index + 1}`}</div>
@@ -172,7 +156,7 @@ export default defineComponent({
         <div class={[ns.b()]}>
           {this.data.map((e, index) => {
             return (
-              <listComponent ref="listComponent" items={e} index={index}/>
+              <ListComponent ref="listComponent" items={e} index={index}/>
             )
           })}
         </div>
