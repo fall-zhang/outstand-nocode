@@ -1,12 +1,15 @@
-$namespace: 'ER-ckeditor';
-@include b(Main) {
+.ck-main {
   width: 100%;
   position: relative;
-  ul,ol {
+
+  ul,
+  ol {
     margin-left: 2.666em;
   }
-  @include e(toolbar) {
+
+  .toolbar {
     z-index: 1;
+
     .ck.ck-toolbar {
       border: 1px solid var(--ck-color-toolbar-border);
       border-bottom: 0;
@@ -14,8 +17,10 @@ $namespace: 'ER-ckeditor';
       border-bottom-right-radius: 0;
     }
   }
-  @include e(container) {
+
+  .container {
     overflow-y: scroll;
+
     .ck-content {
       height: 300px;
       padding: 10px;
@@ -25,20 +30,23 @@ $namespace: 'ER-ckeditor';
       box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
     }
   }
-  @include e('mobile') {
+
+  &.mobile {
     height: calc(100% - 40px);
     display: flex;
     justify-content: flex-end;
     flex-direction: column-reverse;
-    &>.#{$namespace}-Main__toolbar{
+
+    &>.toolbar {
       .ck.ck-toolbar {
         border-left: 0;
         border-right: 0;
       }
     }
-    &>.#{$namespace}-Main__container{
-      //border: none;
+
+    &>.container {
       height: calc(100% - 60px);
+
       .ck-content {
         border: none;
         box-sizing: border-box;

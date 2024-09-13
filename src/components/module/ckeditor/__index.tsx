@@ -3,7 +3,7 @@
  * For licensing, see LICENSE.md.
  */
 
-import CKEDITOR from 'ckeditor5/build/ckeditor.js'
+import CKEDITOR from 'ckeditor5'
 import { h, markRaw, defineComponent } from 'vue'
 import { debounce } from 'lodash-es'
 
@@ -13,7 +13,7 @@ const INPUT_EVENT_DEBOUNCE_WAIT = 300
 export default defineComponent({
   name: 'Ckeditor',
 
-  created () {
+  created() {
     const { CKEDITOR_VERSION } = window
 
     // Starting from v34.0.0, CKEditor 5 introduces a lock mechanism enabling/disabling the read-only mode.
@@ -30,7 +30,7 @@ export default defineComponent({
     }
   },
 
-  render () {
+  render() {
     return h(this.tagName)
   },
 
@@ -58,7 +58,7 @@ export default defineComponent({
     }
   },
 
-  data () {
+  data() {
     return {
       // Don't define it in #props because it produces a warning.
       // https://v3.vuejs.org/guide/component-props.html#one-way-data-flow
@@ -71,7 +71,7 @@ export default defineComponent({
     }
   },
 
-  mounted () {
+  mounted() {
     // Clone the config first so it never gets mutated (across multiple editor instances).
     // https://github.com/ckeditor/ckeditor5-vue/issues/101
     const editorConfig = Object.assign({}, this.config)
@@ -106,7 +106,7 @@ export default defineComponent({
       })
   },
 
-  beforeUnmount () {
+  beforeUnmount() {
     if (this.instance) {
       this.instance.destroy()
       this.instance = null
@@ -118,7 +118,7 @@ export default defineComponent({
   },
 
   watch: {
-    modelValue (value) {
+    modelValue(value) {
       // Synchronize changes of #modelValue. There are two sources of changes:
       //
       //                External modelValue change      ──────╮
@@ -147,7 +147,7 @@ export default defineComponent({
     },
 
     // Synchronize changes of #disabled.
-    disabled (readOnlyMode) {
+    disabled(readOnlyMode) {
       if (readOnlyMode) {
         this.instance.enableReadOnlyMode(SAMPLE_READ_ONLY_LOCK_ID)
       } else {
@@ -157,7 +157,7 @@ export default defineComponent({
   },
 
   methods: {
-    setUpEditorEvents () {
+    setUpEditorEvents() {
       const editor = this.instance
 
       // Use the leading edge so the first event in the series is emitted immediately.
