@@ -3,7 +3,6 @@ $namespace: 'ER-formEditor';
 @import './Main.scss';
 @import './Fields.scss';
 @import './Canvas.scss';
-@import './Config.scss';
 @import './ConfigData1.scss';
 @import './ConfigData2.scss';
 @import './ConfigData3.scss';
@@ -12,20 +11,8 @@ $namespace: 'ER-formEditor';
 @import './GridLayout.scss';
 @import './TableLayout.scss';
 @import './CollapseLayout.scss';
-@import './InlineLayout.scss';
 @import './DragGableLayout.scss';
-@import './ConfigBackground.scss';
-@import './ConfigBorder.scss';
-@import './ConfigCheckboxComponent.scss';
 @import './ConfigGridLayoutComponent.scss';
 @import './ConfigCollapseComponent.scss';
 @import './ConfigTypeComponent.scss';
 @import './ConfigLogicComponent.scss';
-
-
-@import './FormTypes/Signature.scss';
-@import './FormTypes/Radio.scss';
-@import './FormTypes/Cascader.scss';
-@import './FormTypes/Select.scss';
-@import './FormTypes/Region.scss';
-@import './FormTypes/Number.scss';
