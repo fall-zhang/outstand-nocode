@@ -39,7 +39,7 @@ const equal = (logicValue, value, field) => {
       return dayjs.unix(value).isSame(dayjs.unix(logicValue.value))
     }
     if (/^(dates|daterange)$/.test(field.options.type)) {
-      return _.isEqual(_.chain(logicValue.value).clone().flattenDeep().sort().value(), _.chain(value).clone().flattenDeep().sort().value())
+      return Object.is(_.chain(logicValue.value).clone().flat(Infinity).sort().value(), _.chain(value).clone().flat(Infinity).sort().value())
     }
   }
   if (field.type === 'time') {
@@ -49,10 +49,10 @@ const equal = (logicValue, value, field) => {
     return _.includes(logicValue, value)
   }
   if (_.isString(value) || _.isNumber(value)) {
-    return _.isEqual(logicValue, value)
+    return Object.is(logicValue, value)
   }
   if (_.isArray(value)) {
-    return _.isEqual(_.chain(logicValue).clone().flattenDeep().sort().value(), _.chain(value).clone().flattenDeep().sort().value())
+    return Object.is(_.chain(logicValue).clone().flat(Infinity).sort().value(), _.chain(value).clone().flat(Infinity).sort().value())
   }
   if (_.isBoolean(value)) {
     return !!logicValue === value

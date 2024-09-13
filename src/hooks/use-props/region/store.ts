@@ -117,14 +117,12 @@ class Node {
     if (!multiple) {
       this.checked = checked
     } else {
-      // this.broadcast('check', checked)
       this.setCheckState(checked)
       if (checked) {
         flatNodes(this.children).filter(e => e.checked).forEach(e => {
           e.doCheck(false)
         })
       }
-      // this.emit('check')
     }
   }
 
@@ -155,7 +153,7 @@ export default class Store {
     if (!value && value !== 0) return null
 
     const node = this.getFlattedNodes(leafOnly).find(
-      (node) => _.isEqual(node.value, value) || _.isEqual(node.pathValues, value)
+      (node) => Object.is(node.value, value) || Object.is(node.pathValues, value)
     )
 
     return node || null
