@@ -1,5 +1,6 @@
 import _ from 'lodash-es'
 import { nanoid } from './nanoid'
+import { PlatformType } from '@/views/rich-form/types/rich-form'
 
 // WARNING: This is not a drop in replacement solution and
 // it might not work for some edge cases. Test your code!
@@ -96,7 +97,7 @@ const flatNodes = (nodes, excludes, fn, excludesFn) => {
   }, [])
 }
 const getAllFields = (store) => flatNodes(store, excludes)
-const pickfields = (list) => {
+const pickFields = (list) => {
   return flatNodes(list, excludes)
 }
 const disassemblyData1 = (data) => {
@@ -164,7 +165,7 @@ const disassemblyData2 = (list) => {
 }
 const checkIslineChildren = (node) => {
   // console.log(node)
-  if(node.context) {
+  if (node.context) {
     return node.context.parent.type === 'inline'
   }
   return false
@@ -179,7 +180,7 @@ const calculateAverage = (count, total = 100) => {
   }
   return result
 }
-const syncWidthByPlatform = (node, platform, syncFullplatform = false, value) => {
+const syncWidthByPlatform = (node, platform:PlatformType, syncFullplatform = false, value) => {
   // debugger
   const isArray = _.isArray(node)
   if (!isArray) {
@@ -234,7 +235,7 @@ export {
   combinationData2,
   checkIslineChildren,
   checkIsField,
-  pickfields,
+  pickFields,
   fieldLabel,
   transferData,
   transferLabelPath,

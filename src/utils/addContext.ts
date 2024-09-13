@@ -247,7 +247,7 @@ const appendNodes = (node, dir, key) => {
     nodes = root.rows[index].columns
   }
   if (key === 'colspan') {
-    nodes.forEach((e, index0) => {
+    nodes.forEach((e) => {
       const newNode = wrapElement({
         type: 'td',
         options: {

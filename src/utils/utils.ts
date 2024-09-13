@@ -35,9 +35,6 @@ function goClone(receive: unknown) {
   return structuredClone(receive)
 }
 
-export const getRandomId = function () {
-  return uuid()
-}
 /**
  * 为 DOM 添加事件，返回移除事件的方法
  * @param {Element} target 挂载事件的节点

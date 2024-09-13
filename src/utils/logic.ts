@@ -2,7 +2,7 @@ import _ from 'lodash-es'
 export const checkIdExistInLogic = (fieldId, logic) => {
   return new RegExp(`"${fieldId}"`).test(JSON.stringify(logic))
 }
-export const removeLogicDataByid = (fieldId, logic) => {
+export const removeLogicDataById = (fieldId, logic) => {
   for (const rules of Object.values(logic)) {
     for (let i0 = 0; i0 < rules.length; i0++) {
       const conditions = _.get(rules[i0], 'ifRules.filters[0].conditions', [])
