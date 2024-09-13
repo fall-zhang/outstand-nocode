@@ -1,6 +1,5 @@
 <script>
 import { ref } from 'vue'
-import { useNamespace } from '@/hooks'
 export default {
   name: 'FeIcon'
 }
@@ -16,15 +15,29 @@ const props = defineProps({
     required: true
   }
 })
-const ns = useNamespace('Icon')
 const element = ref('')
 </script>
 <template>
   <i ref="element" :class="[
-    ns.b(),
+    'Icon',
     `er-editor-icon-${props.icon}`,
-    props.disabled && ns.e('disabled')
+    props.disabled && 'disabled'
   ]"></i>
 </template>
 
-<style scoped></style>
+<style scoped>
+.Icon {
+  cursor: pointer;
+  font-style: normal;
+  font-weight: 400;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  vertical-align: baseline;
+  display: inline-block;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  padding: 5px;
+  color: #fff;
+}
+</style>

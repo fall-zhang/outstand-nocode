@@ -8,8 +8,11 @@ import CanvasPanel from './components/Panels/Canvas/CenterCanvas'
 import ConfigPanel from './components/Panels/Config/ConfigPanel.vue'
 import DeviceSwitch from './components/DeviceSwitch.vue'
 import Icon from '@/assets'
-import { useI18n, useNamespace } from '@/hooks'
-import utils, { deepClone, checkIsField, disassemblyData1, repairLayout } from '@/utils'
+import { useI18n } from '@/hooks'
+import utils, {
+  deepClone, checkIsField, disassemblyData1, repairLayout, disassemblyData2, removeLogicDataById,
+  checkIdExistInLogic, combinationData2, pickFields, addContext, combinationData1
+} from '@/utils'
 import _ from 'lodash-es'
 import { isEmpty } from '@/utils/utils'
 import defaultProps from './defaultProps'
@@ -128,14 +131,14 @@ const delField = (node) => {
     id: node.id
   })
   if (fieldIndex !== -1) {
-    if (utils.checkIdExistInLogic(node.id, state.logic)) {
+    if (checkIdExistInLogic(node.id, state.logic)) {
       ElMessage({
         showClose: true,
         duration: 4000,
         message: t('er.logic.logicSuggests'),
         type: 'warning'
       })
-      utils.removeLogicDataByid(node.id, state.logic)
+      removeLogicDataById(node.id, state.logic)
     }
     state.fields.splice(fieldIndex, 1)
   }
@@ -187,18 +190,17 @@ const wrapElement = (el, isWrap = true, isSetSelection = true, sourceBlock = tru
   }
   return node
 }
-const syncLayout = (platform, fn) => {
+const syncLayout = (platform: PlatformType, fn: any) => {
   const isPC = platform === 'pc'
   const original = deepClone(state.store)
-  utils.disassemblyData2(original)
+  disassemblyData2(original)
   layout[isPC ? 'mobile' : 'pc'] = original
   if (isEmpty(isPC ? layout.pc : layout.mobile)) {
-    // const newData = deepClone(state.fields.map(e => wrapElement(e, true, false)))
     const newData = state.fields.map(e => wrapElement(e, true, false, false, false))
     fn && fn(newData)
   } else {
     // debugger
-    const layoutFields = utils.pickfields(isPC ? layout.pc : layout.mobile).map(e => {
+    const layoutFields = pickFields(isPC ? layout.pc : layout.mobile).map(e => {
       return {
         id: e
       }
@@ -207,30 +209,30 @@ const syncLayout = (platform, fn) => {
     const addFields = _.differenceBy(state.fields, layoutFields, 'id')
     const delFields = _.differenceBy(layoutFields, state.fields, 'id')
     repairLayout(copyData, delFields)
-    utils.combinationData2(copyData, state.fields)
+    combinationData2(copyData, state.fields)
     copyData.push(...addFields.map(e => wrapElement(e, true, false, false, false)))
     // copyData.push(...addFields)
     fn && fn(copyData)
   }
 }
-const getLayoutDataByplatform = (platform) => {
+const getLayoutDataByPlatform = (platform: PlatformType) => {
   const isPC = platform === 'pc'
   if (isEmpty(isPC ? layout.pc : layout.mobile)) {
     if (platform === state.platform) {
       const original = deepClone(state.store)
-      utils.disassemblyData2(original)
+      disassemblyData2(original)
       return original
     }
     const newData = deepClone(state.fields.map(e => wrapElement(e, true, false, false, false)))
-    utils.disassemblyData2(newData)
+    disassemblyData2(newData)
     return newData
   }
   if (platform === state.platform) {
     const original = deepClone(state.store)
-    utils.disassemblyData2(original)
+    disassemblyData2(original)
     layout[isPC ? 'pc' : 'mobile'] = original
   }
-  const layoutFields = utils.pickfields(isPC ? layout.pc : layout.mobile).map(e => {
+  const layoutFields = pickFields(isPC ? layout.pc : layout.mobile).map(e => {
     return {
       id: e
     }
@@ -239,21 +241,13 @@ const getLayoutDataByplatform = (platform) => {
   const addFields = deepClone(_.differenceBy(state.fields, layoutFields, 'id').map(e => wrapElement(e, true, false, false, false)))
   const delFields = _.differenceBy(layoutFields, state.fields, 'id')
   repairLayout(copyData, delFields)
-  utils.disassemblyData2(addFields)
+  disassemblyData2(addFields)
   copyData.push(...addFields)
   return copyData
 }
 const switchPlatform = (platform: PlatformType) => {
   if (state.platform === platform) {
     return false
-  }
-  if (props.layoutType === 2) {
-    syncLayout(platform, (newData) => {
-      state.store = newData
-      state.store.forEach((e) => {
-        utils.addContext(e, state.store)
-      })
-    })
   }
   state.platform = platform
 }
@@ -270,6 +264,7 @@ const richFormPreviewData = ref({
 provide('rich-form-preview', richFormPreviewData)
 provide('Everright', {
   state,
+  // 准备添加 移动端和桌面端的配置
   setSelection,
   props,
   wrapElement,
@@ -281,7 +276,6 @@ provide('Everright', {
   fireEvent
 })
 
-const ns = useNamespace('Main', state.Namespace)
 const getData1 = () => {
   return Object.assign(disassemblyData1(deepClone({
     list: state.store,
@@ -291,60 +285,60 @@ const getData1 = () => {
     logic: state.logic
   })
 }
-const getData2 = () => {
-  layout.pc = getLayoutDataByplatform('pc')
-  layout.mobile = getLayoutDataByplatform('mobile')
-  return deepClone({
-    layout,
-    data: state.data,
-    config: state.config,
-    fields: state.fields,
-    logic: state.logic
-  })
-}
-const setData1 = (data) => {
-  if (isEmpty(data)) return false
-  const newData = utils.combinationData1(deepClone(data))
-  isShow.value = false
-  state.store = newData.list
-  state.config = newData.config
-  state.data = newData.data
-  state.fields = newData.fields
-  state.logic = newData.logic
-  setSelection(state.config)
-  state.store.forEach((e) => {
-    utils.addContext(e, state.store)
-  })
-  nextTick(() => {
-    isShow.value = true
-  })
-}
-const setData2 = (data) => {
-  if (isEmpty(data)) return false
-  const newData = deepClone(data)
-  layout.pc = newData.layout.pc
-  layout.mobile = newData.layout.mobile
-  isShow.value = false
-  state.store = newData.list
-  state.fields = newData.fields
-  const curLayout = deepClone(newData.layout[state.platform])
-  utils.combinationData2(curLayout, state.fields)
-  state.store = curLayout
-  state.config = newData.config
-  state.data = newData.data
-  setSelection(state.config)
-  state.store.forEach((e) => {
-    utils.addContext(e, state.store)
-  })
-  nextTick(() => {
-    isShow.value = true
-  })
-}
+// const getData2 = () => {
+//   layout.pc = getLayoutDataByPlatform('pc')
+//   layout.mobile = getLayoutDataByPlatform('mobile')
+//   return deepClone({
+//     layout,
+//     data: state.data,
+//     config: state.config,
+//     fields: state.fields,
+//     logic: state.logic
+//   })
+// }
+// const setData1 = (data) => {
+//   if (isEmpty(data)) return false
+//   const newData = combinationData1(deepClone(data))
+//   isShow.value = false
+//   state.store = newData.list
+//   state.config = newData.config
+//   state.data = newData.data
+//   state.fields = newData.fields
+//   state.logic = newData.logic
+//   setSelection(state.config)
+//   state.store.forEach((e) => {
+//     addContext(e, state.store)
+//   })
+//   nextTick(() => {
+//     isShow.value = true
+//   })
+// }
+// const setData2 = (data) => {
+//   if (isEmpty(data)) return false
+//   const newData = deepClone(data)
+//   layout.pc = newData.layout.pc
+//   layout.mobile = newData.layout.mobile
+//   isShow.value = false
+//   state.store = newData.list
+//   state.fields = newData.fields
+//   const curLayout = deepClone(newData.layout[state.platform])
+//   combinationData2(curLayout, state.fields)
+//   state.store = curLayout
+//   state.config = newData.config
+//   state.data = newData.data
+//   setSelection(state.config)
+//   state.store.forEach((e) => {
+//     addContext(e, state.store)
+//   })
+//   nextTick(() => {
+//     isShow.value = true
+//   })
+// }
 const getData = () => {
   if (!state.validateStates.every(e => !e.isWarning)) {
     return {}
   }
-  return (props.layoutType === 1 ? getData1 : getData2)()
+  return getData1()
 }
 type OperationType = 'resetData' | 'preview'
 const handleOperation = (type: OperationType) => {
@@ -388,16 +382,11 @@ const onSaveData = () => {
         <div>
           <Icon @click="onSaveData" class="fe-icon" icon="save"></Icon>
           <Icon v-if="isShowClear" @click="handleOperation('resetData')" class="fe-icon" icon="clear0"></Icon>
-          <slot name="operation-left"></slot>
         </div>
+        <DeviceSwitch :modelValue="state.platform" @update:model-value="switchPlatform"> </DeviceSwitch>
         <div>
-          <DeviceSwitch :modelValue="state.platform" @update:model-value="switchPlatform">
-          </DeviceSwitch>
-        </div>
-        <div>
-          <slot name="operation-right"></slot>
           <el-dropdown v-if="isShowI18n" @command="(command) => fireEvent('lang', command)">
-            <Icon :class="[ns.e('icon')]" icon="language"></Icon>
+            <Icon class="fe-icon" icon="language"></Icon>
             <template #dropdown>
               <el-dropdown-menu>
                 <el-dropdown-item command="zh-cn" :disabled="lang === 'zh-cn'">中文</el-dropdown-item>
@@ -405,7 +394,7 @@ const onSaveData = () => {
               </el-dropdown-menu>
             </template>
           </el-dropdown>
-          <Icon @click="handleOperation('preview')" :class="[ns.e('icon')]" icon="preview"></Icon>
+          <Icon @click="handleOperation('preview')" class="fe-icon" icon="preview"></Icon>
         </div>
       </el-header>
       <CanvasPanel v-click-outside="onClickOutside" v-if="isShow" :data="state.store"></CanvasPanel>
@@ -429,6 +418,8 @@ const onSaveData = () => {
 
 .mainOuter {
   height: 100vh;
+
+  .fe-icon {}
 
   .el-container {
     height: 100%;

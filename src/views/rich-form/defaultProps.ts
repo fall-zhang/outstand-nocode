@@ -12,16 +12,8 @@ export default {
     type: String,
     default: 'zh-cn'
   },
-  layoutType: {
-    type: Number,
-    default: 1
-  },
   fileUploadURI: {
     type: String
-  },
-  configPanelWidth: {
-    type: String,
-    default: '320px'
   },
   isShowCompleteButton: {
     type: Boolean,
