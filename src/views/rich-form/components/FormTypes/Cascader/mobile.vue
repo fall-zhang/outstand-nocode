@@ -1,5 +1,4 @@
 <script>
-import { useNamespace } from '@/hooks/use-namespace'
 export default {
   name: 'FeCascaderMobile',
   inheritAttrs: false,
@@ -19,15 +18,14 @@ const props = defineProps({
     default: () => ({})
   }
 })
-const ns = useNamespace('FormTypesCascader_mobile')
 const onClear = () => {
   props.data.options.defaultValue = []
 }
 </script>
 <template>
-  <van-field readonly :class="[ns.b()]" v-bind="params">
+  <van-field readonly :class="$style.cascaderMobile" v-bind="params">
     <template #input>
-      <el-cascader v-model="data.options.defaultValue" v-bind="params" :popper-class="ns.e('cascader')" />
+      <el-cascader v-model="data.options.defaultValue" v-bind="params" :popper-class="$style.cascader" />
     </template>
     <template v-if="data.options.defaultValue && data.options.defaultValue.length && params.clearable" #button>
       <van-icon @touchstart.stop="onClear" name="clear" />
@@ -35,4 +33,4 @@ const onClear = () => {
   </van-field>
 </template>
 
-<style scoped></style>
+<style scoped module lang="scss" src="./index.module.scss"></style>

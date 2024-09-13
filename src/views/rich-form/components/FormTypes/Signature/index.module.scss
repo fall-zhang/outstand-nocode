@@ -1,0 +1,55 @@
+.signaturePC {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  border: black 1px solid;
+
+  .clear {
+    color: $primary-color;
+    position: absolute;
+    z-index: 1;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+    font-size: 30px;
+  }
+
+  .noData {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  canvas {
+    border: 1px dashed #d3d3d3;
+    width: 100%;
+    height: 400px;
+  }
+}
+
+.signatureMobile {
+  .canvasWrap {
+    border: 1px dashed #d3d3d3;
+    box-sizing: border-box;
+    width: 100%;
+    height: calc(100vh - 50px);
+    position: relative;
+
+    &>canvas {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .clear {
+    color: $primary-color;
+    position: absolute;
+    z-index: 1;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+    font-size: 30px;
+  }
+}

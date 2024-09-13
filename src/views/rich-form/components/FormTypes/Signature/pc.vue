@@ -103,7 +103,7 @@ const handleCommit = async () => {
 }
 </script>
 <template>
-  <div :class="[ns.b()]">
+  <div :class="$style.signaturePC">
     <template v-if="data.options.defaultValue">
       <el-image @click="handleReOpen" :src="data.options.defaultValue.url" :fit="'contain'"
         style="width: 100%; height: 100%;" />
@@ -131,4 +131,4 @@ const handleCommit = async () => {
   </el-dialog>
 </template>
 
-<style scoped></style>
+<style scoped module src="./index.module.scss" lang="scss"></style>

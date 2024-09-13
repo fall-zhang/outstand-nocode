@@ -1,6 +1,5 @@
 <script setup>
 import { ref } from 'vue'
-import { useNamespace } from '@/hooks'
 defineOptions({
   name: 'FeSelectMobile',
   inheritAttrs: false,
@@ -19,13 +18,12 @@ const props = defineProps({
   }
 })
 const element = ref()
-const ns = useNamespace('FormTypesSelect_mobile')
 const onClear = () => {
   props.data.options.defaultValue = []
 }
 </script>
 <template>
-  <van-field readonly :class="[ns.b()]" v-bind="params" ref="element">
+  <van-field readonly class="selectMobile" v-bind="params" ref="element">
     <template #input>
       <el-select @change="element.resetValidation()" v-model="data.options.defaultValue" v-bind="params">
         <el-option v-for="item in params.options" :key="item.value" :label="item.label" :value="item.value" />
@@ -37,4 +35,4 @@ const onClear = () => {
   </van-field>
 </template>
 
-<style scoped></style>
+<style module lang="scss" src="./index.module.scss"></style>

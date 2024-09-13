@@ -1,7 +1,6 @@
 <!-- 省市区 -->
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import { useNamespace } from '@/hooks'
 defineOptions({
   name: 'FeRegionMobile',
   inheritAttrs: false,
@@ -23,7 +22,6 @@ const dialogVisible = ref(false)
 const popup = ref()
 const currentArea = ref()
 const areaRef = ref()
-const ns = useNamespace('FormTypesCascader_mobile')
 watch(() => props.data.options.defaultValue, (newVal) => {
   currentArea.value = newVal
 }, {
@@ -48,7 +46,7 @@ const onConfirm = (value) => {
   currentValue.value = currentArea.value
   dialogVisible.value = false
 }
-const onCancel = ({ selectedOptions }) => {
+const onCancel = () => {
   dialogVisible.value = false
   currentValue.value = props.data.options.defaultValue
 }
@@ -62,7 +60,7 @@ const onClear = () => {
       <van-icon @click.stop="onClear" name="clear" />
     </template>
   </van-field>
-  <van-popup ref="popup" :lock-scroll="false" :lazy-render="false" :class="ns.e('popup')" teleport="body"
+  <van-popup ref="popup" :lock-scroll="false" :lazy-render="false" teleport="body"
     v-model:show="dialogVisible" position="bottom" :safe-area-inset-bottom="true">
     <van-area ref="areaRef" @confirm="onConfirm" @cancel="onCancel" v-model="currentArea" v-bind="params" />
   </van-popup>

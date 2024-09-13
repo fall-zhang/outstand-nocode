@@ -1,5 +1,4 @@
 <script>
-import { useNamespace } from '@/hooks'
 export default {
   name: 'FeCheckboxDesktop',
   inheritAttrs: false,
@@ -19,15 +18,17 @@ const props = defineProps({
     default: () => ({})
   }
 })
-const ns = useNamespace('FormTypesCheckbox')
+const emit = defineEmits(['change'])
+
+const defaultValue = ref()
 </script>
 <template>
-  <el-checkbox-group :class="[ns.e('radioGroup'), data.options.displayStyle === 'block' && ns.e('blockLayout')]"
-    v-model="data.options.defaultValue" v-bind="params">
+  <el-checkbox-group :class="[radioGroup, data.options.displayStyle === 'block' && $style.blockLayout]"
+    v-model="defaultValue" v-bind="params" @change="(newVal) => emit('change', newVal)">
     <el-checkbox v-for="item in params.options" :key="item.value" :label="item.value">
       {{ item.label }}
     </el-checkbox>
   </el-checkbox-group>
 </template>
 
-<style scoped></style>
+<style scoped module src="./index.module.scss"></style>

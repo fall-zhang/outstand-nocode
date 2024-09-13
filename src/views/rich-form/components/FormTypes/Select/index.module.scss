@@ -1,0 +1,18 @@
+.selectMobile {
+  .el-select {
+    width: 100%;
+
+    .el-input__suffix {
+      display: none;
+    }
+
+    .el-input.is-focus .el-input__wrapper,
+    .el-input__wrapper {
+      box-shadow: none !important;
+    }
+  }
+}
+
+.selectPC {
+  width: 100%;
+}

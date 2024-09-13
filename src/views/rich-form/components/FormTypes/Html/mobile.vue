@@ -1,5 +1,5 @@
 <script>
-import { useI18n, useNamespace } from '@/hooks'
+import { useI18n } from '@/hooks'
 import { ref, computed, watch, nextTick } from 'vue'
 import CKEditor from '@/componets/module/ckeditor'
 export default {
@@ -26,7 +26,6 @@ const props = defineProps({
 })
 const dialogVisible = ref(false)
 const popup = ref()
-const ns = useNamespace('FormTypesHtml_mobile')
 const currentValue = computed({
   get() {
     let result = ''
@@ -44,7 +43,7 @@ const handleAction = async (type) => {
 </script>
 <template>
   <van-field readonly v-model="currentValue" @click="!params.disabled && (dialogVisible = true)" v-bind="params" />
-  <van-popup ref="popup" :lock-scroll="false" :class="ns.e('popup')" teleport="body" v-model:show="dialogVisible"
+  <van-popup ref="popup" :lock-scroll="false" class="popup" teleport="body" v-model:show="dialogVisible"
     position="right" :style="{ width: '100%', height: '100vh' }" :safe-area-inset-bottom="true">
     <van-nav-bar :left-text="t('er.public.back')" left-arrow @click-left="handleAction(1)">
       <template #right>

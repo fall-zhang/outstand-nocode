@@ -1,5 +1,4 @@
 <script>
-import { useNamespace } from '@/hooks'
 export default {
   name: 'FeRadioDesktop',
   inheritAttrs: false,
@@ -19,10 +18,9 @@ const props = defineProps({
     default: () => ({})
   }
 })
-const ns = useNamespace('FormTypesRadio')
 </script>
 <template>
-  <el-radio-group :class="[ns.e('radioGroup'), data.options.displayStyle === 'block' && ns.e('blockLayout')]"
+  <el-radio-group :class="[$style.feRadio, data.options.displayStyle === 'block' && $style.blockLayout]"
     v-model="data.options.defaultValue" v-bind="params">
     <el-radio v-for="item in params.options" :key="item.value" :label="item.value">
       {{ item.label }}
@@ -30,4 +28,4 @@ const ns = useNamespace('FormTypesRadio')
   </el-radio-group>
 </template>
 
-<style scoped></style>
+<style src="index.module.scss" scoped module lang="scss"></style>

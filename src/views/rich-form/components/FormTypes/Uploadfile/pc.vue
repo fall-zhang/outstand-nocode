@@ -38,7 +38,7 @@ watch(fileList, (arr) => {
     }
     return result
   })
-  if (!_.isEqual(list, arr) || !list.length) {
+  if (!Object.is(list, arr) || !list.length) {
     props.data.options.defaultValue = deepClone(list)
   }
 }, {
