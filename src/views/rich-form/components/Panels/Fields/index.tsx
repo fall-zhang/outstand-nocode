@@ -1,12 +1,14 @@
-import { useI18n, useNamespace } from '@/hooks'
+// 左侧功能面板
+import { useI18n } from '@/hooks'
 import { useTarget } from '@/hooks/use-target'
 import utils, { deepClone } from '@/utils'
 import { DraggableWrap } from '../../Layout/DraggableWrap'
 import { inject, reactive, nextTick } from 'vue'
 
 import Icon from '@/assets'
-import ControlInsertionPlugin from '../../Layout/ControlInsertionPlugin.ts'
+import ControlInsertionPlugin from '../../Layout/ControlInsertionPlugin'
 import { ElAside, ElScrollbar, ElMenu, ElSubMenu } from 'element-plus'
+import $style from './index.module.scss'
 export default defineComponent({
   name: 'FeFields',
   inheritAttrs: false,
@@ -16,11 +18,13 @@ export default defineComponent({
       type: Number,
       default: 1
     },
-    visible: {}
+    visible: {
+      type: Boolean,
+      default: false
+    }
   },
   setup(props) {
     const ER = inject('Everright')
-    const ns = useNamespace('Fields')
     const {
       t
     } = useI18n()
@@ -43,7 +47,7 @@ export default defineComponent({
       item: ({ element }) => {
         return (
           <li onClick={() => addStore(element)}>
-            <Icon class={[ns.e('icon')]} icon={element.icon}></Icon>
+            <Icon class={$style.icon} icon={element.icon}></Icon>
             <span>{utils.fieldLabel(t, element)}</span>
           </li>
         )
@@ -63,44 +67,41 @@ export default defineComponent({
       plugins: [ControlInsertionPlugin(ER)]
     }
 
-    return () => (<ElAside class={[ns.b()]} width={ER.props.fieldsPanelWidth}>
-      <ElScrollbar>
-        <ElMenu
-          default-openeds={ER.props.fieldsPanelDefaultOpened}>
-          {ER.props.fieldsConfig.map((element, index) => {
-            return (
-              <ElSubMenu
-                index={element.id}
-                v-slots={{
-                  title() {
-                    return t(`er.fields.${element.id}`)
-                  },
-                  default() {
-                    return (
-                      <DraggableWrap
-                        class={[ns.e('dragContent')]}
-                        list={element.list}
-                        clone={handleClone}
-                        tag="ul"
-                        sort={false}
-                        move={handleMove}
-                        {...dragOptions}
-                        group={
-                          { name: 'er-Canvas', pull: 'clone', put: false }
-                        }
-                        item-key="null"
-                        v-slots={slots}
-                      >
-                      </DraggableWrap>
-                    )
-                  }
-                }}
-              >
-              </ElSubMenu>
-            )
-          })}
-        </ElMenu>
-      </ElScrollbar>
+    return () => (<ElAside class={$style.Fields} width={ER.props.fieldsPanelWidth}>
+      <ElMenu
+        default-openeds={ER.props.fieldsPanelDefaultOpened}>
+        {ER.props.fieldsConfig.map((element, index) => (
+          <ElSubMenu
+            index={element.id}
+            v-slots={{
+              title() {
+                return t(`er.fields.${element.id}`)
+              },
+              default() {
+                return (
+                  <DraggableWrap
+                    class={$style.dragContent}
+                    list={element.list}
+                    clone={handleClone}
+                    tag="ul"
+                    sort={false}
+                    move={handleMove}
+                    {...dragOptions}
+                    group={
+                      { name: 'er-Canvas', pull: 'clone', put: false }
+                    }
+                    item-key="null"
+                    v-slots={slots}
+                  >
+                  </DraggableWrap>
+                )
+              }
+            }}
+          >
+          </ElSubMenu>
+        )
+        )}
+      </ElMenu>
     </ElAside>)
   }
 }

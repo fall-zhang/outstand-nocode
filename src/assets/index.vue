@@ -4,6 +4,7 @@ import svg from './svg'
 defineOptions({
   name: 'FeIcon'
 })
+const emit = defineEmits(['click'])
 const props = defineProps({
   disabled: {
     type: Boolean,
@@ -30,7 +31,7 @@ const element = ref('')
 
 </script>
 <template>
-  <i ref="element" :class="[`fe-icon`, props.disabled && 'is-disabled']" :style="style">
+  <i ref="element" :class="[`fe-icon`, props.disabled && 'is-disabled']" :style="style" @click="() => emit('click')">
     <component :is="svg[props.icon]"></component>
   </i>
 </template>

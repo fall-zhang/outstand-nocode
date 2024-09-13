@@ -8,6 +8,8 @@ import CKEDITOR from 'ckeditor5'
 import { markRaw, defineComponent, onMounted, ref, onBeforeUnmount, watch } from 'vue'
 import { debounce } from 'lodash-es'
 import './style/index.js'
+import $style from './index.module.scss'
+
 const SAMPLE_READ_ONLY_LOCK_ID = 'Integration Sample'
 const INPUT_EVENT_DEBOUNCE_WAIT = 300
 
@@ -222,7 +224,7 @@ export default defineComponent({
         })
     })
     return () => (
-      <div class={['ck-main', props.platform === 'mobile' && 'mobile', 'formatted']}>
+      <div class={[$style.ckMain, props.platform === 'mobile' && 'mobile', 'formatted']}>
         <div class='toolbar' ref={toolbar}></div>
         <div class='container' ref={container}></div>
         <div ref={element}></div>

@@ -2,10 +2,10 @@
 <script setup lang="ts">
 import utils from '@/utils'
 import { useTarget } from '@/hooks/use-target'
-import { useI18n, useNamespace } from '@/hooks'
-import { ref, computed, reactive, watch, onMounted, inject } from 'vue'
+import { useI18n } from '@/hooks'
+import { ref, computed, reactive, watch, onMounted } from 'vue'
 import PanelsConfigComponentsPropsPanel from './components/PropsPanel.vue'
-import GlobalConfigPanel from './components/GlobalConfigPanel.vue'
+import GlobalConfigPanel from './ConfigPanelGlobal.vue'
 import { isEmpty } from '@/utils/utils'
 defineOptions({
   name: 'ConfigPanel',
@@ -29,9 +29,9 @@ const { t } = useI18n()
 const activeName0 = ref('props')
 const form = ref()
 
-const validator = (rule, value, callback) => {
+const validator = (rule: any, value: any, callback: any) => {
   const newValue = value.trim()
-  const fn = (type) => {
+  const fn = (type:any) => {
     switch (type) {
       case 0:
         callback(new Error(t('er.validateMsg.required')))
@@ -82,11 +82,9 @@ const breadcrumbList = computed(() => {
   }
   return result.map(node => {
     const result = {
-      // eslint-disable-next-line
-      node: node,
+      node,
       label: ''
     }
-    console.log("🚀 ~ breadcrumbList ~ node.value:", node)
     if (node === 'root') {
       result.label = t('er.panels.config')
     } else if (node && node.value !== 'placeholder') {
@@ -168,7 +166,6 @@ watch(target, () => {
       padding: 16px 0;
     }
 
-    &,
     .el-tabs__header,
     .el-tabs__item {
       border: none !important;

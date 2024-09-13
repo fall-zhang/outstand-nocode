@@ -1,18 +1,17 @@
 import LayoutDragGable from '../../Layout/DragGable'
 import CompleteButton from '@/views/rich-form/components/CompleteButton.vue'
 import { useTarget } from '@/hooks/use-target'
-import { useNamespace } from '@/hooks/use-namespace'
 import { useProps } from '@/hooks/use-props'
 import { ElForm, ElScrollbar } from 'element-plus'
 import { Form as VanForm } from 'vant'
 import { isEmpty } from '@/utils/utils'
+import $style from './CenterCanvas.module.scss'
 export default defineComponent({
   name: 'PanelsCanvas',
   inheritAttrs: false,
   customOptions: {},
   setup () {
     const ER = inject('Everright')
-    const ns = useNamespace('Canvas')
     const {
       state,
       setSelection,
@@ -27,39 +26,37 @@ export default defineComponent({
         <div>
           <TagComponent ref={form} onClick={() => unref(isEditModel) && setSelection('root')} {...typeProps.value}>
             {
-              <LayoutDragGable data-layout-type={'root'} class={[unref(isEditModel) && ns.e('wrap')]} data={state.store} parent={state.store} isRoot></LayoutDragGable>
+              <LayoutDragGable data-layout-type={'root'} class={[unref(isEditModel) && $style.wrap]} data={state.store} parent={state.store} isRoot></LayoutDragGable>
             }
           </TagComponent>
           {
-            !unref(isEditModel) && !isEmpty(state.config) && ER.props.isShowCompleteButton && <CompleteButton handle={form}/>
+            !unref(isEditModel) && !isEmpty(state.config) &&  <CompleteButton handle={form}/>
           }
         </div>
       )
     }
-    return () => (
-      <div
-        class={
-          [
-            'center-canvas',
-            ns.b(),
-            isEditModel.value && ns.e('editModel'),
-            !unref(isPC) && ns.e('mobile'),
-            !unref(isPC) && ns.e(`mobile_layoutType${ER.props.layoutType}`)
-            // ER.props.layoutType === 1  && ns.e('layoutType1')
-          ]
-        }>
-        {unref(isEditModel)
-          ? (
-            <div class={[ns.e('container')]}>
-              <ElScrollbar ref={ER.canvasScrollRef}>
-                <div class={[ns.e('subject')]}>
-                  {renderContent()}
-                </div>
-              </ElScrollbar>
-            </div>
-          )
-          : renderContent()}
-      </div>
+    return () => (<div
+      class={
+        [
+          'center-canvas',
+          $style.Canvas,
+          isEditModel.value && $style.editModel,
+          !unref(isPC) && $style.mobile,
+          !unref(isPC) && $style[`mobileLayoutType${ER.props.layoutType}`]
+        ]
+      }>
+      {unref(isEditModel)
+        ? (
+          <div class={$style.container}>
+            <ElScrollbar ref={ER.canvasScrollRef}>
+              <div class={$style.subject}>
+                {renderContent()}
+              </div>
+            </ElScrollbar>
+          </div>
+        )
+        : renderContent()}
+    </div>
     )
   }
 })
