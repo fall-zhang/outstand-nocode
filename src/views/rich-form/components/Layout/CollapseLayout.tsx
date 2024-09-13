@@ -1,8 +1,8 @@
 import { defineComponent, } from 'vue'
 import Selection from '../Selection/selectElement'
 import LayoutDragGable from './DragGable'
-import { useNamespace } from '@/hooks'
 import { ElCollapse, ElCollapseItem } from 'element-plus'
+import $style from './CollapseLayout.module.scss'
 export default defineComponent({
   name: 'CollapseLayout',
   inheritAttrs: false,
@@ -16,7 +16,6 @@ export default defineComponent({
     }
   },
   setup (props, { attrs }) {
-    const ns = useNamespace('CollapseLayout')
     if (!props.data.options.defaultValue.length) {
       // eslint-disable-next-line vue/no-mutating-props
       props.data.options.defaultValue.push(props.data.columns[0].id)
@@ -29,7 +28,7 @@ export default defineComponent({
               return (
                 <ElCollapseItem title={element.label} name={element.id}>
                   <Selection
-                    class={[ns.e('area')]}
+                    class={$style.outline}
                     data={element} parent={props.data}
                   >
                     <LayoutDragGable

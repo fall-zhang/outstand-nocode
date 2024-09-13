@@ -26,13 +26,23 @@ const props = defineProps({
 })
 </script>
 <template>
-  <div :class="[ns.b(), target.options[field] && ns.e('open')]">
+  <div :class="[$style.checkboxComponent]">
     <el-checkbox v-model="target.options[field]" @change="(newValue) => $emit('change', newValue)"
       :label="label"></el-checkbox>
     <template v-if="$slots.default">
-      <div :class="[ns.e('slot')]" v-show="target.options[field]">
+      <div class="slot" v-show="target.options[field]">
         <slot></slot>
       </div>
     </template>
   </div>
 </template>
+
+<style lang="scss" module>
+.checkboxComponent {
+  margin: 2px 0;
+
+  .slot {
+    padding-top: 10px;
+  }
+}
+</style>

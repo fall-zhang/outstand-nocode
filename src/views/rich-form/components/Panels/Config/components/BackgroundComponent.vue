@@ -4,7 +4,6 @@ import { ElMessage } from 'element-plus'
 import {
   useI18n,
   useTarget,
-  useNamespace
 } from '@/hooks'
 export default {
   name: 'ConfigBackground',
@@ -20,7 +19,6 @@ const {
 const {
   target
 } = useTarget()
-const ns = useNamespace('ConfigBackground')
 const element = ref()
 const state = reactive({
   visible: false,
@@ -192,14 +190,14 @@ const handleSuccess = (response, uploadFile) => {
 }
 </script>
 <template>
-  <div style="width: 100%">
-    <div :class="[ns.e('background')]">
+  <div style="width: 100%" class="ConfigBackground">
+    <div class="background">
       <div v-if="!state.value0">
         <el-color-picker size="large" @active-change="handleActiveChange" @change="handleChange"
           v-model="target.style.background.color" show-alpha />
       </div>
-      <ul :class="[!state.value0 ? ns.e('quickColor') : ns.e('quickImage')]" ref="element">
-        <li v-if="state.value0" :class="ns.e('uploadFile')">
+      <ul :class="[!state.value0 ? 'quickColor' : 'quickImage']" ref="element">
+        <li v-if="state.value0" class="uploadFile">
           <el-upload accept=".png,.jpg" :action="ER.props.fileUploadURI" list-type="picture-card" ref="element"
             :show-file-list="false" :before-upload="beforeAvatarUpload" :on-success="handleSuccess"
             :on-error="handleError">
@@ -247,3 +245,103 @@ const handleSuccess = (response, uploadFile) => {
     </div>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.ConfigBackground {
+  display: flex;
+
+  .backgroundTitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .clear {
+    padding-top: 10px;
+  }
+
+  .background {
+    display: flex;
+
+    .el-color-picker {
+      .el-color-picker__trigger {
+        border-right: none !important;
+        border-radius: 4px 0px 0px 4px;
+      }
+    }
+
+    ul {
+      width: 100%;
+      display: flex;
+
+      li {
+        height: 38px;
+        cursor: pointer;
+
+        .el-image {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+  }
+
+  .quickColor {
+    overflow: hidden;
+
+    li:not(:last-child) {
+      border-right: none;
+    }
+
+    li:last-child {
+      border-radius: 0px 4px 4px 0px;
+    }
+
+    li {
+      border: 1px solid #DCDFE6;
+      flex: 1;
+    }
+
+    li.selectedBg {
+      border-color: $primary-color;
+
+      &+li {
+        border-left-color: $primary-color;
+      }
+    }
+  }
+
+  .quickImage {
+    flex-wrap: wrap;
+    justify-content: start;
+
+    li {
+      width: 30%;
+      border: 1px solid #DDDDDD;
+      border-radius: 4px;
+      flex-shrink: 0;
+      margin-bottom: 8px;
+      height: 30px;
+      margin-right: 11px;
+
+      &:nth-child(3n) {
+        margin-right: 0px;
+      }
+
+      &.selectedBg {
+        border-color: $primary-color;
+      }
+    }
+  }
+
+  .uploadFile {
+    border-color: transparent !important;
+
+    &>.el-upload-list,
+    .el-upload {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+</style>

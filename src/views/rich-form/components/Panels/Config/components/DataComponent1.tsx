@@ -8,7 +8,7 @@ import { useTarget, useI18n, useNamespace } from '@/hooks'
 import Icon from '@/assets'
 import { dragGableWrap } from '@/views/rich-form/components/Layout/DragGable'
 import _ from 'lodash-es'
-import { ElCheckbox, ElCheckboxGroup, ElForm, ElFormItem, ElScrollbar, ElInput } from 'element-plus'
+import { ElCheckbox, ElCheckboxGroup, ElForm, ElFormItem, ElScrollbar, ElInput, ElButton } from 'element-plus'
 export default defineComponent({
   name: 'ConfigData1',
   inheritAttrs: false,
@@ -153,14 +153,14 @@ export default defineComponent({
     }
     return (
       <div>
-        64444444444444
+        {'DataComponent1'}
         <table class={[ns.e('tableThead')]}>
           <thead>
             <tr>
-              <th width="42">{t('er.config.dataComponent1.defaultLabel')}</th>
+              <th >{t('er.config.dataComponent1.defaultLabel')}</th>
               <th>{t('er.config.dataComponent1.unique')}</th>
               <th>{t('er.config.dataComponent1.name')}</th>
-              <th width="80">{t('er.config.dataComponent1.operate')}</th>
+              <th >{t('er.config.dataComponent1.operate')}</th>
             </tr>
           </thead>
         </table>
@@ -172,10 +172,10 @@ export default defineComponent({
               <table className={[ns.e('table')]}>
                 <thead>
                   <tr>
-                    <th width="42"></th>
+                    <th ></th>
                     <th></th>
                     <th></th>
-                    <th width="80"></th>
+                    <th ></th>
                   </tr>
                 </thead>
                 <dragGableWrap

@@ -27,7 +27,11 @@ export default defineComponent({
       type: Boolean,
       default: false
     },
-    data: Object,
+    data: {
+      require: true,
+      type: Object,
+      default: () => ({})
+    },
     parent: Object,
     tag: {
       type: String,
@@ -45,7 +49,7 @@ export default defineComponent({
       isEditModel,
       isPC,
     } = useTarget()
-    const handleMove = (e) => {
+    const handleMove = () => {
       return true
     }
     const dragOptions = {
@@ -105,24 +109,22 @@ export default defineComponent({
                 params['data-field-id'] = `${element.id}`
               }
               if (unref(isPC)) {
-                node = (
-                  <Selection hasWidthScale hasCopy hasDel hasDrag hasMask { ...params }>
-                    {
-                      element.type !== 'divider'
-                        ? (<el-form-item
-                          {...typeProps.value}
-                        >
-                          <TypeComponent data={element} params={typeProps.value}></TypeComponent>
-                        </el-form-item>)
-                        : <TypeComponent data={element} params={typeProps.value}></TypeComponent>
-                    }
-                  </Selection>
+                node = (<Selection hasWidthScale hasCopy hasDel hasDrag hasMask { ...params }>
+                  {
+                    element.type !== 'divider'
+                      ? (<el-form-item
+                        {...typeProps.value}
+                      >
+                        <TypeComponent data={element} params={typeProps.value}></TypeComponent>
+                      </el-form-item>)
+                      : <TypeComponent data={element} params={typeProps.value}></TypeComponent>
+                  }
+                </Selection>
                 )
               } else {
-                node = (
-                  <Selection hasWidthScale hasCopy hasDel hasDrag hasMask { ...params }>
-                    <TypeComponent data={element} params={typeProps.value}></TypeComponent>
-                  </Selection>
+                node = (<Selection hasWidthScale hasCopy hasDel hasDrag hasMask { ...params }>
+                  <TypeComponent data={element} params={typeProps.value}></TypeComponent>
+                </Selection>
                 )
               }
             }

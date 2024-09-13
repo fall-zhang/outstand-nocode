@@ -303,7 +303,7 @@ const checkLogicData = () => {
       message: t('er.logic.logicSuggests'),
       type: 'warning'
     })
-    utils.removeLogicDataByid(target.value.id, state.logic)
+    utils.removeLogicDataById(target.value.id, state.logic)
   }
 }
 const handleChange0 = (value) => {
@@ -613,9 +613,6 @@ onMounted(() => {
     <PanelsConfigComponentsTypeComponent v-if="isSelectGrid" @listener="handleTypeListener" property="justify"
       :label="t('er.config.gridLayout.justify.label')" :height="40" :fontSize="40" :val="target.options.justify"
       :nodes="options6" />
-    <!--  <PanelsConfigComponentsGridLayoutComponent-->
-    <!--    v-if="isSelectGrid"-->
-    <!--  />-->
     <PanelsConfigComponentsDataComponent3 v-if="checkTypeBySelected(['collapse', 'tabs'], 'Data3')" />
     <PanelsConfigComponentsTypeComponent v-if="isSelectTabs" @listener="handleTypeListener" property="type"
       :label="t('er.config.tabsLayout.style.label')" :height="66" :fontSize="70" :val="target.options.type"
@@ -623,9 +620,6 @@ onMounted(() => {
     <PanelsConfigComponentsTypeComponent v-if="isSelectTabs" @listener="handleTypeListener" property="tabPosition"
       :label="t('er.config.tabsLayout.tabPosition.label')" :height="40" :fontSize="66" :val="target.options.tabPosition"
       :nodes="options5" />
-    <!--  <PanelsConfigComponentsTabsLayout-->
-    <!--    v-if="isSelectTabs"-->
-    <!--  />-->
     <PanelsConfigComponentsCollapseComponent
       v-if="checkTypeBySelected(['table', 'grid', 'col', 'collapse', 'collapseCol', 'tabs', 'tabsCol'], 'margin')"
       :label="t('er.public.margin')" operationKey="style" field="isShowMargin">
@@ -664,9 +658,6 @@ onMounted(() => {
         <PanelsConfigComponentsBackgroundComponent />
       </template>
     </PanelsConfigComponentsCollapseComponent>
-    <!--  <PanelsConfigComponentsBackgroundComponent-->
-    <!--    v-if="checkTypeBySelected(['grid', 'col', 'collapse', 'collapseCol', 'tabs', 'tabsCol', 'td', 'table'])"-->
-    <!--  />-->
     <PanelsConfigComponentsCollapseComponent
       v-if="checkTypeBySelected(['grid', 'col', 'collapse', 'collapseCol', 'tabs', 'tabsCol', 'table'], 'borderLine')"
       :label="t('er.config.borderComponent.borderLine')" operationKey="style" field="isShowBorder">
@@ -691,9 +682,6 @@ onMounted(() => {
         </div>
       </template>
     </PanelsConfigComponentsCollapseComponent>
-    <!--  <PanelsConfigComponentsBorderComponent-->
-    <!--    v-if="checkTypeBySelected(['grid', 'col', 'collapse', 'collapseCol', 'tabs', 'tabsCol', 'table'])"-->
-    <!--  />-->
     <PanelsConfigComponentsCheckboxComponent v-if="isSelectCollapse" :label="t('er.config.propsPanel.accordion')"
       field="accordion">
     </PanelsConfigComponentsCheckboxComponent>

@@ -93,3 +93,25 @@ const handleTypeListener = ({ property, data }) => {
     </div>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.ConfigBorder {
+  @include e(borderStyle) {
+    display: flex;
+    justify-content: space-around;
+    li {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      background: #F9F9F9;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid #F2F6FC;
+      border-radius: 4px;
+      &:hover,&.active {
+        border-color: $primary-color;
+      }
+    }
+  }
+}
+</style>

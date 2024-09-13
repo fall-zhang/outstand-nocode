@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useTarget, useNamespace } from '@/hooks'
+import { useTarget } from '@/hooks'
 defineOptions({
   name: 'ConfigAllSides',
   inheritAttrs: false,
@@ -8,7 +8,6 @@ defineOptions({
 const {
   target
 } = useTarget()
-const ns = useNamespace('ConfigAllsides')
 const props = defineProps({
   field: {
     type: String,
@@ -30,28 +29,49 @@ if (!target.value.style[props.field]) {
 }
 </script>
 <template>
-  <div>
-    <div :class="[ns.b()]">
-      <el-row :gutter="14" justify="center">
-        <el-col :span="12">
-          <el-input-number :step="10" :min="props.min" v-model="target.style[props.field].left"
-            controls-position="right" />
-        </el-col>
-        <el-col :span="12">
-          <el-input-number :step="10" :min="props.min" v-model="target.style[props.field].top"
-            controls-position="right" />
-        </el-col>
-      </el-row>
-      <el-row :gutter="14" justify="center">
-        <el-col :span="12">
-          <el-input-number :step="10" :min="props.min" v-model="target.style[props.field].right"
-            controls-position="right" />
-        </el-col>
-        <el-col :span="12">
-          <el-input-number :step="10" :min="props.min" v-model="target.style[props.field].bottom"
-            controls-position="right" />
-        </el-col>
-      </el-row>
-    </div>
+  <div class="configAllSides">
+    <el-row :gutter="14" justify="center">
+      <el-col :span="12">
+        <el-input-number :step="10" :min="props.min" v-model="target.style[props.field].left"
+          controls-position="right" />
+      </el-col>
+      <el-col :span="12">
+        <el-input-number :step="10" :min="props.min" v-model="target.style[props.field].top"
+          controls-position="right" />
+      </el-col>
+    </el-row>
+    <el-row :gutter="14" justify="center">
+      <el-col :span="12">
+        <el-input-number :step="10" :min="props.min" v-model="target.style[props.field].right"
+          controls-position="right" />
+      </el-col>
+      <el-col :span="12">
+        <el-input-number :step="10" :min="props.min" v-model="target.style[props.field].bottom"
+          controls-position="right" />
+      </el-col>
+    </el-row>
   </div>
 </template>
+<style scoped lang="scss">
+.configAllSides {
+  background: #F9F9F9;
+  border-radius: 4px;
+  padding: 16px;
+
+  &>div:first-child {
+    padding-top: 0;
+  }
+
+  &>div:last-child {
+    padding-bottom: 0;
+  }
+
+  &>div {
+    padding: 10px 0;
+  }
+
+  .el-input-number {
+    width: 100%;
+  }
+}
+</style>

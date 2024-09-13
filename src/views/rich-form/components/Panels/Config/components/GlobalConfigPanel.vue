@@ -42,7 +42,7 @@ const handleBeforeChange = () => {
   return new Promise((resolve, reject) => {
     const pcObj = _.pick(unref(target).pc, compareKeys)
     const mobileObj = _.pick(unref(target).mobile, compareKeys)
-    if (_.isEqual(pcObj, mobileObj)) {
+    if (Object.is(pcObj, mobileObj)) {
       resolve(true)
     } else {
       visible.value = true
