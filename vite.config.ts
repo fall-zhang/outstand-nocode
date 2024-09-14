@@ -11,60 +11,6 @@ import svgLoader from 'vite-svg-loader'
 import VueDevTools from 'vite-plugin-vue-devtools'
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
-// const isProduction = import.meta.env.MODE
-// console.log("🚀 ~ isProduction:", isProduction)
-
-// https://vitejs.dev/config/
-
-// const examplePlugin = () => {
-//   let config
-
-//   return {
-//     name: 'custom-vuedraggableAndSortable',
-//     transform(code, id) {
-//       /*eslint-disable*/
-//       if (true) {
-//         if (/vuedraggable\.js/.test(id)) {
-//           return code.replace('this._sortable = new Sortable(targetDomElement, sortableOptions);', (...e) => {
-//             return `Sortable.mount($attrs.plugins || []);
-//             ${e[0]}`
-//           })
-//         }
-//         if (/sortablejs/.test(id)) {
-//           return code.replace(`    plugins.forEach(function (p) {
-//       if (p.pluginName === plugin.pluginName) {
-//         throw "Sortable: Cannot mount plugin ".concat(plugin.pluginName, " more than once");
-//       }
-//     });
-//     plugins.push(plugin);`, (...e) => {
-//             return `if (!plugins.filter(e => e.pluginName === plugin.pluginName).length) {
-//           window.plugins = plugins;
-//           plugins.push(plugin);}`
-//           })
-//         }
-//       } else {
-//         if (/vuedraggable/.test(id)) {
-//           let result = code.replace('this._sortable = new external_commonjs_sortablejs_commonjs2_sortablejs_amd_sortablejs_root_Sortable_default.a(targetDomElement, sortableOptions);', (...e) => {
-//             return `external_commonjs_sortablejs_commonjs2_sortablejs_amd_sortablejs_root_Sortable_default.a.mount($attrs.plugins || []);
-//   ${e[0]}`
-//           })
-//           result = result.replace(`plugins.forEach(function(p) {
-//           if (p.pluginName === plugin.pluginName) {
-//             throw "Sortable: Cannot mount plugin ".concat(plugin.pluginName, " more than once");
-//           }
-//         });
-//         plugins.push(plugin);`, (...e) => {
-//             return `if (!plugins.filter(e => e.pluginName === plugin.pluginName).length) {
-//           window.plugins = plugins;
-//           plugins.push(plugin);}`
-//           })
-//           return result
-//         }
-//       }
-//       /*eslint-disable*/
-//     }
-//   }
-// }
 export default defineConfig({
 
   server: {
@@ -97,7 +43,6 @@ export default defineConfig({
     }
   },
   plugins: [
-    // examplePlugin(),
     vue(),
     vueJsx(),
     svgLoader(),

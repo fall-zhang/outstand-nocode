@@ -1,11 +1,12 @@
 import _ from 'lodash-es'
+import { get } from '@/utils/utils'
 export const checkIdExistInLogic = (fieldId, logic) => {
   return new RegExp(`"${fieldId}"`).test(JSON.stringify(logic))
 }
 export const removeLogicDataById = (fieldId, logic) => {
   for (const rules of Object.values(logic)) {
     for (let i0 = 0; i0 < rules.length; i0++) {
-      const conditions = _.get(rules[i0], 'ifRules.filters[0].conditions', [])
+      const conditions = get(rules[i0], 'ifRules.filters[0].conditions', [])
       for (let i1 = 0; i1 < conditions.length; i1++) {
         if (conditions[i1].property === fieldId) {
           conditions.splice(i1--, 1)
@@ -24,7 +25,7 @@ export const removeLogicDataById = (fieldId, logic) => {
 
   for (const rules of Object.values(logic)) {
     for (let i0 = 0; i0 < rules.length; i0++) {
-      const conditions = _.get(rules[i0], 'thenRules.filters[0].conditions', [])
+      const conditions = get(rules[i0], 'thenRules.filters[0].conditions', [])
       for (let i1 = 0; i1 < conditions.length; i1++) {
         for (let i2 = 0; i2 < conditions[i1].value.length; i2++) {
           if (conditions[i1].value[i2] === fieldId) {

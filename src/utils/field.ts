@@ -1,6 +1,7 @@
 import _ from 'lodash-es'
 import { nanoid } from './nanoid'
 import { PlatformType } from '@/views/rich-form/types/rich-form'
+import { get } from './utils'
 
 // WARNING: This is not a drop in replacement solution and
 // it might not work for some edge cases. Test your code!
@@ -217,9 +218,9 @@ const fieldLabel = (t, node) => t(transferLabelPath(node))
 const transferData = (lang:string, path:string, locale:any, options = {}) => {
   let result = ''
   if (_.isEmpty(options)) {
-    result = _.get(locale[lang], path, '')
+    result = get(locale[lang], path, '')
   } else {
-    result = _.template(_.get(locale[lang], path, ''))(options)
+    result = _.template(get(locale[lang], path, ''))(options)
   }
   return result
 }

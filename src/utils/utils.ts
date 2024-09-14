@@ -1,6 +1,3 @@
-import { v4 as uuid } from 'uuid'
-
-
 export function isNotNull(value: unknown) {
   return (value !== null) && (value !== undefined)
 }
@@ -54,11 +51,37 @@ export const insertCSS = function (cssStyle: string) {
   stylesheet
     .replace(cssStyle)
     .then(() => {
-      // console.log(stylesheet.cssRules[0].cssText);
       document.adoptedStyleSheets = [stylesheet] // 挂载到 document 上
     })
     .catch((err) => {
       console.error('Failed to replace styles:', err)
     })
-  // return
+}
+
+export const get = <T>(obj:any, path:string|string[], defValue:T) => {
+  // 未定义则返回 undefined
+  if (!path) return undefined
+  // Check if path is string or array. Regex : ensure that we do not have '.' and brackets.
+  // Regex explained: https://regexr.com/58j0k
+  const pathArray = Array.isArray(path) ? path : path.match(/([^[.\]])+/g)
+  // Find value
+  if (!pathArray) return undefined
+  const result = pathArray.reduce(
+    (prevObj, key) => prevObj && prevObj[key],
+    obj
+  )
+  // If found value is undefined return default value; otherwise return the value
+  return result === undefined ? defValue : result
+}
+
+export const set = <T>(obj:any, path:string|string[], value:T) => {
+  // Regex explained: https://regexr.com/58j0k
+  const pathArray = Array.isArray(path) ? path : path.match(/([^[.\]])+/g)
+  if (!pathArray) return
+
+  pathArray.reduce((acc, key, i) => {
+    if (acc[key] === undefined) acc[key] = {}
+    if (i === pathArray.length - 1) acc[key] = value
+    return acc[key]
+  }, obj)
 }
