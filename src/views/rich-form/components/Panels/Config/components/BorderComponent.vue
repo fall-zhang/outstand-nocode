@@ -1,5 +1,5 @@
 <script>
-import PanelsConfigComponentsTypeComponent from './TypeComponent.vue'
+import TypeComponent from './TypeComponent.vue'
 import {
   useTarget,
   useI18n
@@ -50,7 +50,7 @@ const handleTypeListener = ({ property, data }) => {
 <template>
   <div class="ConfigBorder">
     <div v-if="checkTypeBySelected(['table'])">
-      <PanelsConfigComponentsTypeComponent @listener="handleTypeListener" property="borderType" :height="30"
+      <TypeComponent @listener="handleTypeListener" property="borderType" :height="30"
         :fontSize="18" :val="target.style.borderType" :nodes="borderActions" />
       <el-row justify="space-between" align="middle">
         <el-col :span="5">

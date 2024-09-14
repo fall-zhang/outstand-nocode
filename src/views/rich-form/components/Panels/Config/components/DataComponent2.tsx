@@ -1,9 +1,11 @@
 import { defineComponent, nextTick } from 'vue'
 import utils from '@/utils'
-import { useTarget, useI18n, useNamespace } from '@/hooks'
+import { useTarget, useI18n } from '@/hooks'
 import _ from 'lodash-es'
 import nzhcn from 'nzh/cn'
 import { ElButton, ElIcon, ElInput, ElScrollbar } from 'element-plus'
+import $style from './DataComponents.module.scss'
+import { Minus, PreviewCloseOne, PreviewOpen } from '@icon-park/vue-next'
 export default defineComponent({
   name: 'ConfigData2',
   inheritAttrs: false,
@@ -63,11 +65,7 @@ export default defineComponent({
     }
   },
   render (props) {
-    const {
-      t,
-      lang
-    } = useI18n()
-    const ns = useNamespace('ConfigData2')
+    const { t, lang } = useI18n()
     const handleAction = (type, x, data) => {
       switch (type) {
         case 1:
@@ -106,54 +104,48 @@ export default defineComponent({
           break
       }
     }
-    const ListComponent = ({ items, index }) => {
-      return (
-        <div class={[ns.e('item')]}>
-          <div class={ns.e('title')}>{lang.value === 'zh-cn' ? `${nzhcn.encodeS(index + 1)}${t('er.config.dataComponent2.level')}` : `${t('er.config.dataComponent2.level')} ${index + 1}`}</div>
-          <div>
-            <ElScrollbar ref={(el) => this.scrollbars.push(el)} tag="ul" max-height="320px">
-              {
-                items.map((e, i) => {
-                  return (
-                    <li>
-                      <div class={[ns.e('input'), this.selected.includes(e.value) && ns.is('Selected')]}>
-                        <ElInput
-                          clearable
-                          size="default"
-                          disabled={e.disabled}
-                          onClick={() => handleAction(2, index, e)}
-                          vModel={e.label}></ElInput>
-                        <ElIcon onClick={() => items.splice(i, 1)} color="#fff" size={10} class={ns.e('del')}>
-                          <Minus/>
-                        </ElIcon>
-                        <ElIcon onClick={() => handleAction(3, index, e)} color="#409eff" size={20} class={[ns.e('hide'), e.disabled && ns.e('show')]}>
-                          {
-                            e.disabled ? <Hide/> : <View/>
-                          }
-                        </ElIcon>
-                      </div>
-                    </li>
-                  )
-                })
-              }
-            </ElScrollbar>
+    const ListComponent = ({ items, index }) => (
+      <div class={$style.item}>
+        {'data component2'}
+        <div class={$style.title}>{lang.value === 'zh-cn' ? `${nzhcn.encodeS(index + 1)}${t('er.config.dataComponent2.level')}` : `${t('er.config.dataComponent2.level')} ${index + 1}`}</div>
+        <ElScrollbar ref={(el) => this.scrollbars.push(el)} tag="ul" max-height="320px">
+          { items.map((e, i) => (
+            <li>
+              <div class={[$style.input, this.selected.includes(e.value) && $style.Selected]}>
+                <ElInput
+                  clearable
+                  size="default"
+                  disabled={e.disabled}
+                  onChange={() => handleAction(2, index, e)}
+                  model-value={e.label}></ElInput>
+                <ElIcon onClick={() => items.splice(i, 1)} class={$style.del}>
+                  <Minus style={{ color: '#fff' }} size={10} />
+                </ElIcon>
+                <ElIcon onClick={() => handleAction(3, index, e)} size={20} class={[$style.hide, e.disabled && $style.show]}>
+                  {
+                    e.disabled ? <PreviewCloseOne/> : <PreviewOpen/>
+                  }
+                </ElIcon>
+              </div>
+            </li>
+          ))
+          }
+        </ElScrollbar>
+        {this.shows[index] && (
+          <div class={$style.control}>
+            <ElButton
+              icon={'CirclePlus'}
+              onClick={() => handleAction(1, index, items)}
+              text>
+              {t('er.config.dataComponent2.add')}
+            </ElButton>
           </div>
-          {this.shows[index] && (
-            <div class={[ns.e('control')]}>
-              <ElButton
-                icon={'CirclePlus'}
-                onClick={() => handleAction(1, index, items)}
-                text>
-                {t('er.config.dataComponent2.add')}
-              </ElButton>
-            </div>
-          )}
-        </div>
-      )
-    }
+        )}
+      </div>
+    )
     return (
       <ElScrollbar ref="scrollbar">
-        <div class={[ns.b()]}>
+        <div class={$style.configData2}>
           {this.data.map((e, index) => {
             return (
               <ListComponent ref="listComponent" items={e} index={index}/>

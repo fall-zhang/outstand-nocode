@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useTarget, useI18n, useNamespace } from '@/hooks'
+import { useTarget, useI18n } from '@/hooks'
 import _ from 'lodash-es'
 import { ref, unref, computed } from 'vue'
 import { ClickOutside as vClickOutside } from 'element-plus'
@@ -8,6 +8,7 @@ import TypeComponent from './components/TypeComponent.vue'
 import PanelsConfigComponentsLogicComponent from './components/LogicComponent.vue'
 import { FileQuestion } from '@icon-park/vue-next'
 import { isEqual } from 'ohash'
+import { deepClone, get, set } from '@/utils/utils'
 defineOptions({
   name: 'GlobalConfigPanel',
   inheritAttrs: false,
@@ -19,20 +20,18 @@ const {
   isPC
 } = useTarget()
 const { t } = useI18n()
-const ns = useNamespace('GlobalConfigPanel')
-const compareKeys = ['labelPosition', 'completeButton']
 const visible = ref(false)
 const buttonRef = ref()
 const popoverRef = ref()
 const radio1 = ref('pc')
-const handleModelValue = (type, value) => {
+const handleModelValue = (type: string, value: any) => {
   const platforms = target.value.isSync ? ['pc', 'mobile'] : [state.platform]
   platforms.forEach((e) => {
-    _.set(target.value, `${e}.${type}`, value)
+    set(target.value, `${e}.${type}`, value)
   })
 }
 const popperPaneRef = computed(() => {
-  return _.get(unref(popoverRef), 'popperRef.contentRef', '')
+  return get(unref(popoverRef), 'popperRef.contentRef', '')
 })
 let handleConfirm = ''
 const handleBeforeChange = () => {
@@ -58,13 +57,16 @@ const handleBeforeChange = () => {
 const onClickOutside = () => {
   visible.value = false
 }
-const onConfirm = (type) => {
+const onConfirm = () => {
   const targetObj = target.value[radio1.value === 'pc' ? 'mobile' : 'pc']
-  const sourceObj = _.pick(unref(target)[radio1.value], compareKeys)
-  Object.assign(targetObj, _.cloneDeep(sourceObj))
+  const sourceObj = {
+    labelPosition: unref(target)[radio1.value].labelPosition,
+    completeButton: unref(target)[radio1.value].completeButton,
+  }
+  Object.assign(targetObj, deepClone(sourceObj))
   handleConfirm(true)
 }
-const options0 = computed(() => {
+const alignOptions = computed(() => {
   return [
     {
       label: t('er.config.globalConfig.labelPosition.top'),
@@ -112,21 +114,21 @@ const handleTypeListener = ({ property, data }) => {
 }
 </script>
 <template>
-  <div>
+  <div class="GlobalConfigPanel">
     <el-popover virtual-triggering :visible="visible" ref="popoverRef" :virtual-ref="buttonRef" :width="200">
       <template #reference>
-        <div :class="[ns.e('syncContent')]">
+        <div class="syncContent">
           <el-icon color="#f90">
             <FileQuestion />
           </el-icon>
           {{ t('er.config.globalConfig.sync.warning') }}
         </div>
-        <el-radio-group :class="[ns.e('syncType')]" v-model="radio1" class="ml-4">
+        <el-radio-group class="syncType" v-model="radio1">
           <el-radio value="pc">pc</el-radio>
           <el-radio value="mobile">mobile</el-radio>
         </el-radio-group>
       </template>
-      <div :class="[ns.e('syncActions')]">
+      <div class="syncActions">
         <el-button size="small" :text="true" @click="() => visible = false">{{ t('er.public.cancel') }}</el-button>
         <el-button size="small" type="primary" @click="onConfirm(2)">
           {{ t('er.public.confirm') }}
@@ -141,12 +143,10 @@ const handleTypeListener = ({ property, data }) => {
       :label="t('er.config.globalConfig.componentSize.label')" :val="target[state.platform].size" :nodes="options1" />
     <TypeComponent @listener="handleTypeListener" property="labelPosition"
       :label="t('er.config.globalConfig.labelPosition.label')" :height="66" :fontSize="80"
-      :val="target[state.platform].labelPosition" :nodes="options0" />
+      :val="target[state.platform].labelPosition" :nodes="alignOptions" />
     <el-form-item :label="t('er.public.button')">
       <div style="width: 100%;">
-        <div>
-          <CompleteButton mode="preview" />
-        </div>
+        <CompleteButton mode="preview" />
         <div>
           <el-row :gutter="8">
             <el-col>
@@ -159,14 +159,14 @@ const handleTypeListener = ({ property, data }) => {
           <el-row :gutter="8" style="margin-top: 20px;">
             <el-col :span="12">
               <el-form-item :label="t('er.public.color')">
-                <el-color-picker :popper-class="ns.e('completeButtonColor')"
+                <el-color-picker popper-class="completeButtonColor"
                   :model-value="target[state.platform].completeButton.color"
                   @update:modelValue="(e) => handleModelValue('completeButton.color', e)" show-alpha />
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item :label="t('er.public.backgroundColor')">
-                <el-color-picker :popper-class="ns.e('completeButtonColor')"
+                <el-color-picker popper-class="completeButtonColor"
                   :model-value="target[state.platform].completeButton.backgroundColor"
                   @update:modelValue="(e) => handleModelValue('completeButton.backgroundColor', e)" show-alpha />
               </el-form-item>
@@ -178,3 +178,113 @@ const handleTypeListener = ({ property, data }) => {
     <PanelsConfigComponentsLogicComponent />
   </div>
 </template>
+<style lang="scss" scoped>
+.GlobalConfigPanel {
+  overflow-y: hidden;
+  padding: 16px;
+
+  .el-form-item__label {
+    color: #333333;
+  }
+
+  .subhead {
+    font-size: 12px;
+    color: #666;
+    margin-top: -10px;
+  }
+
+  &>form {
+    height: calc(100% - 40px);
+  }
+
+  .el-tabs {
+    .el-tabs__header {
+      background: none;
+      padding: 16px 0;
+    }
+
+    &,
+    .el-tabs__header,
+    .el-tabs__item {
+      border: none !important;
+    }
+
+    .el-tabs__nav-prev,
+    .el-tabs__nav-next {
+      display: none;
+    }
+
+    .el-tabs__nav-wrap {
+      padding: 0;
+      margin: 0;
+    }
+
+    .el-tabs__nav {
+      border-radius: 4px;
+      width: 100%;
+      box-sizing: border-box;
+      display: flex;
+      padding: 2px;
+      background: #F2F2F2;
+
+      &>* {
+        flex: 1;
+      }
+
+      .el-tabs__item {
+        border-radius: 4px;
+        line-height: 36px;
+        height: 36px;
+        margin: 0;
+        color: #666666;
+        text-align: center;
+      }
+    }
+  }
+
+  .el-tabs__content,
+  .el-tab-pane {
+    height: calc(100vh - 160px);
+    padding: 0;
+  }
+
+  .breadcrumb {
+    &>span:not(:last-child) {
+      span {
+        color: #909399;
+      }
+    }
+
+    &>span:last-child {
+      span {
+        color: #303133;
+      }
+    }
+  }
+
+  .syncContent {
+    display: flex;
+    align-items: center;
+
+    .el-icon {
+      margin-right: 5px;
+    }
+  }
+
+  .syncType {
+    display: flex;
+    justify-content: center;
+  }
+
+  .syncActions {
+    text-align: right;
+    margin-top: 8px;
+  }
+
+  .completeButtonColor {
+    .el-color-dropdown__link-btn {
+      display: none;
+    }
+  }
+}
+</style>

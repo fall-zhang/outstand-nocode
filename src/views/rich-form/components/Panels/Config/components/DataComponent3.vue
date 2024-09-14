@@ -1,6 +1,6 @@
 <script>
 import utils from '@/utils'
-import { useTarget, useI18n, useNamespace } from '@/hooks'
+import { useTarget, useI18n } from '@/hooks'
 import { unref } from 'vue'
 import { dragGableWrap } from '@/views/rich-form/components/Layout/DragGable'
 import Icon from '@/assets'
@@ -15,7 +15,6 @@ const {
 const {
   t
 } = useI18n()
-const ns = useNamespace('ConfigData3')
 const addTab = (type) => {
   const data = utils.renderFieldData(`${target.value.type}Col`)
   data.label = `Tab ${unref(target).columns.length + 1}`
@@ -27,19 +26,19 @@ const addTab = (type) => {
 <template>
   <el-form-item>
     <template #label>
-      <div :class="[ns.e('title')]">
+      <div class="d-title">
         <span class="el-form-item__label">{{ t('er.config.dataComponent3.panel') }}</span>
         <el-button text @click="addTab">{{ t('er.config.dataComponent3.add') }}</el-button>
       </div>
     </template>
     <div style="width: 100%;">
-      <dragGableWrap :list="target.columns" item-key="id" tag="ul" handle=".handle" :class="[ns.e('content')]">
+      <dragGableWrap :list="target.columns" item-key="id" tag="ul" handle=".handle" class="d-content">
         <template #item="{ element, index }">
           <li>
             <el-input size="default" clearable v-model="element.label" />
-            <div :class="ns.e('operate')">
-              <Icon :class="[ns.e('icon')]" @click="target.columns.splice(index, 1)" icon="delete"></Icon>
-              <Icon :class="[ns.e('icon'), 'handle']" icon="Rank"></Icon>
+            <div class="d-operate">
+              <Icon class="d-icon" @click="target.columns.splice(index, 1)" icon="delete"></Icon>
+              <Icon class="d-icon handle" icon="Rank"></Icon>
             </div>
           </li>
         </template>
@@ -47,3 +46,40 @@ const addTab = (type) => {
     </div>
   </el-form-item>
 </template>
+<style lang="scss" scoped>
+.d-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .el-button {
+    background: none !important;
+    padding: 0;
+  }
+}
+
+.d-content {
+  li {
+    padding: 6px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .el-input {
+      width: 86%;
+    }
+  }
+}
+
+.d-icon {
+  &:hover {
+    color: $primary-color;
+  }
+}
+
+.d-operate {
+  width: 16%;
+  display: flex;
+  justify-content: space-around;
+}
+</style>

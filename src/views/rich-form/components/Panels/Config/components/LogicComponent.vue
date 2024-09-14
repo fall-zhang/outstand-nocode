@@ -1,27 +1,15 @@
 <script>
 import { ref, inject, nextTick, computed } from 'vue'
-import {
-  useI18n,
-  useTarget
-} from '@/hooks'
-import {
-  generateIfFilterOptionsData,
-  generateIfFilterConditionsData,
-  generateThenFilterOptionsData,
-  generateThenFilterConditionsData
-} from './generateFilterdata'
+import { useI18n, } from '@/hooks'
 import _ from 'lodash-es'
-import { EverrightFilter } from 'everright-filter'
 import Icon from '@/assets'
+import { get } from '@/utils/utils'
 export default {
   name: 'ConfigLogicComponent'
 }
 </script>
 <script setup>
-const {
-  t,
-  lang
-} = useI18n()
+const { t, } = useI18n()
 const tabs = ref([
   {
     value: 'visible',
@@ -54,37 +42,6 @@ const activeTab = ref('visible')
 const ER = inject('Everright')
 const scrollbarRef = ref()
 const dialogVisible = ref(false)
-const {
-  state
-} = useTarget()
-const getIfOptions = (type) => async () => {
-  return new Promise((resolve, reject) => {
-    resolve({
-      data: generateIfFilterOptionsData(type, state.fields)
-    })
-  })
-}
-const getIfConditions = (type) => async ({ property }) => {
-  return new Promise((resolve, reject) => {
-    resolve({
-      data: generateIfFilterConditionsData(type, state, property)
-    })
-  })
-}
-const getThenOptions = (type) => async () => {
-  return new Promise((resolve, reject) => {
-    resolve({
-      data: generateThenFilterOptionsData(type, state.fields)
-    })
-  })
-}
-const getThenConditions = (type) => async ({ property }) => {
-  return new Promise((resolve, reject) => {
-    resolve({
-      data: generateThenFilterConditionsData(type, state.fields)
-    })
-  })
-}
 const curIndex = computed(() => _.findIndex(tabs.value, { value: activeTab.value }))
 const getTabData = (tab) => {
   // const tab = _.find(tabs.value, { value: type })
@@ -132,7 +89,7 @@ const closeDialog = () => {
 const openDialog = () => {
   dialogVisible.value = true
   tabs.value.forEach((tab, index) => {
-    const rules = _.get(ER.state.logic, `${tab.value}`, [])
+    const rules = get(ER.state.logic, `${tab.value}`, [])
     remoteCount += rules.length * 2
     rules.forEach((rule, index) => {
       tab.rules.push(index)
@@ -144,7 +101,7 @@ const handleAction = (type) => {
     case 0:
       closeDialog()
       break
-    case 1:
+    case 1: {
       const rules = tabs.value[curIndex.value].rules
       rules.push(rules.length)
       nextTick(() => {
@@ -153,6 +110,7 @@ const handleAction = (type) => {
         })
       })
       break
+    }
     case 2:
       if (tabs.value.every(tab => !tab.rules.length)) {
         ER.state.logic = {}
@@ -169,59 +127,7 @@ const handleAction = (type) => {
       break
   }
 }
-const relationalRef = (tab, key, index) => {
-  return (el) => {
-    if (el) {
-      tab[key][index] = el
-    } else {
-      tab[key].splice(index, 1)
-    }
-  }
-}
-let remoteCount = 0
-const handleListener = (ruleType, index, tab, { type, data }) => {
-  if (type === 'init') {
-    if (remoteCount > 0) {
-      const filterRef = _.get(tab, `${ruleType}Refs[${index}]`, {})
-      nextTick(() => {
-        filterRef.setData(_.get(ER.state.logic, `${tab.value}[${index}].${ruleType}Rules`, {}))
-      })
-      remoteCount = remoteCount - 1
-    } else if (ruleType === 'then') {
-      switch (activeTab.value) {
-        // case 'validation':
-        //   _.last(tab.thenRefs).pushData('message')
-        //   break
-        case 'visible':
-          _.last(tab.thenRefs).pushData('show')
-          break
-        case 'required':
-          _.last(tab.thenRefs).pushData('required')
-          break
-        case 'readOnly':
-          _.last(tab.thenRefs).pushData('readOnly')
-          break
-      }
-    }
-  }
-}
-const addRuleHandler = (tab, index) => {
-  switch (activeTab.value) {
-    // case 'validation':
-    //   // _.last(tab.thenRefs).pushData('message')
-    //   break
-    case 'visible':
-      tab.thenRefs[index].pushData('show')
-      break
-    case 'required':
-      tab.thenRefs[index].pushData('required')
-      break
-    case 'readOnly':
-      tab.thenRefs[index].pushData('readOnly')
-      break
-  }
-  return false
-}
+
 const handleClosed = () => {
   tabs.value.forEach(tab => {
     tab.rules = []
@@ -231,41 +137,29 @@ const handleClosed = () => {
 <template>
   <el-drawer destroy-on-close size="60%" :modal="false" append-to-body :close-on-press-escape="false"
     :with-header="false" @closed="handleClosed" class="ConfigLogicComponent" v-model="dialogVisible">
-    <div>
-      <el-tabs v-model="activeTab" class="demo-tabs">
-        <el-tab-pane v-for="tab in tabs" :label="t(`er.logic.tabs.${tab.value}`)" :name="tab.value" :key="tab.value">
-          <el-scrollbar ref="scrollbarRef" max-height="calc(100vh - 210px)">
-            <el-empty v-if="!tab.rules.length">
-              <el-button type="primary" icon="plus" @click="handleAction(1)">{{ t('er.public.add') }}</el-button>
-            </el-empty>
-            <div v-else>
-              <transition-group name="el-fade-in">
-                <div class="rule" v-for="(key, index) in tab.rules" :key="key">
-                  <Icon @click="tab.rules.splice(index, 1)" class="delRule" icon="delete" />
-                  <div class="filter-if">
-                    <h3>{{ t('er.logic.filterLabel.if') }}</h3>
-                    <EverrightFilter :ref="relationalRef(tab, 'ifRefs', index)"
-                      @listener="(e) => handleListener('if', index, tab, e)" :lang="lang"
-                      :getOptions="getIfOptions(tab.value)" :getConditions="getIfConditions(tab.value)" />
-                  </div>
-                  <div :class="['then', `${tab.value}then`]">
-                    <h3>{{ t('er.logic.filterLabel.then') }}</h3>
-                    <EverrightFilter :ref="relationalRef(tab, 'thenRefs', index)" :lang="lang"
-                      :canAddRule="() => addRuleHandler(tab, index)"
-                      @listener="(e) => handleListener('then', index, tab, e)" :getOptions="getThenOptions(tab.value)"
-                      :rule-limit="tab.value === 'required' ? 2 : tab.value === 'validation' ? 1 : -1"
-                      :getConditions="getThenConditions(tab.value)" />
-                  </div>
-                </div>
-              </transition-group>
+    <el-tabs v-model="activeTab" class="demo-tabs">
+      <el-tab-pane v-for="tab in tabs" :label="t(`er.logic.tabs.${tab.value}`)" :name="tab.value" :key="tab.value">
+        <el-scrollbar ref="scrollbarRef" max-height="calc(100vh - 210px)">
+          <el-empty v-if="!tab.rules.length">
+            <el-button type="primary" icon="plus" @click="handleAction(1)">{{ t('er.public.add') }}</el-button>
+          </el-empty>
+          <transition-group v-else name="el-fade-in">
+            <div class="rule" v-for="(key, index) in tab.rules" :key="key">
+              <Icon @click="tab.rules.splice(index, 1)" class="delRule" icon="delete" />
+              <div class="filter-if">
+                <h3>{{ t('er.logic.filterLabel.if') }}</h3>
+              </div>
+              <div :class="['then', `${tab.value}then`]">
+                <h3>{{ t('er.logic.filterLabel.then') }}</h3>
+              </div>
             </div>
-          </el-scrollbar>
-        </el-tab-pane>
-      </el-tabs>
-      <el-button v-show="tabs[curIndex].rules.length" class="button" @click="handleAction(1)">
-        {{ t('er.public.add') }}
-      </el-button>
-    </div>
+          </transition-group>
+        </el-scrollbar>
+      </el-tab-pane>
+    </el-tabs>
+    <el-button v-show="tabs[curIndex].rules.length" class="button" @click="handleAction(1)">
+      {{ t('er.public.add') }}
+    </el-button>
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="handleAction(0)">
@@ -308,13 +202,6 @@ const handleClosed = () => {
     right: 20px;
     top: 20px;
   }
-
-  .then {
-    .LogicalOperatorComponent {
-      display: none;
-    }
-  }
-
 
   .requiredThen,
   .readOnlyThen {

@@ -1,6 +1,6 @@
-import _ from 'lodash-es'
-import utils from '@/utils'
+import { transferData } from '@/utils'
 import locale from '@/locale/rich-form/index'
+import { get, isEmpty } from '@/utils/utils'
 const generateIfFilterOptionsData = (activeTab, fields) => {
   const result = {
     options: [
@@ -165,8 +165,8 @@ const generateIfFilterOptionsData = (activeTab, fields) => {
               style: 'none'
             }
           ].map(e => {
-            e.label = utils.transferData('zh-cn', `logic.filter.${e.value}`, locale)
-            e.en_label = utils.transferData('en', `logic.filter.${e.value}`, locale)
+            e.label = transferData('zh-cn', `logic.filter.${e.value}`, locale)
+            e.en_label = transferData('en', `logic.filter.${e.value}`, locale)
             return e
           })
           break
@@ -209,8 +209,8 @@ const generateIfFilterOptionsData = (activeTab, fields) => {
               style: 'none'
             }
           ].map(e => {
-            e.label = utils.transferData('zh-cn', `logic.filter.${e.value}`, locale)
-            e.en_label = utils.transferData('en', `logic.filter.${e.value}`, locale)
+            e.label = transferData('zh-cn', `logic.filter.${e.value}`, locale)
+            e.en_label = transferData('en', `logic.filter.${e.value}`, locale)
             return e
           })
           break
@@ -241,8 +241,8 @@ const generateIfFilterOptionsData = (activeTab, fields) => {
               style: 'none'
             }
           ].map(e => {
-            e.label = utils.transferData('zh-cn', `logic.filter.${e.value}`, locale)
-            e.en_label = utils.transferData('en', `logic.filter.${e.value}`, locale)
+            e.label = transferData('zh-cn', `logic.filter.${e.value}`, locale)
+            e.en_label = transferData('en', `logic.filter.${e.value}`, locale)
             return e
           })
           break
@@ -254,43 +254,44 @@ const generateIfFilterOptionsData = (activeTab, fields) => {
 }
 const generateIfFilterConditionsData = (activeTab, state, property) => {
   let result = {}
-  const findField = _.find(state.fields, { id: property })
-  if (!_.isEmpty(findField)) {
+  const findField = state.fields.find({ id: property })
+  if (!isEmpty(findField)) {
     if (findField.type === 'switch') {
       result = [
         {
-          label: utils.transferData('zh-cn', 'er.logic.filter.on', locale),
-          en_label: utils.transferData('en', 'er.logic.filter.on', locale),
+          label: transferData('zh-cn', 'er.logic.filter.on', locale),
+          en_label: transferData('en', 'er.logic.filter.on', locale),
           value: 1
         },
         {
-          label: utils.transferData('zh-cn', 'er.logic.filter.off', locale),
-          en_label: utils.transferData('en', 'er.logic.filter.off', locale),
+          label: transferData('zh-cn', 'er.logic.filter.off', locale),
+          en_label: transferData('en', 'er.logic.filter.off', locale),
           value: 0
         }
       ]
     } else {
-      result = state.mode === 'edit' ? _.get(state.data, `${findField.options.dataKey}.list`, []) : _.get(findField, 'options.data', [])
+      result = state.mode === 'edit' ? get(state.data, `${findField.options.dataKey}.list`, []) : get(findField, 'options.data', [])
     }
   }
   return result
 }
-const generateThenFilterOptionsData = (activeTab) => {
+type ActiveTabType = 'visible'|'required'|'readOnly'|'validation'
+const generateThenFilterOptionsData = (activeTab:ActiveTabType) => {
   let result = {}
   switch (activeTab) {
     case 'visible':
       result = {
         options: [
           {
-            label: utils.transferData('zh-cn', 'er.logic.filter.show', locale),
-            en_label: utils.transferData('en', 'er.logic.filter.show', locale),
+            label: transferData('zh-cn', 'er.logic.filter.show', locale),
+            en_label: transferData('en', 'er.logic.filter.show', locale),
             value: 'show',
             renderType: 'SELECT',
             operatorKey: 'Text'
           },
           {
-            label: utils.transferData('zh-cn', 'er.logic.filter.hide', locale),
-            en_label: utils.transferData('en', 'er.logic.filter.hide', locale),
+            label: transferData('zh-cn', 'er.logic.filter.hide', locale),
+            en_label: transferData('en', 'er.logic.filter.hide', locale),
             value: 'hide',
             renderType: 'SELECT',
             operatorKey: 'Text'
@@ -299,8 +300,8 @@ const generateThenFilterOptionsData = (activeTab) => {
         operators: {
           Text: [
             {
-              label: utils.transferData('zh-cn', 'er.logic.filter.field', locale),
-              en_label: utils.transferData('en', 'er.logic.filter.field', locale),
+              label: transferData('zh-cn', 'er.logic.filter.field', locale),
+              en_label: transferData('en', 'er.logic.filter.field', locale),
               value: 'field',
               style: 'tags'
             }
@@ -322,14 +323,14 @@ const generateThenFilterOptionsData = (activeTab) => {
         operators: {
           Text: [
             {
-              label: utils.transferData('zh-cn', 'er.logic.filter.required', locale),
-              en_label: utils.transferData('en', 'er.logic.filter.required', locale),
+              label: transferData('zh-cn', 'er.logic.filter.required', locale),
+              en_label: transferData('en', 'er.logic.filter.required', locale),
               value: 'required',
               style: 'noop'
             },
             {
-              label: utils.transferData('zh-cn', 'er.logic.filter.not_required', locale),
-              en_label: utils.transferData('en', 'er.logic.filter.not_required', locale),
+              label: transferData('zh-cn', 'er.logic.filter.not_required', locale),
+              en_label: transferData('en', 'er.logic.filter.not_required', locale),
               value: 'not_required',
               style: 'noop'
             }
@@ -351,14 +352,14 @@ const generateThenFilterOptionsData = (activeTab) => {
         operators: {
           Text: [
             {
-              label: utils.transferData('zh-cn', 'er.logic.filter.readOnly', locale),
-              en_label: utils.transferData('en', 'er.logic.filter.readOnly', locale),
+              label: transferData('zh-cn', 'er.logic.filter.readOnly', locale),
+              en_label: transferData('en', 'er.logic.filter.readOnly', locale),
               value: 'readOnly',
               style: 'noop'
             },
             {
-              label: utils.transferData('zh-cn', 'er.logic.filter.editable', locale),
-              en_label: utils.transferData('en', 'er.logic.filter.editable', locale),
+              label: transferData('zh-cn', 'er.logic.filter.editable', locale),
+              en_label: transferData('en', 'er.logic.filter.editable', locale),
               value: 'editable',
               style: 'noop'
             }
@@ -371,7 +372,7 @@ const generateThenFilterOptionsData = (activeTab) => {
   }
   return result
 }
-const generateThenFilterConditionsData = (activeTab, fields) => {
+export const generateThenFilterConditionsData = (fields) => {
   return fields.map(e => {
     return {
       label: e.label,
@@ -382,6 +383,5 @@ const generateThenFilterConditionsData = (activeTab, fields) => {
 export {
   generateIfFilterOptionsData,
   generateIfFilterConditionsData,
-  generateThenFilterOptionsData,
-  generateThenFilterConditionsData
+  generateThenFilterOptionsData
 }

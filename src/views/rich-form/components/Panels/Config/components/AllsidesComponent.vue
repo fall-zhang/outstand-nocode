@@ -30,6 +30,7 @@ if (!target.value.style[props.field]) {
 </script>
 <template>
   <div class="configAllSides">
+    {{ 'all side components' }}
     <el-row :gutter="14" justify="center">
       <el-col :span="12">
         <el-input-number :step="10" :min="props.min" v-model="target.style[props.field].left"

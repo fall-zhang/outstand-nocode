@@ -7,7 +7,7 @@ import utils from '@/utils'
 import { useI18n, useTarget, useProps } from '@/hooks'
 import PanelsConfigComponentsCheckboxComponent from './CheckboxComponent.vue'
 import PanelsConfigComponentsCollapseComponent from './CollapseComponent.vue'
-import PanelsConfigComponentsTypeComponent from './TypeComponent.vue'
+import RadioButton from './RadioButton.vue'
 import PanelsConfigComponentsBorderComponent from './BorderComponent.vue'
 import PanelsConfigComponentsLimitComponent from './LimitComponent.vue'
 import PanelsConfigComponentsAllsidesComponent from './AllsidesComponent.vue'
@@ -420,7 +420,7 @@ onMounted(() => {
         </div>
       </template>
     </PanelsConfigComponentsCollapseComponent>
-    <PanelsConfigComponentsTypeComponent :label="t('er.config.propsPanel.defaultContent')" :layoutType="0" v-if="checkTypeBySelected([
+    <RadioButton :label="t('er.config.propsPanel.defaultContent')" layoutType="slot" v-if="checkTypeBySelected([
       'input',
       'textarea',
       'time',
@@ -464,18 +464,18 @@ onMounted(() => {
       <template v-else-if="checkTypeBySelected(['slider'], 'defaultValue')">
         <el-slider v-bind="typeProps" v-model="target.options.defaultValue" style="padding: 0 14px;" />
       </template>
-    </PanelsConfigComponentsTypeComponent>
-    <PanelsConfigComponentsTypeComponent :label="t('er.public.Data')" :layoutType="0"
+    </RadioButton>
+    <RadioButton :label="t('er.public.Data')" layoutType="slot"
       v-if="checkTypeBySelected(['select', 'radio', 'checkbox', 'cascader'], 'dataEntry')">
       <el-button style="width: 100%;" type="primary" @click="dialogVisible = true">{{ t('er.public.dataEntry')
         }}</el-button>
-    </PanelsConfigComponentsTypeComponent>
-    <PanelsConfigComponentsTypeComponent :label="t('er.config.propsPanel.star')" :layoutType="0"
+    </RadioButton>
+    <RadioButton :label="t('er.config.propsPanel.star')" layoutType="slot"
       v-if="checkTypeBySelected(['rate'], 'star')">
       <el-input-number :min="1" controls-position="right" v-model="target.options.max" />
-    </PanelsConfigComponentsTypeComponent>
+    </RadioButton>
     <!-- placeholder -->
-    <PanelsConfigComponentsTypeComponent :layoutType="0" :label="t('er.config.propsPanel.placeholder')" v-if="checkTypeBySelected([
+    <RadioButton layoutType="slot" :label="t('er.config.propsPanel.placeholder')" v-if="checkTypeBySelected([
       'input',
       'textarea',
       'select',
@@ -490,33 +490,33 @@ onMounted(() => {
         v-model="target.options.placeholder" clearable />
       <el-input v-else-if="checkTypeBySelected(['textarea'], 'placeholder')" type="textarea"
         v-model="target.options.placeholder" clearable />
-    </PanelsConfigComponentsTypeComponent>
-    <PanelsConfigComponentsTypeComponent :layoutType="0" v-if="checkTypeBySelected(['signature'], 'brushColor')"
+    </RadioButton>
+    <RadioButton layoutType="slot" v-if="checkTypeBySelected(['signature'], 'brushColor')"
       :label="t('er.config.propsPanel.brushColor')">
       <el-color-picker color-format="rgb" v-model="target.options.penColor" />
-    </PanelsConfigComponentsTypeComponent>
-    <PanelsConfigComponentsTypeComponent v-if="checkTypeBySelected(['time', 'date'], 'format')" :layoutType="0"
+    </RadioButton>
+    <RadioButton v-if="checkTypeBySelected(['time', 'date'], 'format')" layoutType="slot"
       :label="t('er.config.propsPanel.format')">
       <el-select v-model="target.options.format" style="width: 100%">
         <el-option v-for="item in options0" :key="item.value" :label="item.label" :value="item.value" />
       </el-select>
-    </PanelsConfigComponentsTypeComponent>
-    <PanelsConfigComponentsTypeComponent v-if="checkTypeBySelected(['date'], 'dateType')" :layoutType="0"
+    </RadioButton>
+    <RadioButton v-if="checkTypeBySelected(['date'], 'dateType')" layoutType="slot"
       :label="t('er.config.propsPanel.dateType')">
       <el-select v-model="target.options.type" @change="handleChange0" style="width: 100%">
         <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
       </el-select>
-    </PanelsConfigComponentsTypeComponent>
-    <PanelsConfigComponentsTypeComponent v-if="checkTypeBySelected(['radio', 'checkbox'], 'displayStyle')"
+    </RadioButton>
+    <RadioButton v-if="checkTypeBySelected(['radio', 'checkbox'], 'displayStyle')"
       @listener="handleTypeListener" property="displayStyle" :label="t('er.config.propsPanel.layout.label')"
-      :val="target.options.displayStyle" :nodes="options7" :layoutType="2" />
-    <PanelsConfigComponentsTypeComponent v-if="checkTypeBySelected(['divider'], 'contentPosition')"
+      :val="target.options.displayStyle" :nodes="options7" layoutType="inline" />
+    <RadioButton v-if="checkTypeBySelected(['divider'], 'contentPosition')"
       :label="t('er.config.propsPanel.contentPosition.label')" @listener="handleTypeListener" property="contentPosition"
       :height="50" :fontSize="80" :nodes="options10" :val="target.options.contentPosition" />
-    <PanelsConfigComponentsTypeComponent :layoutType="0" v-if="checkTypeBySelected(['textarea'], 'textareaHeight')"
+    <RadioButton layoutType="slot" v-if="checkTypeBySelected(['textarea'], 'textareaHeight')"
       :label="t('er.config.propsPanel.textareaHeight')">
       <el-slider v-model="target.options.rows" :max="10" show-input />
-    </PanelsConfigComponentsTypeComponent>
+    </RadioButton>
     <div v-if="checkTypeBySelected(['uploadfile'], 'uploadfile')">
       <el-form-item :label="t('er.config.propsPanel.uploadfile.fileType')">
         <el-input v-model="target.options.accept" placeholder="输入只接受的文件类型后缀。例如 .png,.jpg" />
@@ -570,13 +570,13 @@ onMounted(() => {
         </el-form-item>
       </el-col>
     </el-row>
-    <PanelsConfigComponentsTypeComponent v-if="checkTypeBySelected(['region'], 'regionType')"
-      :label="t('er.config.propsPanel.region.label')" :layoutType="0">
+    <RadioButton v-if="checkTypeBySelected(['region'], 'regionType')"
+      :label="t('er.config.propsPanel.region.label')" layoutType="slot">
       <el-select v-model="target.options.selectType" @change="handleChange1">
         <el-option v-for="item in options8" :key="item.value" :label="item.label" :value="item.value" />
       </el-select>
-    </PanelsConfigComponentsTypeComponent>
-    <PanelsConfigComponentsTypeComponent
+    </RadioButton>
+    <RadioButton
       v-if="utils.checkIslineChildren(target) && target.context.parent.columns.length !== 4 && !(ER.props.layoutType === 1 && !isPC)"
       @listener="handleTypeListener" property="width" :label="t('er.public.width')" :height="40" :fontSize="28"
       :nodes="options1" />
@@ -609,14 +609,14 @@ onMounted(() => {
     <PanelsConfigComponentsCheckboxComponent
       v-if="isSelectField && !checkTypeBySelected(['rate', 'switch', 'slider', 'divider'], 'required')"
       :label="t('er.validateMsg.required')" field="required" />
-    <PanelsConfigComponentsTypeComponent v-if="isSelectGrid" @listener="handleTypeListener" property="justify"
+    <RadioButton v-if="isSelectGrid" @listener="handleTypeListener" property="justify"
       :label="t('er.config.gridLayout.justify.label')" :height="40" :fontSize="40" :val="target.options.justify"
       :nodes="options6" />
     <PanelsConfigComponentsDataComponent3 v-if="checkTypeBySelected(['collapse', 'tabs'], 'Data3')" />
-    <PanelsConfigComponentsTypeComponent v-if="isSelectTabs" @listener="handleTypeListener" property="type"
+    <RadioButton v-if="isSelectTabs" @listener="handleTypeListener" property="type"
       :label="t('er.config.tabsLayout.style.label')" :height="66" :fontSize="70" :val="target.options.type"
       :nodes="options4" />
-    <PanelsConfigComponentsTypeComponent v-if="isSelectTabs" @listener="handleTypeListener" property="tabPosition"
+    <RadioButton v-if="isSelectTabs" @listener="handleTypeListener" property="tabPosition"
       :label="t('er.config.tabsLayout.tabPosition.label')" :height="40" :fontSize="66" :val="target.options.tabPosition"
       :nodes="options5" />
     <PanelsConfigComponentsCollapseComponent
@@ -701,7 +701,7 @@ onMounted(() => {
       </PanelsConfigComponentsCheckboxComponent>
       <PanelsConfigComponentsCheckboxComponent v-if="isPC && checkTypeBySelected(['number'], 'controls')"
         :label="t('er.config.propsPanel.numberControls.label')" field="controls">
-        <PanelsConfigComponentsTypeComponent @listener="handleTypeListener" property="controlsPosition" :height="30"
+        <RadioButton @listener="handleTypeListener" property="controlsPosition" :height="30"
           :fontSize="50" :nodes="options9" :val="target.options.controlsPosition" />
       </PanelsConfigComponentsCheckboxComponent>
       <PanelsConfigComponentsCheckboxComponent v-if="checkTypeBySelected(['rate'], 'allowHalf')"

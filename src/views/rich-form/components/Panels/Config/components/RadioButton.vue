@@ -18,7 +18,7 @@ const props = defineProps({
   },
   height: {
     type: Number,
-    default: 100
+    default: 50
   },
   property: {
     type: String,
@@ -33,9 +33,9 @@ const props = defineProps({
     default: 16
   },
   layoutType: {
-    type: [Number, String],
-    // 全部改为 inline，
-    default: 1
+    type: String,
+    // 全部改为  1 breakLine 2  inline  0: slot
+    default: 'breakLine'
   }
 })
 const fireEvent = (property: string, item: any) => {
@@ -46,33 +46,30 @@ const fireEvent = (property: string, item: any) => {
 }
 </script>
 <template>
-  <div class="radio-button-group">
-    <el-form-item>
-      <template v-if="label" #label>
-        <div class="form-label">
-          <div>{{ label }}</div>
-          <template v-if="layoutType === 2">
-            <el-radio-group size="small" :modelValue="val" @change="(curVal) => fireEvent(property, { value: curVal })">
-              <el-radio-button v-for="item in nodes" :value="item.value" :key="item.value">
-                {{ item.label }}
-              </el-radio-button>
-            </el-radio-group>
-          </template>
-        </div>
-      </template>
-      <ul v-if="layoutType === 1" ref="elements" class="form-content" :style="{ height: height + 2 + 'px' }">
-        <li @click="() => !item.disabled && fireEvent(property, item)" v-for="item in nodes" :key="item.value" :class="{
-          'Selected': val !== undefined && item.value === val,
-          'Disabled': item.disabled
-        }">
-          <Icon :icon="item.icon" :fontSize="fontSize" />
-        </li>
-      </ul>
-      <div class="form-slot">
-        <slot v-if="layoutType === 0"></slot>
+  <el-form-item class="radio-button-group">
+    <template v-if="label" #label>
+      <div class="form-label">
+        <div>{{ label }}</div>
+        <el-radio-group v-if="layoutType === 'inline'" size="small" :modelValue="val"
+          @change="(curVal) => fireEvent(property, { value: curVal })">
+          <el-radio-button v-for="item in nodes" :value="item.value" :key="item.value">
+            {{ item.label }}
+          </el-radio-button>
+        </el-radio-group>
       </div>
-    </el-form-item>
-  </div>
+    </template>
+    <ul v-if="layoutType === 'breakLine'" ref="elements" class="form-content" :style="{ height: height + 2 + 'px' }">
+      <li @click="() => !item.disabled && fireEvent(property, item)" v-for="item in nodes" :key="item.value" :class="{
+        'Selected': val !== undefined && item.value === val,
+        'Disabled': item.disabled
+      }">
+        <Icon :icon="item.icon" :fontSize="fontSize" />
+      </li>
+    </ul>
+    <div class="form-slot" v-if="layoutType === 'slot'">
+      <slot></slot>
+    </div>
+  </el-form-item>
 </template>
 <style lang="scss" scoped>
 .radio-button-group {

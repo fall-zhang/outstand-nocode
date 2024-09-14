@@ -1,0 +1,145 @@
+.configData1 {
+  .icon {
+    font-size: 16px;
+
+    &:hover {
+      color: $primary-color;
+    }
+  }
+
+  .operate {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  .tableThead {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+
+    thead {
+      height: 44px;
+      background: #F5F7FA;
+
+      th {
+        font-size: 14px;
+        font-weight: inherit;
+        color: #333333;
+      }
+    }
+  }
+
+  .table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+
+    td {
+      padding: 10px;
+      vertical-align: baseline;
+    }
+
+    tr td:first-child {
+      text-align: center;
+    }
+
+    .el-checkbox__label {
+      display: none;
+    }
+  }
+
+  .button {
+    width: 100%;
+
+    button {
+      border: 1px dashed #409EFF;
+      width: 100%;
+    }
+  }
+}
+
+
+.configData2 {
+  display: flex;
+  flex-wrap: nowrap;
+  height: 400px;
+
+  .title {
+    color: #666;
+    font-weight: bold;
+    padding-bottom: 4px;
+  }
+
+  .input {
+    width: 170px;
+    border-radius: 4px;
+    position: relative;
+    border: 1px solid #dcdfe6;
+
+    .el-input__wrapper {
+      box-shadow: none;
+    }
+
+    &.Selected {
+      border-color: var(--el-color-primary);
+
+      &>.#{$namespace}-ConfigData2__del,
+      &>.#{$namespace}-ConfigData2__hide {
+        display: block;
+      }
+    }
+  }
+
+  .del {
+    cursor: pointer;
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #F56C6C;
+    width: 10px;
+    height: 10px;
+    border-radius: 14px;
+    display: none;
+  }
+
+  .hide {
+    cursor: pointer;
+    position: absolute;
+    top: 8px;
+    right: -36px;
+    width: 16px;
+    height: 16px;
+    display: none;
+  }
+
+  .show {
+    display: block;
+  }
+
+  .item {
+    width: 260px;
+    flex-shrink: 0;
+    border-right: 1px solid #ddd;
+    padding-left: 30px;
+    position: relative;
+    box-sizing: border-box;
+
+    li {
+      padding: 6px 0;
+    }
+  }
+
+  .control {
+    height: 30px;
+    width: 100%;
+    padding: 0 !important;
+    display: flex;
+    align-items: center;
+
+    .el-button {
+      background: none !important;
+      padding: 0;
+    }
+  }
+}

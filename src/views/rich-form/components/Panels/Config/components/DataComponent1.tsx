@@ -4,11 +4,12 @@ import {
   nextTick,
 } from 'vue'
 import utils from '@/utils'
-import { useTarget, useI18n, useNamespace } from '@/hooks'
+import { useTarget, useI18n } from '@/hooks'
 import Icon from '@/assets'
 import { dragGableWrap } from '@/views/rich-form/components/Layout/DragGable'
 import _ from 'lodash-es'
 import { ElCheckbox, ElCheckboxGroup, ElForm, ElFormItem, ElScrollbar, ElInput, ElButton } from 'element-plus'
+import $style from './DataComponents.module.scss'
 export default defineComponent({
   name: 'ConfigData1',
   inheritAttrs: false,
@@ -82,7 +83,6 @@ export default defineComponent({
   },
   render (props) {
     const { t } = useI18n()
-    const ns = useNamespace('ConfigData1')
     const validator = ({ field }, value, callback) => {
       const newValue = value.trim()
       if (newValue === '' || newValue === null || newValue === undefined) {
@@ -117,27 +117,21 @@ export default defineComponent({
               </ElFormItem>
             </td>
             <td>
-              <div class={ns.e('operate')}>
-                <Icon class={[ns.e('icon')]} onClick={() => this.data.splice(index, 1)} icon="delete"></Icon>
-                <Icon class={[ns.e('icon'), 'handle']} icon="move1"></Icon>
+              <div class={$style.operate}>
+                <Icon class={$style.icon} onClick={() => this.data.splice(index, 1)} icon="delete"></Icon>
+                <Icon class={[$style.icon, $style.handle]} icon="move1"></Icon>
               </div>
             </td>
           </tr>
         )
       }
     }
-    const handleAction = (type) => {
-      switch (type) {
-        case 1:
-          this.data.push(...utils.generateOptions(1))
-          nextTick(() => {
-            this.$refs.scrollbar.setScrollTop(this.$refs.scrollbar.wrapRef.scrollHeight)
-          })
-          break
-        case 2:
-        // target.value.options.defaultValue = isMultiple.value ? [] : ''
-          break
-      }
+    // 添加选项
+    const onAddSelect = () => {
+      this.data.push(...utils.generateOptions(1))
+      nextTick(() => {
+        this.$refs.scrollbar.setScrollTop(this.$refs.scrollbar.wrapRef.scrollHeight)
+      })
     }
     const handleChange = (value, item) => {
       if (!this.isMultiple) {
@@ -152,10 +146,10 @@ export default defineComponent({
     return (
       <div>
         {'DataComponent1'}
-        <table class={[ns.e('tableThead')]}>
+        <table class={$style.tableThead}>
           <thead>
             <tr>
-              <th >{t('er.config.dataComponent1.defaultLabel')}</th>
+              <th>{t('er.config.dataComponent1.defaultLabel')}</th>
               <th>{t('er.config.dataComponent1.unique')}</th>
               <th>{t('er.config.dataComponent1.name')}</th>
               <th >{t('er.config.dataComponent1.operate')}</th>
@@ -165,9 +159,9 @@ export default defineComponent({
         <ElScrollbar ref="scrollbar" height="400px">
           <ElForm ref="form" model={this.data}>
             <ElCheckboxGroup
-              vModel={this.checkList}
+              modelValue={this.checkList}
             >
-              <table className={[ns.e('table')]}>
+              <table class={$style.table}>
                 <thead>
                   <tr>
                     <th></th>
@@ -188,8 +182,8 @@ export default defineComponent({
             </ElCheckboxGroup>
           </ElForm>
         </ElScrollbar>
-        <div class={ns.e('button')}>
-          <ElButton onClick={() => handleAction(1)}>{t('er.config.dataComponent1.add')}</ElButton>
+        <div class={$style.button}>
+          <ElButton onClick={onAddSelect}>{t('er.config.dataComponent1.add')}</ElButton>
         </div>
       </div>
     )
