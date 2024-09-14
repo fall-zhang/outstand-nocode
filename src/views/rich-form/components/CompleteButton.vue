@@ -30,24 +30,20 @@ const handleClick = async (type) => {
     console.log(e)
   }
 }
-const dataset = process.env.NODE_ENV === 'test' ? { 'data-test': 'er-complete-button' } : {}
 </script>
 <template>
-  <div v-bind="dataset">
-    <div v-if="isPC" style="text-align: center;">
-      <el-button @click="handleClick" :color="state.config[state.platform].completeButton.backgroundColor"
-        type="primary">
-        <span :style="{ color: state.config[state.platform].completeButton.color }">{{
-          state.config[state.platform].completeButton.text }}</span>
-      </el-button>
-    </div>
-    <div v-else>
-      <van-button @click="handleClick" round block type="primary"
-        :color="state.config[state.platform].completeButton.backgroundColor">
-        <span :style="{ color: state.config[state.platform].completeButton.color }">{{
-          state.config[state.platform].completeButton.text }}</span>
-      </van-button>
-    </div>
+  <div v-if="isPC" style="text-align: center;">
+    <el-button @click="handleClick" :color="state.config[state.platform].completeButton.backgroundColor" type="primary">
+      <span :style="{ color: state.config[state.platform].completeButton.color }">{{
+        state.config[state.platform].completeButton.text }}</span>
+    </el-button>
+  </div>
+  <div v-else>
+    <van-button @click="handleClick" round block type="primary"
+      :color="state.config[state.platform].completeButton.backgroundColor">
+      <span :style="{ color: state.config[state.platform].completeButton.color }">{{
+        state.config[state.platform].completeButton.text }}</span>
+    </van-button>
   </div>
 </template>
 

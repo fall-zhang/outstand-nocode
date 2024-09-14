@@ -1,6 +1,6 @@
 <script>
 import { useI18n } from '@/hooks'
-import { ref, computed, watch, nextTick } from 'vue'
+import { ref, computed } from 'vue'
 import CKEditor from '@/componets/module/ckeditor'
 export default {
   name: 'FeHtmlMobile',

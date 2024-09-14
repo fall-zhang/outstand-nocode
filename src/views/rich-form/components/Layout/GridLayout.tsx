@@ -12,7 +12,10 @@ export default defineComponent({
       type: Object,
       default: () => ({})
     },
-    parent: Array
+    parent: {
+      type: Array,
+      default: () => ([])
+    }
   },
   setup (props) {
     return () => (

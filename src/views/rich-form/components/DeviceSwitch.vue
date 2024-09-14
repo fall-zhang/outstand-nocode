@@ -1,3 +1,4 @@
+<!-- 设备切换功能 -->
 <script setup lang="ts">
 import Icon from '@/assets'
 const props = defineProps({
@@ -18,10 +19,6 @@ const emit = defineEmits(['update:modelValue'])
 </template>
 
 <style scoped lang="scss">
-.switch-out {
- // border-top: 1px solid #DDDDDD;
-}
-
 .device-switch {
   border: 1px solid #DDDDDD;
   font-size: 14px;

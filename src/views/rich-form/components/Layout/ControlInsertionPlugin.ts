@@ -1,5 +1,6 @@
 import _ from 'lodash-es'
 import utils, { deepTraversal } from '@/utils'
+import { get } from '@/utils/utils'
 import { nextTick } from 'vue'
 let prevEl = ''
 let prevSortable = ''
@@ -310,11 +311,8 @@ function ControlInsertionPlugin (ER) {
       if (!prevEl || !e.activeSortable) {
         return false
       }
-      const isBlock = _.get(e, 'activeSortable.options.dataSource', false) === 'block'
-      const {
-        dragEl,
-        target
-      } = e
+      const isBlock = get(e, 'activeSortable.options.dataSource', false) === 'block'
+      const { dragEl } = e
       const oldEl = getDragElement(dragEl)
       const newElement = ER.wrapElement(_.cloneDeep(oldEl), insertRowIndex !== '', true, isBlock)
       if (!isBlock) {

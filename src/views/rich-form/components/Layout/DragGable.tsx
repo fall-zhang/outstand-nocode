@@ -17,7 +17,8 @@ import Selection from '../Selection/selectElement'
 import ControlInsertionPlugin from './ControlInsertionPlugin'
 import { DraggableWrap } from './DraggableWrap'
 import $style from './Draggable.module.scss'
-import { isEmpty } from '@/utils/utils'
+import { isEmpty, get } from '@/utils/utils'
+
 const dragGableWrap = DraggableWrap
 export {
   dragGableWrap
@@ -103,7 +104,7 @@ export default defineComponent({
             break
           default:{
             let TypeComponent = ''
-            if (unref(isEditModel) || _.get(state.fieldsLogicState.get(element), 'visible', undefined) !== 0) {
+            if (unref(isEditModel) || get(state.fieldsLogicState.get(element), 'visible', undefined) !== 0) {
               const typeProps = useProps(state, element, unref(isPC))
               TypeComponent = load.findComponent('FormTypes', element.type)
               const params = {
