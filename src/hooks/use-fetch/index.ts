@@ -1,12 +1,12 @@
+import { get } from '@/utils/utils'
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
-import _ from 'lodash-es'
 const instance = axios.create({
   // baseURL: 'http://192.168.31.181:5173',
   baseURL: 'http://localhost:8000',
   timeout: 20000
 })
-export const useFetch = (url, config = {}) => {
+export const useFetch = (url:string, config = {}) => {
   return new Promise((resolve, reject) => {
     instance({
       url,
@@ -17,13 +17,13 @@ export const useFetch = (url, config = {}) => {
           resolve({ code, msg, data })
           break
         default:
-        // other code
+          // other code
           ElMessage.error(msg)
           reject(new Error(msg))
           break
       }
     }).catch((e) => {
-      if (_.get(e, 'code', '') !== 'ERR_CANCELED') {
+      if (get(e, 'code', '') !== 'ERR_CANCELED') {
         ElMessage.error(e)
       }
       reject(e)

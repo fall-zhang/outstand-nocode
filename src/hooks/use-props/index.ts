@@ -5,6 +5,7 @@ import _ from 'lodash-es'
 import Region from './region/Region'
 import { areaList } from '@vant/area-data'
 import { useI18n } from '../use-i18n'
+import { get } from '@/utils/utils'
 const addValidate = (result, node, isPC, t) => {
   const {
     options
@@ -221,10 +222,10 @@ export const useProps = (state, data, isPC = true, isRoot = false, specialHandli
         break
       case 'radio':
       case 'checkbox':
-        result.options = _.get(state, `data[${options.dataKey}].list`, [])
+        result.options = get(state, `data[${options.dataKey}].list`, [])
         break
       case 'select':
-        result.options = _.get(state, `data[${options.dataKey}].list`, [])
+        result.options = get(state, `data[${options.dataKey}].list`, [])
         result.multiple = options.multiple
         result.filterable = options.filterable
         break
@@ -317,7 +318,7 @@ export const useProps = (state, data, isPC = true, isRoot = false, specialHandli
         }
         break
       case 'cascader':
-        result.options = _.get(state, `data[${options.dataKey}].list`, [])
+        result.options = get(state, `data[${options.dataKey}].list`, [])
         result.props = {
           multiple: options.multiple,
           checkStrictly: options.checkStrictly

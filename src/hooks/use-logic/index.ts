@@ -5,6 +5,7 @@ import customParseFormat from 'dayjs/plugin/customParseFormat.js'
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter.js'
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore.js'
 import utils from '@/utils'
+import { get } from '@/utils/utils'
 dayjs.extend(customParseFormat)
 dayjs.extend(isSameOrAfter)
 dayjs.extend(isSameOrBefore)
@@ -12,10 +13,10 @@ const findValidityRule = (state) => {
   const result = {}
   for (const logicType in state.logic) {
     const rules = []
-    _.get(state.logic, `${logicType}`, []).forEach(filter => {
+    get(state.logic, `${logicType}`, []).forEach(filter => {
       rules.push({
-        if: _.get(filter, 'ifRules.filters[0]', {}),
-        then: _.get(filter, 'thenRules.filters[0]', {})
+        if: get(filter, 'ifRules.filters[0]', {}),
+        then: get(filter, 'thenRules.filters[0]', {})
       })
     })
     result[logicType] = rules
@@ -46,9 +47,9 @@ const equal = (logicValue, value, field) => {
     return dayjs(value, field.options.valueFormat).isSame(dayjs(logicValue, field.options.valueFormat))
   }
   if (field.type === 'region') {
-    return _.includes(logicValue, value)
+    return logicValue.includes(value)
   }
-  if (_.isString(value) || _.isNumber(value)) {
+  if (typeof value === 'string' || typeof value === 'number') {
     return Object.is(logicValue, value)
   }
   if (_.isArray(value)) {
@@ -210,7 +211,7 @@ const changeState = (fieldsLogicState, field, key, value) => {
   fieldsLogicState.get(field)[key] = value
 }
 const operatingVisible = (isValidation, rule, fields, fieldsLogicState) => {
-  _.get(rule, 'then.conditions', []).forEach(condition => {
+  get(rule, 'then.conditions', []).forEach(condition => {
     switch (condition.property) {
       case 'show':
         if (isValidation) {
@@ -238,7 +239,7 @@ const operatingVisible = (isValidation, rule, fields, fieldsLogicState) => {
   })
 }
 const operatingRequired = (isValidation, rule, fields, fieldsLogicState) => {
-  _.get(rule, 'then.conditions', []).forEach(condition => {
+  get(rule, 'then.conditions', []).forEach(condition => {
     switch (condition.operator) {
       case 'required':
         if (isValidation) {
@@ -270,7 +271,7 @@ const operatingRequired = (isValidation, rule, fields, fieldsLogicState) => {
   })
 }
 const operatingReadOnly = (isValidation, rule, fields, fieldsLogicState) => {
-  _.get(rule, 'then.conditions', []).forEach(condition => {
+  get(rule, 'then.conditions', []).forEach(condition => {
     switch (condition.operator) {
       case 'readOnly':
         if (isValidation) {
@@ -298,7 +299,7 @@ const operatingReadOnly = (isValidation, rule, fields, fieldsLogicState) => {
   })
 }
 const operatingValidation = (isValidation, rule, fields, fieldsLogicState) => {
-  _.get(rule, 'then.conditions', []).forEach(condition => {
+  get(rule, 'then.conditions', []).forEach(condition => {
     if (isValidation) {
       fieldsValidation.set(condition, 1)
     } else {

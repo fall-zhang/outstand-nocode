@@ -1,5 +1,4 @@
 export { useTarget } from './use-target'
-export { useNamespace } from './use-namespace'
 export { useI18n } from './use-i18n'
 export { useFetch } from './use-fetch'
 export { useProps } from './use-props'

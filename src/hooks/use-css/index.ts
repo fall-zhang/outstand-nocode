@@ -2,6 +2,7 @@ import { ref, getCurrentInstance, watch } from 'vue'
 import _ from 'lodash-es'
 import jss from 'jss'
 import preset from 'jss-preset-default'
+import { deepClone } from '@/utils'
 jss.setup({
   ...preset(),
 })
@@ -128,7 +129,7 @@ const renderTableBorder = (style) => {
   return result
 }
 const renderStyleSheets = (node, uid, platform) => {
-  const style = _.cloneDeep(node.style)
+  const style = deepClone(node.style)
   isShowKeys.forEach((key) => {
     if (key === 'border' && node.type === 'table') {
       if (style[`isShow${_.upperFirst(key)}`]) {
