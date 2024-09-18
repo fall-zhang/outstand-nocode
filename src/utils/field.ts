@@ -1,7 +1,7 @@
 import _ from 'lodash-es'
 import { nanoid } from './nanoid'
 import { PlatformType } from '@/views/rich-form/types/rich-form'
-import { get } from './utils'
+import { get, isEmpty } from './utils'
 
 // WARNING: This is not a drop in replacement solution and
 // it might not work for some edge cases. Test your code!
@@ -210,14 +210,14 @@ const syncWidthByPlatform = (node, platform:PlatformType, syncFullplatform = fal
     }
   })
 }
-const transferLabelPath = (node) => `er.fields.${node.type === 'input' ? `${node.type}.${node.options.renderType - 1}` : `${node.type}`}`
+const transferLabelPath = (node) => `rf.fields.${node.type === 'input' ? `${node.type}.${node.options.renderType - 1}` : `${node.type}`}`
 const fieldLabel = (t, node) => t(transferLabelPath(node))
 /**
  * 获取当前语言的信息
  */
 const transferData = (lang:string, path:string, locale:any, options = {}) => {
   let result = ''
-  if (_.isEmpty(options)) {
+  if (isEmpty(options)) {
     result = get(locale[lang], path, '')
   } else {
     result = _.template(get(locale[lang], path, ''))(options)
