@@ -1,5 +1,4 @@
 <script>
-import hooks from '@/hooks'
 import { computed } from 'vue'
 
 export default {

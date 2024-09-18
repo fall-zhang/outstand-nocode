@@ -1,7 +1,7 @@
 <script>
 import { ref, nextTick, watch, unref } from 'vue'
 import { ElMessage } from 'element-plus'
-import { useI18n } from '@/hooks'
+import { useI18n } from 'vue-i18n'
 import _ from 'lodash-es'
 import { deepClone } from '@/utils'
 export default {
@@ -65,7 +65,7 @@ const handlePictureCardPreview = (uploadFile) => {
 const beforeAvatarUpload = (rawFile) => {
   if (rawFile.size > props.params.maxSize) {
     ElMessage({
-      message: t('er.validateMsg.fileSize', { size: props.data.options.size }),
+      message: t('rf.validateMsg.fileSize', { size: props.data.options.size }),
       type: 'warning'
     })
     return false

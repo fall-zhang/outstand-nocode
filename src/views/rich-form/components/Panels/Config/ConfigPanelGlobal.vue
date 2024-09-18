@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useTarget, useI18n } from '@/hooks'
-import _ from 'lodash-es'
+import { useTarget } from '@/hooks'
+import { useI18n } from 'vue-i18n'
 import { ref, unref, computed } from 'vue'
 import { ClickOutside as vClickOutside } from 'element-plus'
 import CompleteButton from '@/views/rich-form/components/CompleteButton.vue'
@@ -69,17 +69,17 @@ const onConfirm = () => {
 const alignOptions = computed(() => {
   return [
     {
-      label: t('er.config.globalConfig.labelPosition.top'),
+      label: t('rf.config.globalConfig.labelPosition.top'),
       value: 'top',
       icon: 'labelStructureP1'
     },
     {
-      label: t('er.config.globalConfig.labelPosition.left'),
+      label: t('rf.config.globalConfig.labelPosition.left'),
       value: 'left',
       icon: 'labelStructureP2'
     },
     {
-      label: t('er.config.globalConfig.labelPosition.right'),
+      label: t('rf.config.globalConfig.labelPosition.right'),
       value: 'right',
       icon: 'labelStructureP3'
     }
@@ -89,15 +89,15 @@ const alignOptions = computed(() => {
 const options1 = computed(() => {
   return [
     {
-      label: t('er.config.globalConfig.componentSize.large'),
+      label: t('rf.config.globalConfig.componentSize.large'),
       value: 'large'
     },
     {
-      label: t('er.config.globalConfig.componentSize.default'),
+      label: t('rf.config.globalConfig.componentSize.default'),
       value: 'default'
     },
     {
-      label: t('er.config.globalConfig.componentSize.small'),
+      label: t('rf.config.globalConfig.componentSize.small'),
       value: 'small'
     }
   ]
@@ -121,7 +121,7 @@ const handleTypeListener = ({ property, data }) => {
           <el-icon color="#f90">
             <FileQuestion />
           </el-icon>
-          {{ t('er.config.globalConfig.sync.warning') }}
+          {{ t('rf.config.globalConfig.sync.warning') }}
         </div>
         <el-radio-group class="syncType" v-model="radio1">
           <el-radio value="pc">pc</el-radio>
@@ -129,28 +129,28 @@ const handleTypeListener = ({ property, data }) => {
         </el-radio-group>
       </template>
       <div class="syncActions">
-        <el-button size="small" :text="true" @click="() => visible = false">{{ t('er.public.cancel') }}</el-button>
+        <el-button size="small" :text="true" @click="() => visible = false">{{ t('rf.public.cancel') }}</el-button>
         <el-button size="small" type="primary" @click="onConfirm(2)">
-          {{ t('er.public.confirm') }}
+          {{ t('rf.public.confirm') }}
         </el-button>
       </div>
     </el-popover>
-    <el-form-item :label="t('er.config.globalConfig.sync.label')" label-position="left">
+    <el-form-item :label="t('rf.config.globalConfig.sync.label')" label-position="left">
       <el-switch ref="buttonRef" v-click-outside:[popperPaneRef]="onClickOutside" :before-change="handleBeforeChange"
         v-model="target.isSync" />
     </el-form-item>
     <TypeComponent v-if="isPC" @listener="handleTypeListener" property="size" :layoutType="2"
-      :label="t('er.config.globalConfig.componentSize.label')" :val="target[state.platform].size" :nodes="options1" />
+      :label="t('rf.config.globalConfig.componentSize.label')" :val="target[state.platform].size" :nodes="options1" />
     <TypeComponent @listener="handleTypeListener" property="labelPosition"
-      :label="t('er.config.globalConfig.labelPosition.label')" :height="66" :fontSize="80"
+      :label="t('rf.config.globalConfig.labelPosition.label')" :height="66" :fontSize="80"
       :val="target[state.platform].labelPosition" :nodes="alignOptions" />
-    <el-form-item :label="t('er.public.button')">
+    <el-form-item :label="t('rf.public.button')">
       <div style="width: 100%;">
         <CompleteButton mode="preview" />
         <div>
           <el-row :gutter="8">
             <el-col>
-              <el-form-item :label="t('er.public.text')">
+              <el-form-item :label="t('rf.public.text')">
                 <el-input :model-value="target[state.platform].completeButton.text" show-word-limit :maxlength="20"
                   @update:modelValue="(e) => handleModelValue('completeButton.text', e)"></el-input>
               </el-form-item>
@@ -158,14 +158,14 @@ const handleTypeListener = ({ property, data }) => {
           </el-row>
           <el-row :gutter="8" style="margin-top: 20px;">
             <el-col :span="12">
-              <el-form-item :label="t('er.public.color')">
+              <el-form-item :label="t('rf.public.color')">
                 <el-color-picker popper-class="completeButtonColor"
                   :model-value="target[state.platform].completeButton.color"
                   @update:modelValue="(e) => handleModelValue('completeButton.color', e)" show-alpha />
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item :label="t('er.public.backgroundColor')">
+              <el-form-item :label="t('rf.public.backgroundColor')">
                 <el-color-picker popper-class="completeButtonColor"
                   :model-value="target[state.platform].completeButton.backgroundColor"
                   @update:modelValue="(e) => handleModelValue('completeButton.backgroundColor', e)" show-alpha />

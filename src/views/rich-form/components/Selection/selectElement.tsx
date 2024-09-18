@@ -10,7 +10,8 @@ import {
   computed
 } from 'vue'
 import { isHTMLTag } from '@/utils/browser'
-import { useI18n, useTarget, useCss } from '@/hooks'
+import { useI18n } from 'vue-i18n'
+import { useTarget, useCss } from '@/hooks'
 import utils, { syncWidthByPlatform, checkIsField, checkIslineChildren } from '@/utils'
 import _ from 'lodash-es'
 import Icon from '@/assets'
@@ -111,20 +112,20 @@ export default defineComponent({
       const slots = {
         dropdown: () => (isShowCell.value &&
             <ElDropdownMenu>
-              <ElDropdownItem command="insert left">{t('er.selection.insertLeft')}</ElDropdownItem>
-              <ElDropdownItem command="insert right">{t('er.selection.insertRight')}</ElDropdownItem>
-              <ElDropdownItem command="insert top">{t('er.selection.insertTop')}</ElDropdownItem>
-              <ElDropdownItem command="insert bottom">{t('er.selection.insertBottom')}</ElDropdownItem>
-              <ElDropdownItem command="merge left" disabled={props.data.context.isDisableMargeLeft} divided>{t('er.selection.mergeLeft')}</ElDropdownItem>
-              <ElDropdownItem command="merge right" disabled={props.data.context.isDisableMargeRight}>{t('er.selection.mergeRight')}</ElDropdownItem>
-              <ElDropdownItem command="merge row" disabled={props.data.context.isDisableMargeRow}>{t('er.selection.mergeRow')}</ElDropdownItem>
-              <ElDropdownItem command="merge top" disabled={props.data.context.isDisableMargeTop} divided>{t('er.selection.mergeTop')}</ElDropdownItem>
-              <ElDropdownItem command="merge bottom" disabled={props.data.context.isDisableMargeBottom}>{t('er.selection.mergeBottom')}</ElDropdownItem>
-              <ElDropdownItem command="merge column" disabled={props.data.context.isDisableMargeColumn}>{t('er.selection.mergeColumn')}</ElDropdownItem>
-              <ElDropdownItem command="del row" divided disabled={props.data.context.isDisableDelRow}>{t('er.selection.delRow')}</ElDropdownItem>
-              <ElDropdownItem command="del column" disabled={props.data.context.isDisableDelColumn}>{t('er.selection.delColumn')}</ElDropdownItem>
-              <ElDropdownItem command="split column" disabled={props.data.context.isDisableSplitColumn} divided>{t('er.selection.splitColumn')}</ElDropdownItem>
-              <ElDropdownItem command="split row" disabled={props.data.context.isDisableSplitRow}>{t('er.selection.splitRow')}</ElDropdownItem>
+              <ElDropdownItem command="insert left">{t('rf.selection.insertLeft')}</ElDropdownItem>
+              <ElDropdownItem command="insert right">{t('rf.selection.insertRight')}</ElDropdownItem>
+              <ElDropdownItem command="insert top">{t('rf.selection.insertTop')}</ElDropdownItem>
+              <ElDropdownItem command="insert bottom">{t('rf.selection.insertBottom')}</ElDropdownItem>
+              <ElDropdownItem command="merge left" disabled={props.data.context.isDisableMargeLeft} divided>{t('rf.selection.mergeLeft')}</ElDropdownItem>
+              <ElDropdownItem command="merge right" disabled={props.data.context.isDisableMargeRight}>{t('rf.selection.mergeRight')}</ElDropdownItem>
+              <ElDropdownItem command="merge row" disabled={props.data.context.isDisableMargeRow}>{t('rf.selection.mergeRow')}</ElDropdownItem>
+              <ElDropdownItem command="merge top" disabled={props.data.context.isDisableMargeTop} divided>{t('rf.selection.mergeTop')}</ElDropdownItem>
+              <ElDropdownItem command="merge bottom" disabled={props.data.context.isDisableMargeBottom}>{t('rf.selection.mergeBottom')}</ElDropdownItem>
+              <ElDropdownItem command="merge column" disabled={props.data.context.isDisableMargeColumn}>{t('rf.selection.mergeColumn')}</ElDropdownItem>
+              <ElDropdownItem command="del row" divided disabled={props.data.context.isDisableDelRow}>{t('rf.selection.delRow')}</ElDropdownItem>
+              <ElDropdownItem command="del column" disabled={props.data.context.isDisableDelColumn}>{t('rf.selection.delColumn')}</ElDropdownItem>
+              <ElDropdownItem command="split column" disabled={props.data.context.isDisableSplitColumn} divided>{t('rf.selection.splitColumn')}</ElDropdownItem>
+              <ElDropdownItem command="split row" disabled={props.data.context.isDisableSplitRow}>{t('rf.selection.splitRow')}</ElDropdownItem>
             </ElDropdownMenu>
         )
       }

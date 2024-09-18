@@ -4,7 +4,8 @@ import {
   nextTick,
 } from 'vue'
 import utils from '@/utils'
-import { useTarget, useI18n } from '@/hooks'
+import { useTarget } from '@/hooks'
+import { useI18n } from 'vue-i18n'
 import Icon from '@/assets'
 import { dragGableWrap } from '@/views/rich-form/components/Layout/DragGable'
 import _ from 'lodash-es'
@@ -86,12 +87,12 @@ export default defineComponent({
     const validator = ({ field }, value, callback) => {
       const newValue = value.trim()
       if (newValue === '' || newValue === null || newValue === undefined) {
-        callback(new Error(t('er.validateMsg.required')))
+        callback(new Error(t('rf.validateMsg.required')))
         return false
       }
       if (field.includes('value')) {
         if (this.data.filter((e) => e.value === newValue).length > 1) {
-          callback(new Error(t('er.validateMsg.idUnique')))
+          callback(new Error(t('rf.validateMsg.idUnique')))
           return false
         }
         callback()
@@ -149,10 +150,10 @@ export default defineComponent({
         <table class={$style.tableThead}>
           <thead>
             <tr>
-              <th>{t('er.config.dataComponent1.defaultLabel')}</th>
-              <th>{t('er.config.dataComponent1.unique')}</th>
-              <th>{t('er.config.dataComponent1.name')}</th>
-              <th >{t('er.config.dataComponent1.operate')}</th>
+              <th>{t('rf.config.dataComponent1.defaultLabel')}</th>
+              <th>{t('rf.config.dataComponent1.unique')}</th>
+              <th>{t('rf.config.dataComponent1.name')}</th>
+              <th >{t('rf.config.dataComponent1.operate')}</th>
             </tr>
           </thead>
         </table>
@@ -183,7 +184,7 @@ export default defineComponent({
           </ElForm>
         </ElScrollbar>
         <div class={$style.button}>
-          <ElButton onClick={onAddSelect}>{t('er.config.dataComponent1.add')}</ElButton>
+          <ElButton onClick={onAddSelect}>{t('rf.config.dataComponent1.add')}</ElButton>
         </div>
       </div>
     )

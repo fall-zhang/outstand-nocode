@@ -1,5 +1,5 @@
 // 左侧功能面板
-import { useI18n } from '@/hooks'
+import { useI18n } from 'vue-i18n'
 import { useTarget } from '@/hooks/use-target'
 import utils, { deepClone } from '@/utils'
 import { DraggableWrap } from '../../Layout/DraggableWrap'

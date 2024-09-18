@@ -1,6 +1,6 @@
 <script>
 import { ref, inject, nextTick, computed } from 'vue'
-import { useI18n, } from '@/hooks'
+import { useI18n } from 'vue-i18n'
 import _ from 'lodash-es'
 import Icon from '@/assets'
 import { get } from '@/utils/utils'
@@ -141,16 +141,16 @@ const handleClosed = () => {
       <el-tab-pane v-for="tab in tabs" :label="t(`er.logic.tabs.${tab.value}`)" :name="tab.value" :key="tab.value">
         <el-scrollbar ref="scrollbarRef" max-height="calc(100vh - 210px)">
           <el-empty v-if="!tab.rules.length">
-            <el-button type="primary" icon="plus" @click="handleAction(1)">{{ t('er.public.add') }}</el-button>
+            <el-button type="primary" icon="plus" @click="handleAction(1)">{{ t('rf.public.add') }}</el-button>
           </el-empty>
           <transition-group v-else name="el-fade-in">
             <div class="rule" v-for="(key, index) in tab.rules" :key="key">
               <Icon @click="tab.rules.splice(index, 1)" class="delRule" icon="delete" />
               <div class="filter-if">
-                <h3>{{ t('er.logic.filterLabel.if') }}</h3>
+                <h3>{{ t('rf.logic.filterLabel.if') }}</h3>
               </div>
               <div :class="['then', `${tab.value}then`]">
-                <h3>{{ t('er.logic.filterLabel.then') }}</h3>
+                <h3>{{ t('rf.logic.filterLabel.then') }}</h3>
               </div>
             </div>
           </transition-group>
@@ -158,21 +158,21 @@ const handleClosed = () => {
       </el-tab-pane>
     </el-tabs>
     <el-button v-show="tabs[curIndex].rules.length" class="button" @click="handleAction(1)">
-      {{ t('er.public.add') }}
+      {{ t('rf.public.add') }}
     </el-button>
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="handleAction(0)">
-          {{ t('er.public.cancel') }}
+          {{ t('rf.public.cancel') }}
         </el-button>
         <el-button type="primary" @click="handleAction(2)">
-          {{ t('er.public.confirm') }}
+          {{ t('rf.public.confirm') }}
         </el-button>
       </span>
     </template>
   </el-drawer>
   <el-button style="width: 100%;" type="primary" @click="openDialog">
-    {{ t('er.logic.button') }}
+    {{ t('rf.logic.button') }}
   </el-button>
 </template>
 <style lang="scss" scoped>

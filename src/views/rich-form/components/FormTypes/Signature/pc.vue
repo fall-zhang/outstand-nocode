@@ -3,7 +3,7 @@ import { ref, nextTick, watch, onBeforeUnmount, unref } from 'vue'
 import SignaturePad from 'signature_pad'
 import Icon from '@/assets'
 import utils from '@/utils'
-import { useI18n, useFetch } from '@/hooks'
+import { useI18n, useFetch } from 'vue-i18n'
 export default {
   name: 'FeFeSignatureDesktop',
   inheritAttrs: false,
@@ -110,20 +110,20 @@ const handleCommit = async () => {
     </template>
     <div v-else :class="$style.noData">
       <el-button @click="handleOpen" text type="primary" icon="Edit" circle>
-        {{ t('er.form.addSignature') }}
+        {{ t('rf.form.addSignature') }}
       </el-button>
     </div>
   </div>
-  <el-dialog v-model="dialogVisible" :title="t('er.form.addSignature')" width="900px" destroy-on-close
+  <el-dialog v-model="dialogVisible" :title="t('rf.form.addSignature')" width="900px" destroy-on-close
     :close-on-press-escape="false" :close-on-click-modal="false">
     <div v-loading="loading">
       <canvas :class="$style.canvas" ref="element"></canvas>
     </div>
     <template #footer>
       <span class="dialog-footer">
-        <el-button :disabled="showClear" @click="handleClear">{{ t('er.public.reset') }}</el-button>
+        <el-button :disabled="showClear" @click="handleClear">{{ t('rf.public.reset') }}</el-button>
         <el-button :disabled="showClear" type="primary" @click="handleCommit">
-          {{ t('er.form.useSignature') }}
+          {{ t('rf.form.useSignature') }}
         </el-button>
       </span>
     </template>

@@ -4,7 +4,7 @@ import { ref, nextTick, watch, unref } from 'vue'
 import SignaturePad from 'signature_pad'
 import Icon from '@/assets'
 import utils from '@/utils'
-import { useI18n,  useFetch } from '@/hooks'
+import { useI18n,  useFetch } from 'vue-i18n'
 export default {
   name: 'FeSignatureMobile',
   inheritAttrs: false,
@@ -114,7 +114,7 @@ const handleAction = async (type) => {
       </template>
       <div v-else :class="$style.noData">
         <el-button text type="primary" icon="Edit" circle>
-          {{ t('er.form.addSignature') }}
+          {{ t('rf.form.addSignature') }}
         </el-button>
       </div>
     </template>
@@ -123,10 +123,10 @@ const handleAction = async (type) => {
     </template>
   </van-field>
   <van-popup :class="$style.signatureMobile" v-model:show="dialogVisible" position="right" :style="{ width: '100%', height: '100%' }">
-    <van-nav-bar :title="t('er.form.addSignature')" :left-text="t('er.public.back')" left-arrow
+    <van-nav-bar :title="t('rf.form.addSignature')" :left-text="t('rf.public.back')" left-arrow
       @click-left="handleAction(1)">
       <template v-if="showClear" #right>
-        <span @click="handleAction(2)" class="van-nav-bar__text">{{ t('er.form.useSignature') }}</span>
+        <span @click="handleAction(2)" class="van-nav-bar__text">{{ t('rf.form.useSignature') }}</span>
       </template>
     </van-nav-bar>
     <div :class="$style.canvasWrap">

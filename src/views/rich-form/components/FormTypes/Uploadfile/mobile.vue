@@ -2,7 +2,7 @@
 import { ref, nextTick, watch } from 'vue'
 import { showToast } from 'vant'
 import _ from 'lodash-es'
-import { useI18n, useFetch } from '@/hooks'
+import { useI18n, useFetch } from 'vue-i18n'
 export default {
   name: 'FeUploadMobile',
   inheritAttrs: false,
@@ -32,7 +32,7 @@ const afterRead = async (file) => {
   const form = new FormData()
   files.forEach((e) => {
     e.status = 'uploading'
-    e.message = t('er.form.uploading')
+    e.message = t('rf.form.uploading')
     // e.status = 'uploading'
     form.append('file', e.file)
   })
@@ -51,7 +51,7 @@ const afterRead = async (file) => {
   } catch (e) {
     files.forEach((e) => {
       e.status = 'failed'
-      e.message = t('er.form.uploadFailed')
+      e.message = t('rf.form.uploadFailed')
       // form.append('file', e.file)
     })
     showToast(e.message)

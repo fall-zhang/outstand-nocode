@@ -2,7 +2,7 @@
 <script setup lang="ts">
 import utils from '@/utils'
 import { useTarget } from '@/hooks/use-target'
-import { useI18n } from '@/hooks'
+import { useI18n } from 'vue-i18n'
 import { ref, computed, reactive, watch, onMounted } from 'vue'
 import PanelsConfigComponentsPropsPanel from './components/PropsPanel.vue'
 import GlobalConfigPanel from './ConfigPanelGlobal.vue'
@@ -34,13 +34,13 @@ const validator = (rule: any, value: any, callback: any) => {
   const fn = (type:any) => {
     switch (type) {
       case 0:
-        callback(new Error(t('er.validateMsg.required')))
+        callback(new Error(t('rf.validateMsg.required')))
         break
       case 1:
         callback()
         break
       case 2:
-        callback(new Error(t('er.validateMsg.idUnique')))
+        callback(new Error(t('rf.validateMsg.idUnique')))
         break
     }
   }
@@ -86,7 +86,7 @@ const breadcrumbList = computed(() => {
       label: ''
     }
     if (node === 'root') {
-      result.label = t('er.panels.config')
+      result.label = t('rf.panels.config')
     } else if (node && node.value !== 'placeholder') {
       if (/^(col|collapseCol|tabsCol|td)$/.test(node.type)) {
         result.label = t(`er.layout.${node.type}`)

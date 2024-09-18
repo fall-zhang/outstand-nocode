@@ -15,10 +15,6 @@ export default {
   fileUploadURI: {
     type: String
   },
-  isShowCompleteButton: {
-    type: Boolean,
-    default: true
-  },
   checkPropsBySelected: {
     type: Function,
     default: () => {}

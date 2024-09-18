@@ -1,8 +1,8 @@
 <script>
 import { reactive, ref, onMounted, inject, watch, computed, nextTick } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import {
-  useI18n,
   useTarget,
 } from '@/hooks'
 export default {
@@ -172,7 +172,7 @@ const checkIsSelected = (key) => {
 const beforeAvatarUpload = (rawFile) => {
   if (rawFile.size > 2 * 1024 * 1024) {
     ElMessage({
-      message: t('er.validateMsg.fileSize', { size: 2 }),
+      message: t('rf.validateMsg.fileSize', { size: 2 }),
       type: 'warning'
     })
     return false

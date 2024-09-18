@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import CanvasPanel from '../components/Panels/Canvas/CenterCanvas'
-import utils, { deepClone, isPC, isEmpty } from '@/utils'
+import utils, { deepClone, isPC } from '@/utils'
+import { isEmpty } from '@/utils/utils'
 import defaultProps from '../defaultProps'
 defineOptions({
   name: 'FormPreview'

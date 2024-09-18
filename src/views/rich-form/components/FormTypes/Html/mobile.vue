@@ -1,5 +1,5 @@
 <script>
-import { useI18n } from '@/hooks'
+import { useI18n } from 'vue-i18n'
 import { ref, computed } from 'vue'
 import CKEditor from '@/componets/module/ckeditor'
 export default {
@@ -30,9 +30,9 @@ const currentValue = computed({
   get() {
     let result = ''
     if (props.data.options.defaultValue) {
-      result = t('er.form.filled')
+      result = t('rf.form.filled')
     } else {
-      result = t('er.form.notFilled')
+      result = t('rf.form.notFilled')
     }
     return result
   }
@@ -45,9 +45,9 @@ const handleAction = async (type) => {
   <van-field readonly v-model="currentValue" @click="!params.disabled && (dialogVisible = true)" v-bind="params" />
   <van-popup ref="popup" :lock-scroll="false" class="popup" teleport="body" v-model:show="dialogVisible"
     position="right" :style="{ width: '100%', height: '100vh' }" :safe-area-inset-bottom="true">
-    <van-nav-bar :left-text="t('er.public.back')" left-arrow @click-left="handleAction(1)">
+    <van-nav-bar :left-text="t('rf.public.back')" left-arrow @click-left="handleAction(1)">
       <template #right>
-        <span @click="handleAction(2)" class="van-nav-bar__text">{{ t('er.public.save') }}</span>
+        <span @click="handleAction(2)" class="van-nav-bar__text">{{ t('rf.public.save') }}</span>
       </template>
     </van-nav-bar>
     <CKEditor platform="mobile" v-model="data.options.defaultValue" v-bind="params"></CKEditor>

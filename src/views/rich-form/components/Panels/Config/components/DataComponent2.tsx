@@ -1,6 +1,7 @@
 import { defineComponent, nextTick } from 'vue'
 import utils from '@/utils'
-import { useTarget, useI18n } from '@/hooks'
+import { useI18n } from 'vue-i18n'
+import { useTarget } from '@/hooks'
 import _ from 'lodash-es'
 import nzhcn from 'nzh/cn'
 import { ElButton, ElIcon, ElInput, ElScrollbar } from 'element-plus'
@@ -107,7 +108,7 @@ export default defineComponent({
     const ListComponent = ({ items, index }) => (
       <div class={$style.item}>
         {'data component2'}
-        <div class={$style.title}>{lang.value === 'zh-cn' ? `${nzhcn.encodeS(index + 1)}${t('er.config.dataComponent2.level')}` : `${t('er.config.dataComponent2.level')} ${index + 1}`}</div>
+        <div class={$style.title}>{lang.value === 'zh-cn' ? `${nzhcn.encodeS(index + 1)}${t('rf.config.dataComponent2.level')}` : `${t('rf.config.dataComponent2.level')} ${index + 1}`}</div>
         <ElScrollbar ref={(el) => this.scrollbars.push(el)} tag="ul" max-height="320px">
           { items.map((e, i) => (
             <li>
@@ -137,7 +138,7 @@ export default defineComponent({
               icon={'CirclePlus'}
               onClick={() => handleAction(1, index, items)}
               text>
-              {t('er.config.dataComponent2.add')}
+              {t('rf.config.dataComponent2.add')}
             </ElButton>
           </div>
         )}

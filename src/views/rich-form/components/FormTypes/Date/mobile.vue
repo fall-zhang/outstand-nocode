@@ -1,6 +1,6 @@
 <script>
 import dayjs from 'dayjs'
-import { useI18n } from '@/hooks'
+import { useI18n } from 'vue-i18n'
 import { ref, computed, watch } from 'vue'
 // 统一交换时间戳
 export default {
@@ -117,7 +117,7 @@ const onClear = () => {
     <van-date-picker v-bind="params" @confirm="onConfirm" @cancel="onCancel" v-model="currentDate" />
   </van-popup>
   <van-popup v-if="params.type === 'datetime'" v-model:show="showPicker" round position="bottom">
-    <van-picker-group v-if="params.type === 'datetime'" :tabs="[t('er.form.selectDate'), t('er.form.selectTime')]"
+    <van-picker-group v-if="params.type === 'datetime'" :tabs="[t('rf.form.selectDate'), t('rf.form.selectTime')]"
       @confirm="onConfirm" @cancel="onCancel">
       <van-date-picker v-model="currentDate" v-bind="params" />
       <van-time-picker :columns-type="columnsType" v-model="currentTime" />

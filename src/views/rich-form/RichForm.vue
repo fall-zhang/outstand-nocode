@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-import 'everright-filter/dist/style.css'
-import './theme/formEditor/index.scss'
+import './theme/index.scss'
 import { ClickOutside as vClickOutside, ElMessage } from 'element-plus'
 import { defineProps, ref, reactive, nextTick, watch } from 'vue'
 import FieldsPanel from './components/Panels/Fields'
@@ -8,10 +7,10 @@ import CanvasPanel from './components/Panels/Canvas/CenterCanvas'
 import ConfigPanel from './components/Panels/Config/ConfigPanel.vue'
 import DeviceSwitch from './components/DeviceSwitch.vue'
 import Icon from '@/assets'
-import { useI18n } from '@/hooks'
+import { useI18n } from 'vue-i18n'
 import utils, {
   deepClone, checkIsField, disassemblyData1, repairLayout, disassemblyData2, removeLogicDataById,
-  checkIdExistInLogic, combinationData2, pickFields, addContext, combinationData1
+  checkIdExistInLogic, combinationData2, pickFields
 } from '@/utils'
 import _ from 'lodash-es'
 import { isEmpty } from '@/utils/utils'
@@ -95,7 +94,7 @@ const state = reactive({
 const isFoldFields = ref(true)
 const isFoldConfig = ref(true)
 
-const { t, lang } = useI18n('zh-cn')
+const { t } = useI18n()
 const isShow = ref(true)
 const isShowConfig = ref(true)
 const setSelection = (node) => {
@@ -135,7 +134,7 @@ const delField = (node) => {
       ElMessage({
         showClose: true,
         duration: 4000,
-        message: t('er.logic.logicSuggests'),
+        message: t('rf.logic.logicSuggests'),
         type: 'warning'
       })
       removeLogicDataById(node.id, state.logic)

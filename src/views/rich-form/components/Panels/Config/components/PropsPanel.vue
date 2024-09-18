@@ -4,7 +4,8 @@
 import { ElMessage } from 'element-plus'
 import { ref, computed, unref, onMounted, inject } from 'vue'
 import utils from '@/utils'
-import { useI18n, useTarget, useProps } from '@/hooks'
+import { useI18n } from 'vue-i18n'
+import { useTarget, useProps } from '@/hooks'
 import PanelsConfigComponentsCheckboxComponent from './CheckboxComponent.vue'
 import PanelsConfigComponentsCollapseComponent from './CollapseComponent.vue'
 import RadioButton from './RadioButton.vue'
@@ -156,17 +157,17 @@ const options2 = [
 const options4 = computed(() => {
   return [
     {
-      label: t('er.config.tabsLayout.style.options[0]'),
+      label: t('rf.config.tabsLayout.style.options[0]'),
       value: '',
       icon: 'tabStyleP1'
     },
     {
-      label: t('er.config.tabsLayout.style.options[1]'),
+      label: t('rf.config.tabsLayout.style.options[1]'),
       value: 'card',
       icon: 'tabStyleP2'
     },
     {
-      label: t('er.config.tabsLayout.style.options[2]'),
+      label: t('rf.config.tabsLayout.style.options[2]'),
       value: 'border-card',
       icon: 'tabStyleP3'
     }
@@ -175,22 +176,22 @@ const options4 = computed(() => {
 const options5 = computed(() => {
   return [
     {
-      label: t('er.config.tabsLayout.tabPosition.options[0]'),
+      label: t('rf.config.tabsLayout.tabPosition.options[0]'),
       value: 'top',
       icon: 'tabsLocationP1'
     },
     {
-      label: t('er.config.tabsLayout.tabPosition.options[1]'),
+      label: t('rf.config.tabsLayout.tabPosition.options[1]'),
       value: 'bottom',
       icon: 'tabsLocationP2'
     },
     {
-      label: t('er.config.tabsLayout.tabPosition.options[2]'),
+      label: t('rf.config.tabsLayout.tabPosition.options[2]'),
       value: 'left',
       icon: 'tabsLocationP3'
     },
     {
-      label: t('er.config.tabsLayout.tabPosition.options[3]'),
+      label: t('rf.config.tabsLayout.tabPosition.options[3]'),
       value: 'right',
       icon: 'tabsLocationP4'
     }
@@ -199,27 +200,27 @@ const options5 = computed(() => {
 const options6 = computed(() => {
   return [
     {
-      label: t('er.config.gridLayout.justify.options[0]'),
+      label: t('rf.config.gridLayout.justify.options[0]'),
       value: 'start',
       icon: 'horizontalLayoutP1'
     },
     {
-      label: t('er.config.gridLayout.justify.options[1]'),
+      label: t('rf.config.gridLayout.justify.options[1]'),
       value: 'end',
       icon: 'horizontalLayoutP2'
     },
     {
-      label: t('er.config.gridLayout.justify.options[2]'),
+      label: t('rf.config.gridLayout.justify.options[2]'),
       value: 'center',
       icon: 'horizontalLayoutP3'
     },
     {
-      label: t('er.config.gridLayout.justify.options[3]'),
+      label: t('rf.config.gridLayout.justify.options[3]'),
       value: 'space-around',
       icon: 'horizontalLayoutP4'
     },
     {
-      label: t('er.config.gridLayout.justify.options[4]'),
+      label: t('rf.config.gridLayout.justify.options[4]'),
       value: 'space-between',
       icon: 'horizontalLayoutP5'
     }
@@ -228,11 +229,11 @@ const options6 = computed(() => {
 const options7 = computed(() => {
   return [
     {
-      label: t('er.config.propsPanel.layout.options[0]'),
+      label: t('rf.config.propsPanel.layout.options[0]'),
       value: 'block'
     },
     {
-      label: t('er.config.propsPanel.layout.options[1]'),
+      label: t('rf.config.propsPanel.layout.options[1]'),
       value: 'inline'
     }
   ]
@@ -240,15 +241,15 @@ const options7 = computed(() => {
 const options8 = computed(() => {
   return [
     {
-      label: t('er.config.propsPanel.region.options[0]'),
+      label: t('rf.config.propsPanel.region.options[0]'),
       value: 1
     },
     {
-      label: t('er.config.propsPanel.region.options[1]'),
+      label: t('rf.config.propsPanel.region.options[1]'),
       value: 2
     },
     {
-      label: t('er.config.propsPanel.region.options[2]'),
+      label: t('rf.config.propsPanel.region.options[2]'),
       value: 3
     }
   ]
@@ -299,7 +300,7 @@ const checkLogicData = () => {
     ElMessage({
       showClose: true,
       duration: 4000,
-      message: t('er.logic.logicSuggests'),
+      message: t('rf.logic.logicSuggests'),
       type: 'warning'
     })
     utils.removeLogicDataById(target.value.id, state.logic)
@@ -392,10 +393,10 @@ onMounted(() => {
 </script>
 <template>
   <div :class="$style.PropsPanel">
-    <el-form-item v-if="isSelectField" :label="t('er.config.propsPanel.id')" prop="key">
+    <el-form-item v-if="isSelectField" :label="t('rf.config.propsPanel.id')" prop="key">
       <el-input v-model="target.key" />
     </el-form-item>
-    <PanelsConfigComponentsCollapseComponent v-if="isSelectField" :label="t('er.config.propsPanel.title')"
+    <PanelsConfigComponentsCollapseComponent v-if="isSelectField" :label="t('rf.config.propsPanel.title')"
       operationKey="options" field="isShowLabel">
       <template #content>
         <div :class="[$style.collapseWrap, $style.collapseWrapLeft]">
@@ -420,7 +421,7 @@ onMounted(() => {
         </div>
       </template>
     </PanelsConfigComponentsCollapseComponent>
-    <RadioButton :label="t('er.config.propsPanel.defaultContent')" layoutType="slot" v-if="checkTypeBySelected([
+    <RadioButton :label="t('rf.config.propsPanel.defaultContent')" layoutType="slot" v-if="checkTypeBySelected([
       'input',
       'textarea',
       'time',
@@ -456,7 +457,7 @@ onMounted(() => {
       <template v-else-if="checkTypeBySelected(['rate'], 'defaultValue')">
         <el-rate v-bind="typeProps" v-model="target.options.defaultValue" />
         <el-button v-if="target.options.defaultValue > 0" link @click="target.options.defaultValue = 0">{{
-          t('er.public.clear') }}</el-button>
+          t('rf.public.clear') }}</el-button>
       </template>
       <template v-else-if="checkTypeBySelected(['switch'], 'defaultValue')">
         <el-switch v-bind="typeProps" v-model="target.options.defaultValue" />
@@ -465,17 +466,16 @@ onMounted(() => {
         <el-slider v-bind="typeProps" v-model="target.options.defaultValue" style="padding: 0 14px;" />
       </template>
     </RadioButton>
-    <RadioButton :label="t('er.public.Data')" layoutType="slot"
+    <RadioButton :label="t('rf.public.Data')" layoutType="slot"
       v-if="checkTypeBySelected(['select', 'radio', 'checkbox', 'cascader'], 'dataEntry')">
-      <el-button style="width: 100%;" type="primary" @click="dialogVisible = true">{{ t('er.public.dataEntry')
+      <el-button style="width: 100%;" type="primary" @click="dialogVisible = true">{{ t('rf.public.dataEntry')
         }}</el-button>
     </RadioButton>
-    <RadioButton :label="t('er.config.propsPanel.star')" layoutType="slot"
-      v-if="checkTypeBySelected(['rate'], 'star')">
+    <RadioButton :label="t('rf.config.propsPanel.star')" layoutType="slot" v-if="checkTypeBySelected(['rate'], 'star')">
       <el-input-number :min="1" controls-position="right" v-model="target.options.max" />
     </RadioButton>
     <!-- placeholder -->
-    <RadioButton layoutType="slot" :label="t('er.config.propsPanel.placeholder')" v-if="checkTypeBySelected([
+    <RadioButton layoutType="slot" :label="t('rf.config.propsPanel.placeholder')" v-if="checkTypeBySelected([
       'input',
       'textarea',
       'select',
@@ -492,43 +492,43 @@ onMounted(() => {
         v-model="target.options.placeholder" clearable />
     </RadioButton>
     <RadioButton layoutType="slot" v-if="checkTypeBySelected(['signature'], 'brushColor')"
-      :label="t('er.config.propsPanel.brushColor')">
+      :label="t('rf.config.propsPanel.brushColor')">
       <el-color-picker color-format="rgb" v-model="target.options.penColor" />
     </RadioButton>
     <RadioButton v-if="checkTypeBySelected(['time', 'date'], 'format')" layoutType="slot"
-      :label="t('er.config.propsPanel.format')">
+      :label="t('rf.config.propsPanel.format')">
       <el-select v-model="target.options.format" style="width: 100%">
         <el-option v-for="item in options0" :key="item.value" :label="item.label" :value="item.value" />
       </el-select>
     </RadioButton>
     <RadioButton v-if="checkTypeBySelected(['date'], 'dateType')" layoutType="slot"
-      :label="t('er.config.propsPanel.dateType')">
+      :label="t('rf.config.propsPanel.dateType')">
       <el-select v-model="target.options.type" @change="handleChange0" style="width: 100%">
         <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
       </el-select>
     </RadioButton>
-    <RadioButton v-if="checkTypeBySelected(['radio', 'checkbox'], 'displayStyle')"
-      @listener="handleTypeListener" property="displayStyle" :label="t('er.config.propsPanel.layout.label')"
-      :val="target.options.displayStyle" :nodes="options7" layoutType="inline" />
+    <RadioButton v-if="checkTypeBySelected(['radio', 'checkbox'], 'displayStyle')" @listener="handleTypeListener"
+      property="displayStyle" :label="t('rf.config.propsPanel.layout.label')" :val="target.options.displayStyle"
+      :nodes="options7" layoutType="inline" />
     <RadioButton v-if="checkTypeBySelected(['divider'], 'contentPosition')"
-      :label="t('er.config.propsPanel.contentPosition.label')" @listener="handleTypeListener" property="contentPosition"
+      :label="t('rf.config.propsPanel.contentPosition.label')" @listener="handleTypeListener" property="contentPosition"
       :height="50" :fontSize="80" :nodes="options10" :val="target.options.contentPosition" />
     <RadioButton layoutType="slot" v-if="checkTypeBySelected(['textarea'], 'textareaHeight')"
-      :label="t('er.config.propsPanel.textareaHeight')">
+      :label="t('rf.config.propsPanel.textareaHeight')">
       <el-slider v-model="target.options.rows" :max="10" show-input />
     </RadioButton>
     <div v-if="checkTypeBySelected(['uploadfile'], 'uploadfile')">
-      <el-form-item :label="t('er.config.propsPanel.uploadfile.fileType')">
+      <el-form-item :label="t('rf.config.propsPanel.uploadfile.fileType')">
         <el-input v-model="target.options.accept" placeholder="输入只接受的文件类型后缀。例如 .png,.jpg" />
       </el-form-item>
       <el-row :gutter="8">
         <el-col :span="12">
-          <el-form-item :label="t('er.config.propsPanel.uploadfile.uploadLimit')">
+          <el-form-item :label="t('rf.config.propsPanel.uploadfile.uploadLimit')">
             <el-input-number style="width: 100%;" :min="1" controls-position="right" v-model="target.options.limit" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item :label="`${t('er.config.propsPanel.uploadfile.fileSize')}(MB)`">
+          <el-form-item :label="`${t('rf.config.propsPanel.uploadfile.fileSize')}(MB)`">
             <el-input-number style="width: 100%;" v-model="target.options.size" controls-position="right" :min="1" />
           </el-form-item>
         </el-col>
@@ -536,58 +536,58 @@ onMounted(() => {
     </div>
     <el-row v-if="checkTypeBySelected(['input'], 'affix') && target.options.renderType === 1 && isPC" :gutter="8">
       <el-col :span="12">
-        <el-form-item :label="t('er.config.propsPanel.prepend')">
+        <el-form-item :label="t('rf.config.propsPanel.prepend')">
           <el-input style="width: 100%;" v-model="target.options.prepend" />
         </el-form-item>
       </el-col>
       <el-col :span="12">
-        <el-form-item :label="t('er.config.propsPanel.append')">
+        <el-form-item :label="t('rf.config.propsPanel.append')">
           <el-input style="width: 100%;" v-model="target.options.append" />
         </el-form-item>
       </el-col>
     </el-row>
     <el-row :gutter="8" v-if="checkTypeBySelected(['number', 'slider'], 'step')">
       <el-col :span="type !== 'slider' ? 12 : 24">
-        <el-form-item :label="t('er.config.propsPanel.step')">
+        <el-form-item :label="t('rf.config.propsPanel.step')">
           <el-input-number :min="0" style="width: 100%;" controls-position="right" v-model="target.options.step" />
         </el-form-item>
       </el-col>
       <el-col :span="12">
-        <el-form-item v-if="type !== 'slider'" :label="t('er.config.propsPanel.precision')">
+        <el-form-item v-if="type !== 'slider'" :label="t('rf.config.propsPanel.precision')">
           <el-input-number :min="0" controls-position="right" v-model="target.options.precision" />
         </el-form-item>
       </el-col>
     </el-row>
     <el-row :gutter="8" v-if="checkTypeBySelected(['slider'], 'sliderCount')">
       <el-col :span="12">
-        <el-form-item :label="t('er.public.max')">
+        <el-form-item :label="t('rf.public.max')">
           <el-input-number controls-position="right" v-model="target.options.max" />
         </el-form-item>
       </el-col>
       <el-col :span="12">
-        <el-form-item :label="t('er.public.min')">
+        <el-form-item :label="t('rf.public.min')">
           <el-input-number controls-position="right" v-model="target.options.min" />
         </el-form-item>
       </el-col>
     </el-row>
-    <RadioButton v-if="checkTypeBySelected(['region'], 'regionType')"
-      :label="t('er.config.propsPanel.region.label')" layoutType="slot">
+    <RadioButton v-if="checkTypeBySelected(['region'], 'regionType')" :label="t('rf.config.propsPanel.region.label')"
+      layoutType="slot">
       <el-select v-model="target.options.selectType" @change="handleChange1">
         <el-option v-for="item in options8" :key="item.value" :label="item.label" :value="item.value" />
       </el-select>
     </RadioButton>
     <RadioButton
       v-if="utils.checkIslineChildren(target) && target.context.parent.columns.length !== 4 && !(ER.props.layoutType === 1 && !isPC)"
-      @listener="handleTypeListener" property="width" :label="t('er.public.width')" :height="40" :fontSize="28"
+      @listener="handleTypeListener" property="width" :label="t('rf.public.width')" :height="40" :fontSize="28"
       :nodes="options1" />
     <PanelsConfigComponentsCheckboxComponent v-if="checkTypeBySelected(['input', 'textarea'], 'isShowTrim')"
-      :label="t('er.config.propsPanel.trim')" field="isShowTrim" />
+      :label="t('rf.config.propsPanel.trim')" field="isShowTrim" />
     <PanelsConfigComponentsCheckboxComponent
       v-if="(checkTypeBySelected(['input'], 'wordLimit') && target.options.renderType === 1) || checkTypeBySelected(['textarea', 'number'], 'wordLimit')"
-      :label="t('er.config.propsPanel.wordLimit')" field="isShowWordLimit">
+      :label="t('rf.config.propsPanel.wordLimit')" field="isShowWordLimit">
       <el-row align="middle" :gutter="8">
         <el-col :span="11">
-          <el-form-item :label="t('er.public.min')">
+          <el-form-item :label="t('rf.public.min')">
             <el-input-number controls-position="right"
               :max="(target.options.max === null || target.options.max === undefined) ? undefined : target.options.max - 1"
               v-model="target.options.min" />
@@ -595,33 +595,34 @@ onMounted(() => {
         </el-col>
         <el-col :span="2">~</el-col>
         <el-col :span="11">
-          <el-form-item :label="t('er.public.max')">
+          <el-form-item :label="t('rf.public.max')">
             <el-input-number :min="target.options.min + 1" controls-position="right" :step="10"
               v-model="target.options.max" />
           </el-form-item>
         </el-col>
       </el-row>
     </PanelsConfigComponentsCheckboxComponent>
+    {{ '一部分文字' }}
     <PanelsConfigComponentsCheckboxComponent v-if="checkTypeBySelected(['date'], 'dateRange')"
-      :label="t('er.config.propsPanel.dateRange')" field="isShowWordLimit">
+      :label="t('rf.config.propsPanel.dateRange')" field="isShowWordLimit">
       <PanelsConfigComponentsLimitComponent />
     </PanelsConfigComponentsCheckboxComponent>
     <PanelsConfigComponentsCheckboxComponent
       v-if="isSelectField && !checkTypeBySelected(['rate', 'switch', 'slider', 'divider'], 'required')"
-      :label="t('er.validateMsg.required')" field="required" />
+      :label="t('rf.validateMsg.required')" field="required" />
     <RadioButton v-if="isSelectGrid" @listener="handleTypeListener" property="justify"
-      :label="t('er.config.gridLayout.justify.label')" :height="40" :fontSize="40" :val="target.options.justify"
+      :label="t('rf.config.gridLayout.justify.label')" :height="40" :fontSize="40" :val="target.options.justify"
       :nodes="options6" />
     <PanelsConfigComponentsDataComponent3 v-if="checkTypeBySelected(['collapse', 'tabs'], 'Data3')" />
     <RadioButton v-if="isSelectTabs" @listener="handleTypeListener" property="type"
-      :label="t('er.config.tabsLayout.style.label')" :height="66" :fontSize="70" :val="target.options.type"
+      :label="t('rf.config.tabsLayout.style.label')" :height="66" :fontSize="70" :val="target.options.type"
       :nodes="options4" />
     <RadioButton v-if="isSelectTabs" @listener="handleTypeListener" property="tabPosition"
-      :label="t('er.config.tabsLayout.tabPosition.label')" :height="40" :fontSize="66" :val="target.options.tabPosition"
+      :label="t('rf.config.tabsLayout.tabPosition.label')" :height="40" :fontSize="66" :val="target.options.tabPosition"
       :nodes="options5" />
     <PanelsConfigComponentsCollapseComponent
       v-if="checkTypeBySelected(['table', 'grid', 'col', 'collapse', 'collapseCol', 'tabs', 'tabsCol'], 'margin')"
-      :label="t('er.public.margin')" operationKey="style" field="isShowMargin">
+      :label="t('rf.public.margin')" operationKey="style" field="isShowMargin">
       <template #content>
         <PanelsConfigComponentsAllsidesComponent field="margin" />
       </template>
@@ -629,25 +630,25 @@ onMounted(() => {
 
     <PanelsConfigComponentsCollapseComponent
       v-if="checkTypeBySelected(['grid', 'col', 'collapse', 'collapseCol', 'tabs', 'tabsCol', 'td'], 'padding')"
-      :label="t('er.public.padding')" operationKey="style" field="isShowPadding">
+      :label="t('rf.public.padding')" operationKey="style" field="isShowPadding">
       <template #content>
         <PanelsConfigComponentsAllsidesComponent field="padding" />
       </template>
     </PanelsConfigComponentsCollapseComponent>
     <PanelsConfigComponentsCollapseComponent
       v-if="checkTypeBySelected(['grid', 'col', 'collapse', 'collapseCol', 'tabs', 'tabsCol', 'td', 'table'], 'background')"
-      :label="t('er.public.background')" operationKey="style" field="isShowBackground">
+      :label="t('rf.public.background')" operationKey="style" field="isShowBackground">
       <template #subSelect>
         <div :class="$style.collapseSubSelect">
           <el-dropdown @command="(command) => { bgStatus = command }">
             <span>
-              {{ bgStatus ? t('er.public.image') : t('er.public.color') }}<el-icon
+              {{ bgStatus ? t('rf.public.image') : t('rf.public.color') }}<el-icon
                 class="el-icon--right"><arrow-down /></el-icon>
             </span>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item :command="0">{{ t('er.public.color') }}</el-dropdown-item>
-                <el-dropdown-item :command="1">{{ t('er.public.image') }}</el-dropdown-item>
+                <el-dropdown-item :command="0">{{ t('rf.public.color') }}</el-dropdown-item>
+                <el-dropdown-item :command="1">{{ t('rf.public.image') }}</el-dropdown-item>
               </el-dropdown-menu>
             </template>
           </el-dropdown>
@@ -659,7 +660,7 @@ onMounted(() => {
     </PanelsConfigComponentsCollapseComponent>
     <PanelsConfigComponentsCollapseComponent
       v-if="checkTypeBySelected(['grid', 'col', 'collapse', 'collapseCol', 'tabs', 'tabsCol', 'table'], 'borderLine')"
-      :label="t('er.config.borderComponent.borderLine')" operationKey="style" field="isShowBorder">
+      :label="t('rf.config.borderComponent.borderLine')" operationKey="style" field="isShowBorder">
       <template v-if="!checkTypeBySelected(['table', 'borderLine'])" #subSelect>
         <div :class="[$style.collapseSubSelect]">
           <el-dropdown @command="(command) => target.style.border.style = command">
@@ -681,45 +682,45 @@ onMounted(() => {
         </div>
       </template>
     </PanelsConfigComponentsCollapseComponent>
-    <PanelsConfigComponentsCheckboxComponent v-if="isSelectCollapse" :label="t('er.config.propsPanel.accordion')"
+    <PanelsConfigComponentsCheckboxComponent v-if="isSelectCollapse" :label="t('rf.config.propsPanel.accordion')"
       field="accordion">
     </PanelsConfigComponentsCheckboxComponent>
     <template v-if="isSelectField && !checkTypeBySelected(['divider'])">
-      <PanelsConfigComponentsCheckboxComponent :label="t('er.public.disabled')" field="disabled">
+      <PanelsConfigComponentsCheckboxComponent :label="t('rf.public.disabled')" field="disabled">
       </PanelsConfigComponentsCheckboxComponent>
       <PanelsConfigComponentsCheckboxComponent
         v-if="checkTypeBySelected(['input'], 'showPassword') && target.options.renderType === 1"
-        :label="t('er.config.propsPanel.showPassword')" field="showPassword">
+        :label="t('rf.config.propsPanel.showPassword')" field="showPassword">
       </PanelsConfigComponentsCheckboxComponent>
       <PanelsConfigComponentsCheckboxComponent
         v-if="checkTypeBySelected(['select', 'cascader', 'uploadfile'], 'multiple')"
-        :label="t('er.config.propsPanel.multiple')" @change="handleMultipleChange" field="multiple">
+        :label="t('rf.config.propsPanel.multiple')" @change="handleMultipleChange" field="multiple">
       </PanelsConfigComponentsCheckboxComponent>
       <PanelsConfigComponentsCheckboxComponent
         v-if="checkTypeBySelected(['select', 'cascader', 'transfer', 'region'], 'filterable')"
-        :label="t('er.config.propsPanel.filterable')" field="filterable">
+        :label="t('rf.config.propsPanel.filterable')" field="filterable">
       </PanelsConfigComponentsCheckboxComponent>
       <PanelsConfigComponentsCheckboxComponent v-if="isPC && checkTypeBySelected(['number'], 'controls')"
-        :label="t('er.config.propsPanel.numberControls.label')" field="controls">
-        <RadioButton @listener="handleTypeListener" property="controlsPosition" :height="30"
-          :fontSize="50" :nodes="options9" :val="target.options.controlsPosition" />
+        :label="t('rf.config.propsPanel.numberControls.label')" field="controls">
+        <RadioButton @listener="handleTypeListener" property="controlsPosition" :height="30" :fontSize="50"
+          :nodes="options9" :val="target.options.controlsPosition" />
       </PanelsConfigComponentsCheckboxComponent>
       <PanelsConfigComponentsCheckboxComponent v-if="checkTypeBySelected(['rate'], 'allowHalf')"
-        :label="t('er.config.propsPanel.allowHalf')" field="allowHalf">
+        :label="t('rf.config.propsPanel.allowHalf')" field="allowHalf">
       </PanelsConfigComponentsCheckboxComponent>
       <PanelsConfigComponentsCheckboxComponent v-if="checkTypeBySelected(['color'], 'alpha')"
-        :label="t('er.config.propsPanel.alpha')" field="showAlpha">
+        :label="t('rf.config.propsPanel.alpha')" field="showAlpha">
       </PanelsConfigComponentsCheckboxComponent>
       <PanelsConfigComponentsCheckboxComponent v-if="checkTypeBySelected(['cascader'], 'anyNode')"
-        :label="t('er.config.propsPanel.anyNode')" field="checkStrictly" @change="checkLogicData">
+        :label="t('rf.config.propsPanel.anyNode')" field="checkStrictly" @change="checkLogicData">
       </PanelsConfigComponentsCheckboxComponent>
       <PanelsConfigComponentsCheckboxComponent
         v-if="checkTypeBySelected(['input', 'select', 'time', 'date', 'cascader', 'region'], 'clearable')"
-        :label="t('er.config.propsPanel.clearable')" field="clearable">
+        :label="t('rf.config.propsPanel.clearable')" field="clearable">
       </PanelsConfigComponentsCheckboxComponent>
     </template>
   </div>
-  <el-dialog v-model="dialogVisible" :title="t('er.public.dataEntry')" :destroy-on-close="true"
+  <el-dialog v-model="dialogVisible" :title="t('rf.public.dataEntry')" :destroy-on-close="true"
     :close-on-click-modal="false" :close-on-press-escape="false" append-to-body width="80%" draggable>
     <PanelsConfigComponentsDataComponent2 v-if="checkTypeBySelected(['cascader'], 'data2')" ref="dataRef">
     </PanelsConfigComponentsDataComponent2>
@@ -727,10 +728,10 @@ onMounted(() => {
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="handleAction(2)">
-          {{ t('er.public.cancel') }}
+          {{ t('rf.public.cancel') }}
         </el-button>
         <el-button type="primary" @click="handleAction(1)">
-          {{ t('er.public.confirm') }}
+          {{ t('rf.public.confirm') }}
         </el-button>
       </span>
     </template>

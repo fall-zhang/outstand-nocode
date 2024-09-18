@@ -2,8 +2,9 @@
 import TypeComponent from './TypeComponent.vue'
 import {
   useTarget,
-  useI18n
 } from '@/hooks'
+import { useI18n } from 'vue-i18n'
+
 import Icon from '@/assets'
 import _ from 'lodash-es'
 export default {
@@ -57,7 +58,7 @@ const handleTypeListener = ({ property, data }) => {
           <el-color-picker v-model="target.style.borderColor" />
         </el-col>
         <el-col :span="18">
-          <el-form-item size="default" :label="t('er.config.borderComponent.borderWidth')">
+          <el-form-item size="default" :label="t('rf.config.borderComponent.borderWidth')">
             <el-input-number style="width: 100%;" :min="0" v-model="target.style.borderWidth"
               controls-position="right" />
           </el-form-item>

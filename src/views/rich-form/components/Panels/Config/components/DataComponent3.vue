@@ -1,6 +1,7 @@
 <script>
 import utils from '@/utils'
-import { useTarget, useI18n } from '@/hooks'
+import { useI18n } from 'vue-i18n'
+import { useTarget} from '@/hooks'
 import { unref } from 'vue'
 import { dragGableWrap } from '@/views/rich-form/components/Layout/DragGable'
 import Icon from '@/assets'
@@ -27,8 +28,8 @@ const addTab = (type) => {
   <el-form-item>
     <template #label>
       <div class="d-title">
-        <span class="el-form-item__label">{{ t('er.config.dataComponent3.panel') }}</span>
-        <el-button text @click="addTab">{{ t('er.config.dataComponent3.add') }}</el-button>
+        <span class="el-form-item__label">{{ t('rf.config.dataComponent3.panel') }}</span>
+        <el-button text @click="addTab">{{ t('rf.config.dataComponent3.add') }}</el-button>
       </div>
     </template>
     <div style="width: 100%;">

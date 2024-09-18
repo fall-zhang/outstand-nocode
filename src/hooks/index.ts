@@ -1,5 +1,4 @@
 export { useTarget } from './use-target'
-export { useI18n } from './use-i18n'
 export { useFetch } from './use-fetch'
 export { useProps } from './use-props'
 export { useCss } from './use-css'

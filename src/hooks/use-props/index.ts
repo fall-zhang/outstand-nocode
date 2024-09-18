@@ -4,7 +4,7 @@ import dayjs from 'dayjs'
 import _ from 'lodash-es'
 import Region from './region/Region'
 import { areaList } from '@vant/area-data'
-import { useI18n } from '../use-i18n'
+import { useI18n } from 'vue-i18n'
 import { get } from '@/utils/utils'
 const addValidate = (result, node, isPC, t) => {
   const {
@@ -59,7 +59,7 @@ const addValidate = (result, node, isPC, t) => {
     const newValue = options.isShowTrim ? value.trim() : value
     // if (options.required && (!newValue || newValue === null || newValue === undefined || (Array.isArray(newValue) && !newValue.length))) {
     if (result.required && (newValue === '' || newValue === null || newValue === undefined || (Array.isArray(newValue) && !newValue.length))) {
-      reject(t('er.validateMsg.required'))
+      reject(t('rf.validateMsg.required'))
       return
     }
     switch (node.type) {
@@ -67,35 +67,35 @@ const addValidate = (result, node, isPC, t) => {
         switch (options.renderType) {
           case 1:
             if (!!newValue && options.isShowWordLimit && newValue.length < options.min) {
-              reject(t('er.validateMsg.limitWord', { min: options.min }))
+              reject(t('rf.validateMsg.limitWord', { min: options.min }))
             } else {
               resolve('empty-resolve')
             }
             break
           case 2:
             if (!!newValue && !/\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/.test(newValue)) {
-              reject(t('er.validateMsg.email'))
+              reject(t('rf.validateMsg.email'))
             } else {
               resolve('empty-resolve')
             }
             break
           case 3:
             if (!!newValue && !/^(^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$)|(^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])((\d{4})|\d{3}[Xx])$)$/.test(newValue)) {
-              reject(t('er.validateMsg.IdNumber'))
+              reject(t('rf.validateMsg.IdNumber'))
             } else {
               resolve('empty-resolve')
             }
             break
           case 4:
             if (!!newValue && !/^(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/.test(newValue)) {
-              reject(t('er.validateMsg.phone'))
+              reject(t('rf.validateMsg.phone'))
             } else {
               resolve('empty-resolve')
             }
             break
           case 5:
             if (!!newValue && !/^https?:\/\/(([a-zA-Z0-9_-])+(\.)?)*(:\d+)?(\/((\.)?(\?)?=?&?[a-zA-Z0-9_-](\?)?)*)*$/i.test(newValue)) {
-              reject(t('er.validateMsg.http'))
+              reject(t('rf.validateMsg.http'))
             } else {
               resolve('empty-resolve')
             }
@@ -104,7 +104,7 @@ const addValidate = (result, node, isPC, t) => {
         break
       case 'textarea':
         if (!!newValue && options.isShowWordLimit && newValue.length < options.min) {
-          reject(t('er.validateMsg.limitWord', { min: options.min }))
+          reject(t('rf.validateMsg.limitWord', { min: options.min }))
         } else {
           resolve('empty-resolve')
         }
@@ -395,7 +395,7 @@ export const useProps = (state, data, isPC = true, isRoot = false, specialHandli
         } else {
           result.maxCount = options.limit
           result.onOversize = (file) => {
-            showToast(t('er.validateMsg.fileSize', { size: options.size }))
+            showToast(t('rf.validateMsg.fileSize', { size: options.size }))
           }
         }
         break
