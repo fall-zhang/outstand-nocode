@@ -23,16 +23,16 @@ export default defineComponent({
       const TagComponent = unref(isPC) ? ElForm : VanForm
       const typeProps = useProps(state, state, unref(isPC) as boolean, true)
       return (
-        <div>
+        <>
           <TagComponent ref={form} onClick={() => unref(isEditModel) && setSelection('root')} {...typeProps.value}>
             {
               <LayoutDragGable data-layout-type={'root'} class={[unref(isEditModel) && $style.wrap]} data={state.store} parent={state.store} isRoot></LayoutDragGable>
             }
           </TagComponent>
           {
-            !unref(isEditModel) && !isEmpty(state.config) &&  <CompleteButton handle={form}/>
+            !unref(isEditModel) && !isEmpty(state.config) && <CompleteButton handle={form}/>
           }
-        </div>
+        </>
       )
     }
     return () => (<div

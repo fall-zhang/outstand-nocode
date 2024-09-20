@@ -7,7 +7,7 @@ import utils from '@/utils'
 import { useTarget } from '@/hooks'
 import { useI18n } from 'vue-i18n'
 import Icon from '@/assets'
-import { dragGableWrap } from '@/views/rich-form/components/Layout/DragGable'
+import { dragGableWrap as DraggableWrap } from '@/views/rich-form/components/Layout/DragGable'
 import _ from 'lodash-es'
 import { ElCheckbox, ElCheckboxGroup, ElForm, ElFormItem, ElScrollbar, ElInput, ElButton } from 'element-plus'
 import $style from './DataComponents.module.scss'
@@ -171,14 +171,14 @@ export default defineComponent({
                     <th ></th>
                   </tr>
                 </thead>
-                <dragGableWrap
+                <DraggableWrap
                   tag="tbody"
                   list={this.data}
                   handle=".handle"
                   item-key="null"
                   v-slots={slots}
                 >
-                </dragGableWrap>
+                </DraggableWrap>
               </table>
             </ElCheckboxGroup>
           </ElForm>

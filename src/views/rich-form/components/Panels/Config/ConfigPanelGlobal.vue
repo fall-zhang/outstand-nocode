@@ -135,10 +135,11 @@ const handleTypeListener = ({ property, data }) => {
         </el-button>
       </div>
     </el-popover>
-    <el-form-item :label="t('rf.config.globalConfig.sync.label')" label-position="left">
+    <!-- 同步设置电脑和移动端 -->
+    <!-- <el-form-item :label="t('rf.config.globalConfig.sync.label')" label-position="left">
       <el-switch ref="buttonRef" v-click-outside:[popperPaneRef]="onClickOutside" :before-change="handleBeforeChange"
         v-model="target.isSync" />
-    </el-form-item>
+    </el-form-item> -->
     <TypeComponent v-if="isPC" @listener="handleTypeListener" property="size" :layoutType="2"
       :label="t('rf.config.globalConfig.componentSize.label')" :val="target[state.platform].size" :nodes="options1" />
     <TypeComponent @listener="handleTypeListener" property="labelPosition"
