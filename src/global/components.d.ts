@@ -71,6 +71,7 @@ declare module 'vue' {
     IconOutline: typeof import('./../components/icons/IconOutline.vue')['default']
     IconSupport: typeof import('./../components/icons/IconSupport.vue')['default']
     IconTooling: typeof import('./../components/icons/IconTooling.vue')['default']
+    IconTooltip: typeof import('./../components/more-layer/tooltip/IconTooltip.vue')['default']
     Menu: typeof import('./../components/navigation/menu/index.vue')['default']
     MonacoEditor: typeof import('./../components/module/MonacoEditor.vue')['default']
     MyDialog: typeof import('./../components/more-layer/dialog/MyDialog.vue')['default']
