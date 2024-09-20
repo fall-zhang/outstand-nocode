@@ -1,6 +1,6 @@
 import LayoutDragGable from '../../Layout/DragGable'
 import CompleteButton from '@/views/rich-form/components/CompleteButton.vue'
-import { useTarget } from '@/hooks/use-target'
+import { useTarget } from '@Form/hooks/use-target'
 import { useProps } from '@/hooks/use-props'
 import { ElForm, ElScrollbar } from 'element-plus'
 import { Form as VanForm } from 'vant'

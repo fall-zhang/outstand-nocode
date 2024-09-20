@@ -1,5 +1,5 @@
 <script>
-import { useTarget } from '@/hooks'
+import { useTarget } from '@Form/hooks/use-target'
 import Icon from '@/assets'
 export default {
   name: 'ConfigCollapseComponent',

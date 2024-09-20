@@ -1,12 +1,13 @@
 import { computed, inject } from 'vue'
 import { isEmpty } from '@/utils/utils'
 import { checkIsField } from '@/utils/field'
+import { RichFormProvider } from '../types/rich-form'
 export const useTarget = () => {
   const {
     state,
     setSelection,
     props
-  } = inject('Everright')
+  } = inject<RichFormProvider>('Everright')
   const selection = computed(() => {
     return state.selected
   })

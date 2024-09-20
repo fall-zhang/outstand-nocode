@@ -1,5 +1,5 @@
 import { defineComponent, useAttrs, unref } from 'vue'
-import { useTarget } from '@/hooks'
+import { useTarget } from '@Form/hooks/use-target'
 import Selection from '@/views/rich-form/components/Selection/selectElement'
 import LayoutDragGable from './DragGable'
 import $style from './TableLayout.module.scss'

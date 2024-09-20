@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useTarget } from '@/hooks'
+import { useTarget } from '@Form/hooks/use-target'
 defineOptions({
   name: 'ConfigAllSides',
   inheritAttrs: false,

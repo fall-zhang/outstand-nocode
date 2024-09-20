@@ -1,6 +1,6 @@
 <script>
 import dayjs from 'dayjs'
-import {  useTarget } from '@/hooks'
+import { useTarget } from '@Form/hooks/use-target'
 import { useI18n } from 'vue-i18n'
 export default {
   name: 'ConfigLimitComponent',

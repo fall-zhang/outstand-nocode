@@ -13,18 +13,21 @@ const { t, } = useI18n()
 const tabs = ref([
   {
     value: 'visible',
+    label: t(`rf.logic.tabs.visible`),
     rules: [],
     ifRefs: [],
     thenRefs: []
   },
   {
     value: 'required',
+    label: t(`rf.logic.tabs.required`),
     rules: [],
     ifRefs: [],
     thenRefs: []
   },
   {
     value: 'readOnly',
+    label: t(`rf.logic.tabs.readOnly`),
     rules: [],
     ifRefs: [],
     thenRefs: []
@@ -138,7 +141,7 @@ const handleClosed = () => {
   <el-drawer destroy-on-close size="60%" :modal="false" append-to-body :close-on-press-escape="false"
     :with-header="false" @closed="handleClosed" class="ConfigLogicComponent" v-model="dialogVisible">
     <el-tabs v-model="activeTab" class="demo-tabs">
-      <el-tab-pane v-for="tab in tabs" :label="t(`er.logic.tabs.${tab.value}`)" :name="tab.value" :key="tab.value">
+      <el-tab-pane v-for="tab in tabs" :label="tab.label" :name="tab.value" :key="tab.value">
         <el-scrollbar ref="scrollbarRef" max-height="calc(100vh - 210px)">
           <el-empty v-if="!tab.rules.length">
             <el-button type="primary" icon="plus" @click="handleAction(1)">{{ t('rf.public.add') }}</el-button>

@@ -4,7 +4,7 @@ import {
   nextTick,
 } from 'vue'
 import utils from '@/utils'
-import { useTarget } from '@/hooks'
+import { useTarget } from '@Form/hooks/use-target'
 import { useI18n } from 'vue-i18n'
 import Icon from '@/assets'
 import { dragGableWrap as DraggableWrap } from '@/views/rich-form/components/Layout/DragGable'

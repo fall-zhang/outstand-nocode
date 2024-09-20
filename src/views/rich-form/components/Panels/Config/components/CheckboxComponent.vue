@@ -1,7 +1,6 @@
 <script>
-import {
-  useTarget
-} from '@/hooks'
+import { useTarget } from '@Form/hooks/use-target'
+
 export default {
   name: 'ConfigCheckboxComponent',
   inheritAttrs: false,

@@ -1,8 +1,7 @@
 <script>
 import TypeComponent from './TypeComponent.vue'
-import {
-  useTarget,
-} from '@/hooks'
+import { useTarget } from '@Form/hooks/use-target'
+
 import { useI18n } from 'vue-i18n'
 
 import Icon from '@/assets'

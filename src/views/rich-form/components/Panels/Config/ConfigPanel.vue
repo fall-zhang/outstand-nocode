@@ -1,7 +1,7 @@
 <!-- 右侧的面包屑和全局配置面板 -->
 <script setup lang="ts">
 import utils from '@/utils'
-import { useTarget } from '@/hooks/use-target'
+import { useTarget } from '@Form/hooks/use-target'
 import { useI18n } from 'vue-i18n'
 import { ref, computed, reactive, watch, onMounted } from 'vue'
 import PanelsConfigComponentsPropsPanel from './components/PropsPanel.vue'

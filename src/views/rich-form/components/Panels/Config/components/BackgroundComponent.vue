@@ -2,9 +2,8 @@
 import { reactive, ref, onMounted, inject, watch, computed, nextTick } from 'vue'
 import { ElMessage } from 'element-plus'
 import { useI18n } from 'vue-i18n'
-import {
-  useTarget,
-} from '@/hooks'
+import { useTarget } from '@Form/hooks/use-target'
+
 export default {
   name: 'ConfigBackground',
   inheritAttrs: false,

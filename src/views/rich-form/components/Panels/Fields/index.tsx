@@ -1,6 +1,6 @@
 // 左侧功能面板
 import { useI18n } from 'vue-i18n'
-import { useTarget } from '@/hooks/use-target'
+import { useTarget } from '@Form/hooks/use-target'
 import utils, { deepClone } from '@/utils'
 import { DraggableWrap } from '../../Layout/DraggableWrap'
 import { inject, reactive, nextTick } from 'vue'
@@ -75,7 +75,7 @@ export default defineComponent({
             index={element.id}
             v-slots={{
               title() {
-                return t(`er.fields.${element.id}`)
+                return t(`rf.fields.${element.id}`)
               },
               default() {
                 return (

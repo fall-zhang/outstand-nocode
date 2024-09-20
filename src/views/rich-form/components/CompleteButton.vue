@@ -1,15 +1,15 @@
 <script>
 import { unref, inject } from 'vue'
-import { useTarget } from '@/hooks'
+import { useTarget } from '@Form/hooks/use-target'
 export default {
   name: 'CompleteButton'
 }
 </script>
 <script setup>
-const ER = inject('Everright')
 const props = defineProps({
   handle: {
-    type: Object
+    type: Object,
+    default: () => ({})
   },
   mode: {
     type: String,
@@ -24,8 +24,6 @@ const handleClick = async (type) => {
   if (props.mode === 'preview') return false
   try {
     await Promise.resolve(unref(props.handle).validate())
-    // await ER.checkFieldsValidation()
-    ER.fireEvent('submit', ER.getData())
   } catch (e) {
     console.log(e)
   }

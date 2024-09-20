@@ -1,7 +1,7 @@
 <script>
 import utils from '@/utils'
 import { useI18n } from 'vue-i18n'
-import { useTarget} from '@/hooks'
+import { useTarget } from '@Form/hooks/use-target'
 import { unref } from 'vue'
 import { dragGableWrap } from '@/views/rich-form/components/Layout/DragGable'
 import Icon from '@/assets'
@@ -10,12 +10,8 @@ export default {
 }
 </script>
 <script setup>
-const {
-  target
-} = useTarget()
-const {
-  t
-} = useI18n()
+const { target } = useTarget()
+const { t } = useI18n()
 const addTab = (type) => {
   const data = utils.renderFieldData(`${target.value.type}Col`)
   data.label = `Tab ${unref(target).columns.length + 1}`

@@ -5,7 +5,7 @@ import {
 } from 'vue'
 import { isHTMLTag } from '@/utils/browser'
 import VueDraggable from 'vuedraggable'
-import { useTarget } from '@/hooks/use-target'
+import { useTarget } from '@Form/hooks/use-target'
 
 export const DraggableWrap = defineComponent({
   inheritAttrs: false,

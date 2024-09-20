@@ -1,7 +1,7 @@
 import { defineComponent, nextTick } from 'vue'
 import utils from '@/utils'
 import { useI18n } from 'vue-i18n'
-import { useTarget } from '@/hooks'
+import { useTarget } from '@Form/hooks/use-target'
 import _ from 'lodash-es'
 import nzhcn from 'nzh/cn'
 import { ElButton, ElIcon, ElInput, ElScrollbar } from 'element-plus'
