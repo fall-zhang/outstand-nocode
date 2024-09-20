@@ -5,12 +5,9 @@
       <DeviceSwitch :modelValue="previewPlatform" @update:model-value="onDeviceSwitch">
       </DeviceSwitch>
     </template>
-    <el-scrollbar>
-      <div v-loading="previewLoading" class="previewDialogWrap "
-        :class="previewPlatform === 'mobile' && 'mobilePreview'">
-        <FormPreview v-bind="props" ref="EReditorPreviewRef" />
-      </div>
-    </el-scrollbar>
+    <div v-loading="previewLoading" class="previewDialogWrap " :class="previewPlatform === 'mobile' && 'mobilePreview'">
+      <FormPreview v-bind="props" ref="EReditorPreviewRef" />
+    </div>
   </el-dialog>
 </template>
 

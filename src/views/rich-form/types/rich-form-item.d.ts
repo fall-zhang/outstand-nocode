@@ -6,13 +6,21 @@ export type FormNodeItem = {
   id: 'container',
   list: []
 }
+
+export type FormItem = {
+  id: string
+  key:string
+  label: string
+  children?: FormItem
+  options:Record<string, unknown>
+}
 /**
  * 通常 form 的类型
  */
 type BaseNodeItem = {
   type: 'input'|'number'|'select'|'textarea'|'radio'
   label: string,
-  icon: string,
+  // icon: string,
   key: string, // form 中的 key
   id: string, // 唯一标志符
   options: {
