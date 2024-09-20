@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import './theme/index.scss'
 import { ClickOutside as vClickOutside, ElMessage } from 'element-plus'
-import { defineProps, ref, reactive, nextTick, watch } from 'vue'
+import { reactive, nextTick, watch } from 'vue'
+import IconTooltip from '@/components/more-layer/tooltip/IconTooltip.vue'
 import FieldsPanel from './components/Panels/Fields'
 import CanvasPanel from './components/Panels/Canvas/CenterCanvas'
 import ConfigPanel from './components/Panels/Config/ConfigPanel.vue'
@@ -17,7 +18,8 @@ import { isEmpty } from '@/utils/utils'
 import defaultProps from './defaultProps'
 import generatorData from './generatorData'
 import { PlatformType } from './types/rich-form'
-const emit = defineEmits(['changeParams', 'save'])
+import { fieldsConfig, globalConfig } from './config/componentsConfig'
+const emit = defineEmits(['changeParams', 'save', 'changeLang'])
 const props = defineProps({
   ...defaultProps,
   fieldsPanelWidth: {
@@ -49,17 +51,16 @@ const props = defineProps({
     default: true
   }
 })
-const layout = {
-  pc: [],
-  mobile: []
-}
+// const layout = {
+//   pc: [],
+//   mobile: []
+// }
 const state = reactive({
   store: [],
   selected: {},
   mode: 'edit',
   platform: 'pc',
-  children: [],
-  config: props.globalConfig,
+  config: globalConfig,
   previewVisible: false,
   widthScaleLock: false,
   data: {},
@@ -189,61 +190,61 @@ const wrapElement = (el, isWrap = true, isSetSelection = true, sourceBlock = tru
   }
   return node
 }
-const syncLayout = (platform: PlatformType, fn: any) => {
-  const isPC = platform === 'pc'
-  const original = deepClone(state.store)
-  disassemblyData2(original)
-  layout[isPC ? 'mobile' : 'pc'] = original
-  if (isEmpty(isPC ? layout.pc : layout.mobile)) {
-    const newData = state.fields.map(e => wrapElement(e, true, false, false, false))
-    fn && fn(newData)
-  } else {
-    // debugger
-    const layoutFields = pickFields(isPC ? layout.pc : layout.mobile).map(e => {
-      return {
-        id: e
-      }
-    })
-    const copyData = deepClone(isPC ? layout.pc : layout.mobile)
-    const addFields = _.differenceBy(state.fields, layoutFields, 'id')
-    const delFields = _.differenceBy(layoutFields, state.fields, 'id')
-    repairLayout(copyData, delFields)
-    combinationData2(copyData, state.fields)
-    copyData.push(...addFields.map(e => wrapElement(e, true, false, false, false)))
-    // copyData.push(...addFields)
-    fn && fn(copyData)
-  }
-}
-const getLayoutDataByPlatform = (platform: PlatformType) => {
-  const isPC = platform === 'pc'
-  if (isEmpty(isPC ? layout.pc : layout.mobile)) {
-    if (platform === state.platform) {
-      const original = deepClone(state.store)
-      disassemblyData2(original)
-      return original
-    }
-    const newData = deepClone(state.fields.map(e => wrapElement(e, true, false, false, false)))
-    disassemblyData2(newData)
-    return newData
-  }
-  if (platform === state.platform) {
-    const original = deepClone(state.store)
-    disassemblyData2(original)
-    layout[isPC ? 'pc' : 'mobile'] = original
-  }
-  const layoutFields = pickFields(isPC ? layout.pc : layout.mobile).map(e => {
-    return {
-      id: e
-    }
-  })
-  const copyData = deepClone(isPC ? layout.pc : layout.mobile)
-  const addFields = deepClone(_.differenceBy(state.fields, layoutFields, 'id').map(e => wrapElement(e, true, false, false, false)))
-  const delFields = _.differenceBy(layoutFields, state.fields, 'id')
-  repairLayout(copyData, delFields)
-  disassemblyData2(addFields)
-  copyData.push(...addFields)
-  return copyData
-}
+// const syncLayout = (platform: PlatformType, fn: any) => {
+//   const isPC = platform === 'pc'
+//   const original = deepClone(state.store)
+//   disassemblyData2(original)
+//   layout[isPC ? 'mobile' : 'pc'] = original
+//   if (isEmpty(isPC ? layout.pc : layout.mobile)) {
+//     const newData = state.fields.map(e => wrapElement(e, true, false, false, false))
+//     fn && fn(newData)
+//   } else {
+//     // debugger
+//     const layoutFields = pickFields(isPC ? layout.pc : layout.mobile).map(e => {
+//       return {
+//         id: e
+//       }
+//     })
+//     const copyData = deepClone(isPC ? layout.pc : layout.mobile)
+//     const addFields = _.differenceBy(state.fields, layoutFields, 'id')
+//     const delFields = _.differenceBy(layoutFields, state.fields, 'id')
+//     repairLayout(copyData, delFields)
+//     combinationData2(copyData, state.fields)
+//     copyData.push(...addFields.map(e => wrapElement(e, true, false, false, false)))
+//     // copyData.push(...addFields)
+//     fn && fn(copyData)
+//   }
+// }
+// const getLayoutDataByPlatform = (platform: PlatformType) => {
+//   const isPC = platform === 'pc'
+//   if (isEmpty(isPC ? layout.pc : layout.mobile)) {
+//     if (platform === state.platform) {
+//       const original = deepClone(state.store)
+//       disassemblyData2(original)
+//       return original
+//     }
+//     const newData = deepClone(state.fields.map(e => wrapElement(e, true, false, false, false)))
+//     disassemblyData2(newData)
+//     return newData
+//   }
+//   if (platform === state.platform) {
+//     const original = deepClone(state.store)
+//     disassemblyData2(original)
+//     layout[isPC ? 'pc' : 'mobile'] = original
+//   }
+//   const layoutFields = pickFields(isPC ? layout.pc : layout.mobile).map(e => {
+//     return {
+//       id: e
+//     }
+//   })
+//   const copyData = deepClone(isPC ? layout.pc : layout.mobile)
+//   const addFields = deepClone(_.differenceBy(state.fields, layoutFields, 'id').map(e => wrapElement(e, true, false, false, false)))
+//   const delFields = _.differenceBy(layoutFields, state.fields, 'id')
+//   repairLayout(copyData, delFields)
+//   disassemblyData2(addFields)
+//   copyData.push(...addFields)
+//   return copyData
+// }
 const switchPlatform = (platform: PlatformType) => {
   if (state.platform === platform) {
     return false
@@ -251,11 +252,6 @@ const switchPlatform = (platform: PlatformType) => {
   state.platform = platform
 }
 const canvasScrollRef = ref('')
-const fireEvent = (type, data) => {
-  console.log('🚀 ~ fireEvent ~ type:', type)
-  console.log('🚀 ~ fireEvent ~ data:', data)
-  emit(type, data)
-}
 
 const richFormPreviewData = ref({
 
@@ -272,7 +268,7 @@ provide('Everright', {
   switchPlatform,
   addFieldData,
   canvasScrollRef,
-  fireEvent
+  fireEvent: emit
 })
 
 const getData1 = () => {
@@ -340,20 +336,8 @@ const getData = () => {
   return getData1()
 }
 type OperationType = 'resetData' | 'preview'
-const handleOperation = (type: OperationType) => {
-  switch (type) {
-    case 'resetData':
-      layout.pc = []
-      layout.mobile = []
-      state.fields.splice(0)
-      state.store.splice(0)
-      state.data = {}
-      setSelection('root')
-      break
-    case 'preview':
-      richFormPreviewData.value = getData()
-      break
-  }
+const onPreview = (type: OperationType) => {
+  richFormPreviewData.value = getData()
 }
 function onCollapseLeft() {
   isFoldFields.value = !isFoldFields.value
@@ -362,7 +346,7 @@ function onCollapseRight() {
   isFoldConfig.value = !isFoldConfig.value
 }
 watch(() => state.selected, (newVal) => {
-  fireEvent('changeParams', deepClone(newVal))
+  emit('changeParams', deepClone(newVal))
 }, {
   deep: true,
   immediate: true
@@ -370,21 +354,33 @@ watch(() => state.selected, (newVal) => {
 const onClickOutside = () => {
 }
 const onSaveData = () => {
-  fireEvent('save', getData())
+  emit('save', getData())
+}
+const onResetData = () => {
+  // layout.pc = []
+  // layout.mobile = []
+  state.fields.splice(0)
+  state.store.splice(0)
+  state.data = {}
+  setSelection('root')
 }
 </script>
 <template>
   <el-container :class="$style.mainOuter">
     <FieldsPanel v-show="isFoldFields" />
-    <el-container :class="$style.container">
+    <div :class="$style.container">
       <el-header :class="$style.operation">
-        <div>
-          <Icon @click="onSaveData" class="fe-icon" icon="save"></Icon>
-          <Icon v-if="isShowClear" @click="handleOperation('resetData')" class="fe-icon" icon="clear0"></Icon>
+        <div style="display: flex;">
+          <!-- <IconTooltip tip="保存">
+            <Icon @click="onSaveData" class="fe-icon" icon="save"></Icon>
+          </IconTooltip>
+          <IconTooltip tip="清空">
+            <Icon v-if="isShowClear" @click="onResetData" class="fe-icon" icon="clear0"></Icon>
+          </IconTooltip> -->
         </div>
         <DeviceSwitch :modelValue="state.platform" @update:model-value="switchPlatform"> </DeviceSwitch>
         <div>
-          <el-dropdown v-if="isShowI18n" @command="(command) => fireEvent('lang', command)">
+          <!-- <el-dropdown v-if="isShowI18n" @command="(command) => emit('changeLang', command)">
             <Icon class="fe-icon" icon="language"></Icon>
             <template #dropdown>
               <el-dropdown-menu>
@@ -392,14 +388,17 @@ const onSaveData = () => {
                 <el-dropdown-item command="en" :disabled="lang === 'en'">English</el-dropdown-item>
               </el-dropdown-menu>
             </template>
-          </el-dropdown>
-          <Icon @click="handleOperation('preview')" class="fe-icon" icon="preview"></Icon>
+</el-dropdown> -->
+          <Icon @click="onPreview" class="fe-icon" icon="preview"></Icon>
         </div>
       </el-header>
+      <!-- {{ state.store }} -->
+      {{ state.fields }}
+
       <CanvasPanel v-click-outside="onClickOutside" v-if="isShow" :data="state.store"></CanvasPanel>
       <Icon @click="onCollapseLeft" :class="[$style.arrowLeft, !isFoldFields && $style.close]" icon="arrowLeft" />
       <Icon @click="onCollapseRight" :class="[$style.arrowRight, !isFoldConfig && $style.close]" icon="arrowRight" />
-    </el-container>
+    </div>
     <ConfigPanel v-show="isFoldConfig" v-if="isShow"></ConfigPanel>
   </el-container>
 </template>
@@ -417,8 +416,6 @@ const onSaveData = () => {
 
 .mainOuter {
   height: 100vh;
-
-  .fe-icon {}
 
   .el-container {
     height: 100%;
@@ -449,6 +446,7 @@ const onSaveData = () => {
   }
 
   .container {
+    flex: 1 0 0;
     position: relative;
     overflow: hidden;
   }

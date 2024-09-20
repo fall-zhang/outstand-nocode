@@ -38,6 +38,9 @@
       "@V/*": [
         "src/views/*"
       ],
+      "@Form/*": [
+        "src/views/rich-form/*"
+      ],
     }
   },
   "include": [
