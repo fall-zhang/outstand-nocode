@@ -42,7 +42,7 @@ const tabs = ref([
   // }
 ])
 const activeTab = ref('visible')
-const ER = inject('Everright')
+const ER = inject('rich-form')
 const scrollbarRef = ref()
 const dialogVisible = ref(false)
 const curIndex = computed(() => _.findIndex(tabs.value, { value: activeTab.value }))

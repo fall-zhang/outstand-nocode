@@ -75,7 +75,7 @@ export default defineComponent({
     }
   },
   setup(props, { slots }) {
-    const ER = inject('Everright')
+    const ER = inject('rich-form')
     const { t } = useI18n()
     const isHover = ref(false)
     const isInlineChildren = checkIslineChildren(props.data)
@@ -105,6 +105,7 @@ export default defineComponent({
       }
     })
     const handleCommand = (command) => {
+      console.log('🚀 ~ handleCommand ~ command:', command)
       const [fn, param] = command.split(' ')
       props.data.context[fn](param)
     }

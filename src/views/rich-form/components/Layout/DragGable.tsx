@@ -50,7 +50,7 @@ export default defineComponent({
     }
   },
   setup (props) {
-    const ER = inject('Everright')
+    const ER = inject('rich-form')
     const {
       state,
       isEditModel,

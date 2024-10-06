@@ -27,7 +27,7 @@ export default {
 }
 </script>
 <script setup>
-const ER = inject('Everright')
+const ER = inject('rich-form')
 const {
   t
 } = useI18n()

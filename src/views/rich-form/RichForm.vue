@@ -17,8 +17,9 @@ import _ from 'lodash-es'
 import { isEmpty } from '@/utils/utils'
 import defaultProps from './defaultProps'
 import generatorData from './generatorData'
-import { PlatformType } from './types/rich-form'
-import { fieldsConfig, globalConfig } from './config/componentsConfig'
+import { PlatformType, RichFormProvider } from './types/rich-form'
+import { globalConfig } from './config/componentsConfig'
+import { AllNodeType } from './types/rich-form-item'
 const emit = defineEmits(['changeParams', 'save', 'changeLang'])
 const props = defineProps({
   ...defaultProps,
@@ -98,9 +99,9 @@ const isFoldConfig = ref(true)
 const { t } = useI18n()
 const isShow = ref(true)
 const isShowConfig = ref(true)
-const setSelection = (node) => {
+const setSelection = (node: AllNodeType) => {
   let result: any = ''
-  if (node === 'root') {
+  if (node.type === 'root') {
     result = state.config
   } else if (node.type === 'inline') {
     result = node.columns[0]
@@ -257,7 +258,7 @@ const richFormPreviewData = ref({
 
 })
 provide('rich-form-preview', richFormPreviewData)
-provide('Everright', {
+provide<RichFormProvider>('rich-form', {
   state,
   // 准备添加 移动端和桌面端的配置
   setSelection,
@@ -362,7 +363,11 @@ const onResetData = () => {
   state.fields.splice(0)
   state.store.splice(0)
   state.data = {}
-  setSelection('root')
+  setSelection({
+    type: 'root',
+    label: '根容器',
+    id: 'root'
+  })
 }
 </script>
 <template>

@@ -25,7 +25,7 @@ const state = reactive({
   color: '',
   defaultBackground: {}
 })
-const ER = inject('Everright')
+const ER = inject('rich-form')
 const ERp = inject('Everright-propsPanel')
 watch(ERp.bgStatus, (newVal) => {
   state.value0 = newVal

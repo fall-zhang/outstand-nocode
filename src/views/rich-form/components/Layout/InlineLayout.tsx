@@ -15,7 +15,7 @@ export default defineComponent({
     }
   },
   setup (props) {
-    const ER = inject('Everright')
+    const ER = inject('rich-form')
     watch(() => props.data.columns.length, (newVal, oldVal) => {
       if (!newVal) {
         props.data.context.delete()

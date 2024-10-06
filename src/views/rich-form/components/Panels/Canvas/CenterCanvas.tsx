@@ -11,7 +11,7 @@ export default defineComponent({
   inheritAttrs: false,
   customOptions: {},
   setup () {
-    const ER = inject('Everright')
+    const ER = inject('rich-form')
     const {
       state,
       setSelection,

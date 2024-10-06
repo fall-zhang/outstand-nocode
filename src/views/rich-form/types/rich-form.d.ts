@@ -43,6 +43,8 @@ type GlobalConfig = {
 
 
 export type RichFormProvider = {
+  /** 等待移除 */
+  state:any
   store: FormItem[],
   selected: Record<string, unknown>,
   mode: 'edit' | 'setting' | 'preview',
@@ -53,6 +55,7 @@ export type RichFormProvider = {
   validateStates: [],
   fields: unknown[],
   logic: {},
+  setSelection(node:any):void
   validator(target: any, fn: any): void
   // 全局容器设定
   desktop: StyleValue
