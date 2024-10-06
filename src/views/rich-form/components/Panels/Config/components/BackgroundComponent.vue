@@ -32,13 +32,8 @@ watch(ERp.bgStatus, (newVal) => {
 }, {
   immediate: true
 })
-const quickColors = ER.props.quickColors
-const quickImages = ref(ER.props.quickImages)
-watch(quickImages.value, (newVal) => {
-  if (newVal.length >= ER.props.quickImageLimit) {
-    quickImages.value.pop()
-  }
-})
+const quickColors = ER.config.colorList
+
 const options0 = [
   [
     'repeat',
@@ -182,7 +177,6 @@ const handleError = (error) => {
   ElMessage.error(error.toString())
 }
 const handleSuccess = (response, uploadFile) => {
-  quickImages.value.unshift(response.data[0].url)
   nextTick(() => {
     element.value.children[1].click()
   })
@@ -197,7 +191,7 @@ const handleSuccess = (response, uploadFile) => {
       </div>
       <ul :class="[!state.value0 ? 'quickColor' : 'quickImage']" ref="element">
         <li v-if="state.value0" class="uploadFile">
-          <el-upload accept=".png,.jpg" :action="ER.props.fileUploadURI" list-type="picture-card" ref="element"
+          <el-upload accept=".png,.jpg" :action="'candidate-feature'" list-type="picture-card" ref="element"
             :show-file-list="false" :before-upload="beforeAvatarUpload" :on-success="handleSuccess"
             :on-error="handleError">
             <el-icon>
@@ -205,7 +199,7 @@ const handleSuccess = (response, uploadFile) => {
             </el-icon>
           </el-upload>
         </li>
-        <li v-for="(item0, index0) in state.value0 ? quickImages : quickColors" :key="index0" :data-value="item0"
+        <li v-for="(item0, index0) in quickColors" :key="index0" :data-value="item0"
           :style="!state.value0 && { backgroundColor: item0 }"
           :class="[checkIsSelected(item0) && 'selectedBg', 'selectColorFirst']">
           <el-image v-if="state.value0" :data-value="item0" :src="item0" lazy />

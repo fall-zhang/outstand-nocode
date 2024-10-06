@@ -37,7 +37,7 @@ export type BaseNodeItem = {
  * 容器的类型
  */
 export type ContainerNodeItem = {
-  type: 'grid',
+  type: 'grid' |'inline',
   id: string,
   label: string,
   icon?: string,

@@ -1,3 +1,4 @@
+import { ScrollPos } from 'element-plus/es/components/table-v2/src/composables'
 import { StyleValue } from 'vue'
 
 /**
@@ -26,8 +27,13 @@ export type RichFormData = {
   formList: FormItem[]
 }
 
-type GlobalConfig = {
+export type GlobalConfig = {
   isSync: boolean,
+  // uploadURL: '',
+  fieldsPanelDefaultOpened: string[]
+  fieldsPanelWidth:string
+  colorList:string[]
+  inlineMax:number // 每行最多放置多少个 form
   pc: {
     size: 'default',
     completeButton: {
@@ -43,8 +49,9 @@ type GlobalConfig = {
 
 
 export type RichFormProvider = {
-  /** 等待移除 */
-  state:any
+  // 左侧菜单的配置
+  fieldsList:any[]
+  canvasScrollRef:Ref<ScrollPos>
   store: FormItem[],
   selected: Record<string, unknown>,
   mode: 'edit' | 'setting' | 'preview',
@@ -55,12 +62,15 @@ export type RichFormProvider = {
   validateStates: [],
   fields: unknown[],
   logic: {},
-  setSelection(node:any):void
-  validator(target: any, fn: any): void
+  handler:Record<string, any>
+  // setSelection(node:any):void
+  // validator(target: any, fn: any): void
   // 全局容器设定
   desktop: StyleValue
   mobile: StyleValue
-    // 对每一项都启用的设定
-    desktopItems: Partial<DesktopConfig>
-    mobileItems: Partial<MobileConfig>
+  // 对每一项都启用的设定
+  desktopItems: Partial<DesktopConfig>
+  mobileItems: Partial<MobileConfig>
+  /** 等待移除 */
+  state:any
 }

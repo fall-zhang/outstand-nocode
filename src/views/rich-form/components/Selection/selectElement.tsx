@@ -13,7 +13,7 @@ import { isHTMLTag } from '@/utils/browser'
 import { useI18n } from 'vue-i18n'
 import { useCss } from '@/hooks'
 import { useTarget } from '@Form/hooks/use-target'
-import utils, { syncWidthByPlatform, checkIsField, checkIslineChildren } from '@/utils'
+import { syncWidthByPlatform, checkIsField, checkIslineChildren, deepTraversal } from '@/utils'
 import _ from 'lodash-es'
 import Icon from '@/assets'
 import $style from './SelectElement.module.scss'
@@ -151,11 +151,11 @@ export default defineComponent({
       const index = type !== 'top' && props.parent.indexOf(props.data)
       switch (type) {
         case 'delete':
-          if (ER.props.delHandle(props.data) === false) return false
+          if (ER.handler.delete(props.data) === false) return false
           props.data.context.delete()
-          utils.deepTraversal(props.data, (node) => {
-            if (utils.checkIsField(node)) {
-              ER.delField(node)
+          deepTraversal(props.data, (node) => {
+            if (checkIsField(node)) {
+              ER.handler.delete(node)
             }
           })
           if (/^(radio|checkbox|select)$/.test(props.data.type)) {
@@ -172,14 +172,14 @@ export default defineComponent({
           }
           break
         case 'copy':{
-          if (ER.props.copyHandle(props.data) === false) return false
+          if (ER.handler.copy(props.data) === false) return false
           props.data.context.copy()
           const copyData = props.parent[index + 1]
           setSelection(copyData)
-          utils.deepTraversal(copyData, (node) => {
-            ER.addFieldData(node, true)
-            if (utils.checkIsField(node)) {
-              ER.addField(node)
+          deepTraversal(copyData, (node) => {
+            ER.handler.addFieldData(node, true)
+            if (checkIsField(node)) {
+              ER.handler.addField(node)
             }
           })
           break
@@ -206,7 +206,7 @@ export default defineComponent({
     const elementRef = ref()
     const widthScaleElement = ref()
     const isScale = ref(false)
-    const isShowWidthScale = computed(() => props.hasWidthScale && !(ER.props.layoutType === 1 && !isPC.value))
+    const isShowWidthScale = computed(() => props.hasWidthScale)
     onMounted(() => {
       if (!unref(isEditModel)) return false
       const hoverEl = elementRef.value.$el || elementRef.value
@@ -262,7 +262,7 @@ export default defineComponent({
       return target.value.id === props.data.id && $style.Selected
     })
 
-    const isShowCopy = computed(() => isInlineChildren ? props.hasCopy && props.data.context.parent.columns.length < ER.props.inlineMax : props.hasCopy)
+    const isShowCopy = computed(() => isInlineChildren ? props.hasCopy && props.data.context.parent.columns.length < ER.config.inlineMax : props.hasCopy)
     return () => (<TagComponent
       {...useAttrs()}
       class={[

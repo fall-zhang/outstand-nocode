@@ -181,12 +181,13 @@ const calculateAverage = (count, total = 100) => {
   }
   return result
 }
-const syncWidthByPlatform = (node, platform:PlatformType, syncFullplatform = false, value) => {
+const syncWidthByPlatform = (node, platform:PlatformType, syncFullPlatform = false, value) => {
   // debugger
-  const isArray = _.isArray(node)
+  console.log('🚀 ~ syncWidthByPlatform ~ value:', value)
+  const isArray = Array.isArray(node)
   if (!isArray) {
     if (_.isObject(node.style.width)) {
-      if (syncFullplatform) {
+      if (syncFullPlatform) {
         node.style.width.pc = node.style.width.mobile = value + '%'
       } else {
         node.style.width[platform] = value + '%'
@@ -200,7 +201,7 @@ const syncWidthByPlatform = (node, platform:PlatformType, syncFullplatform = fal
   otherNodes.forEach((node, index) => {
     const isFieldWidth = _.isObject(node.style.width)
     if (isFieldWidth) {
-      if (syncFullplatform) {
+      if (syncFullPlatform) {
         node.style.width.pc = node.style.width.mobile = averageWidths[index] + '%'
       } else {
         node.style.width[platform] = averageWidths[index] + '%'

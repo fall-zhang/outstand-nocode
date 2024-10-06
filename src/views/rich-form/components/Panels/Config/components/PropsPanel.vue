@@ -578,8 +578,7 @@ onMounted(() => {
         <el-option v-for="item in options8" :key="item.value" :label="item.label" :value="item.value" />
       </el-select>
     </RadioButton>
-    <RadioButton
-      v-if="utils.checkIslineChildren(target) && target.context.parent.columns.length !== 4 && !(ER.props.layoutType === 1 && !isPC)"
+    <RadioButton v-if="utils.checkIslineChildren(target) && target.context.parent.columns.length !== 4"
       @listener="handleTypeListener" property="width" :label="t('rf.public.width')" :height="40" :fontSize="28"
       :nodes="options1" />
     <PanelsConfigComponentsCheckboxComponent v-if="checkTypeBySelected(['input', 'textarea'], 'isShowTrim')"

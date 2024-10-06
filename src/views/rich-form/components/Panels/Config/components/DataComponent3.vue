@@ -3,7 +3,7 @@ import utils from '@/utils'
 import { useI18n } from 'vue-i18n'
 import { useTarget } from '@Form/hooks/use-target'
 import { unref } from 'vue'
-import { dragGableWrap as DraggableWrap } from '@Form/components/FormContainer/DragGable'
+import { DraggableWrap } from '@Form/components/FormContainer/DraggableWrap'
 import Icon from '@/assets'
 export default {
   name: 'ConfigData3'

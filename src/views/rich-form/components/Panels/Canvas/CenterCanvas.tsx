@@ -6,12 +6,13 @@ import { ElForm, ElScrollbar } from 'element-plus'
 import { Form as VanForm } from 'vant'
 import { isEmpty } from '@/utils/utils'
 import $style from './CenterCanvas.module.scss'
+import { RichFormProvider } from '@Form/types/rich-form'
 export default defineComponent({
   name: 'PanelsCanvas',
   inheritAttrs: false,
   customOptions: {},
   setup () {
-    const ER = inject('rich-form')
+    const ER = inject<RichFormProvider>('rich-form')
     const {
       state,
       setSelection,
@@ -42,7 +43,7 @@ export default defineComponent({
           $style.Canvas,
           isEditModel.value && $style.editModel,
           !unref(isPC) && $style.mobile,
-          !unref(isPC) && $style[`mobileLayoutType${ER.props.layoutType}`]
+          !unref(isPC) && $style.mobileLayoutType
         ]
       }>
       {unref(isEditModel)

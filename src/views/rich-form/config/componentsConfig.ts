@@ -1,23 +1,3 @@
-export const globalConfig = {
-  isSync: true,
-  pc: {
-    size: 'default',
-    labelPosition: 'left',
-    completeButton: {
-      text: '提交',
-      color: '',
-      backgroundColor: ''
-    }
-  },
-  mobile: {
-    labelPosition: 'left',
-    completeButton: {
-      text: '提交',
-      color: '',
-      backgroundColor: ''
-    }
-  }
-}
 export const fieldsConfig = [
   {
     name: '容器',

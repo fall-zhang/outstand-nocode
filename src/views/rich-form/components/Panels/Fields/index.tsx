@@ -1,7 +1,7 @@
 // 左侧功能面板
 import { useI18n } from 'vue-i18n'
 import { useTarget } from '@Form/hooks/use-target'
-import utils, { deepClone } from '@/utils'
+import utils, { addContext, deepClone } from '@/utils'
 import { DraggableWrap } from '../../FormContainer/DraggableWrap'
 import { inject, reactive, nextTick } from 'vue'
 
@@ -9,6 +9,7 @@ import Icon from '@/assets'
 import ControlInsertionPlugin from '../../FormContainer/ControlInsertionPlugin'
 import { ElAside, ElScrollbar, ElMenu, ElSubMenu } from 'element-plus'
 import $style from './index.module.scss'
+import { RichFormProvider } from '@Form/types/rich-form'
 export default defineComponent({
   name: 'FeFields',
   inheritAttrs: false,
@@ -24,7 +25,7 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const ER = inject('rich-form')
+    const ER = inject<RichFormProvider>('rich-form')
     const {
       t
     } = useI18n()
@@ -33,9 +34,9 @@ export default defineComponent({
       setSelection
     } = useTarget()
     const addStore = (element) => {
-      const newElement = reactive(ER.wrapElement(deepClone(element)))
+      const newElement = reactive(ER?.handler.wrapElement(deepClone(element), {}))
       state.store.push(newElement)
-      utils.addContext(newElement, state.store)
+      addContext(newElement, state.store)
       nextTick(() => {
         setSelection(newElement)
         setTimeout(() => {
@@ -67,10 +68,10 @@ export default defineComponent({
       plugins: [ControlInsertionPlugin(ER)]
     }
 
-    return () => (<ElAside class={$style.Fields} width={ER.props.fieldsPanelWidth}>
+    return () => (<ElAside class={$style.Fields} width={ER.config.fieldsPanelWidth}>
       <ElMenu
-        default-openeds={ER.props.fieldsPanelDefaultOpened}>
-        {ER.props.fieldsConfig.map((element, index) => (
+        default-openeds={ER.config.fieldsPanelDefaultOpened}>
+        {ER.fieldsList.map((element, index) => (
           <ElSubMenu
             index={element.id}
             v-slots={{

@@ -1,9 +1,5 @@
-import { fieldsConfig, globalConfig } from './config/componentsConfig'
+import globalConfig from './config/richFormConfig'
 export default {
-  fieldsConfig: {
-    type: Array,
-    default: () => fieldsConfig
-  },
   globalConfig: {
     type: Object,
     default: () => globalConfig
@@ -11,9 +7,6 @@ export default {
   lang: {
     type: String,
     default: 'zh-cn'
-  },
-  fileUploadURI: {
-    type: String
   },
   checkPropsBySelected: {
     type: Function,

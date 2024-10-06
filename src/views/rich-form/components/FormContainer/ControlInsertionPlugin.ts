@@ -2,6 +2,7 @@ import _ from 'lodash-es'
 import utils, { deepTraversal } from '@/utils'
 import { get } from '@/utils/utils'
 import { nextTick } from 'vue'
+import { RichFormProvider } from '../../types/rich-form'
 let prevEl = ''
 let prevSortable = ''
 let insertRowIndex:number|string = ''
@@ -109,7 +110,7 @@ function lastChild (el, selector) {
 
   return last || null
 }
-const disableBothSides = (ER) => ER.props.layoutType === 1 && ER.state.platform === 'mobile'
+const disableBothSides = () => false
 const getDirection1 = (target, originalEvent) => {
   let direction = ''
   const Y = getOffset(target, 'offsetTop')
@@ -169,7 +170,7 @@ const getDragElement = (node) => {
   return node.__draggable_context.element
 }
 
-const setStates = (newTarget, ev, ER) => {
+const setStates = (newTarget, ev, ER:RichFormProvider) => {
   const {
     activeSortable: {
       constructor: {
@@ -201,7 +202,7 @@ const setStates = (newTarget, ev, ER) => {
   const rows = targetContainer.parentNode.children
   const rowIndex = utils.index(targetContainer)
   if (/^(2|4)$/.test(direction)) {
-    if (targetList.length === ER.props.inlineMax && !el.contains(dragEl)) {
+    if (targetList.length === ER.config.inlineMax && !el.contains(dragEl)) {
       return false
     }
   }
@@ -264,7 +265,7 @@ const setStates = (newTarget, ev, ER) => {
       break
     case 5:
     // console.log('上')
-      if (targetList.length === ER.props.inlineMax && !el.contains(dragEl)) {
+      if (targetList.length === ER.config.inlineMax && !el.contains(dragEl)) {
         return false
       }
       if (cols[utils.index(target) - 1] !== dragEl) {
@@ -276,7 +277,7 @@ const setStates = (newTarget, ev, ER) => {
       break
     case 6:
     // console.log('下')
-      if (targetList.length === ER.props.inlineMax && !el.contains(dragEl)) {
+      if (targetList.length === ER.config.inlineMax && !el.contains(dragEl)) {
         return false
       }
       if (cols[utils.index(target) + 1] !== dragEl) {
@@ -301,7 +302,7 @@ const resetStates = () => {
   }
   prevEl = prevSortable = insertColIndex = insertRowIndex = ''
 }
-function ControlInsertionPlugin (ER) {
+function ControlInsertionPlugin (ER:RichFormProvider) {
   function ControlInsertion (sortable) {
   }
   ControlInsertion.prototype = {
@@ -314,13 +315,17 @@ function ControlInsertionPlugin (ER) {
       const isBlock = get(e, 'activeSortable.options.dataSource', false) === 'block'
       const { dragEl } = e
       const oldEl = getDragElement(dragEl)
-      const newElement = ER.wrapElement(_.cloneDeep(oldEl), insertRowIndex !== '', true, isBlock)
+      const newElement = ER.handler.wrapElement(_.cloneDeep(oldEl), {
+        isWrap: insertRowIndex !== '',
+        isSetSelection: true,
+        sourceBlock: isBlock
+      })
       if (!isBlock) {
         if (oldEl.context) {
           oldEl.context.delete()
           deepTraversal(oldEl, (node) => {
             if (utils.checkIsField(node)) {
-              ER.delField(node)
+              ER.handler.delete(node)
             }
           })
         }
@@ -348,11 +353,11 @@ function ControlInsertionPlugin (ER) {
       if (insertColIndex !== '' || insertRowIndex !== '') {
         deepTraversal(newElement, (node) => {
           if (utils.checkIsField(node)) {
-            ER.addField(node)
+            ER.handler.addField(node)
           }
         })
         nextTick(() => {
-          ER.setSelection(newElement)
+          ER.handler.setSelection(newElement)
         })
       }
       resetStates()

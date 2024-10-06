@@ -18,27 +18,13 @@ import { isEmpty } from '@/utils/utils'
 import defaultProps from './defaultProps'
 import generatorData from './generatorData'
 import { PlatformType, RichFormProvider } from './types/rich-form'
-import { globalConfig } from './config/componentsConfig'
+import { fieldsConfig } from './config/componentsConfig'
 import { AllNodeType } from './types/rich-form-item'
+import richFormConfig from './config/richFormConfig'
 const emit = defineEmits(['changeParams', 'save', 'changeLang'])
 const props = defineProps({
   ...defaultProps,
-  fieldsPanelWidth: {
-    type: String,
-    default: '220px'
-  },
-  fieldsPanelDefaultOpened: {
-    type: Array,
-    default: () => ['defaultField', 'field', 'container']
-  },
-  delHandle: {
-    type: Function,
-    default: () => { }
-  },
-  copyHandle: {
-    type: Function,
-    default: () => { }
-  },
+
   inlineMax: {
     type: Number,
     default: 4
@@ -61,7 +47,7 @@ const state = reactive({
   selected: {},
   mode: 'edit',
   platform: 'pc',
-  config: globalConfig,
+  config: richFormConfig,
   previewVisible: false,
   widthScaleLock: false,
   data: {},
@@ -69,29 +55,6 @@ const state = reactive({
   fields: [],
   Namespace: 'formEditor',
   logic: {},
-  validator(target, fn) {
-    if (target) {
-      const count = _.countBy(state.validateStates, 'data.key')
-      const newValue = target.key.trim()
-      if (isEmpty(newValue)) {
-        _.find(state.validateStates, { data: { key: target.key } }).isWarning = true
-        fn && fn(0)
-        return false
-      }
-      state.validateStates.forEach(e => {
-        if (count[e.data.key] > 1) {
-          e.isWarning = true
-        } else {
-          e.isWarning = false
-        }
-      })
-      if (fn) {
-        fn(!(count[newValue] > 1) ? 1 : 2)
-      }
-    } else {
-      fn(state.validateStates.every(e => !e.isWarning))
-    }
-  }
 })
 const isFoldFields = ref(true)
 const isFoldConfig = ref(true)
@@ -114,7 +77,7 @@ const setSelection = (node: AllNodeType) => {
     isShowConfig.value = true
   })
 }
-setSelection(state.config)
+// setSelection(state.config)
 const addField = (node) => {
   if (checkIsField(node)) {
     const findIndex = _.findIndex(state.fields, {
@@ -160,11 +123,17 @@ const addFieldData = (node, isCopy = false) => {
       }
     }
   }
-  if (/^(uploadfile|signature|html)$/.test(node.type)) {
-    node.options.action = props.fileUploadURI
+  if (['uploadfile', 'signature', 'html'].includes(node.type)) {
+    node.options.action = ''
   }
 }
-const wrapElement = (el, isWrap = true, isSetSelection = true, sourceBlock = true, resetWidth = true) => {
+
+const wrapElement = (el, {
+  isWrap = true,
+  isSetSelection = true,
+  sourceBlock = true,
+  resetWidth = true
+}) => {
   const node = sourceBlock
     ? generatorData(el, isWrap, lang.value, sourceBlock, (node) => {
       addFieldData(node)
@@ -252,7 +221,7 @@ const switchPlatform = (platform: PlatformType) => {
   }
   state.platform = platform
 }
-const canvasScrollRef = ref('')
+const canvasScrollRef = ref()
 
 const richFormPreviewData = ref({
 
@@ -261,15 +230,57 @@ provide('rich-form-preview', richFormPreviewData)
 provide<RichFormProvider>('rich-form', {
   state,
   // 准备添加 移动端和桌面端的配置
-  setSelection,
-  props,
-  wrapElement,
-  delField,
-  addField,
-  switchPlatform,
-  addFieldData,
+  config: richFormConfig,
+  fieldsList: fieldsConfig,
   canvasScrollRef,
-  fireEvent: emit
+  handler: {
+    setSelection,
+    switchPlatform,
+    addFieldData,
+    delete: delField,
+    addField,
+    wrapElement,
+    validator(target, fn) {
+      if (target) {
+        const count = _.countBy(state.validateStates, 'data.key')
+        const newValue = target.key.trim()
+        if (isEmpty(newValue)) {
+          _.find(state.validateStates, { data: { key: target.key } }).isWarning = true
+          fn && fn(0)
+          return false
+        }
+        state.validateStates.forEach(e => {
+          if (count[e.data.key] > 1) {
+            e.isWarning = true
+          } else {
+            e.isWarning = false
+          }
+        })
+        if (fn) {
+          fn(!(count[newValue] > 1) ? 1 : 2)
+        }
+      } else {
+        fn(state.validateStates.every(e => !e.isWarning))
+      }
+    },
+    copy: () => { },
+    // fireEvent() {
+
+    // }
+  },
+  store: [],
+  selected: {},
+  mode: 'edit',
+  platform: 'pc',
+  widthScaleLock: false,
+  data: {},
+  validateStates: [],
+  fields: [],
+  logic: {},
+  desktop: {},
+  mobile: {},
+  desktopItems: {},
+  mobileItems: {}
 })
 
 const getData1 = () => {
