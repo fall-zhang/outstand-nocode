@@ -31,7 +31,7 @@ const form = ref()
 
 const validator = (rule: any, value: any, callback: any) => {
   const newValue = value.trim()
-  const fn = (type:any) => {
+  const fn = (type: any) => {
     switch (type) {
       case 0:
         callback(new Error(t('rf.validateMsg.required')))
@@ -67,20 +67,23 @@ const rules = reactive({
 const breadcrumbList = computed(() => {
   let nodes = ['root']
   let result = []
+  console.log("🚀 ~ breadcrumbList ~ isSelectRoot.value:", isSelectRoot.value)
   if (!isSelectRoot.value) {
-    nodes = nodes.concat(target.value?.context?.parents.filter(e => !/^(inline|tr)$/.test(e.type)))
+    const targetNodes = target.value?.context?.parents.filter((e: any) => !['inline', 'tr'].includes(e.type))
+    nodes = nodes.concat(targetNodes)
+    console.log("🚀 ~ breadcrumbList ~ nodes:", targetNodes)
   }
   if (nodes.length > 4) {
     result.push(nodes[0])
     result.push({
       value: 'placeholder'
     })
-    result.push(nodes[nodes.length - 2])
-    result.push(nodes[nodes.length - 1])
+    result.push(nodes.at(-2))
+    result.push(nodes.at(-1))
   } else {
     result = nodes
   }
-  return result.map(node => {
+  result = result.map(node => {
     const result = {
       node,
       label: ''
@@ -88,7 +91,7 @@ const breadcrumbList = computed(() => {
     if (node === 'root') {
       result.label = t('rf.panels.config')
     } else if (node && node.value !== 'placeholder') {
-      if (/^(col|collapseCol|tabsCol|td)$/.test(node.type)) {
+      if (['col' + 'collapseCol' + 'tabsCol' + 'td'].includes(node.type)) {
         result.label = t(`er.layout.${node.type}`)
       } else {
         result.label = utils.fieldLabel(t, node)
@@ -96,6 +99,8 @@ const breadcrumbList = computed(() => {
     }
     return result
   })
+  console.log("🚀 ~ breadcrumbList ~ breadcrumbList:", result)
+  return result
 })
 const handleBreadcrumbClick = (item: unknown, index: number) => {
   if (index !== breadcrumbList.value.length - 1 && item.node.value !== 'placeholder') {

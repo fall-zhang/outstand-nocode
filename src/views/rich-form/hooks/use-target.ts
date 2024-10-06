@@ -5,9 +5,11 @@ import { RichFormProvider } from '../types/rich-form'
 export const useTarget = () => {
   const {
     state,
-    setSelection,
-    props
-  } = inject<RichFormProvider>('rich-form')
+    handler,
+    selected,
+  } = inject<RichFormProvider>('rich-form')!
+
+  const setSelection = handler.setSelection
   const selection = computed(() => {
     return state.selected
   })
@@ -16,7 +18,7 @@ export const useTarget = () => {
   }
   )
   const isSelectRoot = computed(() => {
-    return state.selected === state.config
+    return selected.type === 'root'
   }
   )
   const type = computed(() => {
@@ -38,7 +40,7 @@ export const useTarget = () => {
     let result = false
     if (!isEmpty(state.selected)) {
       if (type.value) {
-        const fn = props.checkPropsBySelected(state.selected, propType)
+        const fn = handler.checkPropsBySelected(state.selected, propType)
         result = fn !== undefined ? fn : nodes.includes(type.value)
       } else {
         result = nodes.includes(type.value)
@@ -67,7 +69,7 @@ export const useTarget = () => {
   }
   )
   const isEditModel = computed(() => {
-    return /^(edit|config)$/.test(state.mode)
+    return ['edit', 'config'].includes(state.mode)
   }
   )
   return {

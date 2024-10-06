@@ -8,10 +8,6 @@ export default {
     type: String,
     default: 'zh-cn'
   },
-  checkPropsBySelected: {
-    type: Function,
-    default: () => {}
-  },
   quickImages: {
     type: Array,
     default: () => []

@@ -2,6 +2,7 @@ import { defineComponent, watch, inject } from 'vue'
 import LayoutDragGable from './DragGable'
 import $style from './InlineLayout.module.scss'
 import { syncWidthByPlatform } from '@/utils'
+import { RichFormProvider } from '@Form/types/rich-form'
 export default defineComponent({
   name: 'InlineLayout',
   props: {
@@ -15,13 +16,13 @@ export default defineComponent({
     }
   },
   setup (props) {
-    const ER = inject('rich-form')
+    const ER = inject<RichFormProvider>('rich-form')!
     watch(() => props.data.columns.length, (newVal, oldVal) => {
       if (!newVal) {
         props.data.context.delete()
       }
       if (newVal !== oldVal) {
-        syncWidthByPlatform(props.data.columns, ER.state.platform, false)
+        syncWidthByPlatform(props.data.columns, ER.platform, false, '')
       }
     })
     const dragOptions = {
@@ -34,7 +35,6 @@ export default defineComponent({
           <LayoutDragGable
             data-layout-type={'inline'}
             class={''}
-            type={'inline'}
             {...dragOptions}
             data={props.data.columns}
             parent={props.parent}/>

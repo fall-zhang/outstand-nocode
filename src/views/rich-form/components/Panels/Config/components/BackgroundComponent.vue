@@ -1,17 +1,14 @@
-<script>
+<script setup lang="ts">
 import { reactive, ref, onMounted, inject, watch, computed, nextTick } from 'vue'
 import { ElMessage } from 'element-plus'
 import { useI18n } from 'vue-i18n'
 import { useTarget } from '@Form/hooks/use-target'
-
-export default {
+import { RichFormProvider } from '@/views/rich-form/types/rich-form';
+defineOptions({
   name: 'ConfigBackground',
   inheritAttrs: false,
   customOptions: {}
-}
-
-</script>
-<script setup>
+})
 const {
   t
 } = useI18n()
@@ -25,9 +22,9 @@ const state = reactive({
   color: '',
   defaultBackground: {}
 })
-const ER = inject('rich-form')
-const ERp = inject('Everright-propsPanel')
-watch(ERp.bgStatus, (newVal) => {
+const ER = inject<RichFormProvider>('rich-form')
+const bgStatus = inject<Ref<boolean>>('rich-form-bg')!
+watch(bgStatus, (newVal) => {
   state.value0 = newVal
 }, {
   immediate: true
@@ -85,7 +82,7 @@ if (!(!target.value.style.background.color && !target.value.style.background.ima
   //   // eslint-disable-next-line vue/no-setup-props-destructure
   //   state.color = target.value.style.background.color
   // }
-  ERp.bgStatus.value = !target.value.style.background.color
+  bgStatus.value = !target.value.style.background.color
 }
 const modifyBackBackground = (key, value) => {
   const keys = ['color', 'image']

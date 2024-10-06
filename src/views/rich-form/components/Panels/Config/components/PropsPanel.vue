@@ -44,9 +44,7 @@ const {
 } = useTarget()
 defineEmits(['changePanel'])
 const bgStatus = ref(false)
-provide('Everright-propsPanel', {
-  bgStatus
-})
+provide('rich-form-bg', bgStatus)
 const dialogVisible = ref(false)
 const dataRef = ref()
 const titleRef = ref()

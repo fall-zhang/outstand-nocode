@@ -77,12 +77,14 @@ const setSelection = (node: AllNodeType) => {
     isShowConfig.value = true
   })
 }
-// setSelection(state.config)
-const addField = (node) => {
+setSelection({
+  type: 'root',
+  id: 'root',
+  label: '根节点'
+})
+const addField = (node: any) => {
   if (checkIsField(node)) {
-    const findIndex = _.findIndex(state.fields, {
-      id: node.id
-    })
+    const findIndex = state.fields.findIndex((item: any) => item.id === node.id)
     if (findIndex === -1) {
       state.fields.push(node)
     } else {
@@ -90,10 +92,8 @@ const addField = (node) => {
     }
   }
 }
-const delField = (node) => {
-  const fieldIndex = _.findIndex(state.fields, {
-    id: node.id
-  })
+const delField = (node: any) => {
+  const fieldIndex = state.fields.findIndex((item: any) => item.id === node.id)
   if (fieldIndex !== -1) {
     if (checkIdExistInLogic(node.id, state.logic)) {
       ElMessage({
@@ -108,7 +108,7 @@ const delField = (node) => {
   }
 }
 const addFieldData = (node, isCopy = false) => {
-  if (/^(radio|cascader|checkbox|select)$/.test(node.type)) {
+  if (['radio', 'cascader', 'checkbox', 'select'].includes(node.type)) {
     if (isCopy) {
       state.data[node.id] = deepClone(state.data[node.options.dataKey])
       node.options.dataKey = node.id
@@ -123,7 +123,7 @@ const addFieldData = (node, isCopy = false) => {
       }
     }
   }
-  if (['uploadfile', 'signature', 'html'].includes(node.type)) {
+  if (['uploadFile', 'signature', 'html'].includes(node.type)) {
     node.options.action = ''
   }
 }
@@ -226,6 +226,7 @@ const canvasScrollRef = ref()
 const richFormPreviewData = ref({
 
 })
+// provider
 provide('rich-form-preview', richFormPreviewData)
 provide<RichFormProvider>('rich-form', {
   state,
@@ -240,16 +241,21 @@ provide<RichFormProvider>('rich-form', {
     delete: delField,
     addField,
     wrapElement,
-    validator(target, fn) {
+    checkPropsBySelected() {
+
+    },
+    validator(target: any, fn: any) {
+      console.log('🚀 ~ validator ~ target:', target)
       if (target) {
         const count = _.countBy(state.validateStates, 'data.key')
         const newValue = target.key.trim()
         if (isEmpty(newValue)) {
-          _.find(state.validateStates, { data: { key: target.key } }).isWarning = true
+          const findItem = state.validateStates.find((item) => (item.data.key === target.key))
+          if (findItem) findItem.isWarning = true
           fn && fn(0)
           return false
         }
-        state.validateStates.forEach(e => {
+        state.validateStates.forEach((e: any) => {
           if (count[e.data.key] > 1) {
             e.isWarning = true
           } else {
@@ -260,13 +266,10 @@ provide<RichFormProvider>('rich-form', {
           fn(!(count[newValue] > 1) ? 1 : 2)
         }
       } else {
-        fn(state.validateStates.every(e => !e.isWarning))
+        fn(state.validateStates.every((e: any) => !e.isWarning))
       }
     },
     copy: () => { },
-    // fireEvent() {
-
-    // }
   },
   store: [],
   selected: {},
@@ -280,7 +283,7 @@ provide<RichFormProvider>('rich-form', {
   desktop: {},
   mobile: {},
   desktopItems: {},
-  mobileItems: {}
+  mobileItems: {},
 })
 
 const getData1 = () => {
@@ -342,7 +345,7 @@ const getData1 = () => {
 //   })
 // }
 const getData = () => {
-  if (!state.validateStates.every(e => !e.isWarning)) {
+  if (!state.validateStates.every((e: any) => !e.isWarning)) {
     return {}
   }
   return getData1()

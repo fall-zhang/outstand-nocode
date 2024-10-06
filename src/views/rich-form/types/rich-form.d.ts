@@ -51,11 +51,13 @@ export type GlobalConfig = {
 export type RichFormProvider = {
   // 左侧菜单的配置
   fieldsList:any[]
-  canvasScrollRef:Ref<ScrollPos>
+  // 配置好的内容
   store: FormItem[],
-  selected: Record<string, unknown>,
+  // formItems:any[]
+  canvasScrollRef:Ref<ScrollPos>
+  selected: AllNodeType,
   mode: 'edit' | 'setting' | 'preview',
-  platform: 'pc',
+  platform: 'pc'|'mobile',
   config: GlobalConfig,
   widthScaleLock: boolean,
   data: Record<string, unknown>,

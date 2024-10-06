@@ -19,6 +19,7 @@ import ControlInsertionPlugin from './ControlInsertionPlugin'
 import { DraggableWrap } from './DraggableWrap'
 import $style from './Draggable.module.scss'
 import { isEmpty, get } from '@/utils/utils'
+import { RichFormProvider } from '../../types/rich-form'
 
 const dragGableWrap = DraggableWrap
 export {
@@ -44,13 +45,9 @@ export default defineComponent({
       type: String,
       default: 'div'
     },
-    type: {
-      type: Object,
-      default: () => ({})
-    }
   },
   setup (props) {
-    const ER = inject('rich-form')
+    const ER = inject<RichFormProvider>('rich-form')
     const {
       state,
       isEditModel,

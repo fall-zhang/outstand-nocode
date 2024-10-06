@@ -196,18 +196,18 @@ const setStates = (newTarget, ev, ER:RichFormProvider) => {
     sortable
   } = ev
   const targetContainer = el.parentNode
-  const direction = disableBothSides(ER) ? getDirection1(newTarget, originalEvent) : getDirection0(newTarget, originalEvent)
+  const direction = disableBothSides() ? getDirection1(newTarget, originalEvent) : getDirection0(newTarget, originalEvent)
   const cols = newTarget.parentNode.children
   const colIndex = utils.index(newTarget)
   const rows = targetContainer.parentNode.children
   const rowIndex = utils.index(targetContainer)
-  if (/^(2|4)$/.test(direction)) {
+  if (['2', '4'].includes(direction)) {
     if (targetList.length === ER.config.inlineMax && !el.contains(dragEl)) {
       return false
     }
   }
-  if (/^(1)$/.test(direction)) {
-    if (ER.state.store.length > 0 && (/^(root)$/.test(el.dataset.layoutType))) {
+  if (direction === '1') {
+    if (ER.state.store.length > 0 && ['root'].includes(el.dataset.layoutType)) {
       return false
     }
   }
