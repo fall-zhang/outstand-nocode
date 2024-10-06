@@ -3,7 +3,7 @@ import utils from '@/utils'
 import { useI18n } from 'vue-i18n'
 import { useTarget } from '@Form/hooks/use-target'
 import { unref } from 'vue'
-import { dragGableWrap } from '@/views/rich-form/components/Layout/DragGable'
+import { dragGableWrap as DraggableWrap } from '@Form/components/FormContainer/DragGable'
 import Icon from '@/assets'
 export default {
   name: 'ConfigData3'
@@ -29,7 +29,7 @@ const addTab = (type) => {
       </div>
     </template>
     <div style="width: 100%;">
-      <dragGableWrap :list="target.columns" item-key="id" tag="ul" handle=".handle" class="d-content">
+      <DraggableWrap :list="target.columns" item-key="id" tag="ul" handle=".handle" class="d-content">
         <template #item="{ element, index }">
           <li>
             <el-input size="default" clearable v-model="element.label" />
@@ -39,7 +39,7 @@ const addTab = (type) => {
             </div>
           </li>
         </template>
-      </dragGableWrap>
+      </DraggableWrap>
     </div>
   </el-form-item>
 </template>

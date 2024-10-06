@@ -7,7 +7,7 @@ export const useTarget = () => {
     state,
     setSelection,
     props
-  } = inject<RichFormProvider>('Everright')
+  } = inject<RichFormProvider>('rich-form')
   const selection = computed(() => {
     return state.selected
   })

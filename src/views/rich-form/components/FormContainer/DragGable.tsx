@@ -6,10 +6,10 @@ import {
   unref,
   inject,
 } from 'vue'
-import {  useProps } from '@/hooks'
+import { useProps } from '@/hooks'
 import { useTarget } from '@Form/hooks/use-target'
 import _ from 'lodash-es'
-import LayoutGridLayout from './GridLayout'
+import LayoutGridLayout from '../FormContainer/GridLayout'
 import LayoutTabsLayout from './TabsLayout'
 import LayoutCollapseLayout from './CollapseLayout'
 import LayoutTableLayout from './TableLayout'

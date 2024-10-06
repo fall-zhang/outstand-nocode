@@ -1,4 +1,4 @@
-import LayoutDragGable from '../../Layout/DragGable'
+import LayoutDragGable from '../../FormContainer/DragGable'
 import CompleteButton from '@/views/rich-form/components/CompleteButton.vue'
 import { useTarget } from '@Form/hooks/use-target'
 import { useProps } from '@/hooks/use-props'
