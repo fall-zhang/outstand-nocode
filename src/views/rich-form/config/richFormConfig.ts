@@ -27,6 +27,12 @@ const config:GlobalConfig = {
     'rgba(235, 242, 244, 1)',
     'rgba(240, 249, 236, 1)'
   ],
-  fieldsPanelWidth: '220px'
+  fieldsPanelWidth: '220px',
+  desktop: {
+    size: 'default',
+    completeButton: {
+      text: ''
+    }
+  }
 }
 export default config

@@ -92,7 +92,7 @@ const closeDialog = () => {
 const openDialog = () => {
   dialogVisible.value = true
   tabs.value.forEach((tab, index) => {
-    const rules = get(ER.state.logic, `${tab.value}`, [])
+    const rules = get(ER.logic, `${tab.value}`, [])
     remoteCount += rules.length * 2
     rules.forEach((rule, index) => {
       tab.rules.push(index)
@@ -116,16 +116,14 @@ const handleAction = (type) => {
     }
     case 2:
       if (tabs.value.every(tab => !tab.rules.length)) {
-        ER.state.logic = {}
+        ER.logic = {}
         closeDialog()
-        // ER.fireEvent('logic:cancel', _.cloneDeep(ER.state.logic))
       } else {
         const data = getData()
         if (!_.isEmpty(data)) {
-          ER.state.logic = getData(activeTab.value)
+          ER.logic = getData(activeTab.value)
           closeDialog()
         }
-        // ER.fireEvent('logic:confirm', _.cloneDeep(ER.state.logic))
       }
       break
   }

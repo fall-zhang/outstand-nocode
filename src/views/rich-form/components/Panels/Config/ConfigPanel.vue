@@ -1,12 +1,12 @@
 <!-- 右侧的面包屑和全局配置面板 -->
 <script setup lang="ts">
-import utils from '@/utils'
 import { useTarget } from '@Form/hooks/use-target'
 import { useI18n } from 'vue-i18n'
 import { ref, computed, reactive, watch, onMounted } from 'vue'
 import PanelsConfigComponentsPropsPanel from './components/PropsPanel.vue'
 import GlobalConfigPanel from './ConfigPanelGlobal.vue'
 import { isEmpty } from '@/utils/utils'
+import { fieldLabel } from '@/utils/field'
 defineOptions({
   name: 'ConfigPanel',
   inheritAttrs: false,
@@ -67,11 +67,11 @@ const rules = reactive({
 const breadcrumbList = computed(() => {
   let nodes = ['root']
   let result = []
-  console.log("🚀 ~ breadcrumbList ~ isSelectRoot.value:", isSelectRoot.value)
   if (!isSelectRoot.value) {
     const targetNodes = target.value?.context?.parents.filter((e: any) => !['inline', 'tr'].includes(e.type))
-    nodes = nodes.concat(targetNodes)
-    console.log("🚀 ~ breadcrumbList ~ nodes:", targetNodes)
+    if (targetNodes) {
+      nodes = nodes.concat(targetNodes)
+    }
   }
   if (nodes.length > 4) {
     result.push(nodes[0])
@@ -94,12 +94,11 @@ const breadcrumbList = computed(() => {
       if (['col' + 'collapseCol' + 'tabsCol' + 'td'].includes(node.type)) {
         result.label = t(`er.layout.${node.type}`)
       } else {
-        result.label = utils.fieldLabel(t, node)
+        result.label = fieldLabel(t, node)
       }
     }
     return result
   })
-  console.log("🚀 ~ breadcrumbList ~ breadcrumbList:", result)
   return result
 })
 const handleBreadcrumbClick = (item: unknown, index: number) => {

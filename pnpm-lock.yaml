@@ -50,6 +50,9 @@ importers:
       '@icon-park/vue-next':
         specifier: ^1.4.2
         version: 1.4.2(vue@3.4.34(typescript@5.5.4))
+      '@types/lodash-es':
+        specifier: ^4.17.10
+        version: 4.17.12
       '@vant/area-data':
         specifier: ^1.5.1
         version: 1.5.1
@@ -120,7 +123,7 @@ importers:
         specifier: ^0.2.5
         version: 0.2.5(vue@3.4.34(typescript@5.5.4))
       vue-i18n:
-        specifier: '10'
+        specifier: ^10.0.1
         version: 10.0.1(vue@3.4.34(typescript@5.5.4))
       vue-router:
         specifier: ^4.4.0
@@ -1053,8 +1056,8 @@ packages:
   '@types/lodash-es@4.17.12':
     resolution: {integrity: sha512-0NgftHUcV4v34VhXm8QBSftKVXtbkBG3ViCjs6+eJ5a6y6Mi/jiFGPc1sC7QK+9BFhWrURE3EOggmWaSxL9OzQ==}
 
-  '@types/lodash@4.17.7':
-    resolution: {integrity: sha512-8wTvZawATi/lsmNu10/j2hk1KEP0IvjubqPE3cu1Xz7xfXXt5oCq3SNUz4fMIP4XGF9Ky+Ue2tBA3hcS7LSBlA==}
+  '@types/lodash@4.17.10':
+    resolution: {integrity: sha512-YpS0zzoduEhuOWjAotS6A5AVCva7X4lVlYLF0FYHAY9sdraBfnatttHItlWeZdGhuEkf+OzMNg2ZYAx8t+52uQ==}
 
   '@types/minimist@1.2.5':
     resolution: {integrity: sha512-hov8bUuiLiyFPGyFPE1lwWhmzYbirOXQNNo40+y3zow8aFVTeyn3VWL0VFFfdNddA8S4Vf0Tc062rzyNr7Paag==}
@@ -4632,9 +4635,9 @@ snapshots:
 
   '@types/lodash-es@4.17.12':
     dependencies:
-      '@types/lodash': 4.17.7
+      '@types/lodash': 4.17.10
 
-  '@types/lodash@4.17.7': {}
+  '@types/lodash@4.17.10': {}
 
   '@types/minimist@1.2.5': {}
 
@@ -4920,7 +4923,7 @@ snapshots:
 
   '@vueuse/shared@10.11.0(vue@3.4.34(typescript@5.5.4))':
     dependencies:
-      vue-demi: 0.14.9(vue@3.4.34(typescript@5.5.4))
+      vue-demi: 0.14.10(vue@3.4.34(typescript@5.5.4))
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
@@ -5462,7 +5465,7 @@ snapshots:
       '@element-plus/icons-vue': 2.3.1(vue@3.4.34(typescript@5.5.4))
       '@floating-ui/dom': 1.6.8
       '@popperjs/core': '@sxzz/popperjs-es@2.11.7'
-      '@types/lodash': 4.17.7
+      '@types/lodash': 4.17.10
       '@types/lodash-es': 4.17.12
       '@vueuse/core': 9.13.0(vue@3.4.34(typescript@5.5.4))
       async-validator: 4.2.5

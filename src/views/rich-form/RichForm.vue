@@ -9,11 +9,10 @@ import ConfigPanel from './components/Panels/Config/ConfigPanel.vue'
 import DeviceSwitch from './components/DeviceSwitch.vue'
 import Icon from '@/assets'
 import { useI18n } from 'vue-i18n'
-import utils, {
+import {
   deepClone, checkIsField, disassemblyData1, repairLayout, disassemblyData2, removeLogicDataById,
   checkIdExistInLogic, combinationData2, pickFields
 } from '@/utils'
-import _ from 'lodash-es'
 import { isEmpty } from '@/utils/utils'
 import defaultProps from './defaultProps'
 import generatorData from './generatorData'
@@ -21,14 +20,10 @@ import { PlatformType, RichFormProvider } from './types/rich-form'
 import { fieldsConfig } from './config/componentsConfig'
 import { AllNodeType } from './types/rich-form-item'
 import richFormConfig from './config/richFormConfig'
+import { generateOptions } from '@/utils/generateOptions'
 const emit = defineEmits(['changeParams', 'save', 'changeLang'])
 const props = defineProps({
   ...defaultProps,
-
-  inlineMax: {
-    type: Number,
-    default: 4
-  },
   isShowClear: {
     type: Boolean,
     default: true
@@ -38,24 +33,7 @@ const props = defineProps({
     default: true
   }
 })
-// const layout = {
-//   pc: [],
-//   mobile: []
-// }
-const state = reactive({
-  store: [],
-  selected: {},
-  mode: 'edit',
-  platform: 'pc',
-  config: richFormConfig,
-  previewVisible: false,
-  widthScaleLock: false,
-  data: {},
-  validateStates: [],
-  fields: [],
-  Namespace: 'formEditor',
-  logic: {},
-})
+
 const isFoldFields = ref(true)
 const isFoldConfig = ref(true)
 
@@ -77,11 +55,6 @@ const setSelection = (node: AllNodeType) => {
     isShowConfig.value = true
   })
 }
-setSelection({
-  type: 'root',
-  id: 'root',
-  label: '根节点'
-})
 const addField = (node: any) => {
   if (checkIsField(node)) {
     const findIndex = state.fields.findIndex((item: any) => item.id === node.id)
@@ -107,7 +80,8 @@ const delField = (node: any) => {
     state.fields.splice(fieldIndex, 1)
   }
 }
-const addFieldData = (node, isCopy = false) => {
+const addFieldData = (node: any, isCopy = false) => {
+  console.log('🚀 ~ addFieldData ~ node:', node)
   if (['radio', 'cascader', 'checkbox', 'select'].includes(node.type)) {
     if (isCopy) {
       state.data[node.id] = deepClone(state.data[node.options.dataKey])
@@ -116,7 +90,7 @@ const addFieldData = (node, isCopy = false) => {
       node.options.dataKey = node.id
       state.data[node.id] = {
         type: node.type,
-        list: utils.generateOptions(3).map((e, i) => {
+        list: generateOptions(3).map((e, i) => {
           e.label += i + 1
           return e
         })
@@ -128,25 +102,30 @@ const addFieldData = (node, isCopy = false) => {
   }
 }
 
-const wrapElement = (el, {
+const wrapElement = (el: any, {
   isWrap = true,
   isSetSelection = true,
   sourceBlock = true,
   resetWidth = true
 }) => {
-  const node = sourceBlock
-    ? generatorData(el, isWrap, lang.value, sourceBlock, (node) => {
-      addFieldData(node)
-      addField(node)
+  let node: any
+  if (sourceBlock) {
+    node = generatorData(el, {
+      isWrap,
+      isCreateLabel: sourceBlock,
+
     })
-    : isWrap
-      ? {
-        type: 'inline',
-        columns: [
-          el
-        ]
-      }
-      : el
+  } else if (isWrap) {
+    node = {
+      type: 'inline',
+      columns: [
+        el
+      ]
+    }
+  } else {
+    node = el
+  }
+
   if (!sourceBlock && resetWidth) {
     if (checkIsField(el)) {
       if (state.platform === 'pc') {
@@ -160,133 +139,48 @@ const wrapElement = (el, {
   }
   return node
 }
-// const syncLayout = (platform: PlatformType, fn: any) => {
-//   const isPC = platform === 'pc'
-//   const original = deepClone(state.store)
-//   disassemblyData2(original)
-//   layout[isPC ? 'mobile' : 'pc'] = original
-//   if (isEmpty(isPC ? layout.pc : layout.mobile)) {
-//     const newData = state.fields.map(e => wrapElement(e, true, false, false, false))
-//     fn && fn(newData)
-//   } else {
-//     // debugger
-//     const layoutFields = pickFields(isPC ? layout.pc : layout.mobile).map(e => {
-//       return {
-//         id: e
-//       }
-//     })
-//     const copyData = deepClone(isPC ? layout.pc : layout.mobile)
-//     const addFields = _.differenceBy(state.fields, layoutFields, 'id')
-//     const delFields = _.differenceBy(layoutFields, state.fields, 'id')
-//     repairLayout(copyData, delFields)
-//     combinationData2(copyData, state.fields)
-//     copyData.push(...addFields.map(e => wrapElement(e, true, false, false, false)))
-//     // copyData.push(...addFields)
-//     fn && fn(copyData)
-//   }
-// }
-// const getLayoutDataByPlatform = (platform: PlatformType) => {
-//   const isPC = platform === 'pc'
-//   if (isEmpty(isPC ? layout.pc : layout.mobile)) {
-//     if (platform === state.platform) {
-//       const original = deepClone(state.store)
-//       disassemblyData2(original)
-//       return original
-//     }
-//     const newData = deepClone(state.fields.map(e => wrapElement(e, true, false, false, false)))
-//     disassemblyData2(newData)
-//     return newData
-//   }
-//   if (platform === state.platform) {
-//     const original = deepClone(state.store)
-//     disassemblyData2(original)
-//     layout[isPC ? 'pc' : 'mobile'] = original
-//   }
-//   const layoutFields = pickFields(isPC ? layout.pc : layout.mobile).map(e => {
-//     return {
-//       id: e
-//     }
-//   })
-//   const copyData = deepClone(isPC ? layout.pc : layout.mobile)
-//   const addFields = deepClone(_.differenceBy(state.fields, layoutFields, 'id').map(e => wrapElement(e, true, false, false, false)))
-//   const delFields = _.differenceBy(layoutFields, state.fields, 'id')
-//   repairLayout(copyData, delFields)
-//   disassemblyData2(addFields)
-//   copyData.push(...addFields)
-//   return copyData
-// }
+
 const switchPlatform = (platform: PlatformType) => {
   if (state.platform === platform) {
     return false
   }
   state.platform = platform
 }
-const canvasScrollRef = ref()
 
 const richFormPreviewData = ref({
 
 })
-// provider
-provide('rich-form-preview', richFormPreviewData)
-provide<RichFormProvider>('rich-form', {
-  state,
-  // 准备添加 移动端和桌面端的配置
-  config: richFormConfig,
-  fieldsList: fieldsConfig,
-  canvasScrollRef,
-  handler: {
-    setSelection,
-    switchPlatform,
-    addFieldData,
-    delete: delField,
-    addField,
-    wrapElement,
-    checkPropsBySelected() {
 
-    },
-    validator(target: any, fn: any) {
-      console.log('🚀 ~ validator ~ target:', target)
-      if (target) {
-        const count = _.countBy(state.validateStates, 'data.key')
-        const newValue = target.key.trim()
-        if (isEmpty(newValue)) {
-          const findItem = state.validateStates.find((item) => (item.data.key === target.key))
-          if (findItem) findItem.isWarning = true
-          fn && fn(0)
-          return false
-        }
-        state.validateStates.forEach((e: any) => {
-          if (count[e.data.key] > 1) {
-            e.isWarning = true
-          } else {
-            e.isWarning = false
-          }
-        })
-        if (fn) {
-          fn(!(count[newValue] > 1) ? 1 : 2)
-        }
-      } else {
-        fn(state.validateStates.every((e: any) => !e.isWarning))
-      }
-    },
-    copy: () => { },
-  },
-  store: [],
-  selected: {},
-  mode: 'edit',
-  platform: 'pc',
-  widthScaleLock: false,
-  data: {},
-  validateStates: [],
-  fields: [],
-  logic: {},
-  desktop: {},
-  mobile: {},
-  desktopItems: {},
-  mobileItems: {},
-})
+function validator(target: any, fn: any) {
+  console.warn('暂时不提供表单验证')
+  // if (target) {
+  //   const count = _.countBy(state.validateStates, 'data.key')
+  //   const newValue = target.key.trim()
+  //   if (isEmpty(newValue)) {
+  //     const findItem: any = state.validateStates.find((item: any) => (item.data.key === target.key))
+  //     if (findItem) findItem.isWarning = true
+  //     fn && fn(0)
+  //     return false
+  //   }
+  //   state.validateStates.forEach((e: any) => {
+  //     if (count[e.data.key] > 1) {
+  //       e.isWarning = true
+  //     } else {
+  //       e.isWarning = false
+  //     }
+  //   })
+  //   if (fn) {
+  //     fn(!(count[newValue] > 1) ? 1 : 2)
+  //   }
+  // } else {
+  //   fn(state.validateStates.every((e: any) => !e.isWarning))
+  // }
+}
 
-const getData1 = () => {
+const getData = () => {
+  if (!state.validateStates.every((e: any) => !e.isWarning)) {
+    return {}
+  }
   return Object.assign(disassemblyData1(deepClone({
     list: state.store,
     config: state.config,
@@ -294,61 +188,6 @@ const getData1 = () => {
   })), {
     logic: state.logic
   })
-}
-// const getData2 = () => {
-//   layout.pc = getLayoutDataByPlatform('pc')
-//   layout.mobile = getLayoutDataByPlatform('mobile')
-//   return deepClone({
-//     layout,
-//     data: state.data,
-//     config: state.config,
-//     fields: state.fields,
-//     logic: state.logic
-//   })
-// }
-// const setData1 = (data) => {
-//   if (isEmpty(data)) return false
-//   const newData = combinationData1(deepClone(data))
-//   isShow.value = false
-//   state.store = newData.list
-//   state.config = newData.config
-//   state.data = newData.data
-//   state.fields = newData.fields
-//   state.logic = newData.logic
-//   setSelection(state.config)
-//   state.store.forEach((e) => {
-//     addContext(e, state.store)
-//   })
-//   nextTick(() => {
-//     isShow.value = true
-//   })
-// }
-// const setData2 = (data) => {
-//   if (isEmpty(data)) return false
-//   const newData = deepClone(data)
-//   layout.pc = newData.layout.pc
-//   layout.mobile = newData.layout.mobile
-//   isShow.value = false
-//   state.store = newData.list
-//   state.fields = newData.fields
-//   const curLayout = deepClone(newData.layout[state.platform])
-//   combinationData2(curLayout, state.fields)
-//   state.store = curLayout
-//   state.config = newData.config
-//   state.data = newData.data
-//   setSelection(state.config)
-//   state.store.forEach((e) => {
-//     addContext(e, state.store)
-//   })
-//   nextTick(() => {
-//     isShow.value = true
-//   })
-// }
-const getData = () => {
-  if (!state.validateStates.every((e: any) => !e.isWarning)) {
-    return {}
-  }
-  return getData1()
 }
 type OperationType = 'resetData' | 'preview'
 const onPreview = (type: OperationType) => {
@@ -360,6 +199,62 @@ function onCollapseLeft() {
 function onCollapseRight() {
   isFoldConfig.value = !isFoldConfig.value
 }
+const canvasScrollRef = ref()
+
+const state = reactive<RichFormProvider>({
+  state: {
+    selected: {},
+    mode: 'edit',
+    platform: 'pc',
+    config: richFormConfig,
+    previewVisible: false,
+    widthScaleLock: false,
+    validateStates: [],
+    fields: [],
+    Namespace: 'formEditor',
+  },
+  // 准备添加 移动端和桌面端的配置
+  store: [],
+  selected: {
+    type: 'root',
+    id: 'root',
+    label: 'default'
+  },
+  mode: 'edit',
+  platform: 'pc',
+  widthScaleLock: false,
+  data: {},
+  validateStates: [],
+  fields: [],
+  logic: {},
+  desktop: {},
+  mobile: {},
+  desktopItems: {},
+  mobileItems: {},
+  config: richFormConfig,
+  fieldsList: fieldsConfig,
+  canvasScrollRef,
+  handler: {
+    setSelection,
+    switchPlatform,
+    addFieldData,
+    delete: delField,
+    addField,
+    wrapElement,
+    checkPropsBySelected() { },
+    validator,
+    copy: () => { },
+  },
+})
+
+// provider
+// provide('rich-form-preview', richFormPreviewData)
+setSelection({
+  type: 'root',
+  id: 'root',
+  label: '根节点'
+})
+provide<RichFormProvider>('rich-form', state)
 watch(() => state.selected, (newVal) => {
   emit('changeParams', deepClone(newVal))
 }, {
@@ -408,12 +303,9 @@ const onResetData = () => {
               </el-dropdown-menu>
             </template>
 </el-dropdown> -->
-          <Icon @click="onPreview" class="fe-icon" icon="preview"></Icon>
+          <!-- <Icon @click="onPreview" class="fe-icon" icon="preview"></Icon> -->
         </div>
       </el-header>
-      <!-- {{ state.store }} -->
-      {{ state.fields }}
-
       <CanvasPanel v-click-outside="onClickOutside" v-if="isShow" :data="state.store"></CanvasPanel>
       <Icon @click="onCollapseLeft" :class="[$style.arrowLeft, !isFoldFields && $style.close]" icon="arrowLeft" />
       <Icon @click="onCollapseRight" :class="[$style.arrowRight, !isFoldConfig && $style.close]" icon="arrowRight" />

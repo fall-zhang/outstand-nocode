@@ -1,12 +1,32 @@
-/**
- * 单个 formItem 的类型
- */
-export type FormNodeItem = {
-  name: '容器',
-  id: 'container',
-  list: []
+// 基本 Form 类型
+enum BaseFormType {
+  input,
+  textarea,
+  number,
+  radio,
+  checkbox,
+  select,
+  time,
+  date,
+  rate,
+  switch,
+  slider,
+  html,
+  cascader,
+  uploadFile,
+  signature,
+  region
 }
-
+// 容器类型
+enum ContainerType {
+  grid,
+  inline,
+  tabs,
+  collapse
+}
+/**
+ * 中间区域数据的存储类型
+ */
 export type FormItem = {
   id: string
   key:string
@@ -37,10 +57,10 @@ export type BaseNodeItem = {
  * 容器的类型
  */
 export type ContainerNodeItem = {
-  type: 'grid' |'inline',
-  id: string,
-  label: string,
-  icon?: string,
+  type: 'grid' | 'inline'
+  id: string
+  label: string
+  icon?: string
   columns: {
     id: string,
     options: {
@@ -51,7 +71,7 @@ export type ContainerNodeItem = {
     },
     type: 'col',
     list: []
-  }[],
+  }[]
   options?:Record<string, any>
   // options: {
   //   gutter: 0,

@@ -3,23 +3,6 @@ import { nanoid } from './nanoid'
 import { PlatformType } from '@/views/rich-form/types/rich-form'
 import { get, isEmpty } from './utils'
 
-// WARNING: This is not a drop in replacement solution and
-// it might not work for some edge cases. Test your code!
-// const get = (obj, path, defValue) => {
-//   // If path is not defined or it has false value
-//   if (!path) return undefined
-//   // Check if path is string or array. Regex : ensure that we do not have '.' and brackets.
-//   // Regex explained: https://regexr.com/58j0k
-//   const pathArray = Array.isArray(path) ? path : path.match(/([^[.\]])+/g)
-//   // Find value
-//   const result = pathArray.reduce(
-//     (prevObj, key) => prevObj && prevObj[key],
-//     obj
-//   )
-//   // If found value is undefined return default value; otherwise return the value
-//   return result === undefined ? defValue : result
-// }
-
 const fieldsRe = /^(input|textarea|number|radio|checkbox|select|time|date|rate|switch|slider|html|cascader|uploadfile|signature|region)$/
 const deepTraversal = (node, fn) => {
   fn(node)
@@ -73,13 +56,14 @@ const wrapElement = (element, fn) => {
   })
   return result
 }
-const renderFieldData = (type) => {
+const renderFieldData = (type:string) => {
   const result = {
     id: nanoid(),
     type,
     label: '',
     list: [],
-    style: {}
+    style: {},
+    options: {}
   }
   return result
 }
@@ -171,6 +155,10 @@ const checkIslineChildren = (node) => {
   }
   return false
 }
+/**
+ * 用来查看是否是 FormItem 类型
+ * （不是 container 类型）
+ */
 const checkIsField = (node) => fieldsRe.test(node.type)
 const calculateAverage = (count, total = 100) => {
   const base = Number((total / count).toFixed(2))

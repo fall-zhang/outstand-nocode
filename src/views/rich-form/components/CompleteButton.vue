@@ -1,11 +1,9 @@
-<script>
+<script setup>
 import { unref, inject } from 'vue'
 import { useTarget } from '@Form/hooks/use-target'
-export default {
+defineOptions({
   name: 'CompleteButton'
-}
-</script>
-<script setup>
+})
 const props = defineProps({
   handle: {
     type: Object,
@@ -25,7 +23,7 @@ const handleClick = async (type) => {
   try {
     await Promise.resolve(unref(props.handle).validate())
   } catch (e) {
-    console.log(e)
+    console.warn(e)
   }
 }
 </script>

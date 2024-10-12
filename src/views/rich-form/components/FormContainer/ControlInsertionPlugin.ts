@@ -167,6 +167,7 @@ const setBorder = (el, className) => {
   el.classList.add(className)
 }
 const getDragElement = (node) => {
+  console.log('🚀 ~ getDragElement ~ node:', node)
   return node.__draggable_context.element
 }
 

@@ -1,5 +1,10 @@
 import { wrapElement, transferData, transferLabelPath } from '@/utils'
-export default function (node, isWrap = true, lang = 'zh-cn', isCreateLabel = true, eachBack) {
+export default function generatorData(node:any, {
+  isWrap = true,
+  lang = 'zh-cn',
+  isCreateLabel = true,
+  eachBack = true
+}) {
   const newNode = isWrap
     ? {
       type: 'inline',

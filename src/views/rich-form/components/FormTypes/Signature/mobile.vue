@@ -5,6 +5,7 @@ import SignaturePad from 'signature_pad'
 import Icon from '@/assets'
 import utils from '@/utils'
 import { useI18n,  useFetch } from 'vue-i18n'
+import { fileToDataURL } from '@/utils/fileData'
 export default {
   name: 'FeSignatureMobile',
   inheritAttrs: false,
@@ -71,7 +72,7 @@ const handleOpen = () => {
     init()
     if (props.data.options.defaultValue) {
       const loading = ElLoading.service()
-      utils.filetoDataURL(props.data.options.defaultValue.url).then(e => {
+      fileToDataURL(props.data.options.defaultValue.url).then(e => {
         signaturePad.fromDataURL(e)
         loading.close()
       })

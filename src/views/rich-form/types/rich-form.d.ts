@@ -1,6 +1,5 @@
-import { ScrollPos } from 'element-plus/es/components/table-v2/src/composables'
-import { StyleValue } from 'vue'
-
+import { CSSProperties, StyleValue } from 'vue'
+import { AllNodeType, FormItem } from './rich-form-item'
 /**
  * 平台类型
  * 之后会移除 pc 类型
@@ -11,13 +10,13 @@ type MobileConfig = {
   labelWidth: number |string
   size:'large' | 'normal'
   labelPosition: 'left' | 'top'
-  style: StyleValue
+  style?: CSSProperties
 }
 type DesktopConfig = {
   labelWidth: number|string
   size:'large'|'default'|'small'
   labelPosition: 'left' | 'top'
-  style: StyleValue
+  style?: CSSProperties
 }
 
 /**
@@ -34,6 +33,12 @@ export type GlobalConfig = {
   fieldsPanelWidth:string
   colorList:string[]
   inlineMax:number // 每行最多放置多少个 form
+  desktop: {
+    size: 'default',
+    completeButton: {
+      text: string,
+    }
+  },
   pc: {
     size: 'default',
     completeButton: {
@@ -53,26 +58,37 @@ export type RichFormProvider = {
   fieldsList:any[]
   // 配置好的内容
   store: FormItem[],
-  // formItems:any[]
-  canvasScrollRef:Ref<ScrollPos>
-  selected: AllNodeType,
-  mode: 'edit' | 'setting' | 'preview',
-  platform: 'pc'|'mobile',
-  config: GlobalConfig,
+  canvasScrollRef:any
+  // 当前选中的内容，默认选中 root
+  selected: AllNodeType
+  mode: 'edit' | 'setting' | 'preview'
+  platform: 'pc' | 'mobile' | 'desktop'
   widthScaleLock: boolean,
   data: Record<string, unknown>,
-  validateStates: [],
-  fields: unknown[],
-  logic: {},
+  validateStates: unknown[],
+  fields: unknown[]
+  // 放置逻辑 - 暂无
+  logic: Record<string, unknown>
+  // 放置可以用来执行的方法
   handler:Record<string, any>
-  // setSelection(node:any):void
-  // validator(target: any, fn: any): void
   // 全局容器设定
-  desktop: StyleValue
-  mobile: StyleValue
-  // 对每一项都启用的设定
-  desktopItems: Partial<DesktopConfig>
-  mobileItems: Partial<MobileConfig>
+  config: GlobalConfig
+  // 全局样式设定
+  // desktop: CSSProperties
+  desktop: CSSProperties
+  // 移动端全局样式设定
+  // mobile: CSSProperties
+  mobile: CSSProperties
+  /**
+   *  桌面端对每一项都启用的设定
+   */
+  // desktopItems: Partial<DesktopConfig>
+  desktopItems: any
+  /**
+   *  移动端对每一项都启用的设定
+   */
+  // mobileItems: Partial<MobileConfig>
+  mobileItems:any
   /** 等待移除 */
   state:any
 }

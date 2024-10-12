@@ -1,4 +1,4 @@
-import LayoutDragGable from '../../FormContainer/DragGable'
+import LayoutDraggable from '../../FormContainer/DragGable'
 import CompleteButton from '@/views/rich-form/components/CompleteButton.vue'
 import { useTarget } from '@Form/hooks/use-target'
 import { useProps } from '@/hooks/use-props'
@@ -12,7 +12,7 @@ export default defineComponent({
   inheritAttrs: false,
   customOptions: {},
   setup () {
-    const ER = inject<RichFormProvider>('rich-form')
+    const ER = inject<RichFormProvider>('rich-form')!
     const {
       state,
       setSelection,
@@ -26,9 +26,7 @@ export default defineComponent({
       return (
         <>
           <TagComponent ref={form} onClick={() => unref(isEditModel) && setSelection('root')} {...typeProps.value}>
-            {
-              <LayoutDragGable data-layout-type={'root'} class={[unref(isEditModel) && $style.wrap]} data={state.store} parent={state.store} isRoot></LayoutDragGable>
-            }
+            <LayoutDraggable data-layout-type={'root'} class={[unref(isEditModel) && $style.wrap]} data={state.store} parent={state.store} isRoot></LayoutDraggable>
           </TagComponent>
           {
             !unref(isEditModel) && !isEmpty(state.config) && <CompleteButton handle={form}/>

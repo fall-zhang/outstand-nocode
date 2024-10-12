@@ -18,7 +18,6 @@ const state = reactive({
   platform: isPC() ? 'pc' : 'mobile',
   mode: 'preview',
   config: {},
-  Namespace: 'formEditor',
   validateStates: [],
   data: {},
   fields: [],
@@ -39,12 +38,6 @@ const fireEvent = (type, data) => {
   })
 }
 // 提供给预览功能的所有数据
-provide('fe-preview', {
-  state,
-  getData,
-  props,
-  fireEvent
-})
 const setData2 = (data, value) => {
   const newData = deepClone(data)
   layout.pc = newData.layout.pc

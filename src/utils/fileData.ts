@@ -9,7 +9,7 @@ const dataURLtoFile = (dataurl, filename) => {
   }
   return new File([u8arr], filename, { type: mime })
 }
-const filetoDataURL = (dataurl) => {
+const fileToDataURL = (dataurl) => {
   return new Promise((resolve, reject) => {
     const image = new Image()
     image.src = dataurl
@@ -17,7 +17,7 @@ const filetoDataURL = (dataurl) => {
       const canvas = document.createElement('canvas')
       canvas.width = image.width
       canvas.height = image.height
-      const ctx = canvas.getContext('2d')
+      const ctx = canvas.getContext('2d')!
       ctx.drawImage(image, 0, 0, image.width, image.height)
       const ext = image.src.substring(image.src.lastIndexOf('.') + 1).toLowerCase()
       const dataURL = canvas.toDataURL('image/' + ext)
@@ -27,5 +27,5 @@ const filetoDataURL = (dataurl) => {
 }
 export {
   dataURLtoFile,
-  filetoDataURL
+  fileToDataURL
 }

@@ -1,8 +1,8 @@
 {
   "i18n-ally.keystyle": "nested", // key 值类型，嵌套还是 `a.b.c`
-  "i18n-ally.sourceLanguage": "en",
+  "i18n-ally.sourceLanguage": "zh",
   "i18n-ally.localesPaths": "src/locales",
   // 一些 i18n（i18next） 拥有 NameSpace 功能，你也可以通过添加该功能启用
-  "i18n-ally.namespace": true,
-  "i18n-ally.pathMatcher": "{locale}/{namespaces}.json",
+  "i18n-ally.namespace": false,
+  // "i18n-ally.pathMatcher": "{locale}/{namespaces}.json",
 }

@@ -4,7 +4,7 @@
  */
 
 import { ElMessage } from 'element-plus'
-import CKEDITOR from 'ckeditor5'
+import * as CKEDITOR from 'ckeditor5'
 import { markRaw, defineComponent, onMounted, ref, onBeforeUnmount, watch } from 'vue'
 import { debounce } from 'lodash-es'
 import './style/index.js'
