@@ -2,11 +2,11 @@
 import { useI18n } from 'vue-i18n'
 import { useTarget } from '@Form/hooks/use-target'
 import utils, { addContext, deepClone } from '@/utils'
-import { DraggableWrap } from '../../FormContainer/DraggableWrap'
+import { DraggableWrap } from '@Form/components/FormContainer/DraggableWrap'
 import { inject, reactive, nextTick } from 'vue'
 
 import Icon from '@/assets'
-import ControlInsertionPlugin from '../../FormContainer/ControlInsertionPlugin'
+import ControlInsertionPlugin from '@Form/components/FormContainer/ControlInsertionPlugin'
 import { ElAside, ElScrollbar, ElMenu, ElSubMenu } from 'element-plus'
 import $style from './index.module.scss'
 import { RichFormProvider } from '@Form/types/rich-form'

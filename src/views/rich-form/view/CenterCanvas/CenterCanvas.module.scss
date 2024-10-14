@@ -13,9 +13,7 @@
   .editModel {
     height: calc(100% - 40px);
 
-    
-
-    &.#{$namespace}-Canves__mobile {
+    &.mobile {
       .el-scrollbar {
         width: 400px;
         margin: 0 auto;
@@ -32,7 +30,7 @@
     }
   }
 
-  @include e(container) {
+  .container {
     height: 100%;
     box-sizing: content-box;
   }
@@ -59,11 +57,4 @@
       }
     }
   }
-}
-
-.Everright-editor-Canvas-DropHere {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 60px;
 }

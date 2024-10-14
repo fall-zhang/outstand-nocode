@@ -72,7 +72,8 @@ function matches (el, selector:string) {
       } else if (el.webkitMatchesSelector) {
         return el.webkitMatchesSelector(selector)
       }
-    } catch (_) {
+    } catch (err) {
+      console.warn(err)
       return false
     }
   }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, ref, onMounted, inject, watch, computed, nextTick } from 'vue'
+import { reactive, ref, onMounted, inject, watch, nextTick } from 'vue'
 import { ElMessage } from 'element-plus'
 import { useI18n } from 'vue-i18n'
 import { useTarget } from '@Form/hooks/use-target'
@@ -20,9 +20,12 @@ const state = reactive({
   visible: false,
   value0: false,
   color: '',
-  defaultBackground: {}
+  defaultBackground: {
+    backgroundColor: '',
+    backgroundImage: '',
+  }
 })
-const ER = inject<RichFormProvider>('rich-form')
+const ER = inject<RichFormProvider>('rich-form')!
 const bgStatus = inject<Ref<boolean>>('rich-form-bg')!
 watch(bgStatus, (newVal) => {
   state.value0 = newVal
@@ -72,10 +75,8 @@ if (!target.value.style.background) {
 }
 if (!(!target.value.style.background.color && !target.value.style.background.image)) {
   if (target.value.style.background.color) {
-    // eslint-disable-next-line vue/no-setup-props-destructure
     state.defaultBackground.backgroundColor = target.value.style.background.color
   } else {
-    // eslint-disable-next-line vue/no-setup-props-destructure
     state.defaultBackground.backgroundImage = target.value.style.background.image
   }
   // if (target.value.style.isCustomBackground) {

@@ -83,7 +83,7 @@ const breadcrumbList = computed(() => {
   } else {
     result = nodes
   }
-  result = result.map(node => {
+  result = result.map((node: any) => {
     const result = {
       node,
       label: ''
@@ -101,7 +101,7 @@ const breadcrumbList = computed(() => {
   })
   return result
 })
-const handleBreadcrumbClick = (item: unknown, index: number) => {
+const handleBreadcrumbClick = (item: any, index: number) => {
   if (index !== breadcrumbList.value.length - 1 && item.node.value !== 'placeholder') {
     if (item !== 'root') {
       setSelection(item)

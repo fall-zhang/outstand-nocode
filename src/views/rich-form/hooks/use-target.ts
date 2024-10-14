@@ -66,8 +66,10 @@ export const useTarget = () => {
   )
   const isPC = computed(() => {
     return state.platform === 'pc'
-  }
-  )
+  })
+  const isDesktop = computed(() => {
+    return state.platform === 'desktop'
+  })
   const isEditModel = computed(() => {
     return ['edit', 'config'].includes(state.mode)
   }
@@ -88,6 +90,7 @@ export const useTarget = () => {
     isSelectTable,
     isSelectRoot,
     isPC,
+    isDesktop,
     isEditModel
   }
 }
