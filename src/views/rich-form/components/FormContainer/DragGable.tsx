@@ -1,7 +1,6 @@
 import {
   defineComponent,
   watch,
-  useAttrs,
   defineAsyncComponent,
   unref,
   inject,
@@ -10,7 +9,7 @@ import { useProps } from '@/hooks'
 import { useTarget } from '@Form/hooks/use-target'
 import _ from 'lodash-es'
 import LayoutGridLayout from '../FormContainer/GridLayout'
-import LayoutTabsLayout from './TabsLayout'
+import LayoutTabsLayout from './TabsLayout.vue'
 import LayoutCollapseLayout from './CollapseLayout'
 import LayoutTableLayout from './TableLayout'
 import LayoutInlineLayout from './InlineLayout'
@@ -34,8 +33,8 @@ export default defineComponent({
     },
     data: {
       require: true,
-      type: Object,
-      default: () => ({})
+      type: Array,
+      default: () => ([])
     },
     parent: {
       type: Object,
@@ -46,12 +45,12 @@ export default defineComponent({
       default: 'div'
     },
   },
-  setup (props) {
-    const ER = inject<RichFormProvider>('rich-form')
+  setup (props, { attrs }) {
+    const ER = inject<RichFormProvider>('rich-form')!
     const {
       state,
       isEditModel,
-      isPC,
+      isDesktop,
     } = useTarget()
     const handleMove = () => {
       return true
@@ -67,22 +66,22 @@ export default defineComponent({
     }
     const loadComponent = () => {
       let componentMap = {}
-      watch(() => state.platform, () => {
+      watch(() => ER.platform, () => {
         componentMap = {}
       })
-      return {
-        findComponent (type, element) {
-          let info = componentMap[type + element]
-          if (!info) {
-            info = componentMap[type + element] = defineAsyncComponent(() => import(`../${type}/${_.startCase(element)}/${state.platform}.vue`))
-          }
-          return info
+      return function findComponent ( element) {
+        console.log('🚀 ~ findComponent ~ element:', element)
+        console.log('🚀 ~ findComponent ~ type:', type)
+        let info = componentMap[type + element]
+        if (!info) {
+          info = componentMap[type + element] = defineAsyncComponent(() => import(`../FormTypes/${_.startCase(element)}/${ER.platform}.vue`))
         }
+        return info
       }
     }
-    const load = loadComponent()
+    const findComponent = loadComponent()
     const slots = {
-      item: ({ element }) => {
+      item: ({ element }:any) => {
         let node:JSX.Element|string = <></>
         switch (element.type) {
           case 'grid':
@@ -103,13 +102,13 @@ export default defineComponent({
           default:{
             let TypeComponent = ''
             if (unref(isEditModel) || get(state.fieldsLogicState.get(element), 'visible', undefined) !== 0) {
-              const typeProps = useProps(state, element, unref(isPC))
-              TypeComponent = load.findComponent('FormTypes', element.type)
+              const typeProps = useProps(state, element, unref(isDesktop))
+              TypeComponent = findComponent(element.type)
               const params = {
                 data: element,
                 parent: props.data
               }
-              if (unref(isPC)) {
+              if (unref(isDesktop)) {
                 node = (<Selection hasWidthScale hasCopy hasDel hasDrag hasMask { ...params }>
                   {
                     element.type !== 'divider'
@@ -159,7 +158,7 @@ export default defineComponent({
           move={handleMove}
           {...dragOptions}
           v-slots={slots}
-          componentData={useAttrs()}
+          componentData={attrs}
         >
         </DraggableWrap>
       )

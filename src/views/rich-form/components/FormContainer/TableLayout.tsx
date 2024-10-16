@@ -1,7 +1,7 @@
 import { defineComponent, useAttrs, unref } from 'vue'
 import { useTarget } from '@Form/hooks/use-target'
 import Selection from '@/views/rich-form/components/Selection/selectElement'
-import LayoutDragGable from './DragGable'
+import LayoutDraggable from './DragGable'
 import $style from './TableLayout.module.scss'
 const isTrTag = (tagName) => tagName.toLocaleLowerCase() === 'td'
 export default defineComponent({
@@ -13,9 +13,7 @@ export default defineComponent({
     parent: Array
   },
   setup (props) {
-    const {
-      isEditModel
-    } = useTarget()
+    const { isEditModel } = useTarget()
     return () => {
       const handleMousedown = (e, node) => {
         if (!isTrTag(e.target.tagName)) return false
@@ -63,7 +61,7 @@ export default defineComponent({
                       onMousemove={!rowIndex && unref(isEditModel) && handleMousemove}
                       width={element1.style && element1.style.width}
                     >
-                      <LayoutDragGable
+                      <LayoutDraggable
                         data-layout-type={'td'}
                         data={element1.list}
                         parent={element1}/>

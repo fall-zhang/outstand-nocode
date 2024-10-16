@@ -1,5 +1,5 @@
 import { defineComponent, watch, inject } from 'vue'
-import LayoutDragGable from './DragGable'
+import LayoutDraggable from './DragGable'
 import $style from './InlineLayout.module.scss'
 import { syncWidthByPlatform } from '@/utils'
 import { RichFormProvider } from '@Form/types/rich-form'
@@ -32,7 +32,7 @@ export default defineComponent({
       return (
         <div
           class={$style.inlineLayout}>
-          <LayoutDragGable
+          <LayoutDraggable
             data-layout-type={'inline'}
             class={''}
             {...dragOptions}

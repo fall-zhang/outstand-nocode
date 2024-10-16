@@ -329,7 +329,7 @@ const appendNodes = (node, dir, key) => {
     })
   }
 }
-export const addContext = (node, parent, fn) => {
+export const addContext = (node, parent, fn:any = null) => {
   let arr = []
   const isArray = Array.isArray(parent)
   if (isArray) {

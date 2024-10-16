@@ -1,6 +1,6 @@
 import { defineComponent, useAttrs } from 'vue'
 import Selection from '@/views/rich-form/components/Selection/selectElement'
-import LayoutDragGable from './DragGable'
+import LayoutDraggable from './DragGable'
 import { ElTabs } from 'element-plus'
 import $style from './TabsLayout.module.scss'
 export default defineComponent({
@@ -34,7 +34,7 @@ export default defineComponent({
                 class={$style.area}
                 tag='el-tab-pane' label={element.label} name={element.value} data={element} parent={props.data}
               >
-                <LayoutDragGable
+                <LayoutDraggable
                   data-layout-type={'tabs-col'}
                   data={element.list}
                   ControlInsertion={true}

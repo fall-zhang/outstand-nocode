@@ -1,6 +1,6 @@
 import { defineComponent, useAttrs } from 'vue'
 import Selection from '@/views/rich-form/components/Selection/selectElement'
-import LayoutDragGable from './DragGable'
+import LayoutDraggable from './DragGable'
 import { ElRow } from 'element-plus'
 import $style from './GridLayout.module.scss'
 export default defineComponent({
@@ -27,7 +27,8 @@ export default defineComponent({
           align: props.data.options.align
         }} class={$style.gridLayoutArea}>
           {
-            props.data.columns.map((element, index) => {
+            props.data.columns.map((element:any) => {
+              console.log('🚀 ~ props.data.columns.map ~ element:', element)
               return (
                 <Selection
                   key={element.id}
@@ -45,7 +46,7 @@ export default defineComponent({
                   data={element}
                   parent={props.data.columns}
                 >
-                  <LayoutDragGable
+                  <LayoutDraggable
                     data={element.list}
                     data-layout-type={'grid-col'}
                     parent={element}

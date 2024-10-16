@@ -123,9 +123,7 @@ const addValidate = (result, node, isPC, t) => {
   result.rules = [obj]
 }
 export const useProps = (state, data, isPC = true, isRoot = false, specialHandling?:unknown) => {
-  const {
-    t
-  } = useI18n()
+  const { t } = useI18n()
   return computed(() => {
     let node = isRoot ? data.config : data
     let result = {}
@@ -143,9 +141,7 @@ export const useProps = (state, data, isPC = true, isRoot = false, specialHandli
     if (isRef(data)) {
       node = data.value
     }
-    const {
-      options
-    } = node
+    const { options } = node
     result = {
       label: options.isShowLabel ? node.label : '',
       disabled: options.disabled,
