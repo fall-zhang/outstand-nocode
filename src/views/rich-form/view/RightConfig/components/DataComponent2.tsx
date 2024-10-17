@@ -1,8 +1,7 @@
 import { defineComponent, nextTick } from 'vue'
-import utils from '@/utils'
+import utils, { deepClone } from '@/utils'
 import { useI18n } from 'vue-i18n'
 import { useTarget } from '@Form/hooks/use-target'
-import _ from 'lodash-es'
 import nzhcn from 'nzh/cn'
 import { ElButton, ElIcon, ElInput, ElScrollbar } from 'element-plus'
 import $style from './DataComponents.module.scss'
@@ -52,7 +51,7 @@ export default defineComponent({
     if (state.mode === 'config') {
       this.data[0] = target.value.options.data = target.value.options.data || [...utils.generateOptions(3)]
     } else {
-      this.data[0] = _.cloneDeep(state.data[target.value.options.dataKey].list)
+      this.data[0] = deepClone(state.data[target.value.options.dataKey].list)
     }
     this.shows[0] = true
   },
@@ -60,7 +59,7 @@ export default defineComponent({
     getData () {
       return new Promise((resolve, reject) => {
         resolve({
-          data: _.cloneDeep(this.data[0])
+          data: deepClone(this.data[0])
         })
       })
     }

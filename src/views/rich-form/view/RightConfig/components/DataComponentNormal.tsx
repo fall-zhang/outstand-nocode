@@ -11,7 +11,7 @@ import { DraggableWrap } from '@Form/components/FormContainer/DraggableWrap'
 import _ from 'lodash-es'
 import { ElCheckbox, ElCheckboxGroup, ElForm, ElFormItem, ElScrollbar, ElInput, ElButton } from 'element-plus'
 import $style from './DataComponents.module.scss'
-import { deepClone } from '@/utils/utils'
+import { deepClone, intersection } from '@/utils/utils'
 export default defineComponent({
   name: 'ConfigData1',
   inheritAttrs: false,
@@ -63,12 +63,12 @@ export default defineComponent({
       return new Promise((resolve, reject) => {
         this.$refs.form.validate((valid) => {
           if (valid) {
-            const result = {
+            const result:any = {
               data: deepClone(this.data),
-              defaultValue: ''
+              defaultValue: []
             }
             if (this.isMultiple) {
-              result.defaultValue = _.intersection(result.data.map(e => e.value), unref(this.checkList))
+              result.defaultValue = intersection(result.data.map(e => e.value), unref(this.checkList))
             } else if (result.data.find((item:any) => item.value === unref(this.checkList)[0]) !== -1) {
               result.defaultValue = unref(this.checkList)[0]
             }

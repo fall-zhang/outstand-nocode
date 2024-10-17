@@ -1,23 +1,22 @@
-<script>
-import utils from '@/utils'
+<script setup lang="ts">
+import { addContext } from '@/utils'
 import { useI18n } from 'vue-i18n'
 import { useTarget } from '@Form/hooks/use-target'
 import { unref } from 'vue'
 import { DraggableWrap } from '@Form/components/FormContainer/DraggableWrap'
 import Icon from '@/assets'
-export default {
+import { renderFieldData } from '@/utils/field'
+defineOptions({
   name: 'ConfigData3'
-}
-</script>
-<script setup>
+})
 const { target } = useTarget()
 const { t } = useI18n()
-const addTab = (type) => {
-  const data = utils.renderFieldData(`${target.value.type}Col`)
+const addTab = () => {
+  const data = renderFieldData(`${target.value.type}Col`)
   data.label = `Tab ${unref(target).columns.length + 1}`
   // console.log(unref(target))
   unref(target).columns.push(data)
-  utils.addContext(data, target.value)
+  addContext(data, target.value)
 }
 </script>
 <template>

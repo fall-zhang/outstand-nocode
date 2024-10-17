@@ -1,36 +1,27 @@
-<script>
+<script setup lang="ts">
 import TypeComponent from './TypeComponent.vue'
 import { useTarget } from '@Form/hooks/use-target'
 
 import { useI18n } from 'vue-i18n'
 
 import Icon from '@/assets'
-import _ from 'lodash-es'
-export default {
+defineOptions({
   name: 'ConfigBorder',
   inheritAttrs: false,
   customOptions: {}
-}
-</script>
-<script setup>
-const {
-  target,
-  checkTypeBySelected
-} = useTarget()
-const {
-  t
-} = useI18n()
-
-const borderActions = new Array(8).fill('tableStokeP').map((e, i) => {
-  return {
-    value: i,
-    icon: e + (i + 1)
-  }
 })
+const { target, checkTypeBySelected } = useTarget()
+const { t } = useI18n()
+
+const borderActions = new Array(8).fill('tableStokeP').map((e, i) => ({
+  value: i,
+  icon: e + (i + 1)
+}))
 if (checkTypeBySelected(['table'])) {
-  if (!_.has(target.value.style, 'borderColor') || !_.has(target.value.style, 'borderWidth') || !_.has(target.value.style, 'borderType')) {
-    target.value.style.borderColor = '#000'
-    target.value.style.borderWidth = target.value.style.borderType = 1
+  const selected = target.value
+  if (!selected.style?.borderColor || !selected.style?.borderWidth || !selected.style?.borderType) {
+    selected.style.borderColor = '#000'
+    selected.style.borderWidth = selected.style.borderType = 1
   }
 } else if (!target.value.style.border) {
   target.value.style.borderRadius = 0
@@ -41,7 +32,7 @@ if (checkTypeBySelected(['table'])) {
   }
 }
 
-const handleTypeListener = ({ property, data }) => {
+const handleTypeListener = ({ property, data }: any) => {
   if (property === 'borderType') {
     target.value.style.borderType = data.value
   }
@@ -50,8 +41,8 @@ const handleTypeListener = ({ property, data }) => {
 <template>
   <div class="ConfigBorder">
     <div v-if="checkTypeBySelected(['table'])">
-      <TypeComponent @listener="handleTypeListener" property="borderType" :height="30"
-        :fontSize="18" :val="target.style.borderType" :nodes="borderActions" />
+      <TypeComponent @listener="handleTypeListener" property="borderType" :height="30" :fontSize="18"
+        :val="target.style.borderType" :nodes="borderActions" label="" />
       <el-row justify="space-between" align="middle">
         <el-col :span="5">
           <el-color-picker v-model="target.style.borderColor" />
@@ -97,6 +88,7 @@ const handleTypeListener = ({ property, data }) => {
   .borderStyle {
     display: flex;
     justify-content: space-around;
+
     li {
       width: 32px;
       height: 32px;
@@ -106,7 +98,9 @@ const handleTypeListener = ({ property, data }) => {
       align-items: center;
       border: 1px solid #F2F6FC;
       border-radius: 4px;
-      &:hover,&.active {
+
+      &:hover,
+      &.active {
         border-color: $primary-color;
       }
     }
