@@ -1,7 +1,7 @@
 // 左侧功能面板
 import { useI18n } from 'vue-i18n'
 import { useTarget } from '@Form/hooks/use-target'
-import utils, { addContext, deepClone } from '@/utils'
+import { addContext, deepClone } from '@/utils'
 import { DraggableWrap } from '@Form/components/FormContainer/DraggableWrap'
 import { inject, reactive, nextTick } from 'vue'
 
@@ -10,6 +10,7 @@ import ControlInsertionPlugin from '@Form/components/FormContainer/ControlInsert
 import { ElAside, ElScrollbar, ElMenu, ElSubMenu } from 'element-plus'
 import $style from './index.module.scss'
 import { RichFormProvider } from '@Form/types/rich-form'
+import { fieldLabel } from '@/utils/field'
 export default defineComponent({
   name: 'FeFields',
   inheritAttrs: false,
@@ -25,7 +26,7 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const ER = inject<RichFormProvider>('rich-form')
+    const ER = inject<RichFormProvider>('rich-form')!
     const {
       t
     } = useI18n()
@@ -33,29 +34,20 @@ export default defineComponent({
       state,
       setSelection
     } = useTarget()
-    const addStore = (element) => {
+    const addStore = (element:any) => {
       const newElement = reactive(ER?.handler.wrapElement(deepClone(element), {}))
       state.store.push(newElement)
       addContext(newElement, state.store)
-      nextTick(() => {
-        setSelection(newElement)
-        setTimeout(() => {
-          ER.canvasScrollRef.value.setScrollTop(ER.canvasScrollRef.value.wrapRef.scrollHeight)
-        }, 100)
-      })
+      setSelection(newElement)
+      // nextTick(() => {
+      //   setTimeout(() => {
+      //     ER.canvasScrollRef.value.setScrollTop(ER.canvasScrollRef.value.wrapRef.scrollHeight)
+      //   }, 100)
+      // })
     }
-    const slots = {
-      item: ({ element }) => {
-        return (
-          <li onClick={() => addStore(element)}>
-            <Icon class={$style.icon} icon={element.icon}></Icon>
-            <span>{utils.fieldLabel(t, element)}</span>
-          </li>
-        )
-      }
-    }
-    const handleClone = (element) => {
-      return deepClone(element)
+    const handleClone = (element:any) => {
+      console.log('🚀 ~ handleClone ~ element:', element)
+      // return deepClone(element)
     }
     const handleMove = () => {
       return true
@@ -69,8 +61,7 @@ export default defineComponent({
     }
 
     return () => (<ElAside class={$style.Fields} width={ER.config.fieldsPanelWidth}>
-      <ElMenu
-        default-openeds={ER.config.fieldsPanelDefaultOpened}>
+      <ElMenu default-openeds={ER.config.fieldsPanelDefaultOpened}>
         {ER.fieldsList.map((element, index) => (
           <ElSubMenu
             index={element.id}
@@ -78,25 +69,31 @@ export default defineComponent({
               title() {
                 return t(`rf.fields.${element.id}`)
               },
-              default() {
-                return (
-                  <DraggableWrap
-                    class={$style.dragContent}
-                    list={element.list}
-                    clone={handleClone}
-                    tag="ul"
-                    sort={false}
-                    move={handleMove}
-                    {...dragOptions}
-                    group={
-                      { name: 'er-Canvas', pull: 'clone', put: false }
-                    }
-                    item-key="null"
-                    v-slots={slots}
-                  >
-                  </DraggableWrap>
-                )
-              }
+              default: () => (<DraggableWrap
+                class={$style.dragContent}
+                list={element.list}
+                clone={handleClone}
+                tag="ul"
+                sort={false}
+                move={handleMove}
+                {...dragOptions}
+                group={
+                  { name: 'er-Canvas', pull: 'clone', put: false }
+                }
+                item-key="null"
+                v-slots={{
+                  item: ({ element }:any) => {
+                    return (
+                      <li onClick={() => addStore(element)}>
+                        <Icon class={$style.icon} icon={element.icon}></Icon>
+                        <span>{fieldLabel(t, element)}</span>
+                      </li>
+                    )
+                  }
+                }}
+              >
+              </DraggableWrap>
+              )
             }}
           >
           </ElSubMenu>

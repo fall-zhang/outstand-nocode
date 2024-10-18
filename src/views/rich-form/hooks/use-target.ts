@@ -21,29 +21,34 @@ export const useTarget = () => {
     return selected.type === 'root'
   }
   )
+  const selectedType = computed(() => {
+    return selected.type
+  })
   const type = computed(() => {
     return state.selected.type
   })
   const isSelectField = computed(() => {
-    return checkIsField(state.selected)
+    return checkIsField(selected.type !== 'root')
   }
   )
   const target = computed(() => {
     return state.selected
-  }
-  )
+  })
   const col = computed(() => {
     return !isEmpty(state.selected) && state.selected.context.col
-  }
-  )
+  })
+  /**
+   * 当前选中的类型是否在 node 中
+   */
   const checkTypeBySelected = (nodes:string[], propType?:unknown) => {
     let result = false
     if (!isEmpty(state.selected)) {
-      if (type.value) {
-        const fn = handler.checkPropsBySelected(state.selected, propType)
-        result = fn !== undefined ? fn : nodes.includes(type.value)
+      if (selectedType.value) {
+        // const fn = handler.checkPropsBySelected(state.selected, propType)
+        // result = fn !== undefined ? fn : nodes.includes(selectedType.value)
+        result = nodes.includes(selectedType.value)
       } else {
-        result = nodes.includes(type.value)
+        result = nodes.includes(selectedType.value)
       }
     }
     return result
@@ -78,6 +83,7 @@ export const useTarget = () => {
     state,
     setSelection,
     type,
+    selectedType,
     col,
     selection,
     isSelectAnyElement,

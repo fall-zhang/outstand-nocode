@@ -1,5 +1,5 @@
 <script setup>
-import { unref, inject } from 'vue'
+import { unref } from 'vue'
 import { useTarget } from '@Form/hooks/use-target'
 defineOptions({
   name: 'CompleteButton'
@@ -16,7 +16,7 @@ const props = defineProps({
 })
 const {
   state,
-  isPC
+  isDesktop
 } = useTarget()
 const handleClick = async (type) => {
   if (props.mode === 'preview') return false
@@ -28,7 +28,7 @@ const handleClick = async (type) => {
 }
 </script>
 <template>
-  <div v-if="isPC" style="text-align: center;">
+  <div v-if="isDesktop" style="text-align: center;">
     <el-button @click="handleClick" :color="state.config[state.platform].completeButton.backgroundColor" type="primary">
       <span :style="{ color: state.config[state.platform].completeButton.color }">{{
         state.config[state.platform].completeButton.text }}</span>

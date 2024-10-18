@@ -85,3 +85,22 @@ export const set = <T>(obj:any, path:string|string[], value:T) => {
     return acc[key]
   }, obj)
 }
+
+
+/**
+ * 获取所有数组中都包含的内容
+ * ([2, 1], [4, 2], [1, 2]) => [2]
+ */
+export function intersection(...arr:Array<unknown[]>) {
+  let firstArr = arr[0]
+  arr.forEach(item1 => {
+    const newArr:unknown[] = []
+    item1.forEach(item2 => {
+      if (firstArr.includes(item2)) {
+        newArr.push(item2)
+      }
+    })
+    firstArr = newArr
+  })
+  return firstArr
+}

@@ -13,7 +13,7 @@ export default function generatorData(node:any, {
       ]
     }
     : node
-  const result = wrapElement(newNode, !!eachBack)
+  const result = wrapElement(newNode)
   if (isCreateLabel) {
     node.label = transferData(lang, transferLabelPath(node), '')
     if (['select', 'cascader', 'region', 'date', 'time'].includes(node.type)) {

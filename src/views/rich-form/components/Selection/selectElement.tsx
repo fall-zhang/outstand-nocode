@@ -18,6 +18,7 @@ import _ from 'lodash-es'
 import Icon from '@/assets'
 import $style from './SelectElement.module.scss'
 import { ElDropdownMenu, ElDropdownItem, ElDropdown } from 'element-plus'
+import { RichFormProvider } from '../../types/rich-form'
 export default defineComponent({
   name: 'SelectElement',
   inheritAttrs: false,
@@ -72,10 +73,26 @@ export default defineComponent({
     hasAddCol: {
       type: Boolean,
       default: false
+    },
+    span: {
+      type: Number,
+      default: 0
+    },
+    offset: {
+      type: Number,
+      default: 0
+    },
+    pull: {
+      type: Number,
+      default: 0
+    },
+    label: {
+      type: String,
+      default: ''
     }
   },
   setup(props, { slots }) {
-    const ER = inject('rich-form')
+    const ER = inject<RichFormProvider>('rich-form')!
     const { t } = useI18n()
     const isHover = ref(false)
     const isInlineChildren = checkIslineChildren(props.data)
@@ -84,12 +101,11 @@ export default defineComponent({
       setSelection,
       state,
       isEditModel,
-      isPC
     } = useTarget()
     const id = useCss(props.data, state.platform)
     const isWarning = ref(false)
     const isField = checkIsField(props.data)
-    const handleClick = (e) => {
+    const handleClick = () => {
       setSelection(props.data)
     }
     if (props.data.type && isField) {
@@ -265,6 +281,10 @@ export default defineComponent({
     const isShowCopy = computed(() => isInlineChildren ? props.hasCopy && props.data.context.parent.columns.length < ER.config.inlineMax : props.hasCopy)
     return () => (<TagComponent
       {...useAttrs()}
+      span={props.span}
+      label={props.label}
+      offset={props.offset}
+      pull={props.pull}
       class={[
         id.value,
         $style.selectElement,
