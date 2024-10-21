@@ -1,3 +1,4 @@
+
 import {
   defineComponent,
   resolveComponent,
@@ -52,59 +53,33 @@ export const DraggableWrap = defineComponent({
   components: {
     VueDraggable
   },
-  // setup(props, { slots, attrs }) {
-  //   const { isEditModel } = useTarget()
-  //   let node: JSX.Element = <></>
-  //   if (unref(isEditModel)) {
-  //     node = (
-  //       <VueDraggable
-  //         {...attrs} {...props}>
-  //         {slots}
-  //       </VueDraggable>
-  //     )
-  //   } else {
-  //     const tagName = attrs.tag as string
-  //     const RecTag = isHTMLTag(tagName) ? tagName : resolveComponent(tagName)
-  //     const { item } = slots
-  //     node = (
-  //       <RecTag {...attrs.componentData}>
-  //         {attrs.list.map(e => {
-  //           return item({
-  //             element: e
-  //           })
-  //         })}
-  //       </RecTag>
-  //     )
-  //   }
-  //   return () => node
-  // }
   setup(props, { attrs }) {
-    const { isEditModel } = useTarget()
+    console.log("🚀 ~ setup ~ props:", props.tag)
+    // const node = <></>
     const slots = useSlots()
-    let node: JSX.Element = <></>
-    if (unref(isEditModel)) {
-      node = (
-        <VueDraggable
-          {...attrs} {...props}>
-          {slots}
-        </VueDraggable>
-      )
-    } else {
-      const tagName = attrs.tag as string
-      const { item } = slots
-      if (!item) return '请添加 item 作为插槽'
-      let RecTag = <></>
-      if (isHTMLTag(tagName)) {
-        RecTag = h(tagName, { ...props.componentData }, () => props.list.map(listItem => item({
-          element: listItem
-        })))
-      } else {
-        RecTag = h(resolveComponent(tagName), { ...props.componentData }, () => props.list.map(listItem => item({
-          element: listItem
-        })))
-      }
-      node = RecTag
-    }
-    return () => node
+    // const { isEditModel } = useTarget()
+    // if (unref(isEditModel)) {
+    // } else {
+    //   const tagName = props.tag as string
+    //   const { item } = slots
+    //   if (!item) return '请添加 item 作为插槽'
+    //   let RecTag = <></>
+    //   if (isHTMLTag(tagName)) {
+    //     RecTag = h(tagName, { ...props.componentData }, () => props.list.map(listItem => item({
+    //       element: listItem
+    //     })))
+    //   } else {
+    //     RecTag = h(resolveComponent(tagName), { ...props.componentData }, () => props.list.map(listItem => item({
+    //       element: listItem
+    //     })))
+    //   }
+    //   node = RecTag
+    // }
+    return () => (
+      <VueDraggable
+        {...attrs} {...props}>
+        {slots}
+      </VueDraggable>
+    )
   }
 })

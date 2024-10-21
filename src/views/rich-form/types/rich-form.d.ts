@@ -54,6 +54,7 @@ export type GlobalConfig = {
 
 
 export type RichFormProvider = {
+  lang:'zh'
   // 左侧菜单的配置
   fieldsList:any[]
   // 配置好的内容

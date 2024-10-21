@@ -7,7 +7,7 @@
           {{ t(`rf.fields.${element.id}`) }}
         </template>
         <DraggableWrap :class="$style.dragContent" :list="element.list" :clone="handleClone" tag="ul" :sort="false"
-          :move="handleMove" v-bind="dragOptions" :group="{ name: 'er-Canvas', pull: 'clone', put: false }"
+          :move="handleMove" v-bind="dragOptions" :group="{ name: 'nocode-form', pull: 'clone', put: false }"
           item-key="null">
           <template #item="{ element }">
             <li @click="() => addStore(element)">
@@ -35,10 +35,6 @@ import $style from './index.module.scss'
 import { RichFormProvider } from '@Form/types/rich-form'
 import { fieldLabel } from '@/utils/field'
 defineProps({
-  type: {
-    type: Number,
-    default: 1
-  },
   visible: {
     type: Boolean,
     default: false
@@ -46,10 +42,7 @@ defineProps({
 })
 const ER = inject<RichFormProvider>('rich-form')!
 const { t } = useI18n()
-const {
-  state,
-  setSelection
-} = useTarget()
+const { state, setSelection } = useTarget()
 const addStore = (element: any) => {
   const newElement = reactive(ER?.handler.wrapElement(deepClone(element), {}))
   state.store.push(newElement)
@@ -57,12 +50,14 @@ const addStore = (element: any) => {
   setSelection(newElement)
   // nextTick(() => {
   //   setTimeout(() => {
+  //     // 跳转到最后拖拽的元素
   //     ER.canvasScrollRef.value.setScrollTop(ER.canvasScrollRef.value.wrapRef.scrollHeight)
   //   }, 100)
   // })
 }
 const handleClone = (element: any) => {
   console.log('🚀 ~ handleClone ~ element:', element)
+  return deepClone(element)
 }
 const handleMove = () => {
   return true

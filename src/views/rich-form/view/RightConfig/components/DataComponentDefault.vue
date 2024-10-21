@@ -1,4 +1,3 @@
-// 原 DataComponent1
 <template>
   <div>
     {{ 'DataComponent1 --- DataComponentDefault' }}

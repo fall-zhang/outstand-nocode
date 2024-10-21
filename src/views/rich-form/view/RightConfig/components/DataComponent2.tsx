@@ -21,27 +21,6 @@ export default defineComponent({
     }
   },
   computed: {
-    isMultiple () {
-      let result = false
-      const {
-        target,
-        type
-      } = useTarget()
-      switch (type.value) {
-        case 'checkbox':
-          result = true
-          break
-        case 'select':
-        case 'cascader':
-          result = target.value.options.multiple
-          break
-        case 'tabs':
-        case 'radio':
-          result = false
-          break
-      }
-      return result
-    }
   },
   created () {
     const {

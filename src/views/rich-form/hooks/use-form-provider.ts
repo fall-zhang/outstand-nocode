@@ -3,6 +3,7 @@ import { RichFormProvider } from '../types/rich-form'
 
 export const useFormProvider = () => {
   return inject<RichFormProvider>('rich-form', {
+    lang: 'zh',
     fieldsList: [],
     store: [],
     canvasScrollRef: {

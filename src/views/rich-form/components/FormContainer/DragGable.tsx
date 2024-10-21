@@ -58,7 +58,7 @@ export default defineComponent({
     const dragOptions = {
       swapThreshold: 1,
       group: {
-        name: 'er-Canvas'
+        name: 'nocode-form'
       },
       parent: props.parent,
       plugins: [ControlInsertionPlugin(ER)],
@@ -69,12 +69,11 @@ export default defineComponent({
       watch(() => ER.platform, () => {
         componentMap = {}
       })
-      return function findComponent ( element) {
-        console.log('🚀 ~ findComponent ~ element:', element)
+      return function findComponent (type:string) {
         console.log('🚀 ~ findComponent ~ type:', type)
-        let info = componentMap[type + element]
+        let info = componentMap[type]
         if (!info) {
-          info = componentMap[type + element] = defineAsyncComponent(() => import(`../FormTypes/${_.startCase(element)}/${ER.platform}.vue`))
+          info = componentMap[type] = defineAsyncComponent(() => import(`../FormTypes/${_.startCase(element)}/${ER.platform}.vue`))
         }
         return info
       }
@@ -104,12 +103,8 @@ export default defineComponent({
             if (unref(isEditModel) || get(state.fieldsLogicState.get(element), 'visible', undefined) !== 0) {
               const typeProps = useProps(state, element, unref(isDesktop))
               TypeComponent = findComponent(element.type)
-              const params = {
-                data: element,
-                parent: props.data
-              }
               if (unref(isDesktop)) {
-                node = (<Selection hasWidthScale hasCopy hasDel hasDrag hasMask { ...params }>
+                node = (<Selection hasWidthScale hasCopy hasDel hasDrag hasMask data={element} parent={props.data}>
                   {
                     element.type !== 'divider'
                       ? (<el-form-item
@@ -122,7 +117,7 @@ export default defineComponent({
                 </Selection>
                 )
               } else {
-                node = (<Selection hasWidthScale hasCopy hasDel hasDrag hasMask { ...params }>
+                node = (<Selection hasWidthScale hasCopy hasDel hasDrag hasMask data={element} parent={props.data}>
                   <TypeComponent data={element} params={typeProps.value}></TypeComponent>
                 </Selection>
                 )

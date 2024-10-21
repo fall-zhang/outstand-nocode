@@ -305,8 +305,7 @@ const resetStates = () => {
   prevEl = prevSortable = insertColIndex = insertRowIndex = ''
 }
 function ControlInsertionPlugin (ER:RichFormProvider) {
-  function ControlInsertion (sortable) {
-  }
+  function ControlInsertion (sortable) { }
   ControlInsertion.prototype = {
     dragStart (e) {
     },

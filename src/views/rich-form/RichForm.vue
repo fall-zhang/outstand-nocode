@@ -3,7 +3,7 @@ import './theme/index.scss'
 import { ClickOutside as vClickOutside, ElMessage } from 'element-plus'
 import { reactive, nextTick, watch } from 'vue'
 import IconTooltip from '@/components/more-layer/tooltip/IconTooltip.vue'
-import FieldsPanel from './view/LeftFields/LeftFields'
+import FieldsPanel from './view/LeftFields/LeftFields.vue'
 import CanvasPanel from './view/CenterCanvas/CenterCanvas'
 import ConfigPanel from './view/RightConfig/ConfigPanel.vue'
 import DeviceSwitch from './components/DeviceSwitch.vue'
@@ -202,6 +202,7 @@ function onCollapseRight() {
 const canvasScrollRef = ref()
 
 const state = reactive<RichFormProvider>({
+  lang: 'zh',
   state: {
     selected: {},
     mode: 'edit',

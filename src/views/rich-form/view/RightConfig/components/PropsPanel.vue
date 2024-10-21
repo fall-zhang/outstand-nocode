@@ -2,7 +2,7 @@
 <script setup lang="ts">
 import { ElMessage } from 'element-plus'
 import { ref, computed, unref, onMounted, inject } from 'vue'
-import utils, { checkIdExistInLogic, removeLogicDataById } from '@/utils'
+import { checkIdExistInLogic, removeLogicDataById, syncWidthByPlatform, checkIslineChildren } from '@/utils'
 import { useI18n } from 'vue-i18n'
 import { useProps } from '@/hooks'
 import { useTarget } from '@Form/hooks/use-target'
@@ -13,9 +13,9 @@ import RadioButton from './RadioButton.vue'
 import PanelItemBorder from './BorderComponent.vue'
 import PanelItemLimit from './LimitComponent.vue'
 import PanelItemAllSide from './AllsidesComponent.vue'
-import PanelsConfigComponentsBackgroundComponent from './BackgroundComponent.vue'
-import PanelsConfigComponentsDataComponent1 from './DataComponent1'
-import PanelsConfigComponentsDataComponent2 from './DataComponent2'
+import PanelItemBackground from './BackgroundComponent.vue'
+import DataComponentDefault from './DataComponentDefault.vue'
+import DataComponentCascader from './DataComponentCascader.vue'
 import PanelsConfigComponentsDataComponent3 from './DataComponent3.vue'
 import { ArrowDown } from '@icon-park/vue-next'
 import Icon from '@/assets'
@@ -276,17 +276,9 @@ const options10 = computed(() => {
     }
   ]
 })
-const typeProps = useProps(state, target, true, false, (type, props) => {
-  switch (type) {
-    case 'time':
-    case 'cascader':
-    case 'number':
-    case 'date':
-    case 'rate':
-    case 'switch':
-    case 'slider':
-      delete props.disabled
-      break
+const typeProps = useProps(state, target, true, false, (type: string, props) => {
+  if (type === 'slider') {
+    delete props.disabled
   }
 })
 const checkLogicData = () => {
@@ -300,7 +292,7 @@ const checkLogicData = () => {
     removeLogicDataById(target.value.id, state.logic)
   }
 }
-const handleChange0 = (value) => {
+const handleChange0 = (value: string) => {
   checkLogicData()
   if (/^(dates|datarange)$/.test(value)) {
     target.value.options.defaultValue = []
@@ -325,7 +317,7 @@ const handleMultipleChange = (value) => {
 }
 const onConfirmDialog = () => {
   if (state.mode === 'config') {
-    unref(dataRef).getData().then(({ data }) => {
+    unref(dataRef).getData().then(() => {
       dialogVisible.value = false
     })
     return false
@@ -351,7 +343,7 @@ const handleTypeListener = ({ property, data }) => {
     case 'width':
       // eslint-disable-next-line
       const val = Number((eval(data.value) * 100).toFixed(2))
-      utils.syncWidthByPlatform(target.value, state.platform, false, val)
+      syncWidthByPlatform(target.value, state.platform, false, val)
       break
     case 'type':
       target.value.options.type = data.value
@@ -430,7 +422,7 @@ onMounted(() => {
         <el-cascader v-model="target.options.defaultValue" v-bind="typeProps" clearable style="width: 100%;" />
       </template>
       <template v-else-if="checkTypeBySelected(['textarea'], 'defaultValue')">
-        <el-input type="textarea" rows="4" v-model="target.options.defaultValue" />
+        <el-input type="textarea" :rows="4" v-model="target.options.defaultValue" />
       </template>
       <template v-else-if="checkTypeBySelected(['input', 'divider'], 'defaultValue')">
         <el-input v-model="target.options.defaultValue" clearable />
@@ -566,7 +558,7 @@ onMounted(() => {
         <el-option v-for="item in options8" :key="item.value" :label="item.label" :value="item.value" />
       </el-select>
     </RadioButton>
-    <RadioButton v-if="utils.checkIslineChildren(target) && target.context.parent.columns.length !== 4"
+    <RadioButton v-if="checkIslineChildren(target) && target.context.parent.columns.length !== 4"
       @listener="handleTypeListener" property="width" :label="t('rf.public.width')" :height="40" :fontSize="28"
       :nodes="options1" />
     <PanelItemCheckbox v-if="checkTypeBySelected(['input', 'textarea'], 'isShowTrim')"
@@ -642,7 +634,7 @@ onMounted(() => {
         </div>
       </template>
       <template #content>
-        <PanelsConfigComponentsBackgroundComponent />
+        <PanelItemBackground />
       </template>
     </PanelItemCollapse>
     <PanelItemCollapse
@@ -705,9 +697,9 @@ onMounted(() => {
   </div>
   <el-dialog v-model="dialogVisible" :title="t('rf.public.dataEntry')" :destroy-on-close="true"
     :close-on-click-modal="false" :close-on-press-escape="false" append-to-body width="80%" draggable>
-    <PanelsConfigComponentsDataComponent2 v-if="checkTypeBySelected(['cascader'], 'data2')" ref="dataRef">
-    </PanelsConfigComponentsDataComponent2>
-    <PanelsConfigComponentsDataComponent1 v-else ref="dataRef" />
+    <DataComponentCascader v-if="checkTypeBySelected(['cascader'], 'data2')" ref="dataRef">
+    </DataComponentCascader>
+    <DataComponentDefault v-else ref="dataRef" />
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="onCloseDialog()">

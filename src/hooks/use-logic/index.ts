@@ -5,14 +5,14 @@ import customParseFormat from 'dayjs/plugin/customParseFormat.js'
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter.js'
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore.js'
 import utils from '@/utils'
-import { get } from '@/utils/utils'
+import { get, intersection } from '@/utils/utils'
 dayjs.extend(customParseFormat)
 dayjs.extend(isSameOrAfter)
 dayjs.extend(isSameOrBefore)
 const findValidityRule = (state) => {
   const result = {}
   for (const logicType in state.logic) {
-    const rules = []
+    const rules:any = []
     get(state.logic, `${logicType}`, []).forEach(filter => {
       rules.push({
         if: get(filter, 'ifRules.filters[0]', {}),
@@ -67,7 +67,7 @@ const contains = (logicValue, value, field) => {
     return logicValue.some((v) => _.includes(value, v))
   }
   if (_.isArray(value)) {
-    return !!_.intersection(field.type === 'date' ? logicValue.value : logicValue, value).length
+    return !!intersection(field.type === 'date' ? logicValue.value : logicValue, value).length
   }
 }
 const notContains = (...e) => {
@@ -125,7 +125,7 @@ const between = (logicValue, value, field) => {
   return lte(max, value, field) && gte(min, value, field)
 }
 const oneOf = (logicValue, value, field) => {
-  return !!_.intersection(logicValue, [value]).length
+  return !!intersection(logicValue, [value]).length
 }
 const notOneOf = (...e) => {
   return !oneOf(...e)
