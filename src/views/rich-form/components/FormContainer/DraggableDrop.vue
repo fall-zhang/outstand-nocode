@@ -1,9 +1,9 @@
 <!-- 将内容拖拽到的位置 -->
 <template>
   <DraggableWrap handle=".handle" :class="[$style.DragGableLayout, unref(isEditModel) &&
-    $style.edit]" :tag="tag" item-key="id" :move="handleMove" v-bind="dragOptions" :componentData="$attrs">
+    $style.edit]" :tag="tag" item-key="id" :move="handleMove" v-bind="dragOptions" :componentData="$attrs"
+    @change="onDrag">
     <template #item="{ element }">
-      {{ element }}
       <LayoutGridLayout v-if="element.type === 'grid'" :data="element" :parent="data">
       </LayoutGridLayout>
       <LayoutTableLayout v-else-if="element.type === 'table'" :data="element" :parent="data">
@@ -14,23 +14,33 @@
       </LayoutCollapseLayout>
       <LayoutInlineLayout v-else-if="element.type === 'inline'" :data="element" :parent="data">
       </LayoutInlineLayout>
-      <template v-else>
-        <!-- if (unref(isEditModel) || get(state.fieldsLogicState.get(element), 'visible', undefined) !== 0) { -->
-        <Selection v-if="isDesktop" hasWidthScale hasCopy hasDel hasDrag hasMask :data="element" :parent="props.data">
-          <component :is="findComponent(element.type)" v-if="element.type === 'divider'" :data="element"
-            :params="useProps(state, element, unref(isDesktop)).value">
+      <Selection v-else hasWidthScale hasCopy hasDel hasDrag hasMask :data="element" :parent="props.data">
+        <!-- state.fieldsLogicState.get(element), 'visible', undefined) !== 0 -->
+        <template v-if="isDesktop">
+          <component :is="findComponent(element.type)" v-if="element.type === 'divider'" :data="element" :params="useProps({
+            state,
+            data: element,
+            isDesktop: unref(isDesktop)
+          })">
           </component>
-          <el-form-item v-else v-bind="useProps(state, element, unref(isDesktop)).value">
-            <component :is="findComponent(element.type)" :data="element"
-              :params="useProps(state, element, unref(isDesktop)).value"></component>
+          <el-form-item v-else v-bind="useProps({
+            state,
+            element,
+            isDesktop: unref(isDesktop)
+          })">
+            <component :is="findComponent(element.type)" :data="element" :params="useProps({
+              state,
+              data: element,
+              isDesktop: unref(isDesktop)
+            })"></component>
           </el-form-item>
-        </Selection>
-        <Selection v-else hasWidthScale hasCopy hasDel hasDrag hasMask :data="element" :parent="props.data">
-          <component :is="findComponent(element.type)" :data="element"
-            :params="useProps(state, element, unref(isDesktop)).value"></component>
-        </Selection>
-
-      </template>
+        </template>
+        <component v-else :is="findComponent(element.type)" :data="element" :params="useProps({
+          state,
+          data: element,
+          isDesktop: unref(isDesktop)
+        })"></component>
+      </Selection>
     </template>
     <template #footer>
       <div v-if="isEmpty(data) && !isRoot" :class="$style.dropHere">放置在此处</div>
@@ -44,11 +54,10 @@ import {
   defineAsyncComponent,
   unref,
   inject,
-  Component,
 } from 'vue'
-import { useProps } from '@/hooks'
+import type { Component } from 'vue'
+import { useProps } from '@Form/hooks/use-props'
 import { useTarget } from '@Form/hooks/use-target'
-import _ from 'lodash-es'
 import LayoutGridLayout from '../FormContainer/GridLayout'
 import LayoutTabsLayout from './TabsLayout.vue'
 import LayoutCollapseLayout from './CollapseLayout'
@@ -90,16 +99,17 @@ const loadComponent = () => {
     componentMap = {}
   })
   return function findComponent(type: string) {
-    console.log('🚀 ~ findComponent ~ type:', type)
     let info = componentMap[type]
+    const compoName = type.slice(0, 1).toUpperCase() + type.slice(1)
     if (!info) {
-      info = componentMap[type] = defineAsyncComponent(() => import(`../FormTypes/${_.startCase(type)}/${ER.platform}.vue`))
+      info = componentMap[type] = defineAsyncComponent(() => import(`../FormTypes/${compoName}/${ER.platform}.vue`))
     }
     return info
   }
 }
+
 const findComponent = loadComponent()
-const dragOptions = {
+const dragOptions = reactive({
   swapThreshold: 1,
   list: [],
   group: {
@@ -108,11 +118,14 @@ const dragOptions = {
   parent: props.parent,
   plugins: [ControlInsertionPlugin(ER)],
   ControlInsertion: true
-}
+})
 const handleMove = () => {
   return true
 }
 
+function onDrag(ev: any) {
+  console.log('🚀 ~ onDrag ~ ev:', ev)
+}
 </script>
 
 <style lang="scss" scoped></style>

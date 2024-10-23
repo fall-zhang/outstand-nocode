@@ -1,6 +1,6 @@
 import { defineComponent, } from 'vue'
 import Selection from '../Selection/selectElement'
-import LayoutDragGable from './DragGable'
+import LayoutDragGable from './DraggableDrop.vue'
 import { ElCollapse, ElCollapseItem } from 'element-plus'
 import $style from './CollapseLayout.module.scss'
 export default defineComponent({

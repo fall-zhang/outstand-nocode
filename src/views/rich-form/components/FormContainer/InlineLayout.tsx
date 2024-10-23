@@ -1,5 +1,5 @@
 import { defineComponent, watch, inject } from 'vue'
-import LayoutDraggable from './DragGable'
+import LayoutDraggable from './DraggableDrop.vue'
 import $style from './InlineLayout.module.scss'
 import { syncWidthByPlatform } from '@/utils'
 import { RichFormProvider } from '@Form/types/rich-form'

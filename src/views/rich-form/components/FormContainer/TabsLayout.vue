@@ -13,7 +13,7 @@
 <script lang="ts" setup>
 import { useAttrs } from 'vue'
 import Selection from '@Form/components/Selection/selectElement'
-import LayoutDraggable from './DragGable'
+import LayoutDraggable from './DraggableDrop.vue'
 import { ElTabs } from 'element-plus'
 const activeValue = ref()
 const props = defineProps({

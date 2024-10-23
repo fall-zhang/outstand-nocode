@@ -1,12 +1,6 @@
 
-import {
-  defineComponent,
-  resolveComponent,
-  unref,
-} from 'vue'
-import { isHTMLTag } from '@/utils/browser'
+import { defineComponent, } from 'vue'
 import VueDraggable from 'vuedraggable'
-import { useTarget } from '@Form/hooks/use-target'
 
 export const DraggableWrap = defineComponent({
   inheritAttrs: false,
@@ -53,10 +47,9 @@ export const DraggableWrap = defineComponent({
   components: {
     VueDraggable
   },
-  setup(props, { attrs }) {
-    console.log("🚀 ~ setup ~ props:", props.tag)
+  setup(props, { attrs, slots }) {
     // const node = <></>
-    const slots = useSlots()
+    // const slots = useSlots()
     // const { isEditModel } = useTarget()
     // if (unref(isEditModel)) {
     // } else {

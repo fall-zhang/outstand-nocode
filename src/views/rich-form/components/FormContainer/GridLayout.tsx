@@ -1,6 +1,6 @@
 import { defineComponent, useAttrs } from 'vue'
 import Selection from '@/views/rich-form/components/Selection/selectElement'
-import LayoutDraggable from './DragGable'
+import LayoutDraggable from './DraggableDrop.vue'
 import { ElRow } from 'element-plus'
 import $style from './GridLayout.module.scss'
 export default defineComponent({
