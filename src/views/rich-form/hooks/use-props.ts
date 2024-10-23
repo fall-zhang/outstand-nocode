@@ -7,9 +7,7 @@ import { areaList } from '@vant/area-data'
 import { useI18n } from 'vue-i18n'
 import { get } from '@/utils/utils'
 const addValidate = (result, node, isPC, t) => {
-  const {
-    options
-  } = node
+  const { options } = node
   if (isPC) {
     result.prop = node.context && node.context.parents.map((e, index) => {
       let result = ''
@@ -122,14 +120,21 @@ const addValidate = (result, node, isPC, t) => {
   }
   result.rules = [obj]
 }
-export const useProps = (state, data, isPC = true, isRoot = false, specialHandling?:unknown) => {
+export const useProps = ({
+  state,
+  data,
+  isDesktop = true,
+  isRoot = false
+}:any, specialHandling?:{
+  (type:string, result:unknown):void
+}) => {
   const { t } = useI18n()
   return computed(() => {
     let node = isRoot ? data.config : data
-    let result = {}
-    const platform = isPC ? 'pc' : 'mobile'
+    let result:Record<string, unknown> = {}
+    const platform = isDesktop ? 'pc' : 'mobile'
     if (isRoot) {
-      if (isPC) {
+      if (isDesktop) {
         result.model = data.store
         result.size = node.pc.size
         result.labelPosition = node[platform].labelPosition
@@ -138,9 +143,7 @@ export const useProps = (state, data, isPC = true, isRoot = false, specialHandli
       }
       return result
     }
-    if (isRef(data)) {
-      node = data.value
-    }
+    node = unref(data)
     const { options } = node
     result = {
       label: options.isShowLabel ? node.label : '',
@@ -164,8 +167,8 @@ export const useProps = (state, data, isPC = true, isRoot = false, specialHandli
         result.required = result.disabled ? false : required === 1
       }
     }
-    addValidate(result, node, isPC, t)
-    if (isPC) {
+    addValidate(result, node, isDesktop, t)
+    if (isDesktop) {
       result.labelWidth = options.isShowLabel ? options.labelWidth + 'px' : 'auto'
     }
     switch (node.type) {
@@ -174,7 +177,7 @@ export const useProps = (state, data, isPC = true, isRoot = false, specialHandli
           result.maxlength = options.max
           result['show-word-limit'] = options.isShowWordLimit
         }
-        if (isPC) {
+        if (isDesktop) {
           result.showPassword = options.showPassword
           result.prepend = options.prepend
           result.append = options.append
@@ -196,7 +199,7 @@ export const useProps = (state, data, isPC = true, isRoot = false, specialHandli
         result.rows = options.rows
         break
       case 'number':
-        if (isPC) {
+        if (isDesktop) {
           result.controls = options.controls
           if (options.controls) {
             result['controls-position'] = options.controlsPosition ? 'right' : ''
@@ -227,7 +230,7 @@ export const useProps = (state, data, isPC = true, isRoot = false, specialHandli
         break
       case 'time':
         result.format = options.format
-        if (isPC) {
+        if (isDesktop) {
           result.valueFormat = options.valueFormat
         }
         break
@@ -237,7 +240,7 @@ export const useProps = (state, data, isPC = true, isRoot = false, specialHandli
         // result.endPlaceholder = options.endPlaceholder
         result.format = options.format
         result.type = options.type
-        if (isPC) {
+        if (isDesktop) {
           result.valueFormat = 'X'
           if (options.type === 'daterange') {
             result.rangeSeparator = ''
@@ -331,7 +334,7 @@ export const useProps = (state, data, isPC = true, isRoot = false, specialHandli
         break
       case 'rate':
         result.allowHalf = options.allowHalf
-        if (!isPC) {
+        if (!isDesktop) {
           result.count = options.max
         } else {
           result.max = options.max
@@ -345,7 +348,7 @@ export const useProps = (state, data, isPC = true, isRoot = false, specialHandli
         result.config = {
           placeholder: options.placeholder
         }
-        if (!isPC) {
+        if (!isDesktop) {
           result.config.toolbar = {
             items: [
               'formattingOptions',
@@ -386,7 +389,7 @@ export const useProps = (state, data, isPC = true, isRoot = false, specialHandli
         // result.size = options.size
         result.accept = options.accept
         result.maxSize = options.size * 1024 * 1024
-        if (isPC) {
+        if (isDesktop) {
           result.limit = options.limit
         } else {
           result.maxCount = options.limit
@@ -396,7 +399,7 @@ export const useProps = (state, data, isPC = true, isRoot = false, specialHandli
         }
         break
       case 'region':
-        if (isPC) {
+        if (isDesktop) {
           const region = new Region(areaList, {
             isFilter: false,
             selectType: options.selectType

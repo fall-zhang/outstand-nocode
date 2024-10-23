@@ -16,7 +16,7 @@ import PanelItemAllSide from './AllsidesComponent.vue'
 import PanelItemBackground from './BackgroundComponent.vue'
 import DataComponentDefault from './DataComponentDefault.vue'
 import DataComponentCascader from './DataComponentCascader.vue'
-import PanelsConfigComponentsDataComponent3 from './DataComponent3.vue'
+import DataComponentTab from './DataComponentTab.vue'
 import { ArrowDown } from '@icon-park/vue-next'
 import Icon from '@/assets'
 defineOptions({
@@ -276,7 +276,12 @@ const options10 = computed(() => {
     }
   ]
 })
-const typeProps = useProps(state, target, true, false, (type: string, props) => {
+const typeProps = useProps({
+  state,
+  data: target.value,
+  isDesktop: true,
+  isRoot: false
+}, (type: string, props: any) => {
   if (type === 'slider') {
     delete props.disabled
   }
@@ -294,7 +299,7 @@ const checkLogicData = () => {
 }
 const handleChange0 = (value: string) => {
   checkLogicData()
-  if (/^(dates|datarange)$/.test(value)) {
+  if (/^(dates|daterange)$/.test(value)) {
     target.value.options.defaultValue = []
   } else {
     target.value.options.defaultValue = ''
@@ -338,13 +343,13 @@ const onConfirmDialog = () => {
 function onCloseDialog() {
   dialogVisible.value = false
 }
-const handleTypeListener = ({ property, data }) => {
+const handleTypeListener = ({ property, data }: any) => {
   switch (property) {
-    case 'width':
-      // eslint-disable-next-line
-      const val = Number((eval(data.value) * 100).toFixed(2))
+    case 'width': {
+      const val = (Number(data.value) * 100).toFixed(2)
       syncWidthByPlatform(target.value, state.platform, false, val)
       break
+    }
     case 'type':
       target.value.options.type = data.value
       break
@@ -583,7 +588,7 @@ onMounted(() => {
         </el-col>
       </el-row>
     </PanelItemCheckbox>
-    <PanelItemCheckbox v-if="checkTypeBySelected(['date'], 'dateRange')" :label="t('rf.config.propsPanel.dateRange')"
+    <PanelItemCheckbox v-if="checkTypeBySelected(['date'], 'daterange')" :label="t('rf.config.propsPanel.daterange')"
       field="isShowWordLimit">
       <PanelItemLimit />
     </PanelItemCheckbox>
@@ -592,7 +597,7 @@ onMounted(() => {
     <RadioButton v-if="isSelectGrid" @listener="handleTypeListener" property="justify"
       :label="t('rf.config.gridLayout.justify.label')" :height="40" :fontSize="40" :val="target.options.justify"
       :nodes="options6" />
-    <PanelsConfigComponentsDataComponent3 v-if="checkTypeBySelected(['collapse', 'tabs'], 'Data3')" />
+    <DataComponentTab v-if="checkTypeBySelected(['collapse', 'tabs'], 'Data3')" />
     <RadioButton v-if="isSelectTabs" @listener="handleTypeListener" property="type"
       :label="t('rf.config.tabsLayout.style.label')" :height="66" :fontSize="70" :val="target.options.type"
       :nodes="options4" />

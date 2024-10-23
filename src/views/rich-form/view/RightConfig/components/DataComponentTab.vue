@@ -1,3 +1,4 @@
+<!-- collapse tabs -->
 <script setup lang="ts">
 import { addContext } from '@/utils'
 import { useI18n } from 'vue-i18n'

@@ -2,7 +2,7 @@ import { inject } from 'vue'
 import { RichFormProvider } from '../types/rich-form'
 
 export const useFormProvider = () => {
-  return inject<RichFormProvider>('rich-form', {
+  const formProvider = inject<RichFormProvider>('rich-form', {
     lang: 'zh',
     fieldsList: [],
     store: [],
@@ -52,4 +52,5 @@ export const useFormProvider = () => {
     mobileItems: {},
     state: {}
   })
+  return { ...toRefs(formProvider) }
 }

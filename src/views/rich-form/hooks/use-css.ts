@@ -1,4 +1,5 @@
 import { ref, getCurrentInstance, watch } from 'vue'
+import type { CSSProperties } from 'vue'
 import _ from 'lodash-es'
 import jss from 'jss'
 import preset from 'jss-preset-default'
@@ -16,7 +17,7 @@ const isShowKeys = [
   'border',
   'background'
 ]
-const renderTableBorder = (style) => {
+const renderTableBorder = (style:CSSProperties) => {
   let result = {}
   const value = {
     width: style.borderWidth,
@@ -152,7 +153,7 @@ const renderStyleSheets = (node, uid, platform) => {
   }
   return sheet.addRule(uid.toString(), style).id
 }
-export const useCss = (node, platform) => {
+export const useCss = (node, platform:SupportPlatform) => {
   const id = ref('')
   const { uid } = getCurrentInstance()
   if (node.style) {

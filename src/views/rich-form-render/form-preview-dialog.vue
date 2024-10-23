@@ -6,7 +6,7 @@
       </DeviceSwitch>
     </template>
     <div v-loading="previewLoading" class="previewDialogWrap " :class="previewPlatform === 'mobile' && 'mobilePreview'">
-      <FormPreview v-bind="props" ref="EReditorPreviewRef" />
+      <FormPreview :visible ref="EReditorPreviewRef" />
     </div>
   </el-dialog>
 </template>
@@ -14,7 +14,7 @@
 <script lang="ts" setup>
 import FormPreview from './form-preview/form-preview.vue'
 const previewPlatform = ref<'pc' | 'mobile'>('pc')
-defineProps({
+ defineProps({
   visible: {
     default: false,
     type: Boolean
@@ -25,8 +25,6 @@ const previewLoading = ref(false)
 function onDeviceSwitch(val: any) {
   previewLoading.value = true
   previewPlatform.value = val
-  EReditorPreviewRef.value.switchPlatform(val)
-  EReditorPreviewRef.value.setData(getData())
   nextTick(() => {
     nextTick(() => {
       previewLoading.value = false

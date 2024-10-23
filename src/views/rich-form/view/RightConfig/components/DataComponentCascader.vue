@@ -1,6 +1,5 @@
 <template>
   <ElScrollbar ref="scrollbar">
-    {{ 'data component2  -- DataComponentCascader' }}
     <div :class="$style.configData2" v-for="(elements, index) in data" :key="index">
       <div :class="$style.item">
         <div :class="$style.title">
@@ -27,7 +26,7 @@
         </ElScrollbar>
         <div v-if="shows[index]" :class="$style.control">
           <ElButton icon="CirclePlus" @click="() => handleAction(1, index, elements)" text>
-            {t('rf.config.dataComponent2.add')}
+            {{ t('rf.config.dataComponent2.add') }}
           </ElButton>
         </div>
       </div>
@@ -67,13 +66,13 @@ if (state.mode === 'config') {
 }
 shows.value[0] = true
 
-const handleAction = (type: number, x: number, recData) => {
+const handleAction = (type: number, x: number, recData: any) => {
   switch (type) {
     case 1:
-      recData.push(...generateOptions(1))
-      if (scrollbars.value[x]) {
-        scrollbars.value[x].setScrollTop(scrollbars.value[x].wrapRef.scrollHeight)
-      }
+      // recData.push(...generateOptions(1))
+      // if (scrollbars.value[x]) {
+      //   scrollbars.value[x].setScrollTop(scrollbars.value[x].wrapRef.scrollHeight)
+      // }
       break
     case 2:
       if (x >= defaultLength) return false
