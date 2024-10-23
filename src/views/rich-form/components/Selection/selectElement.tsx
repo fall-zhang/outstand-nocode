@@ -102,7 +102,7 @@ export default defineComponent({
       state,
       isEditModel,
     } = useTarget()
-    const id = useCss(props.data, state.platform)
+    // const id = useCss(props.data, state.platform)
     const isWarning = ref(false)
     const isField = checkIsField(props.data)
     const handleClick = () => {

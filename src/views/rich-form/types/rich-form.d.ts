@@ -1,5 +1,5 @@
 import { CSSProperties, StyleValue } from 'vue'
-import { AllNodeType, FormItem } from './rich-form-item'
+import { AllFieldType, FormItem } from './rich-form-item'
 /**
  * 平台类型
  * 之后会移除 pc 类型
@@ -56,12 +56,12 @@ export type GlobalConfig = {
 export type RichFormProvider = {
   lang:'zh'
   // 左侧菜单的配置
-  fieldsList:any[]
+  fieldsList:AllFieldType[]
   // 配置好的内容
   store: FormItem[],
   canvasScrollRef:any
   // 当前选中的内容，默认选中 root
-  selected: AllNodeType
+  selected: AllFieldType
   mode: 'edit' | 'setting' | 'preview'
   platform: 'pc' | 'mobile' | 'desktop'
   widthScaleLock: boolean,

@@ -10,15 +10,14 @@ import DeviceSwitch from './components/DeviceSwitch.vue'
 import Icon from '@/assets'
 import { useI18n } from 'vue-i18n'
 import {
-  deepClone, checkIsField, disassemblyData1, repairLayout, disassemblyData2, removeLogicDataById,
-  checkIdExistInLogic, combinationData2, pickFields
+  deepClone, checkIsField, disassemblyData1, removeLogicDataById,
+  checkIdExistInLogic
 } from '@/utils'
-import { isEmpty } from '@/utils/utils'
 import defaultProps from './defaultProps'
 import generatorData from './generatorData'
 import { PlatformType, RichFormProvider } from './types/rich-form'
 import { fieldsConfig } from './config/componentsConfig'
-import { AllNodeType } from './types/rich-form-item'
+import { AllFieldType } from './types/rich-form-item'
 import richFormConfig from './config/richFormConfig'
 import { generateOptions } from '@/utils/generateOptions'
 const emit = defineEmits(['changeParams', 'save', 'changeLang'])
@@ -40,7 +39,7 @@ const isFoldConfig = ref(true)
 const { t } = useI18n()
 const isShow = ref(true)
 const isShowConfig = ref(true)
-const setSelection = (node: AllNodeType) => {
+const setSelection = (node: AllFieldType) => {
   let result: any = ''
   if (node.type === 'root') {
     result = state.config
@@ -212,7 +211,6 @@ const state = reactive<RichFormProvider>({
     widthScaleLock: false,
     validateStates: [],
     fields: [],
-    Namespace: 'formEditor',
   },
   // 准备添加 移动端和桌面端的配置
   store: [],

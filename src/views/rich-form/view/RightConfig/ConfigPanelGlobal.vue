@@ -7,7 +7,6 @@ import CompleteButton from '@/views/rich-form/components/CompleteButton.vue'
 import TypeComponent from './components/TypeComponent.vue'
 import PanelsConfigComponentsLogicComponent from './components/LogicComponent.vue'
 import { FileQuestion } from '@icon-park/vue-next'
-// import { isEqual } from 'ohash'
 import { deepClone, get, set } from '@/utils/utils'
 defineOptions({
   name: 'GlobalConfigPanel',

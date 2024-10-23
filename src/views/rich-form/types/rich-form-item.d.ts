@@ -18,11 +18,11 @@ enum BaseFormType {
   region
 }
 // 容器类型
-enum ContainerType {
-  grid,
-  inline,
-  tabs,
-  collapse
+export enum ContainerType {
+  GRID='grid',
+  INLINE = 'inline', // 单行
+  TABS = 'tabs',
+  COLLAPSE = 'collapse'
 }
 /**
  * 中间区域数据的存储类型
@@ -52,26 +52,26 @@ export type BaseNodeItem = {
   //   required: boolean
   // }
 }
-
+type ContainerItem = {
+  id: string,
+  options: {
+    span: number,
+    offset: number,
+    pull: number,
+    push: number
+  },
+  type: 'col',
+  list: []
+}
 /**
  * 容器的类型
  */
-export type ContainerNodeItem = {
-  type: 'grid' | 'inline'
+export type FieldItemContainer = {
+  type: ContainerType
   id: string
   label: string
   icon?: string
-  columns: {
-    id: string,
-    options: {
-      span: number,
-      offset: number,
-      pull: number,
-      push: number
-    },
-    type: 'col',
-    list: []
-  }[]
+  columns: ContainerItem[]
   options?:Record<string, any>
   // options: {
   //   gutter: 0,
@@ -79,11 +79,12 @@ export type ContainerNodeItem = {
   //   align: 'top'
   // }
 }
-export type RootNodeItem = {
+
+export type FieldItemRoot = {
   type: 'root',
   id: 'root',
   label: string
 }
 
-export type AllNodeType = ContainerNodeItem |RootNodeItem |BaseNodeItem
+export type AllFieldType = FieldItemContainer |FieldItemRoot |FieldItemBase
 

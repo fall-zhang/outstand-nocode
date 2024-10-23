@@ -1,7 +1,7 @@
-import LayoutDraggable from '@Form/components/FormContainer/DragGable'
+import LayoutDraggable from '@Form/components/FormContainer/DraggableDrop.vue'
 import CompleteButton from '@/views/rich-form/components/CompleteButton.vue'
 import { useTarget } from '@Form/hooks/use-target'
-import { useProps } from '@/hooks/use-props'
+import { useProps } from '@Form/hooks/use-props'
 import { ElForm, ElScrollbar } from 'element-plus'
 import { Form as VanForm } from 'vant'
 import $style from './CenterCanvas.module.scss'
@@ -19,7 +19,12 @@ export default defineComponent({
       isDesktop
     } = useTarget()
     const form = ref('')
-    const typeProps = useProps(state, state, unref(isDesktop), true)
+    const typeProps = useProps({
+      state,
+      data: state,
+      isDesktop: unref(isDesktop),
+      isRoot: true
+    })
     const RenderForm = unref(isDesktop) ? ElForm : VanForm
     const isInEdit = unref(isEditModel)
     return () => (<div
@@ -43,12 +48,12 @@ export default defineComponent({
           </div>
         )
         : <>
-          <RenderForm ref={form} onClick={() => unref(isEditModel) && setSelection('root')} {...typeProps.value}>
+          <h2>
             {
               '预览页面暂为空，需要专门的渲染逻辑'
             }
             {/* <LayoutDraggable data-layout-type={'root'} class={[unref(isEditModel) && $style.wrap]} data={state.store} parent={state.store} isRoot></LayoutDraggable> */}
-          </RenderForm>
+          </h2>
           {
             state.config && <CompleteButton handle={form}/>
           }
