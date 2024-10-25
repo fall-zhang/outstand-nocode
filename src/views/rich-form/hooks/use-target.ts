@@ -11,7 +11,7 @@ export const useTarget = () => {
 
   const setSelection = handler.setSelection
   const selection = computed(() => {
-    return state.selected
+    return selected
   })
   const isSelectAnyElement = computed(() => {
     return state.selected !== state.config
@@ -40,12 +40,24 @@ export const useTarget = () => {
   /**
    * 当前选中的类型是否在 node 中
    */
+  const checkTypeOfSelected = (nodes:string[], propType?:unknown) => {
+    let result = false
+    if (!isEmpty(state.selected)) {
+      if (selectedType.value) {
+        result = nodes.includes(selectedType.value)
+      } else {
+        result = nodes.includes(selectedType.value)
+      }
+    }
+    return result
+  }
+  /**
+   * 当前选中的类型是否在 node 中
+   */
   const checkTypeBySelected = (nodes:string[], propType?:unknown) => {
     let result = false
     if (!isEmpty(state.selected)) {
       if (selectedType.value) {
-        // const fn = handler.checkPropsBySelected(state.selected, propType)
-        // result = fn !== undefined ? fn : nodes.includes(selectedType.value)
         result = nodes.includes(selectedType.value)
       } else {
         result = nodes.includes(selectedType.value)
@@ -89,7 +101,6 @@ export const useTarget = () => {
     isSelectAnyElement,
     isSelectField,
     target,
-    checkTypeBySelected,
     isSelectGrid,
     isSelectTabs,
     isSelectCollapse,
@@ -97,6 +108,8 @@ export const useTarget = () => {
     isSelectRoot,
     isPC,
     isDesktop,
+    checkTypeBySelected,
+    checkTypeOfSelected,
     isEditModel
   }
 }

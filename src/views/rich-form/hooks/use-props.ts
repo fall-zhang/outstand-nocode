@@ -1,11 +1,11 @@
-import { computed, isRef } from 'vue'
+import { computed } from 'vue'
 import { showToast } from 'vant'
 import dayjs from 'dayjs'
 import _ from 'lodash-es'
 import Region from './region/Region'
 import { areaList } from '@vant/area-data'
 import { useI18n } from 'vue-i18n'
-import { get } from '@/utils/utils'
+import { get, isEmpty } from '@/utils/utils'
 const addValidate = (result, node, isPC, t) => {
   const { options } = node
   if (isPC) {
@@ -280,7 +280,7 @@ export const useProps = ({
               }
               break
             case 'dates':
-              if (_.isEmpty(options.defaultValue)) {
+              if (isEmpty(options.defaultValue)) {
                 result.defaultDate = null
               } else {
                 options.defaultValue.map(e => dayjs.unix(e).toDate())

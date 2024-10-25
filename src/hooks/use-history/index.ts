@@ -6,16 +6,16 @@ export const useHistory = (source:StoreType) => {
   const onOff = ref(true)
 
   const last = ref()
-  const undoStack = ref([])
+  const storeStack = ref([])
   const redoStack = ref([])
-  const canUndo = computed(() => undoStack.value.length > 0)
-  const canRedo = computed(() => redoStack.value.length > 0)
+  const canUndo = computed(() => storeStack.value.length > 0)
+  const canRedo = computed(() => storeStack.value.length > 0)
   const setSource = (state:Record<string, unknown>) => {
     last.value = state
     redoStack.value = []
   }
   const undo = () => {
-    const state = undoStack.value.shift()
+    const state = storeStack.value.shift()
     if (state) {
       redoStack.value.unshift(state)
       setSource(state)
@@ -33,9 +33,9 @@ export const useHistory = (source:StoreType) => {
   return {
     undo,
     redo,
-    undoStack,
-    redoStack,
     last,
     stop,
+    canUndo,
+    canRedo
   }
 }

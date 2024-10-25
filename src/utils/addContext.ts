@@ -15,18 +15,12 @@ const getNodes = (node, key:'rowspan'|'colspan') => {
   return nodes
 }
 const findNode = (node, dir, key, fn, ignore = false) => {
-  const {
-    context: {
-      root,
-      col,
-      row
-    }
-  } = node
+  const { context } = node
+  const { col, row } = context
   let count = key === 'rowspan' ? row : col
   let passArr = []
   const nodes = getNodes(node, key)
   const callBack = () => {
-    // rowspan
     if (key === 'rowspan') {
       passArr.forEach((e, index) => {
         e.options.rowspan = passArr.length

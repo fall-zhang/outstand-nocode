@@ -3,7 +3,7 @@
  * For licensing, see LICENSE.md.
  */
 
-import CKEDITOR from 'ckeditor5'
+import { ClassicEditor } from 'ckeditor5'
 import { h, markRaw, defineComponent } from 'vue'
 import { debounce } from 'lodash-es'
 
@@ -80,7 +80,7 @@ export default defineComponent({
       editorConfig.initialData = this.modelValue
     }
 
-    CKEDITOR.ClassicEditor.create(this.$el, editorConfig)
+    ClassicEditor.create(this.$el, editorConfig)
       .then(editor => {
         // Save the reference to the instance for further use.
         this.instance = markRaw(editor)

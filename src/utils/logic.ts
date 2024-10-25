@@ -1,4 +1,3 @@
-import _ from 'lodash-es'
 import { get } from '@/utils/utils'
 export const checkIdExistInLogic = (fieldId, logic) => {
   return new RegExp(`"${fieldId}"`).test(JSON.stringify(logic))
