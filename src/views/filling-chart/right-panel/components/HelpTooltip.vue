@@ -1,8 +1,6 @@
 <template>
   <el-tooltip placement="top">
-    <!-- <div > -->
     <IconHelp theme="filled" class="g-icon-center cursor" @click.stop="onClickHelp" />
-    <!-- </div> -->
     <template #content>
       <div v-html="tip" style="width: 320px;"></div>
     </template>
@@ -11,12 +9,16 @@
 
 <script lang="ts" setup>
 import { Help as IconHelp } from '@icon-park/vue-next'
-import { stringify } from 'uuid'
 const prop = defineProps<{
-  path: Record<string, any>[]
+  path: {
+    keyName: string,
+    keyId: string
+  }[]
   tip?: string
 }>()
-
+/**
+ * 跳转到 echarts 官网
+ */
 function onClickHelp() {
   let path = ''
   console.log(prop)

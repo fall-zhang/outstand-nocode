@@ -1,11 +1,11 @@
 <template>
   <el-tabs type="border-card">
     <el-tab-pane label="图表属性">
-      <PropertyPagePanel :receiveValue="chartOption" @change="onChangeSimpleValue" />
+      <PagePanelProperty :receiveValue="chartOption" @change="onChangeSimpleValue" />
     </el-tab-pane>
     <el-tab-pane label="图表类型">
-      <SerisePagePanel :receiveValue="chartOption" @change="onChangeSimpleValue">
-      </SerisePagePanel>
+      <PagePanelSeries :receiveValue="chartOption" @change="onChangeSimpleValue">
+      </PagePanelSeries>
     </el-tab-pane>
     <!-- <el-tab-pane label="配置代码">
       <FormJSON v-model="option" type="textarea" style="height:600px"></FormJSON>
@@ -15,8 +15,8 @@
 
 <script lang="ts" setup>
 import { v4 as uuid } from 'uuid'
-import PropertyPagePanel from './PropertyPagePanel.vue'
-import SerisePagePanel from './SerisePagePanel.vue'
+import PagePanelProperty from './PagePanelProperty.vue'
+import PagePanelSeries from './PagePanelSeries.vue'
 
 defineProps({
   chartOption: {
