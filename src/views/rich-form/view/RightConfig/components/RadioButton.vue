@@ -5,40 +5,25 @@ import Icon from '@/assets'
 defineOptions({
   name: 'ConfigTypeComponent'
 })
-const emit = defineEmits(['listener'])
 
-const props = defineProps({
-  label: {
-    type: String,
-    default: ''
-  },
-  nodes: {
-    type: Array,
-    default: () => []
-  },
-  height: {
-    type: Number,
-    default: 50
-  },
-  property: {
-    type: String,
-    default: ''
-  },
-  val: {
-    type: [String, Number, Boolean],
-    default: ''
-  },
-  fontSize: {
-    type: Number,
-    default: 16
-  },
-  layoutType: {
-    type: String,
-    // 全部改为  1 breakLine 2  inline  0: slot
-    default: 'breakLine'
-  }
-})
-const fireEvent = (property: string, item: any) => {
+const emit = defineEmits(['listener'])
+type NodeItem = {
+  label: string
+  value: string | number
+  disabled?: boolean
+  icon: string
+}
+type Prop = {
+  label?: string
+  nodes?: NodeItem[]
+  height?: number
+  property?: string
+  val?: string | number | boolean
+  fontSize?: number
+  layoutType?: 'breakLine' | 'inline' | 'slot'
+}
+const { height = 50, property = '', fontSize = 16, layoutType = 'breakLine' } = defineProps<Prop>()
+const fireEvent = (property: string, item: unknown) => {
   emit('listener', {
     property,
     data: item

@@ -1,4 +1,11 @@
-const containerConfig = {
+import { FieldItemBase, FieldItemContainer } from '../types/rich-form-item'
+
+
+const containerConfig:{
+  name:string
+  id:string
+  list:FieldItemContainer[]
+} = {
   name: '容器',
   id: 'container',
   list: [
@@ -10,106 +17,107 @@ const containerConfig = {
       columns: [
         {
           id: '',
+          type: 'col',
           options: {
             span: 6,
             offset: 0,
             pull: 0,
             push: 0
           },
-          type: 'col',
           list: []
         },
         {
           id: '',
+          type: 'col',
           options: {
             span: 6,
             offset: 0,
             pull: 0,
             push: 0
           },
-          type: 'col',
           list: []
         },
         {
           id: '',
+          type: 'col',
           options: {
             span: 6,
             offset: 0,
             pull: 0,
             push: 0
           },
-          type: 'col',
           list: []
         }
       ],
       options: {
+        gap: 0,
         gutter: 0,
         justify: 'space-around',
         align: 'top'
       }
     },
-    {
-      type: 'table',
-      label: '表格布局',
-      icon: 'tableStokeP2',
-      id: '',
-      rows: [
-        {
-          type: 'tr',
-          columns: [
-            {
-              type: 'td',
-              options: {
-                colspan: 1,
-                rowspan: 1,
-                isMerged: false
-              },
-              list: [],
-              style: {}
-            },
-            {
-              type: 'td',
-              options: {
-                colspan: 1,
-                rowspan: 1,
-                isMerged: false
-              },
-              list: [],
-              style: {}
-            }
-          ]
-        },
-        {
-          type: 'tr',
-          columns: [
-            {
-              type: 'td',
-              options: {
-                colspan: 1,
-                rowspan: 1,
-                isMerged: false
-              },
-              list: [],
-              style: {}
-            },
-            {
-              type: 'td',
-              options: {
-                colspan: 1,
-                rowspan: 1,
-                isMerged: false
-              },
-              list: [],
-              style: {}
-            }
-          ]
-        }
-      ],
-      options: {
-        width: 100,
-        widthType: '%'
-      }
-    },
+    // {
+    //   type: 'table',
+    //   label: '表格布局',
+    //   icon: 'tableStokeP2',
+    //   id: '',
+    //   rows: [
+    //     {
+    //       type: 'tr',
+    //       columns: [
+    //         {
+    //           type: 'td',
+    //           options: {
+    //             colspan: 1,
+    //             rowspan: 1,
+    //             isMerged: false
+    //           },
+    //           list: [],
+    //           style: {}
+    //         },
+    //         {
+    //           type: 'td',
+    //           options: {
+    //             colspan: 1,
+    //             rowspan: 1,
+    //             isMerged: false
+    //           },
+    //           list: [],
+    //           style: {}
+    //         }
+    //       ]
+    //     },
+    //     {
+    //       type: 'tr',
+    //       columns: [
+    //         {
+    //           type: 'td',
+    //           options: {
+    //             colspan: 1,
+    //             rowspan: 1,
+    //             isMerged: false
+    //           },
+    //           list: [],
+    //           style: {}
+    //         },
+    //         {
+    //           type: 'td',
+    //           options: {
+    //             colspan: 1,
+    //             rowspan: 1,
+    //             isMerged: false
+    //           },
+    //           list: [],
+    //           style: {}
+    //         }
+    //       ]
+    //     }
+    //   ],
+    //   options: {
+    //     width: 100,
+    //     widthType: '%'
+    //   }
+    // },
     {
       type: 'tabs',
       label: '标签页',
@@ -138,8 +146,8 @@ const containerConfig = {
       type: 'divider',
       label: '分割线',
       icon: 'divider',
-      key: '',
       id: '',
+      columns: [],
       options: {
         contentPosition: 'center',
         filterable: true,
@@ -150,7 +158,11 @@ const containerConfig = {
     }
   ]
 }
-const basicConfig = {
+const basicConfig:{
+  name:string
+  id:string
+  list:FieldItemBase[]
+} = {
   name: '基础字段',
   id: 'field',
   list: [
@@ -373,61 +385,61 @@ const basicConfig = {
         disabled: false
       }
     },
-    {
-      type: 'html',
-      label: '富文本编辑器',
-      icon: 'html',
-      key: '',
-      id: '',
-      options: {
-        defaultValue: '',
-        placeholder: '',
-        action: '',
-        size: 1,
-        labelWidth: 100,
-        isShowLabel: true,
-        required: false,
-        disabled: false
-      }
-    },
-    {
-      type: 'cascader',
-      label: '级联框',
-      icon: 'cascader',
-      key: '',
-      id: '',
-      options: {
-        filterable: true,
-        multiple: false,
-        checkStrictly: false,
-        defaultValue: '',
-        placeholder: '',
-        labelWidth: 100,
-        isShowLabel: true,
-        required: false,
-        disabled: false,
-        clearable: true
-      }
-    },
-    {
-      type: 'uploadfile',
-      label: '上传文件',
-      icon: 'upload',
-      key: '',
-      id: '',
-      options: {
-        isShowLabel: true,
-        labelWidth: 100,
-        defaultValue: [],
-        multiple: false,
-        action: '',
-        limit: 1,
-        size: 5,
-        accept: '.png,.jpg',
-        disabled: false,
-        required: false
-      }
-    },
+    // {
+    //   type: 'markdown',
+    //   label: '富文本编辑器',
+    //   icon: 'markdown',
+    //   key: '',
+    //   id: '',
+    //   options: {
+    //     defaultValue: '',
+    //     placeholder: '',
+    //     action: '',
+    //     size: 1,
+    //     labelWidth: 100,
+    //     isShowLabel: true,
+    //     required: false,
+    //     disabled: false
+    //   }
+    // },
+    // {
+    //   type: 'cascader',
+    //   label: '级联框',
+    //   icon: 'cascader',
+    //   key: '',
+    //   id: '',
+    //   options: {
+    //     filterable: true,
+    //     multiple: false,
+    //     checkStrictly: false,
+    //     defaultValue: '',
+    //     placeholder: '',
+    //     labelWidth: 100,
+    //     isShowLabel: true,
+    //     required: false,
+    //     disabled: false,
+    //     clearable: true
+    //   }
+    // },
+    // {
+    //   type: 'uploadfile',
+    //   label: '上传文件',
+    //   icon: 'upload',
+    //   key: '',
+    //   id: '',
+    //   options: {
+    //     isShowLabel: true,
+    //     labelWidth: 100,
+    //     defaultValue: [],
+    //     multiple: false,
+    //     action: '',
+    //     limit: 1,
+    //     size: 5,
+    //     accept: '.png,.jpg',
+    //     disabled: false,
+    //     required: false
+    //   }
+    // },
     // {
     //   type: 'signature',
     //   label: '签名',

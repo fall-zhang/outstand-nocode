@@ -2,22 +2,22 @@
 <script setup lang="ts">
 import { addContext } from '@/utils'
 import { useI18n } from 'vue-i18n'
-import { useTarget } from '@Form/hooks/use-target'
 import { unref } from 'vue'
 import { DraggableWrap } from '@Form/components/FormContainer/DraggableWrap'
 import Icon from '@/assets'
 import { renderFieldData } from '@/utils/field'
+import { useFormProvider } from '@/views/rich-form/hooks/use-form-provider'
 defineOptions({
   name: 'ConfigData3'
 })
-const { target } = useTarget()
+const { selected } = useFormProvider()
 const { t } = useI18n()
 const addTab = () => {
-  const data = renderFieldData(`${target.value.type}Col`)
-  data.label = `Tab ${unref(target).columns.length + 1}`
-  // console.log(unref(target))
-  unref(target).columns.push(data)
-  addContext(data, target.value)
+  const data = renderFieldData(`${selected.value.type}Col`)
+  data.label = `Tab ${unref(selected).columns.length + 1}`
+  // console.log(unref(selected))
+  unref(selected).columns.push(data)
+  addContext(data, selected.value)
 }
 </script>
 <template>
@@ -29,12 +29,12 @@ const addTab = () => {
       </div>
     </template>
     <div style="width: 100%;">
-      <DraggableWrap :list="target.columns" item-key="id" tag="ul" handle=".handle" class="d-content">
+      <DraggableWrap :list="selected.columns" item-key="id" tag="ul" handle=".handle" class="d-content">
         <template #item="{ element, index }">
           <li>
             <el-input size="default" clearable v-model="element.label" />
             <div class="d-operate">
-              <Icon class="d-icon" @click="target.columns.splice(index, 1)" icon="delete"></Icon>
+              <Icon class="d-icon" @click="selected.columns.splice(index, 1)" icon="delete"></Icon>
               <Icon class="d-icon handle" icon="Rank"></Icon>
             </div>
           </li>

@@ -1,16 +1,11 @@
-<script>
-import { useTarget } from '@Form/hooks/use-target'
-
-export default {
+<script setup lang="ts">
+import { useFormProvider } from '@/views/rich-form/hooks/use-form-provider'
+defineOptions({
   name: 'ConfigCheckboxComponent',
   inheritAttrs: false,
   customOptions: {}
-}
-</script>
-<script setup>
-const {
-  target
-} = useTarget()
+})
+const { selected } = useFormProvider()
 const props = defineProps({
   field: {
     type: String,
@@ -24,10 +19,10 @@ const props = defineProps({
 </script>
 <template>
   <div :class="[$style.checkboxComponent]">
-    <el-checkbox v-model="target.options[field]" @change="(newValue) => $emit('change', newValue)"
+    <el-checkbox v-model="selected.options[field]" @change="(newValue) => $emit('change', newValue)"
       :label="label"></el-checkbox>
     <template v-if="$slots.default">
-      <div class="slot" v-show="target.options[field]">
+      <div class="slot" v-show="selected.options[field]">
         <slot></slot>
       </div>
     </template>

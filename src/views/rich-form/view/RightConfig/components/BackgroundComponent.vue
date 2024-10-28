@@ -1,22 +1,27 @@
 <script setup lang="ts">
 import { reactive, ref, onMounted, inject, watch, nextTick } from 'vue'
-import { ElMessage } from 'element-plus'
+import { ElMessage, UploadRawFile } from 'element-plus'
 import { useI18n } from 'vue-i18n'
-import { useTarget } from '@Form/hooks/use-target'
-import { RichFormProvider } from '@/views/rich-form/types/rich-form';
+import { RichFormProvider } from '@/views/rich-form/types/rich-form'
+import { useFormProvider } from '@/views/rich-form/hooks/use-form-provider'
 defineOptions({
   name: 'ConfigBackground',
   inheritAttrs: false,
   customOptions: {}
 })
-const {
-  t
-} = useI18n()
-const {
-  target
-} = useTarget()
+const { t } = useI18n()
+const { selected } = useFormProvider()
 const element = ref()
-const state = reactive({
+type PageState = {
+  visible: boolean
+  value0: boolean
+  color: string
+  defaultBackground: {
+    backgroundColor?: string
+    backgroundImage?: string
+  }
+}
+const state = reactive<PageState>({
   visible: false,
   value0: false,
   color: '',
@@ -63,8 +68,8 @@ const options0 = [
     'contain'
   ]
 ]
-if (!target.value.style.background) {
-  target.value.style.background = {
+if (!selected.value.style.background) {
+  selected.value.style.background = {
     color: '',
     image: '',
     repeat: 'repeat',
@@ -73,27 +78,24 @@ if (!target.value.style.background) {
     size: 'auto'
   }
 }
-if (!(!target.value.style.background.color && !target.value.style.background.image)) {
-  if (target.value.style.background.color) {
-    state.defaultBackground.backgroundColor = target.value.style.background.color
+if (!(!selected.value.style.background.color && !selected.value.style.background.image)) {
+  if (selected.value.style.background.color) {
+    state.defaultBackground.backgroundColor = selected.value.style.background.color
   } else {
-    state.defaultBackground.backgroundImage = target.value.style.background.image
+    state.defaultBackground.backgroundImage = selected.value.style.background.image
   }
-  // if (target.value.style.isCustomBackground) {
-  //   // eslint-disable-next-line vue/no-setup-props-destructure
-  //   state.color = target.value.style.background.color
-  // }
-  bgStatus.value = !target.value.style.background.color
+
+  bgStatus.value = !selected.value.style.background.color
 }
-const modifyBackBackground = (key, value) => {
+const modifyBackBackground = (key: string, value: any) => {
   const keys = ['color', 'image']
   let i = 0
   while (i !== keys.length) {
     const item = keys[i]
     if (item === key) {
-      target.value.style.background[item] = value
+      selected.value.style.background[item] = value
     } else {
-      target.value.style.background[item] = ''
+      selected.value.style.background[item] = ''
     }
     i++
   }
@@ -139,7 +141,7 @@ onMounted(() => {
 })
 const handleActiveChange = (value) => {
   // target.value.style.isCustomBackground = !!value
-  target.value.style.background.color = value
+  selected.value.style.background.color = value
   if (!value) {
     if (state.defaultBackground.backgroundColor) {
       modifyBackBackground('color', state.defaultBackground.backgroundColor)
@@ -147,7 +149,7 @@ const handleActiveChange = (value) => {
       modifyBackBackground('image', state.defaultBackground.backgroundImage)
     }
   } else {
-    target.value.style.backgroundImage = ''
+    selected.value.style.backgroundImage = ''
   }
 }
 const handleChange = (value) => {
@@ -161,7 +163,7 @@ const checkIsSelected = (key) => {
   const curVal = state.value0 ? state.defaultBackground.backgroundImage : state.defaultBackground.backgroundColor
   return key === curVal
 }
-const beforeAvatarUpload = (rawFile) => {
+const beforeAvatarUpload = (rawFile: UploadRawFile) => {
   if (rawFile.size > 2 * 1024 * 1024) {
     ElMessage({
       message: t('rf.validateMsg.fileSize', { size: 2 }),
@@ -171,10 +173,10 @@ const beforeAvatarUpload = (rawFile) => {
   }
   return true
 }
-const handleError = (error) => {
+const handleError = (error: Error) => {
   ElMessage.error(error.toString())
 }
-const handleSuccess = (response, uploadFile) => {
+const handleSuccess = () => {
   nextTick(() => {
     element.value.children[1].click()
   })
@@ -185,7 +187,7 @@ const handleSuccess = (response, uploadFile) => {
     <div class="background">
       <div v-if="!state.value0">
         <el-color-picker size="large" @active-change="handleActiveChange" @change="handleChange"
-          v-model="target.style.background.color" show-alpha />
+          v-model="selected.style.background.color" show-alpha />
       </div>
       <ul :class="[!state.value0 ? 'quickColor' : 'quickImage']" ref="element">
         <li v-if="state.value0" class="uploadFile">
@@ -207,14 +209,14 @@ const handleSuccess = (response, uploadFile) => {
     <div v-if="state.defaultBackground.backgroundImage">
       <el-row :gutter="14">
         <el-col :span="12">
-          <div>Reapeat</div>
-          <el-select v-model="target.style.background.repeat" placeholder="Select" size="large">
+          <div>Repeat</div>
+          <el-select v-model="selected.style.background.repeat" placeholder="Select" size="large">
             <el-option v-for="item in options0[0]" :key="item" :label="item" :value="item" />
           </el-select>
         </el-col>
         <el-col :span="12">
           <div>Position</div>
-          <el-select v-model="target.style.background.position" placeholder="Select" size="large">
+          <el-select v-model="selected.style.background.position" placeholder="Select" size="large">
             <el-option v-for="item in options0[1]" :key="item" :label="item" :value="item" />
           </el-select>
         </el-col>
@@ -222,13 +224,13 @@ const handleSuccess = (response, uploadFile) => {
       <el-row :gutter="14">
         <el-col :span="12">
           <div>Attachment</div>
-          <el-select v-model="target.style.background.attachment" placeholder="Select" size="large">
+          <el-select v-model="selected.style.background.attachment" placeholder="Select" size="large">
             <el-option v-for="item in options0[2]" :key="item" :label="item" :value="item" />
           </el-select>
         </el-col>
         <el-col :span="12">
           <div>Size</div>
-          <el-select v-model="target.style.background.size" placeholder="Select" size="large">
+          <el-select v-model="selected.style.background.size" placeholder="Select" size="large">
             <el-option v-for="item in options0[3]" :key="item" :label="item" :value="item" />
           </el-select>
         </el-col>

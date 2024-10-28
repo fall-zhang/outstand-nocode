@@ -1,23 +1,17 @@
 import LayoutDraggable from '@Form/components/FormContainer/DraggableDrop.vue'
-import CompleteButton from '@/views/rich-form/components/CompleteButton.vue'
 import { useTarget } from '@Form/hooks/use-target'
 import { useProps } from '@Form/hooks/use-props'
 import { ElForm, ElScrollbar } from 'element-plus'
 import { Form as VanForm } from 'vant'
 import $style from './CenterCanvas.module.scss'
-import { RichFormProvider } from '@Form/types/rich-form'
+import { useFormProvider } from '../../hooks/use-form-provider'
 export default defineComponent({
   name: 'PanelsCanvas',
   inheritAttrs: false,
   customOptions: {},
   setup () {
-    const ER = inject<RichFormProvider>('rich-form')!
-    const {
-      state,
-      setSelection,
-      isEditModel,
-      isDesktop
-    } = useTarget()
+    const { isDesktop, handler, canvasScrollRef } = useFormProvider()
+    const { state } = useTarget()
     const form = ref('')
     const typeProps = useProps({
       state,
@@ -26,38 +20,24 @@ export default defineComponent({
       isRoot: true
     })
     const RenderForm = unref(isDesktop) ? ElForm : VanForm
-    const isInEdit = unref(isEditModel)
+    function onClickCenter () {
+      handler.value.setSelection({ id: 'root' })
+    }
     return () => (<div
-      class={ [
+      class={[
         'center-canvas',
         $style.Canvas,
-        isEditModel.value && $style.editModel,
+        $style.editModel,
+        $style.container,
         !unref(isDesktop) && $style.mobile,
         !unref(isDesktop) && $style.mobileLayoutType
-      ] }>
-      {isInEdit
-        ? (
-          <div class={$style.container}>
-            <ElScrollbar ref={ER.canvasScrollRef}>
-              <div class={$style.subject}>
-                <RenderForm ref={form} onClick={() => unref(isEditModel) && setSelection('root')} {...typeProps.value}>
-                  <LayoutDraggable data-layout-type={'root'} class={[unref(isEditModel) && $style.wrap]} data={state.store} parent={state.store} isRoot></LayoutDraggable>
-                </RenderForm>
-              </div>
-            </ElScrollbar>
-          </div>
-        )
-        : <>
-          <h2>
-            {
-              '预览页面暂为空，需要专门的渲染逻辑'
-            }
-            {/* <LayoutDraggable data-layout-type={'root'} class={[unref(isEditModel) && $style.wrap]} data={state.store} parent={state.store} isRoot></LayoutDraggable> */}
-          </h2>
-          {
-            state.config && <CompleteButton handle={form}/>
-          }
-        </>}
+      ] } style={{ height: '100%' }}>
+      <ElScrollbar class={$style.subject} ref={canvasScrollRef}>
+        <RenderForm ref={form} onClick={onClickCenter} {...typeProps.value}>
+          <LayoutDraggable data-layout-type={'root'} class={$style.wrap} data={state.store} parent={state.store} isRoot></LayoutDraggable>
+        </RenderForm>
+      </ElScrollbar>
+      {/* <h2>预览页面暂为空，需要专门的渲染逻辑</h2> */}
     </div>
     )
   }

@@ -1,14 +1,13 @@
-<script>
-import { ref, inject, nextTick, computed } from 'vue'
+<script lang="ts" setup>
+import { ref, nextTick, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import _ from 'lodash-es'
 import Icon from '@/assets'
 import { get } from '@/utils/utils'
-export default {
+import { useFormProvider } from '@/views/rich-form/hooks/use-form-provider'
+defineOptions({
   name: 'ConfigLogicComponent'
-}
-</script>
-<script setup>
+})
 const { t, } = useI18n()
 const tabs = ref([
   {
@@ -42,10 +41,11 @@ const tabs = ref([
   // }
 ])
 const activeTab = ref('visible')
-const ER = inject('rich-form')
+const ER = reactive(useFormProvider())
+// const ER = inject('rich-form')
 const scrollbarRef = ref()
 const dialogVisible = ref(false)
-const curIndex = computed(() => _.findIndex(tabs.value, { value: activeTab.value }))
+const curIndex = computed(() => tabs.value.findIndex(tab => tab.value === activeTab.value))
 const getTabData = (tab) => {
   // const tab = _.find(tabs.value, { value: type })
   return tab.ifRefs.map((rule, index) => {
@@ -101,9 +101,6 @@ const openDialog = () => {
 }
 const handleAction = (type) => {
   switch (type) {
-    case 0:
-      closeDialog()
-      break
     case 1: {
       const rules = tabs.value[curIndex.value].rules
       rules.push(rules.length)
@@ -163,7 +160,7 @@ const handleClosed = () => {
     </el-button>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="handleAction(0)">
+        <el-button @click="closeDialog">
           {{ t('rf.public.cancel') }}
         </el-button>
         <el-button type="primary" @click="handleAction(2)">
@@ -222,7 +219,7 @@ const handleClosed = () => {
     padding: 0;
   }
 
-  @include e(button) {
+  .button {
     width: calc(100% - 20px);
     border: none;
     margin: 10px;

@@ -1,16 +1,12 @@
-<script>
-import { useTarget } from '@Form/hooks/use-target'
+<script setup lang="ts">
 import Icon from '@/assets'
-export default {
+import { useFormProvider } from '@/views/rich-form/hooks/use-form-provider';
+defineOptions({
   name: 'ConfigCollapseComponent',
   inheritAttrs: false,
   customOptions: {}
-}
-</script>
-<script setup>
-const {
-  target
-} = useTarget()
+})
+const { selected } = useFormProvider()
 const props = defineProps({
   field: {
     type: String,
@@ -33,13 +29,13 @@ const props = defineProps({
         <div class="form-label">
           <div>
             <div>{{ label }}</div>
-            <slot name="subSelect" v-if="target[operationKey][field]"></slot>
+            <slot name="subSelect" v-if="selected[operationKey][field]"></slot>
           </div>
-          <Icon :icon="target[operationKey][field] ? 'minus' : 'plus'"
-            @click="target[operationKey][field] = !target[operationKey][field]"></Icon>
+          <Icon :icon="selected[operationKey][field] ? 'minus' : 'plus'"
+            @click="selected[operationKey][field] = !selected[operationKey][field]"></Icon>
         </div>
       </template>
-      <slot name="content" v-if="target[operationKey][field]"></slot>
+      <slot name="content" v-if="selected[operationKey][field]"></slot>
     </el-form-item>
   </div>
 </template>

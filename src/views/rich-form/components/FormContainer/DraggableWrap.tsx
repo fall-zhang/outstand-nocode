@@ -48,26 +48,6 @@ export const DraggableWrap = defineComponent({
     VueDraggable
   },
   setup(props, { attrs, slots }) {
-    // const node = <></>
-    // const slots = useSlots()
-    // const { isEditModel } = useTarget()
-    // if (unref(isEditModel)) {
-    // } else {
-    //   const tagName = props.tag as string
-    //   const { item } = slots
-    //   if (!item) return '请添加 item 作为插槽'
-    //   let RecTag = <></>
-    //   if (isHTMLTag(tagName)) {
-    //     RecTag = h(tagName, { ...props.componentData }, () => props.list.map(listItem => item({
-    //       element: listItem
-    //     })))
-    //   } else {
-    //     RecTag = h(resolveComponent(tagName), { ...props.componentData }, () => props.list.map(listItem => item({
-    //       element: listItem
-    //     })))
-    //   }
-    //   node = RecTag
-    // }
     return () => (
       <VueDraggable
         {...attrs} {...props}>

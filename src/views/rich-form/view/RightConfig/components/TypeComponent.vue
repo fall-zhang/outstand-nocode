@@ -5,7 +5,7 @@ import Icon from '@/assets'
 defineOptions({
   name: 'ConfigTypeComponent'
 })
-const emit = defineEmits(['listener'])
+const emit = defineEmits(['change'])
 
 const {
   height = 100,
@@ -22,10 +22,7 @@ const {
   layoutType?: 'singleLine' | 'multiLine'
 }>()
 const fireEvent = (property: string, item: any) => {
-  emit('listener', {
-    property,
-    data: item
-  })
+  emit('change', property, item)
 }
 </script>
 <template>

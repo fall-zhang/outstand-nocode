@@ -4,14 +4,13 @@ import {
   ref,
   onMounted,
   useAttrs,
-  unref,
   onBeforeUnmount,
   inject,
   computed
 } from 'vue'
 import { isHTMLTag } from '@/utils/browser'
 import { useI18n } from 'vue-i18n'
-import { useCss } from '@/hooks'
+import { useCss } from '@Form/hooks/use-css'
 import { useTarget } from '@Form/hooks/use-target'
 import { syncWidthByPlatform, checkIsField, checkIslineChildren, deepTraversal } from '@/utils'
 import _ from 'lodash-es'
@@ -100,9 +99,8 @@ export default defineComponent({
       target,
       setSelection,
       state,
-      isEditModel,
     } = useTarget()
-    // const id = useCss(props.data, state.platform)
+    const id = useCss(props.data, state.platform)
     const isWarning = ref(false)
     const isField = checkIsField(props.data)
     const handleClick = () => {
@@ -224,7 +222,6 @@ export default defineComponent({
     const isScale = ref(false)
     const isShowWidthScale = computed(() => props.hasWidthScale)
     onMounted(() => {
-      if (!unref(isEditModel)) return false
       const hoverEl = elementRef.value.$el || elementRef.value
       const widthScaleEl = widthScaleElement.value
       hoverEl.addEventListener('mouseover', (e) => {
@@ -289,49 +286,41 @@ export default defineComponent({
         id.value,
         $style.selectElement,
         !isField && $style.borderless,
-        unref(isEditModel) && Selected.value,
-        unref(isEditModel) && isWarning.value && $style.Warning
+        Selected.value,
+        isWarning.value && $style.Warning
       ]}
-      ref={elementRef} onClick={unref(isEditModel) && withModifiers(handleClick, ['stop'])}
+      ref={elementRef} onClick={withModifiers(handleClick, ['stop'])}
     >
       {slots.default()}
+      {/* 排序功能 */}
+      <div class={$style.topLeft}>
+        {props.hasDrag && (<Icon class={['handle', $style.dragIcon]} icon="Rank"></Icon>)}
+      </div>
+      {/* 其它功能 */}
+      <div class={$style.bottomRight}>
+        <Icon class={['handle', $style.selectParent]} onClick={withModifiers((e) => handleAction('top'), ['stop'])} icon="top"/>
+        {props.hasDel && (
+          <Icon class={$style.copy} onClick={withModifiers((e) => handleAction('delete'), ['stop'])} icon="delete"></Icon>
+        )}
+        {
+          props.hasInsertColumn && (<Icon class={$style.insertColIcon} onClick={withModifiers((e) => handleAction('table-insert-col'), ['stop'])} icon="tableInsertCol"></Icon>)
+        }
+        {
+          props.hasInsertRow && (<Icon class={$style.insertRowIcon} onClick={withModifiers((e) => handleAction('table-insert-row'), ['stop'])} icon="tableInsertRow"></Icon>)
+        }
+        {
+          props.hasAddCol && (<Icon class={$style.addCol} onClick={withModifiers((e) => handleAction('plus'), ['stop'])} icon="plus"></Icon>)
+        }
+        {
+          isShowCopy.value && (<Icon class={$style.copyIcon} onClick={withModifiers((e) => handleAction('copy'), ['stop'])} icon="copy"></Icon>)
+        }
+        {
+          isShowWidthScale.value && (<div ref={widthScaleElement}><Icon class={$style.widthScale} icon="dragWidth"></Icon></div>)
+        }
+        {props.hasTableCellOperator && renderTableCellOperator()}
+      </div>
       {
-        // 排序功能
-        unref(isEditModel) && (
-          <div class={$style.topLeft}>
-            {props.hasDrag && (<Icon class={['handle', $style.dragIcon]} icon="Rank"></Icon>)}
-          </div>
-        )
-      }
-      {
-        // 其它功能
-        unref(isEditModel) && (
-          <div class={$style.bottomRight}>
-            <Icon class={['handle', $style.selectParent]} onClick={withModifiers((e) => handleAction('top'), ['stop'])} icon="top"/>
-            {props.hasDel && (
-              <Icon class={$style.copy} onClick={withModifiers((e) => handleAction('delete'), ['stop'])} icon="delete"></Icon>
-            )}
-            {
-              props.hasInsertColumn && (<Icon class={$style.charulieIcon} onClick={withModifiers((e) => handleAction('table-insert-col'), ['stop'])} icon="tableInsertCol"></Icon>)
-            }
-            {
-              props.hasInsertRow && (<Icon class={$style.charuhangIcon} onClick={withModifiers((e) => handleAction('table-insert-row'), ['stop'])} icon="tableInsertRow"></Icon>)
-            }
-            {
-              props.hasAddCol && (<Icon class={$style.addCol} onClick={withModifiers((e) => handleAction('plus'), ['stop'])} icon="plus"></Icon>)
-            }
-            {
-              isShowCopy.value && (<Icon class={$style.copyIcon} onClick={withModifiers((e) => handleAction('copy'), ['stop'])} icon="copy"></Icon>)
-            }
-            {
-              isShowWidthScale.value && (<div ref={widthScaleElement}><Icon class={$style.widthScale} icon="dragWidth"></Icon></div>)
-            }
-            {props.hasTableCellOperator && renderTableCellOperator()}
-          </div>
-        )
-      }
-      {
-        unref(isEditModel) && props.hasMask && <div class={$style.mask}></div>
+        props.hasMask && <div class={$style.mask}></div>
       }
     </TagComponent>
     )

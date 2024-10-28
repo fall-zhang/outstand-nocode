@@ -1,5 +1,4 @@
 import { defineComponent, useAttrs, unref } from 'vue'
-import { useTarget } from '@Form/hooks/use-target'
 import Selection from '@/views/rich-form/components/Selection/selectElement'
 import LayoutDraggable from './DraggableDrop.vue'
 import $style from './TableLayout.module.scss'
@@ -13,7 +12,6 @@ export default defineComponent({
     parent: Array
   },
   setup (props) {
-    const { isEditModel } = useTarget()
     return () => {
       const handleMousedown = (e, node) => {
         if (!isTrTag(e.target.tagName)) return false
@@ -57,8 +55,8 @@ export default defineComponent({
                       hasTableCellOperator
                       colspan={element1.options.colspan}
                       rowspan={element1.options.rowspan}
-                      onMousedown={(e) => !rowIndex && unref(isEditModel) && handleMousedown(e, element1)}
-                      onMousemove={!rowIndex && unref(isEditModel) && handleMousemove}
+                      onMousedown={(e) => !rowIndex && handleMousedown(e, element1)}
+                      onMousemove={!rowIndex && handleMousemove}
                       width={element1.style && element1.style.width}
                     >
                       <LayoutDraggable

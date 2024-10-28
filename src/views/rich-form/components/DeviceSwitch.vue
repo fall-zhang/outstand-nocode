@@ -4,15 +4,15 @@ import Icon from '@/assets'
 const props = defineProps({
   modelValue: {
     type: String,
-    default: 'pc'
+    default: 'desktop'
   }
 })
 const emit = defineEmits(['update:modelValue'])
 </script>
 <template>
   <div class="switch-out">
-    <Icon @click="() => emit('update:modelValue', 'pc')" icon="PC"
-      :class="['device-switch', props.modelValue === 'pc' && 'active']"></Icon>
+    <Icon @click="() => emit('update:modelValue', 'desktop')" icon="PC"
+      :class="['device-switch', props.modelValue === 'desktop' && 'active']"></Icon>
     <Icon @click="() => emit('update:modelValue', 'mobile')" icon="cellphone"
       :class="['device-switch', props.modelValue === 'mobile' && 'active']"></Icon>
   </div>

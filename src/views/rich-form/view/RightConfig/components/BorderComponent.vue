@@ -1,31 +1,30 @@
 <script setup lang="ts">
 import TypeComponent from './TypeComponent.vue'
-import { useTarget } from '@Form/hooks/use-target'
-
+import { useFormProvider } from '@Form/hooks/use-form-provider'
 import { useI18n } from 'vue-i18n'
 
-import Icon from '@/assets'
+import Icon from '@/assets/index.vue'
 defineOptions({
   name: 'ConfigBorder',
   inheritAttrs: false,
   customOptions: {}
 })
-const { target, checkTypeBySelected } = useTarget()
+const { selected } = useFormProvider()
 const { t } = useI18n()
 
 const borderActions = new Array(8).fill('tableStokeP').map((e, i) => ({
   value: i,
   icon: e + (i + 1)
 }))
-if (checkTypeBySelected(['table'])) {
-  const selected = target.value
-  if (!selected.style?.borderColor || !selected.style?.borderWidth || !selected.style?.borderType) {
-    selected.style.borderColor = '#000'
-    selected.style.borderWidth = selected.style.borderType = 1
+if (['table'].includes(selected.value.type)) {
+  const currentSelect = selected.value
+  if (!currentSelect.style?.borderColor || !currentSelect.style?.borderWidth || !currentSelect.style?.borderType) {
+    currentSelect.style.borderColor = '#000'
+    currentSelect.style.borderWidth = currentSelect.style.borderType = 1
   }
-} else if (!target.value.style.border) {
-  target.value.style.borderRadius = 0
-  target.value.style.border = {
+} else if (!selected.value.style.border) {
+  selected.value.style.borderRadius = 0
+  selected.value.style.border = {
     width: 1,
     style: 'solid',
     color: '#4285f4'
@@ -34,22 +33,22 @@ if (checkTypeBySelected(['table'])) {
 
 const handleTypeListener = ({ property, data }: any) => {
   if (property === 'borderType') {
-    target.value.style.borderType = data.value
+    selected.value.style.borderType = data.value
   }
 }
 </script>
 <template>
   <div class="ConfigBorder">
-    <div v-if="checkTypeBySelected(['table'])">
+    <div v-if="['table'].includes(selected.type)">
       <TypeComponent @listener="handleTypeListener" property="borderType" :height="30" :fontSize="18"
-        :val="target.style.borderType" :nodes="borderActions" label="" />
+        :val="selected.style.borderType" :nodes="borderActions" label="" />
       <el-row justify="space-between" align="middle">
         <el-col :span="5">
-          <el-color-picker v-model="target.style.borderColor" />
+          <el-color-picker v-model="selected.style.borderColor" />
         </el-col>
         <el-col :span="18">
           <el-form-item size="default" :label="t('rf.config.borderComponent.borderWidth')">
-            <el-input-number style="width: 100%;" :min="0" v-model="target.style.borderWidth"
+            <el-input-number style="width: 100%;" :min="0" v-model="selected.style.borderWidth"
               controls-position="right" />
           </el-form-item>
         </el-col>
@@ -59,7 +58,7 @@ const handleTypeListener = ({ property, data }: any) => {
       <el-row justify="space-between" align="middle">
         <el-col :span="3">
           <el-form-item>
-            <el-color-picker v-model="target.style.border.color" />
+            <el-color-picker v-model="selected.style.border.color" />
           </el-form-item>
         </el-col>
         <el-col :span="10">
@@ -67,7 +66,7 @@ const handleTypeListener = ({ property, data }: any) => {
             <template #label>
               <Icon icon="lineThickness" />
             </template>
-            <el-input-number :step="1" :min="0" v-model="target.style.border.width" controls-position="right" />
+            <el-input-number :step="1" :min="0" v-model="selected.style.border.width" controls-position="right" />
           </el-form-item>
         </el-col>
         <el-col :span="10">
@@ -75,7 +74,7 @@ const handleTypeListener = ({ property, data }: any) => {
             <template #label>
               <Icon icon="radius" />
             </template>
-            <el-input-number :step="1" :min="0" v-model="target.style.borderRadius" controls-position="right" />
+            <el-input-number :step="1" :min="0" v-model="selected.style.borderRadius" controls-position="right" />
           </el-form-item>
         </el-col>
       </el-row>

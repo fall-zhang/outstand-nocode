@@ -1,18 +1,18 @@
 // 左侧功能面板
 <template>
-  <ElAside :class="$style.Fields" :width="ER.config.fieldsPanelWidth">
-    <ElMenu :default-openeds="ER.config.fieldsPanelDefaultOpened">
-      <ElSubMenu v-for="element in ER.fieldsList" :key="element.id" :index="element.id">
+  <ElAside :class="$style.Fields" :width="FE.config.fieldsPanelWidth">
+    <ElMenu :default-openeds="FE.config.fieldsPanelDefaultOpened">
+      <ElSubMenu v-for="element in FE.fieldsList" :key="element.id" :index="element.id">
         <template #title>
           {{ t(`rf.fields.${element.id}`) }}
         </template>
         <DraggableWrap :class="$style.dragContent" :list="element.list" :clone="handleClone" tag="ul" :sort="false"
           :move="handleMove" v-bind="dragOptions" :group="{ name: 'nocode-form', pull: 'clone', put: false }"
           item-key="null">
-          <template #item="{ element }">
-            <li @click="() => addStore(element)">
-              <Icon :class="$style.icon" :icon="element.icon"></Icon>
-              <span>{{ fieldLabel(t, element) }}</span>
+          <template #item="{ ele2 }">
+            <li @click="() => addStore(ele2)">
+              <Icon :class="$style.icon" :icon="ele2.icon"></Icon>
+              <span>{{ fieldLabel(t, ele2) }}</span>
             </li>
           </template>
         </DraggableWrap>
@@ -27,36 +27,34 @@ import { useI18n } from 'vue-i18n'
 import { useTarget } from '@Form/hooks/use-target'
 import { addContext, deepClone } from '@/utils'
 import { DraggableWrap } from '@Form/components/FormContainer/DraggableWrap'
-import { inject, reactive, nextTick } from 'vue'
+import { reactive } from 'vue'
 
 import Icon from '@/assets'
 import ControlInsertionPlugin from '@Form/components/FormContainer/ControlInsertionPlugin'
 import $style from './index.module.scss'
-import { RichFormProvider } from '@Form/types/rich-form'
 import { fieldLabel } from '@/utils/field'
+import { useFormProvider } from '../../hooks/use-form-provider'
 defineProps({
   visible: {
     type: Boolean,
     default: false
   }
 })
-const ER = inject<RichFormProvider>('rich-form')!
 const { t } = useI18n()
-const { state, setSelection } = useTarget()
+const FE = reactive(useFormProvider())
+const { state } = useTarget()
 const addStore = (element: any) => {
-  const newElement = reactive(ER?.handler.wrapElement(deepClone(element), {}))
-  state.store.push(newElement)
+  const newElement = reactive(FE.handler.wrapElement(deepClone(element), {}))
   addContext(newElement, state.store)
-  setSelection(newElement)
+  FE.handler.setSelection(newElement)
   // nextTick(() => {
   //   setTimeout(() => {
   //     // 跳转到最后拖拽的元素
-  //     ER.canvasScrollRef.value.setScrollTop(ER.canvasScrollRef.value.wrapRef.scrollHeight)
+  //     FE.canvasScrollRef.value.setScrollTop(FE.canvasScrollRef.value.wrapRef.scrollHeight)
   //   }, 100)
   // })
 }
 const handleClone = (element: any) => {
-  console.log('🚀 ~ handleClone ~ element:', element)
   return deepClone(element)
 }
 const handleMove = () => {
@@ -67,7 +65,7 @@ const dragOptions = reactive({
   dataSource: 'block',
   direction: 'horizontal',
   scroll: false,
-  plugins: [ControlInsertionPlugin(ER)]
+  plugins: [ControlInsertionPlugin(FE)]
 })
 
 </script>
