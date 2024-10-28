@@ -66,7 +66,6 @@
 
 <script lang='ts' setup>
 import { unref, nextTick, } from 'vue'
-import { useTarget } from '@Form/hooks/use-target'
 import { useI18n } from 'vue-i18n'
 import Icon from '@/assets'
 import { DraggableWrap } from '@Form/components/FormContainer/DraggableWrap'
@@ -74,6 +73,7 @@ import { ElCheckbox, ElCheckboxGroup, ElForm, ElFormItem, ElScrollbar, ElInput, 
 import $style from './DataComponents.module.scss'
 import { deepClone, intersection } from '@/utils/utils'
 import { generateOptions } from '@/utils/generateOptions'
+import { useFormProvider } from '@/views/rich-form/hooks/use-form-provider'
 defineOptions({
   name: 'ConfigDataDefault',
   inheritAttrs: false,
@@ -81,25 +81,23 @@ defineOptions({
 })
 const checkList = ref<any[]>([])
 const data = ref<any[]>([])
-const { state, target, type } = useTarget()
+const { selected, storeMap } = useFormProvider()
 const { t } = useI18n()
 const formRef = useTemplateRef('form')
 const scrollRef = useTemplateRef('scrollbar')
-if (state.mode === 'config') {
-  data.value = target.value.options.data = target.value.options.data || generateOptions(3)
-} else {
-  data.value = deepClone(state.data[target.value.options.dataKey].list)
-}
-
+// if (storeMap.value.get(selected.value.id)) {
+//   data.value = deepClone(storeMap.value.get(selected.value.id))
+// } else {
+//   data.value = deepClone([])
+// }
 const isMultiple = computed(() => {
   let result = false
-  switch (type.value) {
+  switch (selected.value.type) {
     case 'checkbox':
       result = true
       break
     case 'select':
-    case 'cascader':
-      result = target.value.options.multiple
+      result = selected.value.options.multiple
       break
     case 'tabs':
     case 'radio':
@@ -108,10 +106,10 @@ const isMultiple = computed(() => {
   }
   return result
 })
-if (isMultiple.value) {
-  checkList.value = deepClone(target.value.options.defaultValue)
+if (isMultiple.value && selected.value.type !== 'root') {
+  checkList.value = deepClone(selected.value.options?.defaultValue)
 } else {
-  checkList.value = [target.value.options.defaultValue]
+  checkList.value = []
 }
 
 // const validator = ({ field }, value, callback) => {
@@ -160,6 +158,7 @@ const onAddSelect = () => {
     }
   })
 }
+
 const onChangeSelect = (value: string | number | boolean, item: any) => {
   if (!isMultiple.value) {
     if (!value) {

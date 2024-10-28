@@ -37,13 +37,13 @@
 <script lang="tsx" setup>
 import { deepClone } from '@/utils'
 import { useI18n } from 'vue-i18n'
-import { useTarget } from '@Form/hooks/use-target'
+// import { useTarget } from '@Form/hooks/use-target'
 import nzhcn from 'nzh/cn'
 import { ElButton, ElIcon, ElInput, ElScrollbar } from 'element-plus'
 import $style from './DataComponents.module.scss'
 import { Minus, PreviewCloseOne, PreviewOpen } from '@icon-park/vue-next'
 import { useFormProvider } from '@/views/rich-form/hooks/use-form-provider'
-import { generateOptions } from '@/utils/generateOptions'
+// import { generateOptions } from '@/utils/generateOptions'
 defineOptions({
   name: 'ConfigData2',
   inheritAttrs: false,
@@ -57,13 +57,9 @@ const data = ref(new Array(defaultLength).fill([]))
 const shows = ref(new Array(defaultLength).fill(false))
 const selected = ref(new Array(defaultLength))
 const scrollbars = ref<(Element | ComponentPublicInstance | null)[]>([])
-
-const { state, target } = useTarget()
-if (state.mode === 'config') {
-  data.value[0] = target.value.options.data = target.value.options.data || generateOptions(3)
-} else {
-  data.value[0] = deepClone(state.data[target.value.options.dataKey].list)
-}
+// const { selected: target } = useFormProvider()
+// const { state } = useTarget()
+// data.value[0] = deepClone(state.data[target.value.options.dataKey].list)
 shows.value[0] = true
 
 const handleAction = (type: number, x: number, recData: any) => {

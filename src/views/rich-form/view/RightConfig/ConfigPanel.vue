@@ -1,12 +1,12 @@
 <!-- 右侧的面包屑和全局配置面板 -->
 <script setup lang="ts">
-import { useTarget } from '@Form/hooks/use-target'
 import { useI18n } from 'vue-i18n'
 import { ref, computed, reactive, watch, onMounted } from 'vue'
 import PanelsConfigComponentsPropsPanel from './components/PropsPanel.vue'
 import GlobalConfigPanel from './ConfigPanelGlobal.vue'
 import { isEmpty } from '@/utils/utils'
 import { fieldLabel } from '@/utils/field'
+import { useFormProvider } from '../../hooks/use-form-provider'
 defineOptions({
   name: 'ConfigPanel',
   inheritAttrs: false,
@@ -18,13 +18,7 @@ const props = defineProps({
     default: 'editor'
   }
 })
-const {
-  state,
-  isSelectAnyElement,
-  isSelectRoot,
-  setSelection,
-  target,
-} = useTarget()
+const { selected, isSelectRoot, handler } = useFormProvider()
 const { t } = useI18n()
 const activeName0 = ref('props')
 const form = ref()
@@ -45,7 +39,7 @@ const validator = (rule: any, value: any, callback: any) => {
     }
   }
   if (props.mode === 'editor') {
-    state.validator(target.value, fn)
+    // state.validator(selected.value, fn)
   } else if (isEmpty(newValue)) {
     fn(0)
   } else {
@@ -65,13 +59,13 @@ const rules = reactive({
   ]
 })
 const breadcrumbList = computed(() => {
-  let nodes = ['root']
+  const nodes = ['root']
   let result = []
   if (!isSelectRoot.value) {
-    const targetNodes = target.value?.context?.parents.filter((e: any) => !['inline', 'tr'].includes(e.type))
-    if (targetNodes) {
-      nodes = nodes.concat(targetNodes)
-    }
+    // const targetNodes = selected.value?.context?.parents.filter((e: any) => !['inline', 'tr'].includes(e.type))
+    // if (targetNodes) {
+    // nodes = nodes.concat(targetNodes)
+    // }
   }
   if (nodes.length > 4) {
     result.push(nodes[0])
@@ -104,13 +98,13 @@ const breadcrumbList = computed(() => {
 const handleBreadcrumbClick = (item: any, index: number) => {
   if (index !== breadcrumbList.value.length - 1 && item.node.value !== 'placeholder') {
     if (item !== 'root') {
-      setSelection(item)
+      handler.value.setSelection(item)
     } else {
-      setSelection('root')
+      handler.value.setSelection('root')
     }
   }
 }
-watch(target, () => {
+watch(selected, () => {
   if (isSelectRoot.value) {
     activeName0.value = 'root'
   } else {
@@ -128,14 +122,14 @@ watch(target, () => {
         {{ item.node.value === 'placeholder' ? '...' : item.label }}
       </el-breadcrumb-item>
     </el-breadcrumb>
-    <el-form ref="form" :model="target" :rules="rules" label-width="120px" label-position="top">
+    <el-form ref="form" :model="selected" :rules="rules" label-width="120px" label-position="top">
       <el-scrollbar>
         <div :class="$style.wrap">
-          <div v-if="isSelectAnyElement">
-            <PanelsConfigComponentsPropsPanel :key="target.id" />
-          </div>
           <div v-if="isSelectRoot">
             <GlobalConfigPanel></GlobalConfigPanel>
+          </div>
+          <div v-else>
+            <PanelsConfigComponentsPropsPanel :key="selected.id" />
           </div>
         </div>
       </el-scrollbar>

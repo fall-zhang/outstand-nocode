@@ -1,66 +1,38 @@
 <script setup lang="ts">
-import { useTarget } from '@Form/hooks/use-target'
 import { useI18n } from 'vue-i18n'
 import { ref, unref, computed } from 'vue'
-import { ClickOutside as vClickOutside } from 'element-plus'
-import CompleteButton from '@/views/rich-form/components/CompleteButton.vue'
+import { ClickOutside } from 'element-plus'
+// import CompleteButton from '@Form/components/CompleteButton.vue'
 import TypeComponent from './components/TypeComponent.vue'
 import PanelsConfigComponentsLogicComponent from './components/LogicComponent.vue'
 import { FileQuestion } from '@icon-park/vue-next'
-import { deepClone, get, set } from '@/utils/utils'
+import { deepClone, set } from '@/utils/utils'
+import { useFormProvider } from '../../hooks/use-form-provider'
 defineOptions({
   name: 'GlobalConfigPanel',
   inheritAttrs: false,
   customOptions: {}
 })
-const {
-  target,
-  state,
-  isDesktop
-} = useTarget()
+
+const { isDesktop, platform, selected } = useFormProvider()
+
 const { t } = useI18n()
 const visible = ref(false)
 const buttonRef = ref()
 const popoverRef = ref()
-const radio1 = ref<'desktop' | 'mobile' | 'pc'>('desktop')
+const radio1 = ref<'desktop' | 'mobile'>('desktop')
 const handleModelValue = (type: string, value: any) => {
-  const platforms = target.value.isSync ? ['pc', 'mobile'] : [state.platform]
+  const platforms = selected.value ? ['desktop', 'mobile'] : [platform]
   platforms.forEach((e) => {
-    set(target.value, `${e}.${type}`, value)
+    set(selected.value, `${e}.${type}`, value)
   })
 }
-const popperPaneRef = computed(() => {
-  return get(unref(popoverRef), 'popperRef.contentRef', '')
-})
-// let handleConfirm = ''
-// const handleBeforeChange = () => {
-//   // visible.value = true
-//   return new Promise((resolve, reject) => {
-//     const platform = unref(target)
-//     const pcObj = {
-//       labelPosition: platform.pc.labelPosition,
-//       completeButton: platform.pc.completeButton
-//     }
-//     const mobileObj = {
-//       labelPosition: platform.mobile.labelPosition,
-//       completeButton: platform.mobile.completeButton
-//     }
-//     if (isEqual(pcObj, mobileObj)) {
-//       resolve(true)
-//     } else {
-//       visible.value = true
-//       handleConfirm = resolve
-//     }
-//   })
-// }
-// const onClickOutside = () => {
-//   visible.value = false
-// }
+
 const onConfirm = () => {
-  const targetObj = target.value[radio1.value === 'pc' ? 'mobile' : 'pc']
+  const targetObj = selected.value[radio1.value]
   const sourceObj = {
-    labelPosition: unref(target)[radio1.value].labelPosition,
-    completeButton: unref(target)[radio1.value].completeButton,
+    labelPosition: unref(selected)[radio1.value].labelPosition,
+    completeButton: unref(selected)[radio1.value].completeButton,
   }
   Object.assign(targetObj, deepClone(sourceObj))
   // handleConfirm(true)
@@ -101,13 +73,13 @@ const options1 = computed(() => {
     }
   ]
 })
-const handleTypeListener = ({ property, data }:any) => {
+const onTypeChange = (property: string, data: any) => {
   switch (property) {
     case 'labelPosition':
       handleModelValue('labelPosition', data.value)
       break
     case 'size':
-      target.value[state.platform].size = data.value
+      selected.value[platform.value].size = data.value
       break
   }
 }
@@ -123,7 +95,7 @@ const handleTypeListener = ({ property, data }:any) => {
           {{ t('rf.config.globalConfig.sync.warning') }}
         </div>
         <el-radio-group class="syncType" v-model="radio1">
-          <el-radio value="pc">pc</el-radio>
+          <el-radio value="desktop">desktop</el-radio>
           <el-radio value="mobile">mobile</el-radio>
         </el-radio-group>
       </template>
@@ -140,39 +112,38 @@ const handleTypeListener = ({ property, data }:any) => {
         v-model="target.isSync" />
     </el-form-item> -->
     {{ 'layout-type-2' }}
-    <TypeComponent v-if="isDesktop" @listener="handleTypeListener" property="size" layoutType="singleLine"
-      :label="t('rf.config.globalConfig.componentSize.label')" :val="target[state.platform].size" :nodes="options1" />
+    <TypeComponent v-if="isDesktop" @change="onTypeChange" property="size" layoutType="singleLine"
+      :label="t('rf.config.globalConfig.componentSize.label')" :val="selected[platform].size" :nodes="options1" />
     {{ 'layout-type-1' }}
-    <TypeComponent @listener="handleTypeListener" property="labelPosition"
+    <TypeComponent @change="onTypeChange" property="labelPosition"
       :label="t('rf.config.globalConfig.labelPosition.label')" :height="66" :fontSize="80"
-      :val="target[state.platform].labelPosition" :nodes="alignOptions" />
+      :val="selected[platform].labelPosition" :nodes="alignOptions" />
     <el-form-item :label="t('rf.public.button')">
       <div style="width: 100%;">
-        <CompleteButton mode="preview" />
-        <el-row :gutter="8">
+        <!-- <CompleteButton mode="preview" /> -->
+        <!-- <el-row :gutter="8">
           <el-col>
             <el-form-item :label="t('rf.public.text')">
-              <el-input :model-value="target[state.platform].completeButton.text" show-word-limit :maxlength="20"
+              <el-input :model-value="selected[platform].completeButton.text" show-word-limit :maxlength="20"
                 @update:modelValue="(e) => handleModelValue('completeButton.text', e)"></el-input>
             </el-form-item>
           </el-col>
-        </el-row>
-        <el-row :gutter="8" style="margin-top: 20px;">
+        </el-row> -->
+        <!-- <el-row :gutter="8" style="margin-top: 20px;">
           <el-col :span="12">
             <el-form-item :label="t('rf.public.color')">
-              <el-color-picker popper-class="completeButtonColor"
-                :model-value="target[state.platform].completeButton.color"
+              <el-color-picker popper-class="completeButtonColor" :model-value="selected[platform].completeButton.color"
                 @update:modelValue="(e) => handleModelValue('completeButton.color', e)" show-alpha />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item :label="t('rf.public.backgroundColor')">
               <el-color-picker popper-class="completeButtonColor"
-                :model-value="target[state.platform].completeButton.backgroundColor"
+                :model-value="selected[platform].completeButton.backgroundColor"
                 @update:modelValue="(e) => handleModelValue('completeButton.backgroundColor', e)" show-alpha />
             </el-form-item>
           </el-col>
-        </el-row>
+        </el-row> -->
       </div>
     </el-form-item>
     <PanelsConfigComponentsLogicComponent />
