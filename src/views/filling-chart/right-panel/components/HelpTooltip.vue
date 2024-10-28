@@ -9,6 +9,7 @@
 
 <script lang="ts" setup>
 import { Help as IconHelp } from '@icon-park/vue-next'
+import { toRaw } from 'vue'
 const prop = defineProps<{
   path: {
     keyName: string,
