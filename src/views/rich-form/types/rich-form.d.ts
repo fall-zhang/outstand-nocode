@@ -4,7 +4,7 @@ import { AllFieldType, FormItem } from './rich-form-item'
  * 平台类型
  * 之后会移除 pc 类型
  */
-export type PlatformType = 'desktop' | 'mobile' | 'pc'
+export type PlatformType = 'desktop' | 'mobile'
 
 type MobileConfig = {
   labelWidth: number |string
@@ -52,18 +52,29 @@ export type GlobalConfig = {
   }
 }
 
+type FormHandler = {
+  setSelection(filed:AllFieldType):void,
+  switchPlatform(platform:'mobile' | 'desktop') :void,
+  addFieldData() :void,
+  delete() :void,
+  addField() :void,
+  wrapElement() :void
+  checkPropsBySelected() :void
+  validator() :void
+  copy():void
+}
 
 export type RichFormProvider = {
   lang:'zh'
   // 左侧菜单的配置
   fieldsList:AllFieldType[]
-  // 配置好的内容
-  store: FormItem[],
+  // 中心区域当前配置的内容
+  store: AllFieldType[],
   canvasScrollRef:any
   // 当前选中的内容，默认选中 root
   selected: AllFieldType
   mode: 'edit' | 'setting' | 'preview'
-  platform: 'pc' | 'mobile' | 'desktop'
+  platform: 'mobile' | 'desktop'
   widthScaleLock: boolean,
   data: Record<string, unknown>,
   validateStates: unknown[],
@@ -83,12 +94,12 @@ export type RichFormProvider = {
   /**
    *  桌面端对每一项都启用的设定
    */
-  // desktopItems: Partial<DesktopConfig>
+  desktopItems: DesktopConfig
   desktopItems: any
   /**
    *  移动端对每一项都启用的设定
    */
-  // mobileItems: Partial<MobileConfig>
+  mobileItems: MobileConfig
   mobileItems:any
   /** 等待移除 */
   state:any

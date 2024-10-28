@@ -1,3 +1,4 @@
+import { StyleValue, CSSProperties } from 'vue'
 // 基本 Form 类型
 enum BaseFormType {
   input,
@@ -27,22 +28,28 @@ export enum ContainerType {
 /**
  * 中间区域数据的存储类型
  */
-export type FormItem = {
-  id: string
-  key:string
+export type PlatformConf = {
+  size: string
+  labelPosition:string
   label: string
-  children?: FormItem
-  options:Record<string, unknown>
+  children?: FormItem[]
+  style:CSSProperties
+  // options:Record<string, unknown>
 }
+export type BaseItemType = 'input'|'number'|'select'|'textarea'|'radio'|'checkbox'|'time'|'date'|'rate'|'switch'|'slider'
+// 'table'
+export type ContainerItemType = 'col' | 'grid' | 'tabs' |'collapse' | 'divider' | 'inline'
 /**
  * 通常 form 的类型
  */
-export type BaseNodeItem = {
-  type: 'input'|'number'|'select'|'textarea'|'radio'
+ type FieldItemBase = {
+  type: BaseItemType
   label: string,
   icon: string,
   key: string, // form 中的 key
   id: string, // 唯一标志符
+  desktop?:PlatformConf
+  mobile?:PlatformConf
   options:Record<string, any>
   // options: {
   //   contentPosition?: 'center'|'left'|'right',
@@ -52,25 +59,31 @@ export type BaseNodeItem = {
   //   required: boolean
   // }
 }
-type ContainerItem = {
+export type ContainerColumn = {
   id: string,
+  name:string
+  type: 'col' | 'td'
+  // desktop:PlatformConf
+  // mobile:PlatformConf
   options: {
+    gap:number
     span: number,
     offset: number,
     pull: number,
     push: number
   },
-  type: 'col',
   list: []
 }
 /**
  * 容器的类型
  */
 export type FieldItemContainer = {
-  type: ContainerType
+  type: ContainerItemType
   id: string
   label: string
   icon?: string
+  desktop?:PlatformConf
+  mobile?:PlatformConf
   columns: ContainerItem[]
   options?:Record<string, any>
   // options: {
@@ -80,7 +93,9 @@ export type FieldItemContainer = {
   // }
 }
 
-export type FieldItemRoot = {
+type FieldItemRoot = {
+  // desktop:PlatformConf
+  // mobile:PlatformConf
   type: 'root',
   id: 'root',
   label: string
