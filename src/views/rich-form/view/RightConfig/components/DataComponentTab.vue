@@ -7,18 +7,25 @@ import { DraggableWrap } from '@Form/components/FormContainer/DraggableWrap'
 import Icon from '@/assets'
 import { renderFieldData } from '@/utils/field'
 import { useFormProvider } from '@/views/rich-form/hooks/use-form-provider'
+import { FieldItemContainer } from '@/views/rich-form/types/rich-form-item'
 defineOptions({
   name: 'ConfigData3'
 })
-const { selected } = useFormProvider()
+const { selected, containerFiledList } = useFormProvider()
 const { t } = useI18n()
 const addTab = () => {
-  const data = renderFieldData(`${selected.value.type}Col`)
-  data.label = `Tab ${unref(selected).columns.length + 1}`
-  // console.log(unref(selected))
-  unref(selected).columns.push(data)
-  addContext(data, selected.value)
+  const tar = unref(selected) as unknown as FieldItemContainer
+  const data = renderFieldData(`${tar.type}Col`)
+  data.label = `Tab ${tar.columns.length + 1}`
+  unref(tar).columns.push(data)
+  addContext(data, tar)
 }
+const curSelect = computed(() => {
+  if (!containerFiledList.value.includes(selected.value.type)) {
+    console.warn('当前容器不在容器配置内', selected)
+  }
+  return unref(selected) as unknown as FieldItemContainer
+})
 </script>
 <template>
   <el-form-item>
@@ -29,12 +36,12 @@ const addTab = () => {
       </div>
     </template>
     <div style="width: 100%;">
-      <DraggableWrap :list="selected.columns" item-key="id" tag="ul" handle=".handle" class="d-content">
+      <DraggableWrap :list="curSelect.columns" item-key="id" tag="ul" handle=".handle" class="d-content">
         <template #item="{ element, index }">
           <li>
             <el-input size="default" clearable v-model="element.label" />
             <div class="d-operate">
-              <Icon class="d-icon" @click="selected.columns.splice(index, 1)" icon="delete"></Icon>
+              <Icon class="d-icon" @click="curSelect.columns.splice(index, 1)" icon="delete"></Icon>
               <Icon class="d-icon handle" icon="Rank"></Icon>
             </div>
           </li>

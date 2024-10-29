@@ -5,6 +5,7 @@ defineOptions({
   inheritAttrs: false,
   customOptions: {}
 })
+defineEmits(['change'])
 const { selected } = useFormProvider()
 const props = defineProps({
   field: {
@@ -18,7 +19,7 @@ const props = defineProps({
 })
 </script>
 <template>
-  <div :class="[$style.checkboxComponent]">
+  <div class="checkbox-outer">
     <el-checkbox v-model="selected.options[field]" @change="(newValue) => $emit('change', newValue)"
       :label="label"></el-checkbox>
     <template v-if="$slots.default">
@@ -29,8 +30,8 @@ const props = defineProps({
   </div>
 </template>
 
-<style lang="scss" module>
-.checkboxComponent {
+<style lang="scss" scoped>
+.checkbox-outer {
   margin: 2px 0;
 
   .slot {

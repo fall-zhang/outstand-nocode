@@ -93,7 +93,6 @@ const openDialog = () => {
   dialogVisible.value = true
   tabs.value.forEach((tab, index) => {
     const rules = get(ER.logic, `${tab.value}`, [])
-    remoteCount += rules.length * 2
     rules.forEach((rule, index) => {
       tab.rules.push(index)
     })

@@ -11,7 +11,7 @@ type NodeItem = {
   label: string
   value: string | number
   disabled?: boolean
-  icon: string
+  icon?: string
 }
 type Prop = {
   label?: string
@@ -48,7 +48,7 @@ const fireEvent = (property: string, item: unknown) => {
         'Selected': val !== undefined && item.value === val,
         'Disabled': item.disabled
       }">
-        <Icon :icon="item.icon" :fontSize="fontSize" />
+        <Icon :icon="item.icon || ''" :fontSize="fontSize" />
       </li>
     </ul>
     <div class="form-slot" v-if="layoutType === 'slot'">
