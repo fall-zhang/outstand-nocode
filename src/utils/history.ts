@@ -4,7 +4,7 @@
  * @date 2023/3/27
  */
 
-class History {
+class OperateHistory {
   private historyArr: Array<any> = []
   private maxStep = 10
   private current = {}
@@ -15,6 +15,7 @@ class History {
     this.current = {}
     this.currentIndex = -1
   }
+
   setMaxStep(stepCount: number) {
     this.maxStep = stepCount
     if (this.historyArr.length > stepCount) {
@@ -22,9 +23,11 @@ class History {
       this.historyArr = this.historyArr.slice(this.historyArr.length - stepCount)
     }
   }
+
   getHistory() {
     return this.historyArr
   }
+
   /**
    * 用于更新当前数据的列表
    * @param {function} updater 传入更新方法
@@ -41,9 +44,11 @@ class History {
     }
     return this.current
   }
+
   currentStep() {
     return this.current
   }
+
   preStep() {
     if (this.currentIndex > 0) {
       this.currentIndex -= 1
@@ -51,6 +56,7 @@ class History {
     }
     return this.current
   }
+
   nextStep() {
     if (this.currentIndex < this.historyArr.length - 1) {
       this.currentIndex += 1
@@ -59,4 +65,4 @@ class History {
     return this.current
   }
 }
-export default new History()
+export default new OperateHistory()

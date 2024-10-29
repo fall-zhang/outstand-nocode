@@ -105,8 +105,8 @@ const combinationData1 = (data) => {
     logic: data.logic
   }
   flatNodes(data.list, excludes, (nodes, node, currentIndex) => {
-    const cur = _.find(data.fields, { id: node })
-    if (!_.isEmpty(cur)) {
+    const cur = data.fields.find(e => e.id === node)
+    if (!isEmpty(cur)) {
       nodes[currentIndex] = cur
     }
   })
@@ -114,15 +114,15 @@ const combinationData1 = (data) => {
 }
 const combinationData2 = (list, fields) => {
   flatNodes(list, excludes, (nodes, node, currentIndex) => {
-    const cur = _.find(fields, { id: node })
-    if (!_.isEmpty(cur)) {
+    const cur = fields.find(e => e.id === node)
+    if (!isEmpty(cur)) {
       nodes[currentIndex] = cur
     }
   })
 }
 const repairLayout = (layout, fields) => {
   flatNodes(layout, excludes, (nodes, node, currentIndex) => {
-    if (_.isString(node)) {
+    if (typeof node === 'string') {
       if (!_.isEmpty(_.find(fields, { id: node }))) {
         nodes.splice(currentIndex, 1)
       }

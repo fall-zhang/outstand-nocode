@@ -294,12 +294,7 @@ const appendNodes = (node, dir, key) => {
           style: {}
         }
         if (index !== 0) {
-          const {
-            status,
-            x,
-            y,
-            ranges
-          } = arr[i0]
+          const { status, ranges } = arr[i0]
           if (/[1, 2]/.test(status)) {
             newNode.options.isMerged = true
             for (let i0 = 0; i0 < ranges.length; i0++) {
@@ -566,8 +561,7 @@ export const addContext = (node, parent, fn:any = null) => {
           push: 0
         },
         type: 'col',
-        list: [
-        ]
+        list: []
       })
       node.columns.push(newNode)
       addContext(newNode, node)

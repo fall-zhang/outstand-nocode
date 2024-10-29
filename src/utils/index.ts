@@ -3,7 +3,7 @@
  * 做到任何项目都可以使用，避免多次开发工具
  */
 import { deepClone } from './DeepClone'
-import { isPC } from './device'
+import { isDesktop } from './device'
 import { checkIsField, disassemblyData1, repairLayout, deepTraversal, syncWidthByPlatform, checkIslineChildren, disassemblyData2, combinationData2, pickFields, combinationData1 } from './field'
 import { checkIdExistInLogic, removeLogicDataById, } from './logic'
 import { addContext } from './addContext'
@@ -11,7 +11,7 @@ import { addContext } from './addContext'
 
 export {
   deepClone,
-  isPC,
+  isDesktop,
   checkIsField,
   disassemblyData1,
   repairLayout,
