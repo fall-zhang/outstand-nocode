@@ -1,48 +1,37 @@
-import { computed, inject } from 'vue'
+import { computed, } from 'vue'
 import { isEmpty } from '@/utils/utils'
 import { checkIsField } from '@/utils/field'
-import { RichFormProvider } from '../types/rich-form'
+import { useFormProvider } from './use-form-provider'
 export const useTarget = () => {
-  const {
-    state,
-    handler,
-    selected,
-  } = inject<RichFormProvider>('rich-form')!
-
-  const setSelection = handler.setSelection
+  const { selected, platform, handler } = useFormProvider()
+  const state = useFormProvider()
+  const setSelection = handler.value.setSelection
   const selection = computed(() => {
-    return selected
+    return selected.value
   })
-  const isSelectAnyElement = computed(() => {
-    return state.selected !== state.config
-  }
-  )
   const isSelectRoot = computed(() => {
-    return selected.type === 'root'
+    return selected.value.type === 'root'
   }
   )
   const selectedType = computed(() => {
-    return selected.type
+    return selected.value.type
   })
   const type = computed(() => {
-    return state.selected.type
+    return selected.value.type
   })
   const isSelectField = computed(() => {
-    return checkIsField(selected.type !== 'root')
+    return checkIsField(selected.value.type !== 'root')
   }
   )
   const target = computed(() => {
-    return state.selected
-  })
-  const col = computed(() => {
-    return !isEmpty(state.selected) && state.selected.context.col
+    return selected.value
   })
   /**
    * 当前选中的类型是否在 node 中
    */
   const checkTypeOfSelected = (nodes:string[]) => {
     let result = false
-    if (!isEmpty(state.selected)) {
+    if (!isEmpty(selected.value)) {
       result = nodes.includes(selectedType.value)
     }
     return result
@@ -52,7 +41,7 @@ export const useTarget = () => {
    */
   const checkTypeBySelected = (nodes:string[], propType?:unknown) => {
     let result = false
-    if (!isEmpty(state.selected)) {
+    if (!isEmpty(selected.value)) {
       if (selectedType.value) {
         result = nodes.includes(selectedType.value)
       } else {
@@ -77,24 +66,15 @@ export const useTarget = () => {
     return checkTypeBySelected(['table'])
   }
   )
-  const isPC = computed(() => {
-    return state.platform === 'pc'
-  })
   const isDesktop = computed(() => {
-    return state.platform === 'desktop'
+    return platform.value === 'desktop'
   })
-  const isEditModel = computed(() => {
-    return ['edit', 'config'].includes(state.mode)
-  }
-  )
   return {
     state,
     setSelection,
     type,
     selectedType,
-    col,
     selection,
-    isSelectAnyElement,
     isSelectField,
     target,
     isSelectGrid,
@@ -102,10 +82,8 @@ export const useTarget = () => {
     isSelectCollapse,
     isSelectTable,
     isSelectRoot,
-    isPC,
     isDesktop,
     checkTypeBySelected,
     checkTypeOfSelected,
-    isEditModel
   }
 }

@@ -4,6 +4,10 @@ import { BaseItemType, ContainerItemType } from '../types/rich-form-item'
 
 export const useFormProvider = () => {
   const storeMap = new Map()
+
+  function errorHandler() {
+    throw new Error('未获取到真实 inject')
+  }
   const defaultInject:RichFormProvider = reactive({
     lang: 'zh',
     fieldsList: [], // 左侧菜单的配置
@@ -48,33 +52,15 @@ export const useFormProvider = () => {
     fields: [],
     logic: {},
     handler: {
-      setSelection() {
-        throw new Error('未获取到真实 inject')
-      },
-      switchPlatform() {
-        throw new Error('未获取到真实 inject')
-      },
-      addFieldData() {
-        throw new Error('未获取到真实 inject')
-      },
-      delete() {
-        throw new Error('未获取到真实 inject')
-      },
-      addField() {
-        throw new Error('未获取到真实 inject')
-      },
-      wrapElement() {
-        throw new Error('未获取到真实 inject')
-      },
-      checkPropsBySelected() {
-        throw new Error('未获取到真实 inject')
-      },
-      validator() {
-        throw new Error('未获取到真实 inject')
-      },
-      copy() {
-        throw new Error('未获取到真实 inject')
-      },
+      setSelection: errorHandler,
+      switchPlatform: errorHandler,
+      addFieldData: errorHandler,
+      delete: errorHandler,
+      addField: errorHandler,
+      wrapElement: errorHandler,
+      checkPropsBySelected: errorHandler,
+      validator: errorHandler,
+      copy: errorHandler,
     },
     desktop: {},
     mobile: {},

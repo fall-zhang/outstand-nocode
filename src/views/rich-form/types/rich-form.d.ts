@@ -28,8 +28,6 @@ export type RichFormData = {
 }
 
 
-
-
 type FormHandler = {
   setSelection(filed:AllFieldType):void,
   switchPlatform(platform:'mobile' | 'desktop') :void,
@@ -84,6 +82,4 @@ export type RichFormProvider = {
    */
   mobileItems: MobileConfig
   mobileItems:any
-  /** 等待移除 */
-  state:any
 }

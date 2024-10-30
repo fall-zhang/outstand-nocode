@@ -204,16 +204,6 @@ const storeMap = ref<Map<string, AllFieldType>>(new Map())
 const formState = reactive<RichFormProvider>({
   lang: 'zh',
   fieldsList: fieldsConfig,
-  state: {
-    selected: {},
-    mode: 'edit',
-    platform: 'pc',
-    config: richFormConfig,
-    previewVisible: false,
-    widthScaleLock: false,
-    validateStates: [],
-    fields: [],
-  },
   // 准备添加 移动端和桌面端的配置
   storeMap: storeMap.value,
   store: [],
@@ -256,13 +246,6 @@ const formState = reactive<RichFormProvider>({
   },
 })
 
-// provider
-// provide('rich-form-preview', richFormPreviewData)
-setSelection({
-  type: 'root',
-  id: 'root',
-  label: '根节点'
-})
 provide<RichFormProvider>('rich-form', formState)
 watch(() => formState.selected, (newVal) => {
   emit('changeParams', deepClone(newVal))
@@ -311,7 +294,7 @@ const onResetData = () => {
                 <el-dropdown-item command="en" :disabled="lang === 'en'">English</el-dropdown-item>
               </el-dropdown-menu>
             </template>
-            </el-dropdown> -->
+</el-dropdown> -->
           <!-- <Icon @click="onPreview" class="fe-icon" icon="preview"></Icon> -->
         </div>
       </el-header>
