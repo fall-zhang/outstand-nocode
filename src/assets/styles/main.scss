@@ -3,10 +3,10 @@
   即：全局引用样式都改通过该文件引用
 */
 
-@import "./variable.scss";
-@import "./reset.scss";
-@import "./element-cover.scss";
-@import "./global.scss";
+@use "./variable.scss";
+@use "./reset.scss";
+@use "./element-cover.scss";
+@use "./global.scss";
 
 /* 设置滚动条颜色 */
 body ::-webkit-scrollbar-thumb {
@@ -42,18 +42,4 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-
-@media (min-width: 1024px) {
-  body {
-    /* display: flex;
-    place-items: center; */
-  }
-
-  #app {
-    /* display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem; */
-  }
 }
