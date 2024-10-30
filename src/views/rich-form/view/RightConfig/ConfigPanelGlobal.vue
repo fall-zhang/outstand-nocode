@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { ref, unref, computed } from 'vue'
-import { ClickOutside } from 'element-plus'
 // import CompleteButton from '@Form/components/CompleteButton.vue'
 import TypeComponent from './components/TypeComponent.vue'
 import PanelsConfigComponentsLogicComponent from './components/LogicComponent.vue'
@@ -73,15 +72,11 @@ const options1 = computed(() => {
     }
   ]
 })
+const onSizeChange = (property: string, data: any) => {
+  selected.value[platform.value].size = data.value
+}
 const onTypeChange = (property: string, data: any) => {
-  switch (property) {
-    case 'labelPosition':
-      handleModelValue('labelPosition', data.value)
-      break
-    case 'size':
-      selected.value[platform.value].size = data.value
-      break
-  }
+  handleModelValue('labelPosition', data.value)
 }
 </script>
 <template>
@@ -112,7 +107,7 @@ const onTypeChange = (property: string, data: any) => {
         v-model="target.isSync" />
     </el-form-item> -->
     {{ 'layout-type-2' }}
-    <TypeComponent v-if="isDesktop" @change="onTypeChange" property="size" layoutType="singleLine"
+    <TypeComponent v-if="isDesktop" @change="onSizeChange" property="size" layoutType="singleLine"
       :label="t('rf.config.globalConfig.componentSize.label')" :val="selected[platform].size" :nodes="options1" />
     {{ 'layout-type-1' }}
     <TypeComponent @change="onTypeChange" property="labelPosition"

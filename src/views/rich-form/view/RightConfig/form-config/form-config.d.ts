@@ -1,10 +1,12 @@
 // 简单类型，同 form 表单
-type ChartSettersSimple = 'input' | 'textarea' | 'color' | 'switch' | 'slider' | 'select' | 'number'
+type SettersSimple = 'input' | 'textarea' | 'color' | 'switch' | 'slider' | 'select' | 'number'
 
 // 复杂类型
 // function，会提供并且创建一个函数进行书写
 // json 会使用 JSON.parse 进行解析的复杂数据
-type ChartSettersComplex = 'function' | 'json'
+type SettersComplex = 'function' | 'json'
+
+type MultiKeySetter = 'box-side'
 
 type Recurrence = 'array' | 'object'
 
@@ -16,12 +18,12 @@ type OptionalSelect = Array<{ label: string, value: string | boolean }>
 interface FormOption {
   keyId: string,
   keyName: string,
-  setters: Array<ChartSettersSimple | ChartSettersComplex | Recurrence>,
+  setters: Array<SettersSimple | SettersComplex | Recurrence |MultiKeySetter>,
+  multiKeys?:string[]
   optionalValue?: OptionalSelect,
   tips?: string,
   default?: unknown,
   children?: Array<EchartsOption>,
-
 }
 
 // 示例

@@ -46,7 +46,7 @@
 </template>
 
 <script setup lang="ts">
-import FormItem from './components/FormItem.vue'
+import FormItem from './form-item/FormItem.vue'
 import { Right as IconRight, Return as IconReturn, } from '@icon-park/vue-next'
 import formOptionList from './right-property'
 import HelpTooltip from './components/HelpTooltip.vue'
@@ -114,15 +114,15 @@ function onClickBack() {
 }
 
 function onFormValueChange(value: any, option: any) {
-  let resss: any = mainForm
+  let middleObj: any = mainForm
   if (currentPath.value.length > 0) {
     currentPath.value.forEach(item => {
-      resss = resss[item.keyId]
+      middleObj = middleObj[item.keyId]
     })
   } else if (currentPath.value.length === 0) {
-    resss = mainForm
+    middleObj = mainForm
   }
-  resss[option?.keyId] = value
+  middleObj[option?.keyId] = value
   emit('change', mainForm)
 }
 

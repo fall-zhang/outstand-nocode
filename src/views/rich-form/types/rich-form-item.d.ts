@@ -86,6 +86,7 @@ export type FieldItemContainer = {
   mobile?:PlatformConf
   columns: ContainerItem[]
   options?:Record<string, any>
+  innerData:FieldItemBase[]
   // options: {
   //   gutter: 0,
   //   justify: 'space-around',

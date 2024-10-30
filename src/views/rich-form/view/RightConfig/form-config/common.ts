@@ -1,30 +1,28 @@
 import { FormOption } from './form-config'
 
-export const marginConfig:FormOption[] = [
-  {
-    keyId: 'marginLeft',
-    keyName: '左侧外边距',
-    tips: '',
-    setters: ['input'],
-    default: '',
+export default {
+  margin: {
+    keyId: 'margin',
+    keyName: '外边距',
+    multiKeys: ['marginLeft', 'marginRight', 'marginTop', 'marginBottom'],
+    setters: ['box-side'],
+    tips: '外边距',
+    default: '0',
   },
-  {
-    keyId: 'marginRight',
-    keyName: '右侧外边距',
-    tips: '',
-    setters: ['input'],
-    default: '',
+  padding: {
+    keyId: 'padding',
+    keyName: '内边距',
+    multiKeys: ['paddingLeft', 'paddingRight', 'paddingTop', 'paddingBottom'],
+    setters: ['box-side'],
+    tips: '内边距',
+    default: '0',
   },
-  {
-    keyId: 'marginTop',
-    keyName: '上侧外边距',
-    setters: ['input'],
-    default: '',
+  border: {
+    keyId: 'border',
+    keyName: '边框',
+    multiKeys: ['borderLeft', 'borderRight', 'borderTop', 'borderBottom'],
+    setters: ['box-side'],
+    tips: '边框',
+    default: '0',
   },
-  {
-    keyId: 'marginBottom',
-    keyName: '下侧外边距',
-    setters: ['input'],
-    default: '',
-  },
-]
+}

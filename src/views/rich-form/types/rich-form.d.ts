@@ -1,5 +1,6 @@
 import { CSSProperties, StyleValue } from 'vue'
 import { AllFieldType, FormItem } from './rich-form-item'
+import { GlobalConfig } from './rich-form-config'
 /**
  * 平台类型
  * 之后会移除 pc 类型
@@ -26,31 +27,8 @@ export type RichFormData = {
   formList: FormItem[]
 }
 
-export type GlobalConfig = {
-  isSync: boolean,
-  // uploadURL: '',
-  fieldsPanelDefaultOpened: string[]
-  fieldsPanelWidth:string
-  colorList:string[]
-  inlineMax:number // 每行最多放置多少个 form
-  desktop: {
-    size: 'default',
-    completeButton: {
-      text: string,
-    }
-  },
-  pc: {
-    size: 'default',
-    completeButton: {
-      text: string,
-    }
-  },
-  mobile: {
-    completeButton: {
-      text: string,
-    }
-  }
-}
+
+
 
 type FormHandler = {
   setSelection(filed:AllFieldType):void,
@@ -67,9 +45,14 @@ type FormHandler = {
 export type RichFormProvider = {
   lang:'zh'
   // 左侧菜单的配置
-  fieldsList:AllFieldType[]
+  fieldsList:({
+    name: string;
+    id: string;
+    list: Array<FieldItemContainer|FieldItemBase>;
+  })[]
   // 中心区域当前配置的内容
   store: AllFieldType[],
+  storeMap: Map<string, AllFieldType>
   canvasScrollRef:any
   // 当前选中的内容，默认选中 root
   selected: AllFieldType
