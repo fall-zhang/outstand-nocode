@@ -65,8 +65,9 @@ import { DataUri } from '@antv/x6'
 import { Down as IconDown, Redo as IconRedo, Undo as IconUndo, Help as IconHelp } from '@icon-park/vue-next'
 import { Export } from '@antv/x6-plugin-export'
 import type { Graph } from '@antv/x6'
+import { useFlowInject } from '@/views/flow-page/hooks/use-flow-inject'
 defineEmits(['updateConfig', 'onExport', 'onInport', 'onClear'])
-const graph = inject<{ value: Graph }>('graph')!
+const { graph } = useFlowInject()
 const setting = reactive({
   dragGraph: true, // 移动画布
   showGrid: true, // 展示网格

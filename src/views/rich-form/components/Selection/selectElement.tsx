@@ -118,7 +118,7 @@ export default defineComponent({
         state.validateStates.splice(index, 1)
       }
     })
-    const handleCommand = (command) => {
+    const handleCommand = (command:any) => {
       console.log('🚀 ~ handleCommand ~ command:', command)
       const [fn, param] = command.split(' ')
       props.data.context[fn](param)
@@ -167,7 +167,7 @@ export default defineComponent({
         case 'delete':
           if (ER.handler.delete(props.data) === false) return false
           props.data.context.delete()
-          deepTraversal(props.data, (node) => {
+          deepTraversal(props.data, (node:any) => {
             if (checkIsField(node)) {
               ER.handler.delete(node)
             }
@@ -190,7 +190,7 @@ export default defineComponent({
           props.data.context.copy()
           const copyData = props.parent[index + 1]
           setSelection(copyData)
-          deepTraversal(copyData, (node) => {
+          deepTraversal(copyData, (node:any) => {
             ER.handler.addFieldData(node, true)
             if (checkIsField(node)) {
               ER.handler.addField(node)
@@ -199,10 +199,10 @@ export default defineComponent({
           break
         }
         case 'table-insert-row':
-          _.last(props.data.context.columns[0]).context.insert('bottom')
+          props.data.context.columns[0].at(-1).context.insert('bottom')
           break
         case 'table-insert-col':
-          _.last(props.data.context.columns)[0].context.insert('right')
+          props.data.context.columns.at(-1)[0].context.insert('right')
           break
         case 'top':{
           let parent = props.data.context.parent

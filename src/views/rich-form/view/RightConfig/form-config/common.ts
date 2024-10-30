@@ -1,5 +1,3 @@
-import { FormOption } from './form-config'
-
 export default {
   margin: {
     keyId: 'margin',

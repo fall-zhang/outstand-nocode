@@ -3,10 +3,12 @@ import { RichFormProvider } from '../types/rich-form'
 import { BaseItemType, ContainerItemType } from '../types/rich-form-item'
 
 export const useFormProvider = () => {
+  const storeMap = new Map()
   const defaultInject:RichFormProvider = reactive({
     lang: 'zh',
     fieldsList: [], // 左侧菜单的配置
     store: [], // 中心区域当前配置的内容
+    storeMap,
     canvasScrollRef: { // 画布区域的 scroll
       value: undefined
     },
@@ -23,19 +25,18 @@ export const useFormProvider = () => {
       fieldsPanelWidth: '',
       colorList: [],
       inlineMax: 0,
-      pc: {
-        size: 'default',
-        completeButton: {
-          text: ''
-        }
-      },
       mobile: {
         completeButton: {
           text: ''
         }
       },
       desktop: {
-        size: 'default',
+        formOption: {
+          size: 'default',
+          labelPosition: 'left',
+          hideRequiredAsterisk: false,
+          labelWidth: ''
+        },
         completeButton: {
           text: ''
         }
@@ -93,8 +94,8 @@ export const useFormProvider = () => {
   const isDesktop = computed(() => formProvider.platform === 'desktop')
   const isSelectRoot = computed(() => formProvider.selected.id === 'root')
 
-  const basicFieldList = ref<BaseItemType[]>(['input', 'number', 'select', 'textarea', 'radio', 'checkbox', 'time', 'date', 'rate', 'switch', 'slider'])
-  const containerFiledList = ref<ContainerItemType[]>(['col', 'grid', 'tabs', 'collapse', 'divider', 'inline'])
+  const basicFieldList = ref<string[]>(['input', 'number', 'select', 'textarea', 'radio', 'checkbox', 'time', 'date', 'rate', 'switch', 'slider'])
+  const containerFiledList = ref<string[]>(['col', 'grid', 'tabs', 'collapse', 'divider', 'inline'])
   return {
     ...toRefs(formProvider),
     isDesktop,

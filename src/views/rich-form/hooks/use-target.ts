@@ -40,14 +40,10 @@ export const useTarget = () => {
   /**
    * 当前选中的类型是否在 node 中
    */
-  const checkTypeOfSelected = (nodes:string[], propType?:unknown) => {
+  const checkTypeOfSelected = (nodes:string[]) => {
     let result = false
     if (!isEmpty(state.selected)) {
-      if (selectedType.value) {
-        result = nodes.includes(selectedType.value)
-      } else {
-        result = nodes.includes(selectedType.value)
-      }
+      result = nodes.includes(selectedType.value)
     }
     return result
   }

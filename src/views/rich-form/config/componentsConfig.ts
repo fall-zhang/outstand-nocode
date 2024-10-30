@@ -14,110 +14,31 @@ const containerConfig:{
       label: 'grid',
       icon: 'grid',
       id: '',
+      innerData: [],
       columns: [
         {
           id: '',
           type: 'col',
-          options: {
-            span: 6,
-            offset: 0,
-            pull: 0,
-            push: 0
-          },
+          span: 12,
+          offset: 0,
           list: []
         },
         {
           id: '',
           type: 'col',
-          options: {
-            span: 6,
-            offset: 0,
-            pull: 0,
-            push: 0
-          },
+          span: 12,
+          offset: 0,
           list: []
         },
-        {
-          id: '',
-          type: 'col',
-          options: {
-            span: 6,
-            offset: 0,
-            pull: 0,
-            push: 0
-          },
-          list: []
-        }
       ],
       options: {
         gap: 0,
+        split: 3, // 默认分割段数
         gutter: 0,
         justify: 'space-around',
         align: 'top'
       }
     },
-    // {
-    //   type: 'table',
-    //   label: '表格布局',
-    //   icon: 'tableStokeP2',
-    //   id: '',
-    //   rows: [
-    //     {
-    //       type: 'tr',
-    //       columns: [
-    //         {
-    //           type: 'td',
-    //           options: {
-    //             colspan: 1,
-    //             rowspan: 1,
-    //             isMerged: false
-    //           },
-    //           list: [],
-    //           style: {}
-    //         },
-    //         {
-    //           type: 'td',
-    //           options: {
-    //             colspan: 1,
-    //             rowspan: 1,
-    //             isMerged: false
-    //           },
-    //           list: [],
-    //           style: {}
-    //         }
-    //       ]
-    //     },
-    //     {
-    //       type: 'tr',
-    //       columns: [
-    //         {
-    //           type: 'td',
-    //           options: {
-    //             colspan: 1,
-    //             rowspan: 1,
-    //             isMerged: false
-    //           },
-    //           list: [],
-    //           style: {}
-    //         },
-    //         {
-    //           type: 'td',
-    //           options: {
-    //             colspan: 1,
-    //             rowspan: 1,
-    //             isMerged: false
-    //           },
-    //           list: [],
-    //           style: {}
-    //         }
-    //       ]
-    //     }
-    //   ],
-    //   options: {
-    //     width: 100,
-    //     widthType: '%'
-    //   }
-    // },
     {
       type: 'tabs',
       label: '标签页',
@@ -129,13 +50,15 @@ const containerConfig:{
         tabPosition: 'top',
         align: 'top',
         hidden: false
-      }
+      },
+      innerData: []
     },
     {
       type: 'collapse',
       label: '折叠面板',
       icon: 'collapse',
       id: '',
+      innerData: [],
       columns: [],
       options: {
         defaultValue: [],
@@ -147,6 +70,7 @@ const containerConfig:{
       label: '分割线',
       icon: 'divider',
       id: '',
+      innerData: [],
       columns: [],
       options: {
         contentPosition: 'center',

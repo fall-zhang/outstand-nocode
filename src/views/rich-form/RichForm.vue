@@ -37,57 +37,59 @@ const isFoldFields = ref(true)
 const isFoldConfig = ref(true)
 
 const { t } = useI18n()
-const isShow = ref(true)
 const isShowConfig = ref(true)
 const setSelection = (node: AllFieldType) => {
-  let result: any = ''
+  let result: AllFieldType = {
+    type: 'root',
+    id: 'root',
+    label: 'default'
+  }
   if (node.type === 'root') {
-    result = state.config
+    result = {
+      type: 'root',
+      id: 'root',
+      label: 'default'
+    }
   } else if (node.type === 'inline') {
     result = node.columns[0]
   } else {
     result = node
   }
-  isShowConfig.value = state.selected === result
-  state.selected = result
-  nextTick(() => {
-    isShowConfig.value = true
-  })
+  formState.selected = result
 }
 const addField = (node: any) => {
   if (checkIsField(node)) {
-    const findIndex = state.fields.findIndex((item: any) => item.id === node.id)
+    const findIndex = formState.fields.findIndex((item: any) => item.id === node.id)
     if (findIndex === -1) {
-      state.fields.push(node)
+      formState.fields.push(node)
     } else {
-      state.fields.splice(findIndex, 1, node)
+      formState.fields.splice(findIndex, 1, node)
     }
   }
 }
 const delField = (node: any) => {
-  const fieldIndex = state.fields.findIndex((item: any) => item.id === node.id)
+  const fieldIndex = formState.fields.findIndex((item: any) => item.id === node.id)
   if (fieldIndex !== -1) {
-    if (checkIdExistInLogic(node.id, state.logic)) {
+    if (checkIdExistInLogic(node.id, formState.logic)) {
       ElMessage({
         showClose: true,
         duration: 4000,
         message: t('rf.logic.logicSuggests'),
         type: 'warning'
       })
-      removeLogicDataById(node.id, state.logic)
+      removeLogicDataById(node.id, formState.logic)
     }
-    state.fields.splice(fieldIndex, 1)
+    formState.fields.splice(fieldIndex, 1)
   }
 }
 const addFieldData = (node: any, isCopy = false) => {
-  console.log('🚀 ~ addFieldData ~ node:', node)
   if (['radio', 'cascader', 'checkbox', 'select'].includes(node.type)) {
     if (isCopy) {
-      state.data[node.id] = deepClone(state.data[node.options.dataKey])
+      formState.data[node.id] = deepClone(formState.data[node.options.dataKey])
       node.options.dataKey = node.id
-    } else if (!state.data[node.id]) {
+    } else if (!formState.data[node.id]) {
       node.options.dataKey = node.id
-      state.data[node.id] = {
+      formState.data[node.id] = {
         type: node.type,
         list: generateOptions(3).map((e, i) => {
           e.label += i + 1
@@ -124,10 +126,9 @@ const wrapElement = (el: any, {
   } else {
     node = el
   }
-
   if (!sourceBlock && resetWidth) {
     if (checkIsField(el)) {
-      if (state.platform === 'pc') {
+      if (formState.platform === 'desktop') {
         el.style.width.pc = '100%'
       } else {
         el.style.width.mobile = '100%'
@@ -140,10 +141,10 @@ const wrapElement = (el: any, {
 }
 
 const switchPlatform = (platform: PlatformType) => {
-  if (state.platform === platform) {
+  if (formState.platform === platform) {
     return false
   }
-  state.platform = platform
+  formState.platform = platform
 }
 
 const richFormPreviewData = ref({
@@ -153,15 +154,15 @@ const richFormPreviewData = ref({
 function validator(target: any, fn: any) {
   console.warn('暂时不提供表单验证')
   // if (target) {
-  //   const count = _.countBy(state.validateStates, 'data.key')
+  //   const count = _.countBy(formState.validateStates, 'data.key')
   //   const newValue = target.key.trim()
   //   if (isEmpty(newValue)) {
-  //     const findItem: any = state.validateStates.find((item: any) => (item.data.key === target.key))
+  //     const findItem: any = formState.validateStates.find((item: any) => (item.data.key === target.key))
   //     if (findItem) findItem.isWarning = true
   //     fn && fn(0)
   //     return false
   //   }
-  //   state.validateStates.forEach((e: any) => {
+  //   formState.validateStates.forEach((e: any) => {
   //     if (count[e.data.key] > 1) {
   //       e.isWarning = true
   //     } else {
@@ -172,26 +173,26 @@ function validator(target: any, fn: any) {
   //     fn(!(count[newValue] > 1) ? 1 : 2)
   //   }
   // } else {
-  //   fn(state.validateStates.every((e: any) => !e.isWarning))
+  //   fn(formState.validateStates.every((e: any) => !e.isWarning))
   // }
 }
 
 const getData = () => {
-  if (!state.validateStates.every((e: any) => !e.isWarning)) {
+  if (!formState.validateStates.every((e: any) => !e.isWarning)) {
     return {}
   }
   return Object.assign(disassemblyData1(deepClone({
-    list: state.store,
-    config: state.config,
-    data: state.data
+    list: formState.store,
+    config: formState.config,
+    data: formState.data
   })), {
-    logic: state.logic
+    logic: formState.logic
   })
 }
-type OperationType = 'resetData' | 'preview'
-const onPreview = (type: OperationType) => {
-  richFormPreviewData.value = getData()
-}
+// type OperationType = 'resetData' | 'preview'
+// const onPreview = () => {
+//   router.push({path:'/rich-form-preview/',params:{}})
+// }
 function onCollapseLeft() {
   isFoldFields.value = !isFoldFields.value
 }
@@ -199,9 +200,10 @@ function onCollapseRight() {
   isFoldConfig.value = !isFoldConfig.value
 }
 const canvasScrollRef = ref()
-
-const state = reactive<RichFormProvider>({
+const storeMap = ref<Map<string, AllFieldType>>(new Map())
+const formState = reactive<RichFormProvider>({
   lang: 'zh',
+  fieldsList: fieldsConfig,
   state: {
     selected: {},
     mode: 'edit',
@@ -213,6 +215,7 @@ const state = reactive<RichFormProvider>({
     fields: [],
   },
   // 准备添加 移动端和桌面端的配置
+  storeMap: storeMap.value,
   store: [],
   selected: {
     type: 'root',
@@ -220,7 +223,7 @@ const state = reactive<RichFormProvider>({
     label: 'default'
   },
   mode: 'edit',
-  platform: 'pc',
+  platform: 'desktop',
   widthScaleLock: false,
   data: {},
   validateStates: [],
@@ -228,10 +231,17 @@ const state = reactive<RichFormProvider>({
   logic: {},
   desktop: {},
   mobile: {},
-  desktopItems: {},
-  mobileItems: {},
+  desktopItems: {
+    labelWidth: '',
+    size: 'default',
+    labelPosition: 'left'
+  },
+  mobileItems: {
+    labelWidth: '',
+    size: 'large',
+    labelPosition: 'left'
+  },
   config: richFormConfig,
-  fieldsList: fieldsConfig,
   canvasScrollRef,
   handler: {
     setSelection,
@@ -253,8 +263,8 @@ setSelection({
   id: 'root',
   label: '根节点'
 })
-provide<RichFormProvider>('rich-form', state)
-watch(() => state.selected, (newVal) => {
+provide<RichFormProvider>('rich-form', formState)
+watch(() => formState.selected, (newVal) => {
   emit('changeParams', deepClone(newVal))
 }, {
   deep: true,
@@ -262,15 +272,15 @@ watch(() => state.selected, (newVal) => {
 })
 const onClickOutside = () => {
 }
-const onSaveData = () => {
-  emit('save', getData())
-}
+// const onSaveData = () => {
+//   emit('save', getData())
+// }
 const onResetData = () => {
   // layout.pc = []
   // layout.mobile = []
-  state.fields.splice(0)
-  state.store.splice(0)
-  state.data = {}
+  formState.fields.splice(0)
+  formState.store.splice(0)
+  formState.data = {}
   setSelection({
     type: 'root',
     label: '根容器',
@@ -291,25 +301,25 @@ const onResetData = () => {
             <Icon v-if="isShowClear" @click="onResetData" class="fe-icon" icon="clear0"></Icon>
           </IconTooltip> -->
         </div>
-        <DeviceSwitch :modelValue="state.platform" @update:model-value="switchPlatform"> </DeviceSwitch>
+        <DeviceSwitch :modelValue="formState.platform" @update:model-value="switchPlatform"> </DeviceSwitch>
         <div>
           <!-- <el-dropdown v-if="isShowI18n" @command="(command) => emit('changeLang', command)">
             <Icon class="fe-icon" icon="language"></Icon>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item command="zh-cn" :disabled="lang === 'zh-cn'">中文</el-dropdown-item>
+                <el-dropdown-item command="zh" :disabled="lang === 'zh'">中文</el-dropdown-item>
                 <el-dropdown-item command="en" :disabled="lang === 'en'">English</el-dropdown-item>
               </el-dropdown-menu>
             </template>
-</el-dropdown> -->
+            </el-dropdown> -->
           <!-- <Icon @click="onPreview" class="fe-icon" icon="preview"></Icon> -->
         </div>
       </el-header>
-      <CanvasPanel v-click-outside="onClickOutside" v-if="isShow" :data="state.store"></CanvasPanel>
+      <CanvasPanel v-click-outside="onClickOutside" :data="formState.store"></CanvasPanel>
       <Icon @click="onCollapseLeft" :class="[$style.arrowLeft, !isFoldFields && $style.close]" icon="arrowLeft" />
       <Icon @click="onCollapseRight" :class="[$style.arrowRight, !isFoldConfig && $style.close]" icon="arrowRight" />
     </div>
-    <ConfigPanel v-show="isFoldConfig" v-if="isShow"></ConfigPanel>
+    <ConfigPanel v-show="isFoldConfig" v-if="isShowConfig"></ConfigPanel>
   </el-container>
 </template>
 
