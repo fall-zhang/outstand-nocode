@@ -1,5 +1,5 @@
 import _ from 'lodash-es'
-import utils, { deepTraversal } from '@/utils'
+import { addContext, checkIsField, deepTraversal } from '@/utils'
 import { get } from '@/utils/utils'
 import { nextTick } from 'vue'
 import { RichFormProvider } from '../../types/rich-form'
@@ -325,7 +325,7 @@ function ControlInsertionPlugin (ER:RichFormProvider) {
         if (oldEl.context) {
           oldEl.context.delete()
           deepTraversal(oldEl, (node) => {
-            if (utils.checkIsField(node)) {
+            if (checkIsField(node)) {
               ER.handler.delete(node)
             }
           })
@@ -334,7 +334,7 @@ function ControlInsertionPlugin (ER:RichFormProvider) {
       if (insertRowIndex !== '') {
         const store = Array.isArray(prevSortable.options.parent) ? prevSortable.options.parent : prevSortable.options.parent.list
         store.splice(insertRowIndex, 0, newElement)
-        utils.addContext(store[insertRowIndex], prevSortable.options.parent)
+        addContext(store[insertRowIndex], prevSortable.options.parent)
       }
       if (insertColIndex !== '') {
         const {
@@ -349,11 +349,11 @@ function ControlInsertionPlugin (ER:RichFormProvider) {
           }
         } = prevSortable
         list.splice(insertColIndex, 0, newElement)
-        utils.addContext(newElement, prevSortable.options.parent[sortableUtils.index(prevSortable.el.parentNode)])
+        addContext(newElement, prevSortable.options.parent[sortableUtils.index(prevSortable.el.parentNode)])
       }
       if (insertColIndex !== '' || insertRowIndex !== '') {
         deepTraversal(newElement, (node) => {
-          if (utils.checkIsField(node)) {
+          if (checkIsField(node)) {
             ER.handler.addField(node)
           }
         })
