@@ -79,52 +79,32 @@ function matches (el, selector:string) {
 
   return false
 }
-function css (el, prop, val) {
+function css (el, prop) {
   const style = el && el.style
   if (style) {
+    let val
     // eslint-disable-next-line
-    if (val === void 0) {
       if (document.defaultView && document.defaultView.getComputedStyle) {
-        val = document.defaultView.getComputedStyle(el, '')
-      } else if (el.currentStyle) {
-        val = el.currentStyle
-      }
-      // eslint-disable-next-line
-      return prop === void 0 ? val : val[prop]
+      val = document.defaultView.getComputedStyle(el, '')
+    } else if (el.currentStyle) {
+      val = el.currentStyle
     }
-    // 原代码
-    // if (!(prop in style) && prop.indexOf('webkit') === -1) {
-    if (!(style[prop]) && prop.indexOf('webkit') === -1) {
-      prop = '-webkit-' + prop
-    }
-
-    style[prop] = val + (typeof val === 'string' ? '' : 'px')
+    // eslint-disable-next-line
+    return prop === undefined ? val : val[prop]
   }
 }
-function lastChild (el, selector) {
+function lastChild (el) {
   let last = el.lastElementChild
   // eslint-disable-next-line
-  while (last && (css(last, 'display') === 'none' || selector && !matches(last, selector))) {
+  while (last && (css(last, 'display') === 'none')) {
     last = last.previousElementSibling
   }
 
   return last || null
 }
-const disableBothSides = () => false
-const getDirection1 = (target, originalEvent) => {
-  let direction = ''
-  const Y = getOffset(target, 'offsetTop')
-  const scrollEl = getParentAutoScrollElement(target, true)
-  const clientY = originalEvent.clientY + scrollEl.scrollTop
-  const h = target.offsetHeight
-  if (clientY > Y && clientY < Y + (h / 2)) {
-    direction = 5
-  } else {
-    direction = 6
-  }
-  return direction
-}
 const getDirection0 = (target, originalEvent) => {
+  console.log('🚀 ~ getDirection0 ~ originalEvent:', originalEvent)
+  console.log('🚀 ~ getDirection0 ~ target:', target)
   let direction:string = ''
   const X = getOffset(target, 'offsetLeft')
   const Y = getOffset(target, 'offsetTop')
@@ -172,32 +152,18 @@ const getDragElement = (node) => {
 }
 
 const setStates = (newTarget, ev, ER:RichFormProvider) => {
+  const utils = ev.activeSortable.constructor.utils
+  const list = ev.activeSortable.el.__draggable_component__.list
+  const targetList = ev.sortable.el.__draggable_component__.list
+  const el = ev.sortable.el
   const {
-    activeSortable: {
-      constructor: {
-        utils
-      },
-      el: {
-        __draggable_component__: {
-          list
-        }
-      }
-    },
     target,
     originalEvent,
     dragEl,
-    sortable: {
-      el,
-      el: {
-        __draggable_component__: {
-          list: targetList
-        }
-      }
-    },
     sortable
   } = ev
   const targetContainer = el.parentNode
-  const direction = disableBothSides() ? getDirection1(newTarget, originalEvent) : getDirection0(newTarget, originalEvent)
+  const direction = getDirection0(newTarget, originalEvent)
   const cols = newTarget.parentNode.children
   const colIndex = utils.index(newTarget)
   const rows = targetContainer.parentNode.children
@@ -208,7 +174,7 @@ const setStates = (newTarget, ev, ER:RichFormProvider) => {
     }
   }
   if (direction === '1') {
-    if (ER.state.store.length > 0 && ['root'].includes(el.dataset.layoutType)) {
+    if (ER.store.length > 0 && ['root'].includes(el.dataset.layoutType)) {
       return false
     }
   }
@@ -306,8 +272,6 @@ const resetStates = () => {
 function ControlInsertionPlugin (ER:RichFormProvider) {
   function ControlInsertion (sortable) { }
   ControlInsertion.prototype = {
-    dragStart (e) {
-    },
     drop (e) {
       if (!prevEl || !e.activeSortable) {
         return false
@@ -364,28 +328,13 @@ function ControlInsertionPlugin (ER:RichFormProvider) {
     dragOver (e) {
       e.cancel()
       resetStates()
+      const utils = e.activeSortable.constructor.utils
+      const list = e.activeSortable.el.__draggable_component__.list
       const {
-        activeSortable: {
-          constructor: {
-            utils
-          },
-          el: {
-            __draggable_component__: {
-              list
-            }
-          }
-        },
         target,
         originalEvent,
         dragEl,
-        sortable: {
-          el,
-          el: {
-            __draggable_component__: {
-              list: targetList
-            }
-          }
-        },
+        sortable: { el },
         sortable
       } = e
       if (sortable.options.dataSource === 'block') {
@@ -423,7 +372,6 @@ function ControlInsertionPlugin (ER:RichFormProvider) {
             prevSortable = state._sortable
           }
           if (target.dataset.layoutType === 'inline') {
-            if (disableBothSides(ER)) return false
             const cols = el.children
             prevEl = lastChild(el)
             if (prevEl.contains(dragEl) && list.length === 1) {
@@ -446,3 +394,125 @@ function ControlInsertionPlugin (ER:RichFormProvider) {
   })
 }
 export default ControlInsertionPlugin
+
+class NewControlInsertion {
+  ER:RichFormProvider
+  options: {
+    draggable: string
+  }
+
+  constructor (ER:RichFormProvider) {
+    this.options = {
+      draggable: '.drag-line'
+    }
+    this.ER = ER
+  }
+
+  drop (e) {
+    if (!prevEl || !e.activeSortable) {
+      return false
+    }
+    const isBlock = get(e, 'activeSortable.options.dataSource', false) === 'block'
+    const { dragEl } = e
+    const oldEl = getDragElement(dragEl)
+    const newElement = this.ER.handler.wrapElement(deepClone(oldEl), {
+      isWrap: insertRowIndex !== '',
+      sourceBlock: isBlock
+    })
+    if (!isBlock) {
+      if (oldEl.context) {
+        oldEl.context.delete()
+        deepTraversal(oldEl, (node) => {
+          if (checkIsField(node)) {
+            ER.handler.delete(node)
+          }
+        })
+      }
+    }
+    if (insertRowIndex !== '') {
+      const store = Array.isArray(prevSortable.options.parent) ? prevSortable.options.parent : prevSortable.options.parent.list
+      store.splice(insertRowIndex, 0, newElement)
+      addContext(store[insertRowIndex], prevSortable.options.parent)
+    }
+    if (insertColIndex !== '') {
+      const list = prevSortable.el.__draggable_component__.list
+      const sortableUtils = prevSortable.constructor.utils
+      list.splice(insertColIndex, 0, newElement)
+      addContext(newElement, prevSortable.options.parent[sortableUtils.index(prevSortable.el.parentNode)])
+    }
+    if (insertColIndex !== '' || insertRowIndex !== '') {
+      deepTraversal(newElement, (node) => {
+        if (checkIsField(node)) {
+          this.ER.handler.addField(node)
+        }
+      })
+      nextTick(() => {
+        this.ER.handler.setSelection(newElement)
+      })
+    }
+    resetStates()
+  }
+
+  dragOver (e) {
+    e.cancel()
+    resetStates()
+    const utils = e.activeSortable.constructor.utils
+    const list = e.activeSortable.el.__draggable_component__.list
+    const {
+      target,
+      originalEvent,
+      dragEl,
+      sortable: { el },
+      sortable
+    } = e
+    if (sortable.options.dataSource === 'block') {
+      return false
+    }
+    if (target.dataset.layoutType === 'grid') {
+      return false
+    }
+    originalEvent.stopPropagation && originalEvent.stopPropagation()
+    let newTarget = utils.closest(target, this.options.draggable, sortable.el)
+    if (dragEl.contains(newTarget)) {
+      return false
+    }
+    if (/^(grid-col|tabs-col|td|collapse-col|root|inline)$/.test(target.dataset.layoutType)) {
+      newTarget = target
+      const state = (newTarget.__draggable_component__ || newTarget.children[0].__draggable_component__)
+      if (!state.list.length) {
+        prevEl = target.dataset.layoutType === 'root' ? target : newTarget.__draggable_component__ ? newTarget.children[0] : newTarget.parentNode
+        prevSortable = state._sortable
+        insertRowIndex = 0
+        setBorder(prevEl, 'drag-line-top')
+      } else {
+        if (/^(root|grid-col)$/.test(target.dataset.layoutType)) {
+          const rows = el.children
+          prevEl = lastChild(el)
+          // if (prevEl.contains(dragEl) && list.length === 1) {
+          // console.log(prevEl)
+          // console.log(dragEl)
+          if (prevEl === dragEl.parentNode.parentNode && list.length === 1) {
+            prevEl = ''
+            return false
+          }
+          setBorder(prevEl, 'drag-line-bottom')
+          insertRowIndex = rows.length
+          prevSortable = state._sortable
+        }
+        if (target.dataset.layoutType === 'inline') {
+          const cols = el.children
+          prevEl = lastChild(el)
+          if (prevEl.contains(dragEl) && list.length === 1) {
+            prevEl = ''
+            return false
+          }
+          insertColIndex = cols.length
+          prevSortable = state._sortable
+          setBorder(prevEl, 'drag-line-right')
+        }
+      }
+    } else {
+      setStates(newTarget, e, ER)
+    }
+  }
+}

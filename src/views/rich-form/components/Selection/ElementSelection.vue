@@ -77,17 +77,14 @@ import {
   ref,
   onMounted,
   onBeforeUnmount,
-  inject,
   computed,
 } from 'vue'
 import { isHTMLTag } from '@/utils/browser'
 import { useI18n } from 'vue-i18n'
-import { useTarget } from '@Form/hooks/use-target'
 import { syncWidthByPlatform, checkIsField, checkIslineChildren, deepTraversal } from '@/utils'
 import Icon from '@/assets'
 import $style from './SelectElement.module.scss'
 import { ElDropdownMenu, ElDropdownItem, ElDropdown } from 'element-plus'
-import { RichFormProvider } from '../../types/rich-form'
 import { useCss } from '../../hooks/use-css'
 import { useFormProvider } from '../../hooks/use-form-provider'
 const props = defineProps({
@@ -159,12 +156,11 @@ const props = defineProps({
   }
 })
 const { t } = useI18n()
-const ER = inject<RichFormProvider>('rich-form')!
+
 const isHover = ref(false)
 const isInlineChildren = checkIslineChildren(props.data)
 
-const { selected, handler } = useFormProvider()
-const { state } = useTarget()
+const { selected, handler, config, platform, widthScaleLock } = useFormProvider()
 const isWarning = ref(false)
 const handleClick = () => {
   handler.value.setSelection(props.data)
@@ -183,9 +179,6 @@ const handleAction = (type: OptAction) => {
           handler.value.delete(node)
         }
       })
-      if (/^(radio|checkbox|select)$/.test(props.data.type)) {
-        delete state.data[props.data.options.dataKey]
-      }
       if (props.parent.length > 0) {
         if (index === props.parent.length) {
           handler.value.setSelection(props.parent[index - 1])
@@ -228,22 +221,10 @@ const handleAction = (type: OptAction) => {
       break
   }
 }
-const id = useCss(props.data, state.platform)
+const id = useCss(props.data, platform.value)
 const isField = checkIsField(props.data)
-if (props.data.type && isField) {
-  state.validateStates.push({
-    data: props.data,
-    isWarning
-  })
-}
-const isShowCopy = computed(() => isInlineChildren ? props.hasCopy && props.data.context.parent.columns.length < ER.config.inlineMax : props.hasCopy)
+const isShowCopy = computed(() => isInlineChildren ? props.hasCopy && props.data.context.parent.columns.length < config.value.inlineMax : props.hasCopy)
 
-onBeforeUnmount(() => {
-  const index = state.validateStates.findIndex((item: any) => item.data.id === props.data.id)
-  if (index !== -1) {
-    state.validateStates.splice(index, 1)
-  }
-})
 const Selected = computed(() => {
   return selected.value.id === props.data.id && $style.Selected
 })
@@ -255,7 +236,7 @@ onMounted(() => {
   const hoverEl: any = elementRef.value.$el || elementRef.value
   const widthScaleEl = widthScaleElement.value
   hoverEl.addEventListener('mouseover', (e: MouseEvent) => {
-    if (!state.widthScaleLock) {
+    if (!widthScaleLock.value) {
       isHover.value = true
     }
     e.stopPropagation()
@@ -268,13 +249,18 @@ onMounted(() => {
   if (isShowWidthScale.value) {
     widthScaleEl.addEventListener('mousedown', (e: MouseEvent) => {
       const columnWidth = hoverEl.offsetParent.offsetWidth / 24
-      state.widthScaleLock = isScale.value = true
+      isScale.value = true
+      widthScaleLock.value = true
       const oldX = e.clientX
       const oldWidth = hoverEl.offsetWidth
-      document.ondragstart = document.onselectstart = () => false
+      document.onselectstart = () => false
+      document.ondragstart = () => false
       document.onmouseup = function () {
-        document.ondragstart = document.onselectstart = document.onmousemove = null
-        state.widthScaleLock = isScale.value = false
+        document.onmousemove = null
+        document.onselectstart = null
+        document.ondragstart = null
+        isScale.value = false
+        widthScaleLock.value = false
       }
       document.onmousemove = (e) => {
         if (!isInlineChildren) {
@@ -286,14 +272,14 @@ onMounted(() => {
             offset = 6
           }
           // eslint-disable-next-line vue/no-mutating-props
-          props.data.options.span = offset
+          // props.data.options.span = offset
         } else {
           const curNewWidth = oldWidth + e.clientX - oldX
           let curWidth = Math.round(curNewWidth / hoverEl.parentNode.offsetWidth * 100)
           if (curWidth <= 25) {
             curWidth = 25
           }
-          syncWidthByPlatform(props.data, state.platform, false, curWidth)
+          syncWidthByPlatform(props.data, platform.value, false, curWidth)
         }
       }
     })
