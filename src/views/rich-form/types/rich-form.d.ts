@@ -1,24 +1,12 @@
 import { CSSProperties, StyleValue } from 'vue'
-import { AllFieldType, FormItem } from './rich-form-item'
-import { GlobalConfig } from './rich-form-config'
+import { AllFieldType, FieldItemBase, FieldItemContainer, FormItem } from './rich-form-item'
+import { GlobalConfig, DesktopConfig, MobileConfig } from './rich-form-config'
 /**
  * 平台类型
  * 之后会移除 pc 类型
  */
 export type PlatformType = 'desktop' | 'mobile'
 
-type MobileConfig = {
-  labelWidth: number |string
-  size:'large' | 'normal'
-  labelPosition: 'left' | 'top'
-  style?: CSSProperties
-}
-type DesktopConfig = {
-  labelWidth: number|string
-  size:'large'|'default'|'small'
-  labelPosition: 'left' | 'top'
-  style?: CSSProperties
-}
 
 /**
  * rich form 的数据格式
@@ -29,12 +17,17 @@ export type RichFormData = {
 
 
 type FormHandler = {
-  setSelection(filed:AllFieldType):void,
-  switchPlatform(platform:'mobile' | 'desktop') :void,
-  addFieldData() :void,
-  delete() :void,
-  addField() :void,
-  wrapElement() :void
+  setSelection(filed:AllFieldType):void
+  switchPlatform(platform:'mobile' | 'desktop') :void
+  addFieldData() :void
+  delete() :void
+  /**
+   * 将 FiledItem 添加到 store 中
+   * @param newFiled 新的 FieldItem 字段
+   * @param parentField 可选，父级容器字段
+   */
+  addFieldItem(newFiled:AllFieldType, parentField?:FieldItemContainer):void
+  wrapElement(filedInfo:FieldItemBase|FieldItemContainer, options:Record<'isWrap'|'sourceBlock'|'resetWidth', boolean>):void
   checkPropsBySelected() :void
   validator() :void
   copy():void
@@ -63,23 +56,20 @@ export type RichFormProvider = {
   // 放置逻辑 - 暂无
   logic: Record<string, unknown>
   // 放置可以用来执行的方法
-  handler:Record<string, any>
+  // handler:Record<string, { (params: unknown): void }>
+  handler:FormHandler
   // 全局容器设定
   config: GlobalConfig
-  // 全局样式设定
-  // desktop: CSSProperties
-  desktop: CSSProperties
-  // 移动端全局样式设定
-  // mobile: CSSProperties
-  mobile: CSSProperties
+  // 全局设定
   /**
    *  桌面端对每一项都启用的设定
    */
-  desktopItems: DesktopConfig
-  desktopItems: any
+  desktop: DesktopConfig
+  // 移动端全局设定
   /**
    *  移动端对每一项都启用的设定
    */
-  mobileItems: MobileConfig
-  mobileItems:any
+  mobile: MobileConfig
+  // desktopItems: MobileConfig
+  // mobileItems: MobileConfig
 }
