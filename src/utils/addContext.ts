@@ -3,6 +3,7 @@ import dayjs from 'dayjs'
 import { nanoid } from './nanoid'
 import { wrapElement } from './field'
 import { deepClone } from './DeepClone'
+import { AllFieldType } from '@/views/rich-form/types/rich-form-item'
 
 const getNodes = (node, key:'rowspan'|'colspan') => {
   const { context: { root, col, row } } = node
@@ -318,15 +319,18 @@ const appendNodes = (node, dir, key) => {
     })
   }
 }
-export const addContext = (node, parent, fn:any = null) => {
+/**
+ * 将当前节点添加到父节点上
+ * @param node 当前节点
+ * @param parent 父节点
+ */
+export const addContext = (node:AllFieldType, parent:any) => {
   let arr = []
-  const isArray = Array.isArray(parent)
-  if (isArray) {
+  if (Array.isArray(parent)) {
     arr = parent
   } else {
     arr = parent.columns || parent.list || parent.rows
   }
-  fn && fn(node)
   const context = {
     get props() {
       return (isPC) => computed(() => {
@@ -561,25 +565,26 @@ export const addContext = (node, parent, fn:any = null) => {
           push: 0
         },
         type: 'col',
-        list: []
+        innerData: [],
+        columns: [],
+        key: '',
+        id: '',
+        label: ''
       })
       node.columns.push(newNode)
       addContext(newNode, node)
     },
     get columns() {
       const result = []
-      switch (node.type) {
-        case 'table':
-          node.rows.forEach((item0, index0) => {
-            item0.columns.forEach((item1, index1) => {
-              if (!index0) {
-                result.push([])
-              }
-              result[index1].push(item1)
-            })
+      if (node.type === 'table') {
+        node.rows.forEach((item0, index0) => {
+          item0.columns.forEach((item1, index1) => {
+            if (!index0) {
+              result.push([])
+            }
+            result[index1].push(item1)
           })
-          break
-        default:
+        })
       }
       return result
     },
@@ -630,13 +635,8 @@ export const addContext = (node, parent, fn:any = null) => {
       return this.isDisableDelColumn || nodes.length === node.options.rowspan
     },
     get isDisableMargeBottom() {
-      const {
-        context: {
-          root,
-          col,
-          row
-        }
-      } = node
+      const { context } = node
+      const { root, col, row } = context
       const columns = root.context.columns
       let result = row >= columns[col].length - 1
       if (!result) {
@@ -649,13 +649,8 @@ export const addContext = (node, parent, fn:any = null) => {
       return result
     },
     get isDisableMargeTop() {
-      const {
-        context: {
-          root,
-          col,
-          row
-        }
-      } = node
+      const { context } = node
+      const { root, row } = context
       const columns = root.context.columns
       let result = row <= 0
       if (!result) {
@@ -683,32 +678,27 @@ export const addContext = (node, parent, fn:any = null) => {
       const colspanNodes = getNodes(node, 'colspan')
       return (colspanNodes.length === 1 || colspanNodes.filter(e => !e.options.isMerged).length === 1) || !nodes.every(e => e.options.colspan === node.options.colspan)
     },
-    merge(type) {
-      const {
-        context: {
-          root,
-          col,
-          row
-        }
-      } = node
+    merge(type:string) {
+      const { context } = node
+      const { root, row } = context
       switch (type) {
         case 'left':
-          findNode(node, 'before', 'colspan', (nodes, callBack) => {
+          findNode(node, 'before', 'colspan', (_, callBack) => {
             callBack()
           })
           break
         case 'right':
-          findNode(node, 'after', 'colspan', (nodes, callBack) => {
+          findNode(node, 'after', 'colspan', (_, callBack) => {
             callBack()
           })
           break
         case 'top':
-          findNode(node, 'before', 'rowspan', (nodes, callBack) => {
+          findNode(node, 'before', 'rowspan', (_, callBack) => {
             callBack()
           })
           break
         case 'bottom':
-          findNode(node, 'after', 'rowspan', (nodes, callBack) => {
+          findNode(node, 'after', 'rowspan', (_, callBack) => {
             callBack()
           })
           break
@@ -747,13 +737,8 @@ export const addContext = (node, parent, fn:any = null) => {
       }
     },
     split(type) {
-      const {
-        context: {
-          root,
-          col,
-          row
-        }
-      } = node
+      const { context } = node
+      const { root, row } = context
       const nodes = getNodes(node, type === 'column' ? 'colspan' : 'rowspan')
       switch (type) {
         case 'column':
@@ -784,13 +769,8 @@ export const addContext = (node, parent, fn:any = null) => {
       }
     },
     del(type) {
-      const {
-        context: {
-          root,
-          col,
-          row
-        }
-      } = node
+      const { context } = node
+      const { root, row } = context
       switch (type) {
         case 'column':
           root.rows.forEach(e => {
@@ -815,6 +795,6 @@ export const addContext = (node, parent, fn:any = null) => {
   })
   const nodes = node.columns || node.list || node.rows || []
   nodes.forEach(e => {
-    addContext(e, node, fn)
+    addContext(e, node)
   })
 }

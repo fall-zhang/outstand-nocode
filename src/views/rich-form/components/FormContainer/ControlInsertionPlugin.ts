@@ -1,6 +1,5 @@
-import _ from 'lodash-es'
 import { addContext, checkIsField, deepTraversal } from '@/utils'
-import { get } from '@/utils/utils'
+import { deepClone, get } from '@/utils/utils'
 import { nextTick } from 'vue'
 import { RichFormProvider } from '../../types/rich-form'
 let prevEl = ''
@@ -126,7 +125,7 @@ const getDirection1 = (target, originalEvent) => {
   return direction
 }
 const getDirection0 = (target, originalEvent) => {
-  let direction = ''
+  let direction:string = ''
   const X = getOffset(target, 'offsetLeft')
   const Y = getOffset(target, 'offsetTop')
   const scrollEl = getParentAutoScrollElement(target, true)
@@ -316,9 +315,8 @@ function ControlInsertionPlugin (ER:RichFormProvider) {
       const isBlock = get(e, 'activeSortable.options.dataSource', false) === 'block'
       const { dragEl } = e
       const oldEl = getDragElement(dragEl)
-      const newElement = ER.handler.wrapElement(_.cloneDeep(oldEl), {
+      const newElement = ER.handler.wrapElement(deepClone(oldEl), {
         isWrap: insertRowIndex !== '',
-        isSetSelection: true,
         sourceBlock: isBlock
       })
       if (!isBlock) {

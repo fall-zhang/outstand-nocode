@@ -2,58 +2,57 @@ import _ from 'lodash-es'
 import { nanoid } from './nanoid'
 import { PlatformType } from '@/views/rich-form/types/rich-form'
 import { get, isEmpty } from './utils'
+import { AllFieldType } from '@/views/rich-form/types/rich-form-item'
 
-const fieldsRe = /^(input|textarea|number|radio|checkbox|select|time|date|rate|switch|slider|html|cascader|uploadfile|signature|region)$/
-const deepTraversal = (node, fn) => {
-  fn(node)
-  const nodes = node.list || node.rows || node.columns || node.children || []
-  nodes.forEach(e => {
-    deepTraversal(e, fn)
-  })
-}
-const wrapElement = (element, fn?:any) => {
-  const result = element
-  deepTraversal(result, (node) => {
-    if (!node.style) {
-      node.style = {}
+const fieldsReg = /^(input|textarea|number|radio|checkbox|select|time|date|rate|switch|slider|html|cascader|uploadfile|signature|region)$/
+/**
+ * 从左侧拖拽到中心后，默认进行一次包装
+ */
+const wrapElement = (element:AllFieldType):AllFieldType => {
+  const result:AllFieldType = {
+    ...element
+  }
+  if (element.id === 'root') {
+    return result
+  }
+  if (!result.desktop) {
+    result.style = {}
+  }
+  if (!result.id) {
+    result.id = nanoid()
+  }
+  if (!result.key) {
+    result.key = `${result.type}_${result.id}`
+  }
+  if (/^(grid|tabs|collapse|table|divider)$/.test(result.type)) {
+    result.style = {
+      width: '100%'
     }
-    if (!node.id) {
-      node.id = nanoid()
-    }
-    if (!node.key) {
-      node.key = `${node.type}_${node.id}`
-    }
-    if (/^(grid|tabs|collapse|table|divider)$/.test(node.type)) {
-      node.style = {
-        width: '100%'
+  }
+  if (checkIsField(result)) {
+    result.style = {
+      width: {
+        pc: '100%',
+        mobile: '100%'
       }
     }
-    if (checkIsField(node)) {
-      node.style = {
-        width: {
-          pc: '100%',
-          mobile: '100%'
-        }
-      }
-    }
-    if (/^(tabs)$/.test(node.type)) {
-      node.columns = new Array(3).fill('').map((e, index) => {
-        const data = renderFieldData('tabsCol')
-        data.label = `Tab ${index + 1}`
-        data.options = {}
-        return data
-      })
-    }
-    if (/^(collapse)$/.test(node.type)) {
-      node.columns = new Array(3).fill('').map((e, index) => {
-        const data = renderFieldData('collapseCol')
-        data.label = `Tab ${index + 1}`
-        data.options = {}
-        return data
-      })
-    }
-    fn && fn(node)
-  })
+  }
+  if (/^(tabs)$/.test(result.type)) {
+    result.columns = new Array(3).fill('').map((e, index) => {
+      const data = renderFieldData('tabsCol')
+      data.label = `Tab ${index + 1}`
+      data.options = {}
+      return data
+    })
+  }
+  if (/^(collapse)$/.test(result.type)) {
+    result.columns = new Array(3).fill('').map((e, index) => {
+      const data = renderFieldData('collapseCol')
+      data.label = `Tab ${index + 1}`
+      data.options = {}
+      return data
+    })
+  }
   return result
 }
 const renderFieldData = (type:string) => {
@@ -159,7 +158,7 @@ const checkIslineChildren = (node) => {
  * 用来查看是否是 FormItem 类型
  * （不是 container 类型）
  */
-const checkIsField = (node) => fieldsRe.test(node.type)
+const checkIsField = (node) => fieldsReg.test(node.type)
 const calculateAverage = (count, total = 100) => {
   const base = Number((total / count).toFixed(2))
   const result = []
@@ -216,7 +215,6 @@ const transferData = (lang:string, path:string, locale:any, options = {}) => {
 export {
   syncWidthByPlatform,
   wrapElement,
-  deepTraversal,
   renderFieldData,
   getAllFields,
   disassemblyData1,
