@@ -1,6 +1,5 @@
 import { inject } from 'vue'
 import { RichFormProvider } from '../types/rich-form'
-import { BaseItemType, ContainerItemType } from '../types/rich-form-item'
 
 export const useFormProvider = () => {
   const storeMap = new Map()
@@ -8,7 +7,7 @@ export const useFormProvider = () => {
   function errorHandler() {
     throw new Error('未获取到真实 inject')
   }
-  const defaultInject:RichFormProvider = reactive({
+  const defaultInject = reactive<RichFormProvider>({
     lang: 'zh',
     fieldsList: [], // 左侧菜单的配置
     store: [], // 中心区域当前配置的内容
@@ -23,29 +22,6 @@ export const useFormProvider = () => {
     },
     mode: 'edit',
     platform: 'desktop',
-    config: {
-      isSync: false,
-      fieldsPanelDefaultOpened: [],
-      fieldsPanelWidth: '',
-      colorList: [],
-      inlineMax: 0,
-      mobile: {
-        completeButton: {
-          text: ''
-        }
-      },
-      desktop: {
-        formOption: {
-          size: 'default',
-          labelPosition: 'left',
-          hideRequiredAsterisk: false,
-          labelWidth: ''
-        },
-        completeButton: {
-          text: ''
-        }
-      }
-    },
     widthScaleLock: false,
     data: {},
     validateStates: [],
@@ -56,25 +32,40 @@ export const useFormProvider = () => {
       switchPlatform: errorHandler,
       addFieldData: errorHandler,
       delete: errorHandler,
-      addField: errorHandler,
+      addFieldItem: errorHandler,
       wrapElement: errorHandler,
       checkPropsBySelected: errorHandler,
       validator: errorHandler,
       copy: errorHandler,
     },
-    desktop: {},
-    mobile: {},
-    desktopItems: {
-      labelWidth: '',
-      size: 'default',
-      labelPosition: 'left'
+    config: {
+      isSync: false,
+      colorList: [],
+      inlineMax: 0,
     },
-    mobileItems: {
-      labelWidth: '',
-      size: 'large',
-      labelPosition: 'left'
+    desktop: {
+      style: {},
+      formOption: {
+        size: 'default',
+        labelPosition: 'left',
+        hideRequiredAsterisk: false,
+        labelWidth: ''
+      },
+      completeButton: {
+        text: ''
+      },
     },
-    state: {}
+    mobile: {
+      style: {},
+      formOption: {
+        labelPosition: 'left',
+        hideRequiredAsterisk: false,
+        labelWidth: ''
+      },
+      completeButton: {
+        text: ''
+      },
+    },
   })
   const formProvider = inject<RichFormProvider>('rich-form', defaultInject)
   const isDesktop = computed(() => formProvider.platform === 'desktop')

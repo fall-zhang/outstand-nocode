@@ -1,21 +1,9 @@
-import { GlobalConfig } from '../types/rich-form'
+import { GlobalConfig } from '../types/rich-form-config'
 
 // 用户自定义配置
 const config:GlobalConfig = {
   inlineMax: 4,
   isSync: false,
-  fieldsPanelDefaultOpened: ['defaultField', 'field', 'container'],
-  pc: {
-    size: 'default',
-    completeButton: {
-      text: ''
-    }
-  },
-  mobile: {
-    completeButton: {
-      text: ''
-    }
-  },
   colorList: [
     'rgba(255, 255, 255, 1)',
     'rgba(249, 249, 249, 1)',
@@ -27,9 +15,18 @@ const config:GlobalConfig = {
     'rgba(235, 242, 244, 1)',
     'rgba(240, 249, 236, 1)'
   ],
-  fieldsPanelWidth: '220px',
+  mobile: {
+    completeButton: {
+      text: ''
+    }
+  },
   desktop: {
-    size: 'default',
+    formOption: {
+      size: 'default',
+      labelPosition: 'left',
+      hideRequiredAsterisk: false,
+      labelWidth: ''
+    },
     completeButton: {
       text: ''
     }

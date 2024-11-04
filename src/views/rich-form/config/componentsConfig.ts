@@ -4,12 +4,13 @@ import { FieldItemBase, FieldItemContainer } from '../types/rich-form-item'
 const containerConfig:{
   name:string
   id:string
-  list:FieldItemContainer[]
+  list:(FieldItemContainer|{icon:string})[]
 } = {
   name: '容器',
   id: 'container',
   list: [
     {
+      key: '',
       type: 'grid',
       label: 'grid',
       icon: 'grid',
@@ -21,14 +22,18 @@ const containerConfig:{
           type: 'col',
           span: 12,
           offset: 0,
-          list: []
+          list: [],
+          label: '',
+          options: {}
         },
         {
           id: '',
           type: 'col',
           span: 12,
           offset: 0,
-          list: []
+          list: [],
+          label: '',
+          options: {}
         },
       ],
       options: {
@@ -37,9 +42,10 @@ const containerConfig:{
         gutter: 0,
         justify: 'space-around',
         align: 'top'
-      }
+      },
     },
     {
+      key: '',
       type: 'tabs',
       label: '标签页',
       icon: 'label',
@@ -51,13 +57,14 @@ const containerConfig:{
         align: 'top',
         hidden: false
       },
-      innerData: []
+      innerData: [],
     },
     {
       type: 'collapse',
       label: '折叠面板',
       icon: 'collapse',
       id: '',
+      key: '',
       innerData: [],
       columns: [],
       options: {
@@ -66,10 +73,11 @@ const containerConfig:{
       }
     },
     {
+      id: '',
+      key: '',
       type: 'divider',
       label: '分割线',
       icon: 'divider',
-      id: '',
       innerData: [],
       columns: [],
       options: {
@@ -85,17 +93,17 @@ const containerConfig:{
 const basicConfig:{
   name:string
   id:string
-  list:FieldItemBase[]
+  list:(FieldItemBase|{icon:string})[]
 } = {
   name: '基础字段',
   id: 'field',
   list: [
     {
+      key: '',
+      id: '',
       type: 'input',
       label: '单行文本',
       icon: 'input',
-      key: '',
-      id: '',
       options: {
         clearable: true,
         isShowWordLimit: false,
@@ -107,8 +115,8 @@ const basicConfig:{
         labelWidth: 100,
         isShowLabel: true,
         required: false,
-        min: null,
-        max: null
+        minText: null,
+        maxText: null
       }
     },
     {
@@ -127,8 +135,8 @@ const basicConfig:{
         labelWidth: 100,
         isShowLabel: true,
         required: false,
-        min: null,
-        max: null
+        minText: null,
+        maxText: null
       }
     },
     {
@@ -140,6 +148,8 @@ const basicConfig:{
       options: {
         min: 0,
         max: null,
+        minlength: null,
+        maxlength: null,
         step: 1,
         precision: 0,
         disabled: false,
@@ -149,8 +159,6 @@ const basicConfig:{
         labelWidth: 100,
         isShowLabel: true,
         required: false,
-        minlength: null,
-        maxlength: null
       }
     },
     {

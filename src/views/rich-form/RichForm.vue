@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import './theme/index.scss'
 import { ClickOutside as vClickOutside, ElMessage } from 'element-plus'
-import { reactive, nextTick, watch } from 'vue'
+import { reactive, watch } from 'vue'
 import IconTooltip from '@/components/more-layer/tooltip/IconTooltip.vue'
 import FieldsPanel from './view/LeftFields/LeftFields.vue'
 import CanvasPanel from './view/CenterCanvas/CenterCanvas'
@@ -10,7 +10,7 @@ import DeviceSwitch from './components/DeviceSwitch.vue'
 import Icon from '@/assets'
 import { useI18n } from 'vue-i18n'
 import {
-  deepClone, checkIsField, disassemblyData1, removeLogicDataById,
+  deepClone, disassemblyData1, removeLogicDataById,
   checkIdExistInLogic
 } from '@/utils'
 import defaultProps from './defaultProps'
@@ -57,15 +57,8 @@ const setSelection = (node: AllFieldType) => {
   }
   formState.selected = result
 }
-const addField = (node: any) => {
-  if (checkIsField(node)) {
-    const findIndex = formState.fields.findIndex((item: any) => item.id === node.id)
-    if (findIndex === -1) {
-      formState.fields.push(node)
-    } else {
-      formState.fields.splice(findIndex, 1, node)
-    }
-  }
+const addFieldItem = (node: AllFieldType) => {
+
 }
 const delField = (node: any) => {
   const fieldIndex = formState.fields.findIndex((item: any) => item.id === node.id)
@@ -103,13 +96,12 @@ const addFieldData = (node: any, isCopy = false) => {
   }
 }
 
-const wrapElement = (el: any, {
+const wrapElement = (el: AllFieldType, {
   isWrap = true,
-  isSetSelection = true,
   sourceBlock = true,
   resetWidth = true
 }) => {
-  let node: any
+  let node: AllFieldType
   if (sourceBlock) {
     node = generatorData(el, {
       isWrap,
@@ -127,11 +119,11 @@ const wrapElement = (el: any, {
     node = el
   }
   if (!sourceBlock && resetWidth) {
-    if (checkIsField(el)) {
+    if (el) {
       if (formState.platform === 'desktop') {
-        el.style.width.pc = '100%'
+        el.desktop.style.width = '100%'
       } else {
-        el.style.width.mobile = '100%'
+        el.mobile.style.width = '100%'
       }
     } else {
       el.style.width = '100%'
@@ -219,8 +211,25 @@ const formState = reactive<RichFormProvider>({
   validateStates: [],
   fields: [],
   logic: {},
-  desktop: {},
-  mobile: {},
+  desktop: {
+    style: {},
+    formOption: {
+      size: '',
+      labelPosition: 'left',
+      hideRequiredAsterisk: false,
+      labelWidth: ''
+    },
+    completeButton: {}
+  },
+  mobile: {
+    style: {},
+    formOption: {
+      labelPosition: 'left',
+      hideRequiredAsterisk: false,
+      labelWidth: ''
+    },
+    completeButton: {}
+  },
   desktopItems: {
     labelWidth: '',
     size: 'default',
@@ -238,7 +247,7 @@ const formState = reactive<RichFormProvider>({
     switchPlatform,
     addFieldData,
     delete: delField,
-    addField,
+    addFieldItem,
     wrapElement,
     checkPropsBySelected() { },
     validator,
