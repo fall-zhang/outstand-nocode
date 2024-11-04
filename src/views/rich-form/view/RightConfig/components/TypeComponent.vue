@@ -21,8 +21,8 @@ const {
   fontSize?: number
   layoutType?: 'singleLine' | 'multiLine'
 }>()
-const fireEvent = (property: string, item: any) => {
-  emit('change', property, item)
+const fireEvent = (item: any) => {
+  emit('change', item)
 }
 </script>
 <template>
@@ -31,7 +31,7 @@ const fireEvent = (property: string, item: any) => {
       <div class="form-label">
         <div>{{ label }}</div>
         <el-radio-group v-if="layoutType === 'singleLine'" size="small" :modelValue="val"
-          @change="(curVal) => fireEvent(property, { value: curVal })">
+          @change="(curVal) => fireEvent(curVal)">
           <el-radio-button v-for="item in nodes" :value="item.value" :key="item.value">
             {{ item.label }}
           </el-radio-button>
@@ -39,7 +39,7 @@ const fireEvent = (property: string, item: any) => {
       </div>
     </template>
     <ul v-if="layoutType === 'multiLine'" ref="elements" class="form-content" :style="{ height: height + 2 + 'px' }">
-      <li @click="() => !item.disabled && fireEvent(property, item)" v-for="item in nodes" :key="item.value" :class="{
+      <li @click="() => !item.disabled && fireEvent(item)" v-for="item in nodes" :key="item.value" :class="{
         'Selected': val !== undefined && item.value === val,
         'Disabled': item.disabled
       }">

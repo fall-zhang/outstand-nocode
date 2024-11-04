@@ -2,7 +2,6 @@
 import { reactive, ref, onMounted, inject, watch, nextTick } from 'vue'
 import { ElMessage, UploadRawFile } from 'element-plus'
 import { useI18n } from 'vue-i18n'
-import { RichFormProvider } from '@/views/rich-form/types/rich-form'
 import { useFormProvider } from '@/views/rich-form/hooks/use-form-provider'
 defineOptions({
   name: 'ConfigBackground',
@@ -10,7 +9,7 @@ defineOptions({
   customOptions: {}
 })
 const { t } = useI18n()
-const { selected } = useFormProvider()
+const { selected, config } = useFormProvider()
 const element = ref()
 type PageState = {
   visible: boolean
@@ -30,14 +29,13 @@ const state = reactive<PageState>({
     backgroundImage: '',
   }
 })
-const ER = inject<RichFormProvider>('rich-form')!
 const bgStatus = inject<Ref<boolean>>('rich-form-bg')!
 watch(bgStatus, (newVal) => {
   state.value0 = newVal
 }, {
   immediate: true
 })
-const quickColors = ER.config.colorList
+const quickColors = config.value.colorList
 
 const options0 = [
   [

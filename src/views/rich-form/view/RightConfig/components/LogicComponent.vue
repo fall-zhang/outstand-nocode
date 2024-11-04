@@ -42,12 +42,10 @@ const tabs = ref([
 ])
 const activeTab = ref('visible')
 const ER = reactive(useFormProvider())
-// const ER = inject('rich-form')
 const scrollbarRef = ref()
 const dialogVisible = ref(false)
 const curIndex = computed(() => tabs.value.findIndex(tab => tab.value === activeTab.value))
 const getTabData = (tab) => {
-  // const tab = _.find(tabs.value, { value: type })
   return tab.ifRefs.map((rule, index) => {
     return {
       ifRules: rule.getData(),

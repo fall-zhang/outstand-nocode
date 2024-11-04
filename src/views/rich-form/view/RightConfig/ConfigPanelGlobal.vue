@@ -13,7 +13,7 @@ defineOptions({
   customOptions: {}
 })
 
-const { isDesktop, platform, selected } = useFormProvider()
+const { isDesktop, platform, selected, config, desktop, mobile } = useFormProvider()
 
 const { t } = useI18n()
 const visible = ref(false)
@@ -28,12 +28,6 @@ const handleModelValue = (type: string, value: any) => {
 }
 
 const onConfirm = () => {
-  const targetObj = selected.value[radio1.value]
-  const sourceObj = {
-    labelPosition: unref(selected)[radio1.value].labelPosition,
-    completeButton: unref(selected)[radio1.value].completeButton,
-  }
-  Object.assign(targetObj, deepClone(sourceObj))
   // handleConfirm(true)
 }
 const alignOptions = computed(() => {
@@ -56,7 +50,7 @@ const alignOptions = computed(() => {
   ]
 })
 
-const options1 = computed(() => {
+const sizeOptionList = computed(() => {
   return [
     {
       label: t('rf.config.globalConfig.componentSize.large'),
@@ -72,12 +66,19 @@ const options1 = computed(() => {
     }
   ]
 })
-const onSizeChange = (property: string, data: any) => {
-  selected.value[platform.value].size = data.value
+const onSizeChange = (data: any) => {
+  desktop.value.formOption.size = data
 }
-const onTypeChange = (property: string, data: any) => {
-  handleModelValue('labelPosition', data.value)
+const onTypeChange = (data: any) => {
+  handleModelValue('labelPosition', data)
 }
+
+const curPlatformConf = computed(() => {
+  if (platform.value === 'desktop') {
+    return desktop.value
+  }
+  return mobile.value
+})
 </script>
 <template>
   <div class="GlobalConfigPanel">
@@ -101,18 +102,13 @@ const onTypeChange = (property: string, data: any) => {
         </el-button>
       </div>
     </el-popover>
-    <!-- 同步设置电脑和移动端 -->
-    <!-- <el-form-item :label="t('rf.config.globalConfig.sync.label')" label-position="left">
-      <el-switch ref="buttonRef" v-click-outside:[popperPaneRef]="onClickOutside" :before-change="handleBeforeChange"
-        v-model="target.isSync" />
-    </el-form-item> -->
     {{ 'layout-type-2' }}
     <TypeComponent v-if="isDesktop" @change="onSizeChange" property="size" layoutType="singleLine"
-      :label="t('rf.config.globalConfig.componentSize.label')" :val="selected[platform].size" :nodes="options1" />
+      :label="t('rf.config.globalConfig.componentSize.label')" :val="desktop.formOption.size" :nodes="sizeOptionList" />
     {{ 'layout-type-1' }}
     <TypeComponent @change="onTypeChange" property="labelPosition"
       :label="t('rf.config.globalConfig.labelPosition.label')" :height="66" :fontSize="80"
-      :val="selected[platform].labelPosition" :nodes="alignOptions" />
+      :val="curPlatformConf.formOption.labelPosition" :nodes="alignOptions" />
     <el-form-item :label="t('rf.public.button')">
       <div style="width: 100%;">
         <!-- <CompleteButton mode="preview" /> -->

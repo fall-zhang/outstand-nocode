@@ -41,7 +41,6 @@ const {
 function checkSelectedType(list: string[]) {
   return list.includes(selected.value.type)
 }
-const bgStatus = ref(false)
 provide('rich-form-bg', bgStatus)
 const dialogVisible = ref(false)
 const dataRef = ref()

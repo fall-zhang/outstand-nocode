@@ -40,7 +40,7 @@ const handleTypeListener = ({ property, data }: any) => {
 <template>
   <div class="ConfigBorder">
     <div v-if="['table'].includes(selected.type)">
-      <TypeComponent @listener="handleTypeListener" property="borderType" :height="30" :fontSize="18"
+      <TypeComponent @change="handleTypeListener" property="borderType" :height="30" :fontSize="18"
         :val="selected.style.borderType" :nodes="borderActions" label="" />
       <el-row justify="space-between" align="middle">
         <el-col :span="5">
