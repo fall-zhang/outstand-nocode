@@ -120,6 +120,7 @@ const addValidate = (result, node, isPC, t) => {
   }
   result.rules = [obj]
 }
+
 export const useProps = ({
   state,
   data,
@@ -130,16 +131,19 @@ export const useProps = ({
 }) => {
   const { t } = useI18n()
   return computed(() => {
-    let node = isRoot ? data.config : data
+    const optData = reactive(data)
+    let node = isRoot ? reactive(data).config : reactive(data)
+    // console.log("🚀 ~ t:", isRoot)
+    // console.log("🚀 ~ t:", unref(reactive(data)))
     let result:Record<string, unknown> = {}
-    const platform = isDesktop ? 'pc' : 'mobile'
+    const platform = isDesktop ? 'desktop' : 'mobile'
     if (isRoot) {
       if (isDesktop) {
         result.model = data.store
-        result.size = node.pc.size
-        result.labelPosition = node[platform].labelPosition
+        result.size = ''
+        result.labelPosition = optData[platform].labelPosition
       } else {
-        result.labelAlign = node[platform].labelPosition
+        result.labelAlign = optData[platform].labelPosition
       }
       return result
     }
@@ -151,21 +155,6 @@ export const useProps = ({
       placeholder: options.placeholder,
       clearable: options.clearable,
       required: options.required
-    }
-    if (state.mode === 'preview') {
-      const fieldState = state.fieldsLogicState.get(node)
-      const required = fieldState?.required || undefined
-      const readOnly = fieldState?.readOnly || undefined
-      if (readOnly === undefined) {
-        result.disabled = options.disabled
-      } else {
-        result.disabled = readOnly === 1
-      }
-      if (required === undefined) {
-        result.required = result.disabled ? false : result.required
-      } else {
-        result.required = result.disabled ? false : required === 1
-      }
     }
     addValidate(result, node, isDesktop, t)
     if (isDesktop) {

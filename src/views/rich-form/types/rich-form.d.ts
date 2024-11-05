@@ -19,7 +19,7 @@ export type RichFormData = {
 type FormHandler = {
   setSelection(filed:AllFieldType):void
   switchPlatform(platform:'mobile' | 'desktop') :void
-  addFieldData() :void
+  addFieldData(node:any, isCopy?:boolean) :void
   delete() :void
   /**
    * 将 FiledItem 添加到 store 中
@@ -30,7 +30,7 @@ type FormHandler = {
   wrapElement(filedInfo:FieldItemBase|FieldItemContainer, options:Record<'isWrap'|'sourceBlock'|'resetWidth', boolean>):void
   checkPropsBySelected() :void
   validator() :void
-  copy():void
+  copy(fieldInfo:FieldItemBase):void
 }
 
 export type RichFormProvider = {
@@ -47,7 +47,7 @@ export type RichFormProvider = {
   canvasScrollRef:any
   // 当前选中的内容，默认选中 root
   selected: AllFieldType
-  mode: 'edit' | 'setting' | 'preview'
+  mode: 'edit' | 'setting'
   platform: 'mobile' | 'desktop'
   widthScaleLock: boolean,
   data: Record<string, unknown>,

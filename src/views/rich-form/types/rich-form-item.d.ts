@@ -14,10 +14,11 @@ type ContainerItemTypes = 'col' | 'grid' | 'tabs' |'collapse' | 'divider' | 'inl
 /**
  * 通常 form 的类型
  */
-type FieldItemBase = {
+export type FieldItemBase = {
   type: BaseItemType
   label: string,
   key: string, // form 中的 key
+  name?: string // 用户定义的名称，如果没有使用 label 代替
   id: string, // 唯一标志符
   desktop?:PlatformConf
   mobile?:PlatformConf
@@ -49,6 +50,7 @@ export type ContainerItem = {
 export type FieldItemContainer = {
   type: ContainerItemTypes
   id: string
+  name?: string // 用户定义的名称，如果没有使用 label 代替
   key: string, // form 中的 key
   label: string
   desktop?:PlatformConf
