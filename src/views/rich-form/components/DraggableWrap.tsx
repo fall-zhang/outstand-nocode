@@ -50,8 +50,9 @@ export const DraggableWrap = defineComponent({
   setup(props, { attrs, slots }) {
     return () => (
       <VueDraggable
-        {...attrs} {...props}>
-        {slots}
+        {...attrs} {...props} v-slots={slots}>
+        {/* {slots.item?.()} */}
+        {/* {slots} */}
       </VueDraggable>
     )
   }
