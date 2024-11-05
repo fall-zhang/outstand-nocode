@@ -158,7 +158,7 @@ const checkIslineChildren = (node) => {
  * 用来查看是否是 FormItem 类型
  * （不是 container 类型）
  */
-const checkIsField = (node) => fieldsReg.test(node.type)
+const checkIsField = (node:AllFieldType) => fieldsReg.test(node.type)
 const calculateAverage = (count, total = 100) => {
   const base = Number((total / count).toFixed(2))
   const result = []

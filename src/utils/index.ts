@@ -4,7 +4,7 @@
  */
 import { deepClone } from './DeepClone'
 import { isDesktop } from './device'
-import { checkIsField, disassemblyData1, repairLayout, deepTraversal, syncWidthByPlatform, checkIslineChildren, disassemblyData2, combinationData2, pickFields, combinationData1 } from './field'
+import { checkIsField, disassemblyData1, repairLayout,syncWidthByPlatform, checkIslineChildren, disassemblyData2, combinationData2, pickFields, combinationData1 } from './field'
 import { checkIdExistInLogic, removeLogicDataById, } from './logic'
 import { addContext } from './addContext'
 
@@ -15,7 +15,6 @@ export {
   checkIsField,
   disassemblyData1,
   repairLayout,
-  deepTraversal,
   syncWidthByPlatform,
   checkIslineChildren,
   disassemblyData2,
