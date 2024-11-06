@@ -11,6 +11,12 @@ export type PlatformConf = {
 export type BaseItemType = 'input'|'number'|'select'|'textarea'|'radio'|'checkbox'|'time'|'date'|'rate'|'switch'|'slider'
 // 'table'
 type ContainerItemTypes = 'col' | 'grid' | 'tabs' |'collapse' | 'divider' | 'inline'
+
+type FieldItemRoot = {
+  type: 'root'
+  id: 'root'
+  label: string
+}
 /**
  * 通常 form 的类型
  */
@@ -23,6 +29,9 @@ export type FieldItemBase = {
   desktop?:PlatformConf
   mobile?:PlatformConf
   options:Record<string, any>
+  context?:{
+    parent: FieldItemRoot | unknown // 父元素
+  }
   // options: {
   //   contentPosition?: 'center'|'left'|'right',
   //   filterable?: boolean,
@@ -65,11 +74,6 @@ export type FieldItemContainer = {
   // }
 }
 
-type FieldItemRoot = {
-  type: 'root'
-  id: 'root'
-  label: string
-}
 
 export type AllFieldType = FieldItemContainer |FieldItemRoot |FieldItemBase
 

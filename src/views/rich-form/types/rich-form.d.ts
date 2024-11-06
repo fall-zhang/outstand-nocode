@@ -20,7 +20,7 @@ type FormHandler = {
   setSelection(filed:AllFieldType):void
   switchPlatform(platform:'mobile' | 'desktop') :void
   addFieldData(node:any, isCopy?:boolean) :void
-  delete() :void
+  delete(filed:FieldItemBase|FieldItemContainer) :void
   /**
    * 将 FiledItem 添加到 store 中
    * @param newFiled 新的 FieldItem 字段
@@ -30,7 +30,7 @@ type FormHandler = {
   wrapElement(filedInfo:FieldItemBase|FieldItemContainer, options:Record<'isWrap'|'sourceBlock'|'resetWidth', boolean>):void
   checkPropsBySelected() :void
   validator() :void
-  copy(fieldInfo:FieldItemBase):void
+  copy(fieldInfo:FieldItemBase|FieldItemContainer):void
 }
 
 export type RichFormProvider = {

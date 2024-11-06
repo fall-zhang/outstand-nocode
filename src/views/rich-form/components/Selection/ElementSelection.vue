@@ -7,10 +7,10 @@
       Selected,
       isWarning && $style.Warning
     ]" ref="elementRef" @click="withModifiers(handleClick, ['stop'])">
-    <slog></slog>
+    <slot></slot>
     <!-- 排序功能 -->
     <div :class="$style.topLeft">
-      <Icon v-if="props.hasDrag" :class="['handle', $style.dragIcon]" icon="Rank"></Icon>
+      <Icon v-if="hasDrag" :class="['handle', $style.dragIcon]" icon="Rank"></Icon>
     </div>
     <!-- 其它功能 -->
     <div :class="$style.bottomRight">
@@ -76,84 +76,49 @@ import {
   resolveComponent,
   ref,
   onMounted,
-  onBeforeUnmount,
   computed,
 } from 'vue'
 import { isHTMLTag } from '@/utils/browser'
 import { useI18n } from 'vue-i18n'
-import { syncWidthByPlatform, checkIsField, checkIslineChildren, deepTraversal } from '@/utils'
+import { syncWidthByPlatform, checkIsField, checkIslineChildren } from '@/utils'
 import Icon from '@/assets'
 import $style from './SelectElement.module.scss'
 import { ElDropdownMenu, ElDropdownItem, ElDropdown } from 'element-plus'
 import { useCss } from '../../hooks/use-css'
 import { useFormProvider } from '../../hooks/use-form-provider'
-const props = defineProps({
-  data: {
-    type: Object,
-    require: true,
-    default: () => ({})
-  },
-  parent: {
-    type: Object,
-    require: true,
-    default: () => ({})
-  },
-  tag: {
-    type: String,
-    default: 'div'
-  },
-  hasMask: {
-    type: Boolean,
-    default: false
-  },
-  hasDrag: {
-    type: Boolean,
-    default: false
-  },
-  hasDel: {
-    type: Boolean,
-    default: false
-  },
-  hasCopy: {
-    type: Boolean,
-    default: false
-  },
-  hasTableCellOperator: {
-    type: Boolean,
-    default: false
-  },
-  hasWidthScale: {
-    type: Boolean,
-    default: false
-  },
-  hasInsertColumn: {
-    type: Boolean,
-    default: false
-  },
-  hasInsertRow: {
-    type: Boolean,
-    default: false
-  },
-  hasAddCol: {
-    type: Boolean,
-    default: false
-  },
-  span: {
-    type: Number,
-    default: 0
-  },
-  offset: {
-    type: Number,
-    default: 0
-  },
-  pull: {
-    type: Number,
-    default: 0
-  },
-  label: {
-    type: String,
-    default: ''
-  }
+import { FieldItemBase, FieldItemContainer } from '../../types/rich-form-item'
+const props = withDefaults(defineProps<{
+  data: FieldItemBase | FieldItemContainer,
+  parent: Array<any>,
+  tag?: string, // div
+  hasMask?: boolean, // false
+  hasDrag?: boolean, // false
+  hasDel?: boolean, // false
+  hasCopy?: boolean, // false
+  hasTableCellOperator?: boolean, // false
+  hasWidthScale?: boolean, // false
+  hasInsertColumn?: boolean, // false
+  hasInsertRow?: boolean, // false
+  hasAddCol?: boolean, // false
+  span?: number, // 0
+  offset?: number, // 0
+  pull?: number, // 0
+  label?: string // ''
+}>(), {
+  tag: 'div',
+  hasMask: false,
+  hasDrag: false,
+  hasDel: false,
+  hasCopy: false,
+  hasTableCellOperator: false,
+  hasWidthScale: false,
+  hasInsertColumn: false,
+  hasInsertRow: false,
+  hasAddCol: false,
+  span: 0,
+  offset: 0,
+  pull: 0,
+  label: ''
 })
 const { t } = useI18n()
 
@@ -171,14 +136,8 @@ type OptAction = 'top' | 'delete' | 'table-insert-col' | 'table-insert-row' | 'c
 const handleAction = (type: OptAction) => {
   const index = type !== 'top' && props.parent.indexOf(props.data)
   switch (type) {
-    case 'delete':
-      if (handler.value.delete(props.data) === false) return false
-      props.data.context.delete()
-      deepTraversal(props.data, (node: any) => {
-        if (checkIsField(node)) {
-          handler.value.delete(node)
-        }
-      })
+    case 'delete': {
+      handler.value.delete(props.data)
       if (props.parent.length > 0) {
         if (index === props.parent.length) {
           handler.value.setSelection(props.parent[index - 1])
@@ -186,20 +145,25 @@ const handleAction = (type: OptAction) => {
           handler.value.setSelection(props.parent[index])
         }
       } else {
-        handler.value.setSelection('root')
+        handler.value.setSelection({
+          type: 'root',
+          id: 'root',
+          label: ''
+        })
       }
       break
+    }
     case 'copy': {
       if (handler.value.copy(props.data) === false) return false
       props.data.context.copy()
       const copyData = props.parent[index + 1]
       handler.value.setSelection(copyData)
-      deepTraversal(copyData, (node: any) => {
-        handler.value.addFieldData(node, true)
-        if (checkIsField(node)) {
-          handler.value.addField(node)
-        }
-      })
+      // deepTraversal(copyData, (node: any) => {
+      //   handler.value.addFieldData(node, true)
+      //   if (checkIsField(node)) {
+      //     handler.value.addField(node)
+      //   }
+      // })
       break
     }
     case 'table-insert-row':

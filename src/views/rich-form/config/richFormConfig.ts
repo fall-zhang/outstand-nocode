@@ -15,21 +15,21 @@ const config:GlobalConfig = {
     'rgba(235, 242, 244, 1)',
     'rgba(240, 249, 236, 1)'
   ],
-  mobile: {
-    completeButton: {
-      text: ''
-    }
-  },
-  desktop: {
-    formOption: {
-      size: 'default',
-      labelPosition: 'left',
-      hideRequiredAsterisk: false,
-      labelWidth: ''
-    },
-    completeButton: {
-      text: ''
-    }
-  }
+  // mobile: {
+  //   completeButton: {
+  //     text: ''
+  //   }
+  // },
+  // desktop: {
+  //   formOption: {
+  //     size: 'default',
+  //     labelPosition: 'left',
+  //     hideRequiredAsterisk: false,
+  //     labelWidth: ''
+  //   },
+  //   completeButton: {
+  //     text: ''
+  //   }
+  // }
 }
 export default config
