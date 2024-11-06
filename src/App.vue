@@ -11,5 +11,5 @@ const locale = ref(zhCn)
 </template>
 
 <style lang="scss">
-@import './styles/Basic.scss';
+@use './styles/Basic.scss';
 </style>

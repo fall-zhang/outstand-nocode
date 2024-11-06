@@ -1,4 +1,4 @@
-import { addContext, checkIsField, deepTraversal } from '@/utils'
+import { checkIsField } from '@/utils'
 import { deepClone, get } from '@/utils/utils'
 import { nextTick } from 'vue'
 import { RichFormProvider } from '../../types/rich-form'
@@ -286,17 +286,17 @@ function ControlInsertionPlugin (ER:RichFormProvider) {
       if (!isBlock) {
         if (oldEl.context) {
           oldEl.context.delete()
-          deepTraversal(oldEl, (node) => {
-            if (checkIsField(node)) {
-              ER.handler.delete(node)
-            }
-          })
+          // deepTraversal(oldEl, (node) => {
+          //   if (checkIsField(node)) {
+          //     ER.handler.delete(node)
+          //   }
+          // })
         }
       }
       if (insertRowIndex !== '') {
         const store = Array.isArray(prevSortable.options.parent) ? prevSortable.options.parent : prevSortable.options.parent.list
         store.splice(insertRowIndex, 0, newElement)
-        addContext(store[insertRowIndex], prevSortable.options.parent)
+        // addContext(store[insertRowIndex], prevSortable.options.parent)
       }
       if (insertColIndex !== '') {
         const {
@@ -311,14 +311,14 @@ function ControlInsertionPlugin (ER:RichFormProvider) {
           }
         } = prevSortable
         list.splice(insertColIndex, 0, newElement)
-        addContext(newElement, prevSortable.options.parent[sortableUtils.index(prevSortable.el.parentNode)])
+        // addContext(newElement, prevSortable.options.parent[sortableUtils.index(prevSortable.el.parentNode)])
       }
       if (insertColIndex !== '' || insertRowIndex !== '') {
-        deepTraversal(newElement, (node) => {
-          if (checkIsField(node)) {
-            ER.handler.addField(node)
-          }
-        })
+        // deepTraversal(newElement, (node) => {
+        //   if (checkIsField(node)) {
+        //     ER.handler.addFieldData(node)
+        //   }
+        // })
         nextTick(() => {
           ER.handler.setSelection(newElement)
         })
@@ -422,30 +422,30 @@ class NewControlInsertion {
     if (!isBlock) {
       if (oldEl.context) {
         oldEl.context.delete()
-        deepTraversal(oldEl, (node) => {
-          if (checkIsField(node)) {
-            ER.handler.delete(node)
-          }
-        })
+        // deepTraversal(oldEl, (node) => {
+        //   if (checkIsField(node)) {
+        //     ER.handler.delete(node)
+        //   }
+        // })
       }
     }
     if (insertRowIndex !== '') {
       const store = Array.isArray(prevSortable.options.parent) ? prevSortable.options.parent : prevSortable.options.parent.list
       store.splice(insertRowIndex, 0, newElement)
-      addContext(store[insertRowIndex], prevSortable.options.parent)
+      // addContext(store[insertRowIndex], prevSortable.options.parent)
     }
     if (insertColIndex !== '') {
       const list = prevSortable.el.__draggable_component__.list
       const sortableUtils = prevSortable.constructor.utils
       list.splice(insertColIndex, 0, newElement)
-      addContext(newElement, prevSortable.options.parent[sortableUtils.index(prevSortable.el.parentNode)])
+      // addContext(newElement, prevSortable.options.parent[sortableUtils.index(prevSortable.el.parentNode)])
     }
     if (insertColIndex !== '' || insertRowIndex !== '') {
-      deepTraversal(newElement, (node) => {
-        if (checkIsField(node)) {
-          this.ER.handler.addField(node)
-        }
-      })
+      // deepTraversal(newElement, (node) => {
+      //   if (checkIsField(node)) {
+      //     this.ER.handler.addFieldData(node)
+      //   }
+      // })
       nextTick(() => {
         this.ER.handler.setSelection(newElement)
       })

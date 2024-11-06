@@ -4,9 +4,9 @@
  */
 import { deepClone } from './DeepClone'
 import { isDesktop } from './device'
-import { checkIsField, disassemblyData1, repairLayout,syncWidthByPlatform, checkIslineChildren, disassemblyData2, combinationData2, pickFields, combinationData1 } from './field'
+import { checkIsField, disassemblyData1, repairLayout, syncWidthByPlatform, checkIslineChildren, disassemblyData2, combinationData2, pickFields, combinationData1 } from './field'
 import { checkIdExistInLogic, removeLogicDataById, } from './logic'
-import { addContext } from './addContext'
+// import { addContext } from './addContext'
 
 
 export {
@@ -23,20 +23,5 @@ export {
   pickFields,
   combinationData1,
   combinationData2,
-  addContext
 }
-const importModules = import.meta.glob('./*.ts', { eager: true })
-const modules:Record<string, unknown> = {}
-
-// 将 forIn 转换为原生写法
-Object.values(importModules).forEach((func:any) => {
-  Object.keys(func).forEach((key) => {
-    modules[key] = func[key]
-  })
-})
-
-export default {
-  ...modules
-}
-
 export { wrapElement, transferData, transferLabelPath } from './field'

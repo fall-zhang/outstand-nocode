@@ -14,13 +14,13 @@
     </div>
     <!-- 其它功能 -->
     <div :class="$style.bottomRight">
-      <Icon :class="['handle', $style.selectParent]" @click.stop="(e) => handleAction('top')" icon="top" />
+      <Icon :class="['handle', $style.selectParent]" @click.stop="(e) => handleAction('select-parent')" icon="top" />
       <Icon v-if="props.hasDel" :class="$style.copy" @click.stop="(e) => handleAction('delete')" icon="delete">
       </Icon>
-      <Icon v-if="props.hasInsertColumn" :class="$style.insertColIcon"
+      <!-- <Icon v-if="props.hasInsertColumn" :class="$style.insertColIcon"
         @click.stop="(e) => handleAction('table-insert-col')" icon="tableInsertCol"></Icon>
       <Icon v-if="props.hasInsertRow" :class="$style.insertRowIcon" @click.stop="(e) =>
-        handleAction('table-insert-row')" icon="tableInsertRow"></Icon>
+        handleAction('table-insert-row')" icon="tableInsertRow"></Icon> -->
       <Icon v-if="props.hasAddCol" :class="$style.addCol" @click.stop="(e) => handleAction('plus')" icon="plus">
       </Icon>
       <Icon v-if="isShowCopy" :class="$style.copyIcon" @click.stop="(e) => handleAction('copy')" icon="copy">
@@ -30,9 +30,7 @@
       </div>
       <ElDropdown trigger="hover" v-if="props.hasTableCellOperator" @command="handleCommand" @visible-change="(val) => {
         isShowCell = val
-        if (!val) {
-          isHover = false
-        }
+        if (!val) isHover = false
       }">
         <template #dropdown v-if="isShowCell">
           <ElDropdownMenu>
@@ -125,14 +123,14 @@ const { t } = useI18n()
 const isHover = ref(false)
 const isInlineChildren = checkIslineChildren(props.data)
 
-const { selected, handler, config, platform, widthScaleLock } = useFormProvider()
+const { selected, handler, config, platform, widthScalable } = useFormProvider()
 const isWarning = ref(false)
 const handleClick = () => {
   handler.value.setSelection(props.data)
 }
 const elementRef = useTemplateRef<any>('elementRef')
 
-type OptAction = 'top' | 'delete' | 'table-insert-col' | 'table-insert-row' | 'copy' | 'plus'
+type OptAction = 'select-parent' | 'delete' | 'table-insert-col' | 'table-insert-row' | 'copy' | 'plus'
 const handleAction = (type: OptAction) => {
   const index = type !== 'top' && props.parent.indexOf(props.data)
   switch (type) {
@@ -154,10 +152,9 @@ const handleAction = (type: OptAction) => {
       break
     }
     case 'copy': {
-      if (handler.value.copy(props.data) === false) return false
-      props.data.context.copy()
-      const copyData = props.parent[index + 1]
-      handler.value.setSelection(copyData)
+      handler.value.copy(props.data)
+      // const copyData = props.parent[index + 1]
+      // handler.value.setSelection(copyData)
       // deepTraversal(copyData, (node: any) => {
       //   handler.value.addFieldData(node, true)
       //   if (checkIsField(node)) {
@@ -166,13 +163,13 @@ const handleAction = (type: OptAction) => {
       // })
       break
     }
-    case 'table-insert-row':
-      props.data.context.columns[0].at(-1).context.insert('bottom')
-      break
-    case 'table-insert-col':
-      props.data.context.columns[0].at(-1).context.insert('right')
-      break
-    case 'top': {
+    // case 'table-insert-row':
+    //   props.data.context.columns[0].at(-1).context.insert('bottom')
+    //   break
+    // case 'table-insert-col':
+    //   props.data.context.columns[0].at(-1).context.insert('right')
+    //   break
+    case 'select-parent': {
       let parent = props.data.context.parent
       if (/^(inline|tr)$/.test(parent.type)) {
         parent = parent.context.parent
@@ -180,9 +177,9 @@ const handleAction = (type: OptAction) => {
       handler.value.setSelection(Array.isArray(parent) ? 'root' : parent)
       break
     }
-    case 'plus':
-      props.data.context.appendCol()
-      break
+    // case 'plus':
+    //   props.data.context.appendCol()
+    //   break
   }
 }
 const id = useCss(props.data, platform.value)
@@ -200,7 +197,7 @@ onMounted(() => {
   const hoverEl: any = elementRef.value.$el || elementRef.value
   const widthScaleEl = widthScaleElement.value
   hoverEl.addEventListener('mouseover', (e: MouseEvent) => {
-    if (!widthScaleLock.value) {
+    if (!widthScalable.value) {
       isHover.value = true
     }
     e.stopPropagation()
@@ -214,7 +211,7 @@ onMounted(() => {
     widthScaleEl.addEventListener('mousedown', (e: MouseEvent) => {
       const columnWidth = hoverEl.offsetParent.offsetWidth / 24
       isScale.value = true
-      widthScaleLock.value = true
+      widthScalable.value = true
       const oldX = e.clientX
       const oldWidth = hoverEl.offsetWidth
       document.onselectstart = () => false
@@ -224,7 +221,7 @@ onMounted(() => {
         document.onselectstart = null
         document.ondragstart = null
         isScale.value = false
-        widthScaleLock.value = false
+        widthScalable.value = false
       }
       document.onmousemove = (e) => {
         if (!isInlineChildren) {

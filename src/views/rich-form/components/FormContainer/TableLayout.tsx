@@ -1,5 +1,5 @@
 import { defineComponent, useAttrs, unref } from 'vue'
-import Selection from '@/views/rich-form/components/Selection/selectElement'
+import Selection from '@Form/components/Selection/ElementSelection.vue'
 import LayoutDraggable from './DraggableDrop.vue'
 import $style from './TableLayout.module.scss'
 const isTrTag = (tagName) => tagName.toLocaleLowerCase() === 'td'

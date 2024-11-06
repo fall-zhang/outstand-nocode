@@ -1,5 +1,5 @@
 import { defineComponent, useAttrs } from 'vue'
-import Selection from '@/views/rich-form/components/Selection/selectElement'
+import Selection from '@Form/components/Selection/ElementSelection.vue'
 import LayoutDraggable from './DraggableDrop.vue'
 import { ElTabs } from 'element-plus'
 import $style from './TabsLayout.module.scss'

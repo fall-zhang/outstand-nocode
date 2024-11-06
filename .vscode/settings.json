@@ -1,4 +1,5 @@
 {
+  "explorer.fileNesting.enabled": true,
   "i18n-ally.keystyle": "nested", // key 值类型，嵌套还是 `a.b.c`
   "i18n-ally.sourceLanguage": "zh",
   "i18n-ally.localesPaths": "src/locales",
@@ -7,7 +8,10 @@
   "cSpell.words": [
     "daterange",
     "datetimerange",
-    "monthrange"
+    "monthrange",
+    "colspan",
+    "rowspan",
+    "unplugin"
   ],
   // "i18n-ally.pathMatcher": "{locale}/{namespaces}.json",
 }

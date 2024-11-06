@@ -1,8 +1,8 @@
 <!-- 将内容拖拽到的位置 -->
 <template>
   {{ data }}
-  <DraggableWrap handle=".handle" :class="[$style.DragGableLayout, $style.edit]" :tag="tag" item-key="id" :move="handleMove" v-bind="dragOptions" :componentData="$attrs"
-    @change="onDrag">
+  <DraggableWrap handle=".handle" :class="[$style.DragGableLayout, $style.edit]" :tag="tag" item-key="id"
+    :move="handleMove" v-bind="dragOptions" :componentData="$attrs" @change="onDrag">
     <template #item="{ element }">
       <LayoutGridLayout v-if="element.type === 'grid'" :data="element" :parent="data">
       </LayoutGridLayout>
@@ -17,25 +17,25 @@
       <Selection v-else hasWidthScale hasCopy hasDel hasDrag hasMask :data="element" :parent="props.data">
         <template v-if="FE.isDesktop">
           <component :is="findComponent(element.type)" v-if="element.type === 'divider'" :data="element" :params="useProps({
-            state,
+            state: FE,
             data: element,
             isDesktop: FE.isDesktop
           })">
           </component>
           <el-form-item v-else v-bind="useProps({
-            state,
+            state: FE,
             element,
             isDesktop: FE.isDesktop
           })">
             <component :is="findComponent(element.type)" :data="element" :params="useProps({
-              state,
+              state: FE,
               data: element,
               isDesktop: FE.isDesktop
             })"></component>
           </el-form-item>
         </template>
         <component v-else :is="findComponent(element.type)" :data="element" :params="useProps({
-          state,
+          state: FE,
           data: element,
           isDesktop: FE.isDesktop
         })"></component>
@@ -54,7 +54,6 @@ import {
 } from 'vue'
 import type { Component } from 'vue'
 import { useProps } from '@Form/hooks/use-props'
-import { useTarget } from '@Form/hooks/use-target'
 import LayoutGridLayout from '../FormContainer/GridLayout'
 import LayoutTabsLayout from './TabsLayout.vue'
 import LayoutCollapseLayout from './CollapseLayout'
@@ -62,7 +61,7 @@ import LayoutTableLayout from './TableLayout'
 import LayoutInlineLayout from './InlineLayout'
 import Selection from '../Selection/ElementSelection.vue'
 import ControlInsertionPlugin from './ControlInsertionPlugin'
-import { DraggableWrap } from './DraggableWrap'
+import { DraggableWrap } from '../DraggableWrap'
 import $style from './Draggable.module.scss'
 import { isEmpty } from '@/utils/utils'
 import { useFormProvider } from '../../hooks/use-form-provider'
@@ -89,7 +88,6 @@ const props = defineProps({
   }
 })
 const FE = reactive(useFormProvider())
-const { state } = useTarget()
 const loadComponent = () => {
   let componentMap: Record<string, Component> = {}
   watch(() => FE.platform, () => {

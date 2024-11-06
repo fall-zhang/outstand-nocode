@@ -1,5 +1,5 @@
 import { defineComponent, } from 'vue'
-import Selection from '../Selection/selectElement'
+import ElementSelection from '../Selection/ElementSelection.vue'
 import LayoutDragGable from './DraggableDrop.vue'
 import { ElCollapse, ElCollapseItem } from 'element-plus'
 import $style from './CollapseLayout.module.scss'
@@ -21,7 +21,7 @@ export default defineComponent({
       props.data.options.defaultValue.push(props.data.columns[0].id)
     }
     return () => (
-      <Selection {...attrs} hasCopy hasDel hasDrag hasWidthScale data={props.data} parent={props.parent}>
+      <ElementSelection {...attrs} hasCopy hasDel hasDrag hasWidthScale data={props.data} parent={props.parent}>
         <ElCollapse model-value={props.data.options.defaultValue} accordion={props.data.options.accordion}>
           {
             props.data.columns.map((element) => {
@@ -41,7 +41,7 @@ export default defineComponent({
             })
           }
         </ElCollapse>
-      </Selection>
+      </ElementSelection>
     )
   }
 })
