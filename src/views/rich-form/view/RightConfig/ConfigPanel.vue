@@ -12,12 +12,6 @@ defineOptions({
   inheritAttrs: false,
   customOptions: {}
 })
-const props = defineProps({
-  mode: {
-    type: String,
-    default: 'editor'
-  }
-})
 const { selected, isSelectRoot, handler } = useFormProvider()
 const { t } = useI18n()
 const activeName0 = ref('props')
@@ -38,9 +32,7 @@ const validator = (rule: any, value: any, callback: any) => {
         break
     }
   }
-  if (props.mode === 'editor') {
-    // state.validator(selected.value, fn)
-  } else if (isEmpty(newValue)) {
+  if (isEmpty(newValue)) {
     fn(0)
   } else {
     fn(1)
@@ -100,7 +92,11 @@ const handleBreadcrumbClick = (item: any, index: number) => {
     if (item !== 'root') {
       handler.value.setSelection(item)
     } else {
-      handler.value.setSelection('root')
+      handler.value.setSelection({
+        type: 'root',
+        id: 'root',
+        label: ''
+      })
     }
   }
 }

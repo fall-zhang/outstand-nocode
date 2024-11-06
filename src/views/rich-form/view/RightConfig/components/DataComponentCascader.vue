@@ -37,7 +37,6 @@
 <script lang="tsx" setup>
 import { deepClone } from '@/utils'
 import { useI18n } from 'vue-i18n'
-// import { useTarget } from '@Form/hooks/use-target'
 import nzhcn from 'nzh/cn'
 import { ElButton, ElIcon, ElInput, ElScrollbar } from 'element-plus'
 import $style from './DataComponents.module.scss'
@@ -58,7 +57,6 @@ const shows = ref(new Array(defaultLength).fill(false))
 const selected = ref(new Array(defaultLength))
 const scrollbars = ref<(Element | ComponentPublicInstance | null)[]>([])
 // const { selected: target } = useFormProvider()
-// const { state } = useTarget()
 // data.value[0] = deepClone(state.data[target.value.options.dataKey].list)
 shows.value[0] = true
 

@@ -68,7 +68,7 @@
 import { unref, nextTick, } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Icon from '@/assets'
-import { DraggableWrap } from '@Form/components/FormContainer/DraggableWrap'
+import { DraggableWrap } from '@Form/components/DraggableWrap'
 import { ElCheckbox, ElCheckboxGroup, ElForm, ElFormItem, ElScrollbar, ElInput, ElButton } from 'element-plus'
 import $style from './DataComponents.module.scss'
 import { deepClone, intersection } from '@/utils/utils'

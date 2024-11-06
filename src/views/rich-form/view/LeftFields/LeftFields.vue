@@ -1,18 +1,18 @@
 // 左侧功能面板
 <template>
-  <ElAside :class="$style.Fields" :width="FE.config.fieldsPanelWidth">
-    <ElMenu :default-openeds="FE.config.fieldsPanelDefaultOpened">
-      <ElSubMenu v-for="element in FE.fieldsList" :key="element.id" :index="element.id">
+  <ElAside :class="$style.Fields" width="220px">
+    <ElMenu :default-openeds="FE.fieldsList.map(item => item.id)">
+      <ElSubMenu v-for="eleGroup in FE.fieldsList" :key="eleGroup.id" :index="eleGroup.id">
         <template #title>
-          {{ t(`rf.fields.${element.id}`) }}
+          {{ t(`rf.fields.${eleGroup.id}`) }}
         </template>
-        <DraggableWrap :class="$style.dragContent" :list="element.list" :clone="handleClone" tag="ul" :sort="false"
+        <DraggableWrap :class="$style.dragContent" :list="eleGroup.list" :clone="handleClone" tag="ul" :sort="false"
           :move="handleMove" v-bind="dragOptions" :group="{ name: 'nocode-form', pull: 'clone', put: false }"
           item-key="null">
-          <template #item="{ ele2 }">
-            <li @click="() => addStore(ele2)">
-              <Icon :class="$style.icon" :icon="ele2.icon"></Icon>
-              <span>{{ fieldLabel(t, ele2) }}</span>
+          <template #item="{ element }">
+            <li @click="() => addStore(element)">
+              <Icon :class="$style.icon" :icon="element.icon"></Icon>
+              <span>{{ fieldLabel(t, element) }}</span>
             </li>
           </template>
         </DraggableWrap>
@@ -24,16 +24,16 @@
 <script lang="ts" setup>
 
 import { useI18n } from 'vue-i18n'
-import { useTarget } from '@Form/hooks/use-target'
-import { addContext, deepClone } from '@/utils'
-import { DraggableWrap } from '@Form/components/FormContainer/DraggableWrap'
+import { deepClone } from '@/utils'
+import { DraggableWrap } from '@Form/components/DraggableWrap'
 import { reactive } from 'vue'
 
 import Icon from '@/assets'
 import ControlInsertionPlugin from '@Form/components/FormContainer/ControlInsertionPlugin'
 import $style from './index.module.scss'
-import { fieldLabel } from '@/utils/field'
-import { useFormProvider } from '../../hooks/use-form-provider'
+import { fieldLabel, wrapElement } from '@/utils/field'
+import { useFormProvider } from '@Form/hooks/use-form-provider'
+import type { FieldItemBase, FieldItemContainer } from '../../types/rich-form-item'
 defineProps({
   visible: {
     type: Boolean,
@@ -42,10 +42,11 @@ defineProps({
 })
 const { t } = useI18n()
 const FE = reactive(useFormProvider())
-const { state } = useTarget()
-const addStore = (element: any) => {
-  const newElement = reactive(FE.handler.wrapElement(deepClone(element), {}))
-  addContext(newElement, state.store)
+const addStore = (element: FieldItemContainer | FieldItemBase) => {
+  // 拖拽之后默认选中
+  const newElement = reactive(wrapElement(deepClone(element)))
+  // addContext(newElement, state.store)
+  FE.handler.addFieldItem(newElement)
   FE.handler.setSelection(newElement)
   // nextTick(() => {
   //   setTimeout(() => {

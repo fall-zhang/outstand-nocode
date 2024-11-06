@@ -1,9 +1,9 @@
 <!-- collapse tabs -->
 <script setup lang="ts">
-import { addContext } from '@/utils'
+// import { addContext } from '@/utils'
 import { useI18n } from 'vue-i18n'
 import { unref } from 'vue'
-import { DraggableWrap } from '@Form/components/FormContainer/DraggableWrap'
+import { DraggableWrap } from '@Form/components/DraggableWrap'
 import Icon from '@/assets'
 import { renderFieldData } from '@/utils/field'
 import { useFormProvider } from '@/views/rich-form/hooks/use-form-provider'
@@ -18,7 +18,7 @@ const addTab = () => {
   const data = renderFieldData(`${tar.type}Col`)
   data.label = `Tab ${tar.columns.length + 1}`
   unref(tar).columns.push(data)
-  addContext(data, tar)
+  // addContext(data, tar)
 }
 const curSelect = computed(() => {
   if (!containerFiledList.value.includes(selected.value.type)) {
