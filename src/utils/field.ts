@@ -1,5 +1,4 @@
-import _ from 'lodash-es'
-import { nanoid } from './nanoid'
+import { nanoid } from 'nanoid'
 import { PlatformType } from '@/views/rich-form/types/rich-form'
 import { get, isEmpty } from './utils'
 import { AllFieldType } from '@/views/rich-form/types/rich-form-item'
@@ -122,7 +121,7 @@ const combinationData2 = (list, fields) => {
 const repairLayout = (layout, fields) => {
   flatNodes(layout, excludes, (nodes, node, currentIndex) => {
     if (typeof node === 'string') {
-      if (!_.isEmpty(_.find(fields, { id: node }))) {
+      if (!isEmpty(fields.find(item => item.id === node))) {
         nodes.splice(currentIndex, 1)
       }
     }
@@ -173,7 +172,7 @@ const syncWidthByPlatform = (node, platform:PlatformType, syncFullPlatform = fal
   console.log('🚀 ~ syncWidthByPlatform ~ value:', value)
   const isArray = Array.isArray(node)
   if (!isArray) {
-    if (_.isObject(node.style.width)) {
+    if (typeof node.style.width === 'object') {
       if (syncFullPlatform) {
         node.style.width.pc = node.style.width.mobile = value + '%'
       } else {
@@ -186,7 +185,7 @@ const syncWidthByPlatform = (node, platform:PlatformType, syncFullPlatform = fal
   const otherNodes = isArray ? node : node.context.parent.columns.filter(e => e !== node)
   const averageWidths = calculateAverage(otherNodes.length, isArray ? 100 : 100 - value)
   otherNodes.forEach((node, index) => {
-    const isFieldWidth = _.isObject(node.style.width)
+    const isFieldWidth = typeof node.style.width === 'object'
     if (isFieldWidth) {
       if (syncFullPlatform) {
         node.style.width.pc = node.style.width.mobile = averageWidths[index] + '%'
@@ -204,11 +203,11 @@ const fieldLabel = (t, node) => t(transferLabelPath(node))
  * 获取当前语言的信息
  */
 const transferData = (lang:string, path:string, locale:any, options = {}) => {
-  let result = ''
+  // let result = ''
   if (isEmpty(options)) {
-    result = get(locale[lang], path, '')
+    // result = get(locale[lang], path, '')
   } else {
-    result = _.template(get(locale[lang], path, ''))(options)
+    // result = _.template(get(locale[lang], path, ''))(options)
   }
   return result
 }

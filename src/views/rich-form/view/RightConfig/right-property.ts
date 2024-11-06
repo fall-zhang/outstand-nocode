@@ -1,5 +1,5 @@
 
-import type { FormOption } from './form-config.d.ts'
+import type { FormOption } from './form-config/form-config.d.ts'
 const rightProperty: Array<FormOption> = [
   {
     keyId: 'color',

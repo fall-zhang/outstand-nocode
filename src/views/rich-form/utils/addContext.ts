@@ -1,8 +1,8 @@
 import { computed, reactive, toRaw } from 'vue'
 import dayjs from 'dayjs'
-import { nanoid } from './nanoid'
+import { nanoid } from 'nanoid'
 import { wrapElement } from './field'
-import { deepClone } from './DeepClone'
+import { deepClone } from '@/utils/utils'
 import { AllFieldType } from '@/views/rich-form/types/rich-form-item'
 
 const getNodes = (node, key:'rowspan'|'colspan') => {
@@ -49,7 +49,7 @@ const findNode = (node, dir, key, fn, ignore = false) => {
         }
         if (index) {
           passArr[0].list = passArr[0].list.concat(e.list)
-          addContext(passArr[0], passArr[0].context.parent)
+          // addContext(passArr[0], passArr[0].context.parent)
           // console.log(passArr[0], passArr[0].context.parent)
           e.list = []
         }
@@ -254,7 +254,7 @@ const appendNodes = (node, dir, key) => {
         style: {}
       })
       e.context.parent.columns.splice(dir === 'before' ? index : index + 1, 0, newNode)
-      addContext(e.context.parent, root)
+      // addContext(e.context.parent, root)
       if (!(index === 0 && dir === 'before')) {
         const validNode = getValidNode(e)
         const ranges = getNodeRange(validNode)
@@ -315,7 +315,7 @@ const appendNodes = (node, dir, key) => {
     })
     root.rows.splice(dir === 'before' ? index : index + 1, 0, tr)
     root.rows.forEach((item) => {
-      addContext(item, root)
+      // addContext(item, root)
     })
   }
 }
@@ -334,9 +334,7 @@ export const addContext = (node:AllFieldType, parent:any) => {
   const context = {
     get props() {
       return (isPC) => computed(() => {
-        const {
-          options
-        } = node
+        const { options } = node
         const result = {
           disabled: options.disabled,
           placeholder: options.placeholder,
