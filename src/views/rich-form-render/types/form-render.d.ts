@@ -1,10 +1,9 @@
-export type RichFormProvider = {
+export type FormRenderProvider = {
   lang:'zh'
   // 配置好的内容
   store: FormItem[],
   mode: 'preview'
   platform: 'mobile' | 'desktop'
-  widthScaleLock: boolean,
   data: Record<string, unknown>,
   // 放置逻辑 - 暂无
   logic: Record<string, unknown>

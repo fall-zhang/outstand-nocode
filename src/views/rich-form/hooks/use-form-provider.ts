@@ -22,10 +22,9 @@ export const useFormProvider = () => {
     },
     mode: 'edit',
     platform: 'desktop',
-    widthScaleLock: false,
+    widthScalable: false,
     data: {},
     validateStates: [],
-    fields: [],
     logic: {},
     handler: {
       setSelection: errorHandler,

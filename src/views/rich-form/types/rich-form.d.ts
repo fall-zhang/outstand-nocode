@@ -1,4 +1,3 @@
-import { CSSProperties, StyleValue } from 'vue'
 import { AllFieldType, FieldItemBase, FieldItemContainer, FormItem } from './rich-form-item'
 import { GlobalConfig, DesktopConfig, MobileConfig } from './rich-form-config'
 /**
@@ -49,10 +48,10 @@ export type RichFormProvider = {
   selected: AllFieldType
   mode: 'edit' | 'setting'
   platform: 'mobile' | 'desktop'
-  widthScaleLock: boolean,
+  widthScalable: boolean,
   data: Record<string, unknown>,
   validateStates: unknown[],
-  fields: unknown[]
+  // fields: unknown[]
   // 放置逻辑 - 暂无
   logic: Record<string, unknown>
   // 放置可以用来执行的方法

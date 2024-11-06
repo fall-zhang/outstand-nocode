@@ -20,6 +20,7 @@ import { fieldsConfig } from './config/componentsConfig'
 import { AllFieldType } from './types/rich-form-item'
 import richFormConfig from './config/richFormConfig'
 import { generateOptions } from '@/utils/generateOptions'
+import { nanoid } from 'nanoid'
 const emit = defineEmits(['changeParams', 'save', 'changeLang'])
 const props = defineProps({
   ...defaultProps,
@@ -50,8 +51,8 @@ const setSelection = (node: AllFieldType) => {
       id: 'root',
       label: 'default'
     }
-  } else if (node.type === 'inline') {
-    result = node.columns[0]
+    // } else if (node.type === 'inline') {
+    //   result = node.columns[0]
   } else {
     result = node
   }
@@ -139,6 +140,16 @@ const switchPlatform = (platform: PlatformType) => {
   formState.platform = platform
 }
 
+const copyField = (fieldInfo: AllFieldType) => {
+  const copyIndex = formState.store.findIndex((item) => item.id === fieldInfo.id)
+
+  const newField = deepClone(fieldInfo)
+  newField.id = nanoid()
+  newField.key = `${newField.type}_${newField.id}`
+  formState.store.splice(copyIndex + 1, 0, newField)
+
+  addFieldItem(newField)
+}
 const richFormPreviewData = ref({
 
 })
@@ -196,7 +207,6 @@ const storeMap = ref<Map<string, AllFieldType>>(new Map())
 const formState = reactive<RichFormProvider>({
   lang: 'zh',
   fieldsList: fieldsConfig,
-  // 准备添加 移动端和桌面端的配置
   storeMap: storeMap.value,
   store: [],
   selected: {
@@ -206,10 +216,10 @@ const formState = reactive<RichFormProvider>({
   },
   mode: 'edit',
   platform: 'desktop',
-  widthScaleLock: false,
+  widthScalable: false,
   data: {},
   validateStates: [],
-  fields: [],
+  // fields: [],
   logic: {},
   desktop: {
     style: {},
@@ -251,7 +261,7 @@ const formState = reactive<RichFormProvider>({
     wrapElement,
     checkPropsBySelected() { },
     validator,
-    copy: () => { },
+    copy: copyField,
   },
 })
 
@@ -268,11 +278,8 @@ const onClickOutside = () => {
 //   emit('save', getData())
 // }
 const onResetData = () => {
-  // layout.pc = []
-  // layout.mobile = []
   formState.fields.splice(0)
   formState.store.splice(0)
-  formState.data = {}
   setSelection({
     type: 'root',
     label: '根容器',
