@@ -41,10 +41,11 @@ export type FieldItemBase = {
   // }
 }
 
+
 /**
  * 容器嵌套的子类型
  */
-export type ContainerItem = {
+export type FieldContainerInner = {
   id: string,
   type: 'col',
   label: string,
@@ -64,9 +65,12 @@ export type FieldItemContainer = {
   label: string
   desktop?:PlatformConf
   mobile?:PlatformConf
-  columns: ContainerItem[]
+  columns: FieldContainerInner[] // 除 inline 外，都是放置在 column 中
   options?:Record<string, any>
-  innerData:FieldItemBase[]
+  innerData:FieldItemBase[] // inline 内部嵌入的为 fieldItemBase，放置在这里
+  context?:{
+    parent: FieldItemRoot | unknown // 父元素
+  }
   // options: {
   //   gutter: 0,
   //   justify: 'space-around',

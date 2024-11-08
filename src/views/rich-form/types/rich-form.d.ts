@@ -26,7 +26,7 @@ type FormHandler = {
    * @param parentField 可选，父级容器字段
    */
   addFieldItem(newFiled:AllFieldType, parentField?:FieldItemContainer):void
-  wrapElement(filedInfo:FieldItemBase|FieldItemContainer, options:Record<'isWrap'|'sourceBlock'|'resetWidth', boolean>):void
+  wrapElement(filedInfo:FieldItemBase|FieldItemContainer, options:Record<'isWrap'|'sourceBlock', boolean>):void
   checkPropsBySelected() :void
   validator() :void
   copy(fieldInfo:FieldItemBase|FieldItemContainer):void
