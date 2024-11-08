@@ -1,4 +1,5 @@
 <template>
+  {{ data }}
   <Selection v-bind="useAttrs()" :data="data" :parent="parent" hasCopy hasDel hasDrag hasWidthScale>
     <ElTabs :class="$style.tabsLayout" :modelValue="activeValue" @tabClick="onClickTab" :type="props.data.options.type"
       :tabPosition="props.data.options.tabPosition">
@@ -34,4 +35,14 @@ function onClickTab(newActive: any) {
 }
 
 </script>
-<style lang="scss" module src="./TabsLayout.module.scss"></style>
+<style lang="scss" module>
+.tabsLayout {
+  .el-tabs__content {
+    overflow: inherit;
+  }
+
+  .area {
+    outline: 1px dashed #ddd;
+  }
+}
+</style>

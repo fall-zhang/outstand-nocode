@@ -2,7 +2,7 @@ import { defineComponent, watch, inject } from 'vue'
 import LayoutDraggable from './DraggableDrop.vue'
 import $style from './InlineLayout.module.scss'
 import { syncWidthByPlatform } from '@/utils'
-import { useFormProvider } from '../../hooks/use-form-provider'
+import { useFormProvider } from '@Form/hooks/use-form-provider'
 export default defineComponent({
   name: 'InlineLayout',
   props: {

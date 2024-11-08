@@ -1,7 +1,7 @@
 <!-- 将内容拖拽到的位置 -->
 <template>
   {{ data }}
-  <DraggableWrap handle=".handle" :class="[$style.DragGableLayout, $style.edit]" :tag="tag" item-key="id"
+  <DraggableWrap handle=".handle" class="DragGableLayout edit" :tag="tag" item-key="id"
     :move="handleMove" v-bind="dragOptions" :componentData="$attrs" @change="onDrag">
     <template #item="{ element }">
       <LayoutGridLayout v-if="element.type === 'grid'" :data="element" :parent="data">
@@ -42,7 +42,7 @@
       </Selection>
     </template>
     <template #footer>
-      <div v-if="isEmpty(data) && !isRoot" :class="$style.dropHere">放置在此处</div>
+      <div v-if="isEmpty(data) && !isRoot" class="dropHere">放置在此处</div>
     </template>
   </DraggableWrap>
 </template>
@@ -54,17 +54,16 @@ import {
 } from 'vue'
 import type { Component } from 'vue'
 import { useProps } from '@Form/hooks/use-props'
-import LayoutGridLayout from '../FormContainer/GridLayout'
-import LayoutTabsLayout from './TabsLayout.vue'
-import LayoutCollapseLayout from './CollapseLayout'
-import LayoutTableLayout from './TableLayout'
-import LayoutInlineLayout from './InlineLayout'
-import Selection from '../Selection/ElementSelection.vue'
+import LayoutGridLayout from './LayoutGrid'
+import LayoutTabsLayout from './LayoutTabs.vue'
+import LayoutCollapseLayout from './LayoutCollapse.vue'
+import LayoutTableLayout from './LayoutTable'
+import LayoutInlineLayout from './LayoutInline'
+import Selection from '@Form/components/Selection/ElementSelection.vue'
 import ControlInsertionPlugin from './ControlInsertionPlugin'
-import { DraggableWrap } from '../DraggableWrap'
-import $style from './Draggable.module.scss'
+import { DraggableWrap } from '@Form/components/DraggableWrap'
 import { isEmpty } from '@/utils/utils'
-import { useFormProvider } from '../../hooks/use-form-provider'
+import { useFormProvider } from '@Form/hooks/use-form-provider'
 defineOptions({
   name: 'DraggableDrop',
 })
@@ -123,4 +122,23 @@ function onDrag(ev: any) {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.DragGableLayout {
+  height: 100%;
+
+  &.edit {
+    .el-row {
+      padding: 10px;
+    }
+  }
+
+  .dropHere {
+    display: flex;
+    background: #F2F8FF !important;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    min-height: 60px;
+  }
+}
+</style>

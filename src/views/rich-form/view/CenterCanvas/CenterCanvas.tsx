@@ -1,4 +1,4 @@
-import LayoutDraggable from '@Form/components/FormContainer/DraggableDrop.vue'
+import DraggableDrop from './components/DraggableDrop.vue'
 import { useProps } from '@Form/hooks/use-props'
 import { ElForm, ElScrollbar } from 'element-plus'
 import { Form as VanForm } from 'vant'
@@ -34,10 +34,10 @@ export default defineComponent({
         $style.container,
         !unref(isDesktop) && $style.mobile,
         !unref(isDesktop) && $style.mobileLayoutType
-      ] } style={{ height: '100%' }}>
+      ] } style={{ height: '100%' }} onClick={onClickCenter}>
       <ElScrollbar class={$style.subject} ref={canvasScrollRef}>
-        <RenderForm ref={form} onClick={onClickCenter} {...typeProps.value}>
-          <LayoutDraggable data-layout-type={'root'} class={$style.wrap} data={store.value} parent={state.store} isRoot></LayoutDraggable>
+        <RenderForm ref={form} {...typeProps.value}>
+          <DraggableDrop data-layout-type={'root'} class={$style.wrap} data={store.value} parent={state.store} isRoot></DraggableDrop>
         </RenderForm>
       </ElScrollbar>
       {/* <h2>预览页面暂为空，需要专门的渲染逻辑</h2> */}
