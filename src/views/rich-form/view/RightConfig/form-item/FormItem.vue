@@ -4,7 +4,7 @@
 -->
 <!-- type 类型为 array 或者 object 时，调用 FormZone -->
 <template>
-  <!-- 单行内容使用 on-line -->
+  <!-- 简单内容使用，且标题文字小于 7 字符，使用 one-line -->
   <div class="form-item" :class="basicSetterType.includes(currentSetter) && formOption.keyName.length < 7 && 'on-line'">
     <div class="basic-label">{{ formOption.keyName }}
       <HelpTooltip v-if="formOption.tips" :tip="formOption.tips" :path="path"></HelpTooltip>
@@ -24,7 +24,8 @@
         style="width: 100px;margin-left: 8px;" :min="0" :max="60" @change="onChangeValue"></el-slider>
       <el-select v-else-if="currentSetter == 'select'" v-model="formValue" size="small" :min="0" :max="20"
         @change="onChangeValue">
-        <el-option v-for="optionItem in formOption.optionalValue" v-bind="optionItem" :key="optionItem.value"></el-option>
+        <el-option v-for="optionItem in formOption.optionalValue" v-bind="optionItem"
+          :key="optionItem.value"></el-option>
       </el-select>
     </div>
     <!-- 切换按钮 -->
@@ -34,11 +35,14 @@
         <IconRefresh class="g-icon-center" :class="setterIndex % 2 == 0 ? 'reverse' : ''" />
       </div>
     </template>
-    <!-- 复杂数据处理，标题会独占一行 -->
   </div>
+  <!-- 复杂数据，以及长标题配置，标题会独占一行 -->
   <div v-if="!basicSetterType.includes(currentSetter)" class="default-container">
     <el-input v-if="currentSetter === 'textarea'" v-model="formValue" size="small" type="textarea"
       style="max-height: 72px;" @input="onChangeInput"></el-input>
+    <FormJSON v-else-if="currentSetter === 'radio-button-icon'" v-model="formValue" class="complex-container"
+      @change="onChangeComplexValue">
+    </FormJSON>
     <FormJSON v-else-if="currentSetter === 'json'" v-model="formValue" class="complex-container"
       @change="onChangeComplexValue">
     </FormJSON>
@@ -53,30 +57,18 @@ import { deepClone } from '@/utils/utils'
 import HelpTooltip from './HelpTooltip.vue'
 import FormJSON from './FormItemJSON.vue'
 import { Refresh as IconRefresh } from '@icon-park/vue-next'
-const prop = defineProps({
-  formOption: {
-    type: Object,
-    default: () => ({
-      type: 'input',
-      optional: []
-    })
-  },
-  path: {
-    type: Array,
-    default: () => ([])
-  },
-  receiveValue: {
-    require: true,
-    type: [Object, Number, String, Array, Boolean],
-    default: null
-  }
-})
+import { FormOption } from '../form-config/form-config'
+const prop = defineProps<{
+  formOption: FormOption
+  path: Record<'keyName' | 'keyId', string>[],
+  receiveValue: any
+}>()
 
 const emit = defineEmits(['change'])
 const formValue = ref<any>()
 const setterIndex = ref<number>(0)
 const currentSetter = ref<string>('')
-const allSetters = ref([])
+const allSetters = ref<string[]>([])
 const basicSetterType = ref(['input', 'color', 'switch', 'slider', 'number', 'select'])
 const complexSetterType = ref(['json', 'textarea'])
 onBeforeMount(() => {
@@ -163,8 +155,6 @@ function onChangeSetter() {
 }
 
 .basic-container {
-
-
   .lang-label {
     display: flex;
     justify-content: space-between;
