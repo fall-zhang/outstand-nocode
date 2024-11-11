@@ -96,7 +96,6 @@ const addFieldData = (node: any, isCopy = false) => {
     node.options.action = ''
   }
 }
-
 const wrapElement = (el: FieldItemBase | FieldItemContainer, {
   isWrap = true,
   sourceBlock = true,
@@ -108,29 +107,46 @@ const wrapElement = (el: FieldItemBase | FieldItemContainer, {
       isCreateLabel: sourceBlock,
     })
   } else if (isWrap) {
-    node = {
-      type: 'inline',
-      columns: [
-        el
-      ]
+    // 'input'|'number'|'select'|'textarea'|'radio'|'checkbox'|'time'|'date'|'rate'|'switch'|'slider'
+    //  ['col', 'grid', 'tabs', 'collapse', 'divider', 'inline']
+    if (el.type === 'input') {
+      node = {
+        type: 'inline',
+        id: el.id,
+        key: el.key,
+        label: el.label,
+        columns: [],
+        innerData: [el]
+      }
+    } else {
+      node = el
     }
   } else {
     node = el
   }
   if (!sourceBlock) {
-    if (el) {
-      if (formState.platform === 'desktop') {
-        el.desktop.style.width = '100%'
-      } else {
-        el.mobile.style.width = '100%'
+    if (formState.platform === 'desktop') {
+      if (!el.desktop) {
+        el.desktop = {
+          size: '',
+          labelPosition: '',
+          style: {}
+        }
       }
+      el.desktop.style.width = '100%'
     } else {
-      el.style.width = '100%'
+      if (!el.mobile) {
+        el.mobile = {
+          size: '',
+          labelPosition: '',
+          style: {}
+        }
+      }
+      el.mobile.style.width = '100%'
     }
   }
   return node
 }
-
 const switchPlatform = (platform: PlatformType) => {
   if (formState.platform === platform) {
     return false
@@ -238,16 +254,6 @@ const formState = reactive<RichFormProvider>({
     },
     completeButton: {}
   },
-  desktopItems: {
-    labelWidth: '',
-    size: 'default',
-    labelPosition: 'left'
-  },
-  mobileItems: {
-    labelWidth: '',
-    size: 'large',
-    labelPosition: 'left'
-  },
   config: richFormConfig,
   canvasScrollRef,
   handler: {
@@ -260,6 +266,7 @@ const formState = reactive<RichFormProvider>({
     checkPropsBySelected() { },
     validator,
     copy: copyField,
+    wrapElement
   },
 })
 
@@ -276,8 +283,8 @@ const onClickOutside = () => {
 //   emit('save', getData())
 // }
 const onResetData = () => {
-  formState.fields.splice(0)
-  formState.store.splice(0)
+  formState.store = []
+  formState.storeMap = new Map()
   setSelection({
     type: 'root',
     label: '根容器',

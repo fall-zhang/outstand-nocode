@@ -207,7 +207,7 @@ const syncWidthByPlatform = (node, platform:PlatformType, syncFullPlatform = fal
     }
   })
 }
-const fieldLabel = (t, node) => t(transferLabelPath(node))
+const fieldLabel = (t:any, node:any) => t(node)
 
 export {
   syncWidthByPlatform,

@@ -28,7 +28,7 @@ type FormHandler = {
   addFieldItem(newFiled:AllFieldType, parentField?:FieldItemContainer):void
   wrapElement(filedInfo:FieldItemBase|FieldItemContainer, options:Record<'isWrap'|'sourceBlock', boolean>):void
   checkPropsBySelected() :void
-  validator() :void
+  validator(filedInfo:FieldItemBase, options:unknown) :void
   copy(fieldInfo:FieldItemBase|FieldItemContainer):void
 }
 
