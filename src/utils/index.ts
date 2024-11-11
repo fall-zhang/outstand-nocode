@@ -4,24 +4,13 @@
  */
 import { deepClone } from './DeepClone'
 import { isDesktop } from './device'
-import { checkIsField, disassemblyData1, repairLayout, syncWidthByPlatform, checkIslineChildren, disassemblyData2, combinationData2, pickFields, combinationData1 } from './field'
 import { checkIdExistInLogic, removeLogicDataById, } from './logic'
-// import { addContext } from './addContext'
 
 
 export {
   deepClone,
   isDesktop,
-  checkIsField,
-  disassemblyData1,
-  repairLayout,
-  syncWidthByPlatform,
-  checkIslineChildren,
-  disassemblyData2,
   checkIdExistInLogic,
   removeLogicDataById,
-  pickFields,
-  combinationData1,
-  combinationData2,
 }
-export { wrapElement, transferData, transferLabelPath } from './field'
+export { wrapElement, checkIsField, disassemblyData1, repairLayout, syncWidthByPlatform, isInlineChildren, disassemblyData2, combinationData2, pickFields, combinationData1 } from '@Form/utils/field'

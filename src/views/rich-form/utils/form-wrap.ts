@@ -1,5 +1,5 @@
 import { nanoid } from 'nanoid'
-import { AllFieldType, ContainerItem, ContainerItemTypes, FieldItemBase, FieldItemContainer } from '../types/rich-form-item'
+import { AllFieldType, FieldContainerInner, ContainerItemTypes, FieldItemBase, FieldItemContainer } from '../types/rich-form-item'
 /**
  * 从左侧拖拽到中心后，默认进行一次包装
  * 添加随机 key，id
@@ -63,7 +63,7 @@ export function wrapFieldItem(filedInfo:FieldItemContainer | FieldItemBase) {
 }
 
 const getContainerInnerData = (type:'col') => {
-  const result:ContainerItem = {
+  const result:FieldContainerInner = {
     id: nanoid(),
     type,
     list: [],

@@ -2,7 +2,7 @@
 <script setup lang="ts">
 import { ElMessage } from 'element-plus'
 import { ref, computed, unref, onMounted } from 'vue'
-import { checkIdExistInLogic, removeLogicDataById, syncWidthByPlatform, checkIslineChildren } from '@/utils'
+import { checkIdExistInLogic, removeLogicDataById, syncWidthByPlatform, isInlineChildren } from '@/utils'
 import { useI18n } from 'vue-i18n'
 import { useProps } from '@Form/hooks/use-props'
 
@@ -42,7 +42,7 @@ const isSelectCollapse = computed(() => {
 const isSelectGrid = computed(() => {
   return checkSelectedType(['grid'])
 })
-provide('rich-form-bg', bgStatus)
+// provide('rich-form-bg', bgStatus)
 const dialogVisible = ref(false)
 const dataRef = ref()
 const titleRef = ref()
@@ -518,7 +518,7 @@ onMounted(() => {
         <el-option v-for="item in options8" :key="item.value" :label="item.label" :value="item.value" />
       </el-select>
     </RadioButton>
-    <RadioButton v-if="checkIslineChildren(selected) && selected.context.parent.columns.length !== 4"
+    <RadioButton v-if="isInlineChildren(selected) && selected.context.parent.columns.length !== 4"
       @listener="handleTypeListener" property="width" :label="t('rf.public.width')" :height="40" :fontSize="28"
       :nodes="options1" />
     <PanelItemCheckbox v-if="checkSelectedType(['input', 'textarea'])" :label="t('rf.config.propsPanel.trim')"
@@ -602,7 +602,7 @@ onMounted(() => {
       :label="t('rf.public.background')" operationKey="style" field="isShowBackground">
       <template #subSelect>
         <div :class="$style.collapseSubSelect">
-          <el-dropdown @command="(command) => { bgStatus = command }">
+          <!-- <el-dropdown @command="(command) => { bgStatus = command }">
             <span>
               {{ bgStatus ? t('rf.public.image') : t('rf.public.color') }}<el-icon
                 class="el-icon--right"><arrow-down /></el-icon>
@@ -613,7 +613,7 @@ onMounted(() => {
                 <el-dropdown-item :command="1">{{ t('rf.public.image') }}</el-dropdown-item>
               </el-dropdown-menu>
             </template>
-          </el-dropdown>
+          </el-dropdown> -->
         </div>
       </template>
       <template #content>

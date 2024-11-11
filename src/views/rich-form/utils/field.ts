@@ -1,21 +1,33 @@
 import { nanoid } from 'nanoid'
 import { PlatformType } from '@/views/rich-form/types/rich-form'
-import { get, isEmpty } from './utils'
-import { AllFieldType } from '@/views/rich-form/types/rich-form-item'
+import { isEmpty } from '@/utils/utils'
+import { AllFieldType, FieldContainerInner, FieldItemBase, FieldItemContainer } from '@/views/rich-form/types/rich-form-item'
 
-const fieldsReg = /^(input|textarea|number|radio|checkbox|select|time|date|rate|switch|slider|html|cascader|uploadfile|signature|region)$/
+
+type FieldItem = FieldItemBase | FieldItemContainer
 /**
  * 从左侧拖拽到中心后，默认进行一次包装
  */
-const wrapElement = (element:AllFieldType):AllFieldType => {
-  const result:AllFieldType = {
+const wrapElement = (element: FieldItem): FieldItem => {
+  const result: FieldItem = {
     ...element
   }
   if (element.id === 'root') {
     return result
   }
   if (!result.desktop) {
-    result.style = {}
+    result.desktop = {
+      size: '',
+      labelPosition: 'left',
+      style: {}
+    }
+  }
+  if (!result.mobile) {
+    result.mobile = {
+      size: '',
+      labelPosition: 'left',
+      style: {}
+    }
   }
   if (!result.id) {
     result.id = nanoid()
@@ -23,30 +35,30 @@ const wrapElement = (element:AllFieldType):AllFieldType => {
   if (!result.key) {
     result.key = `${result.type}_${result.id}`
   }
-  if (/^(grid|tabs|collapse|table|divider)$/.test(result.type)) {
-    result.style = {
+  if (['grid', 'tabs', 'collapse', 'table', 'divider'].includes(result.type)) {
+    result.desktop.style = {
       width: '100%'
     }
   }
   if (checkIsField(result)) {
-    result.style = {
-      width: {
-        pc: '100%',
-        mobile: '100%'
-      }
+    result.desktop.style = {
+      width: '100%'
+    }
+    result.mobile.style = {
+      width: '100%'
     }
   }
-  if (/^(tabs)$/.test(result.type)) {
+  if (result.type === 'tabs') {
     result.columns = new Array(3).fill('').map((e, index) => {
-      const data = renderFieldData('tabsCol')
+      const data = renderFieldData()
       data.label = `Tab ${index + 1}`
       data.options = {}
       return data
     })
   }
-  if (/^(collapse)$/.test(result.type)) {
+  if (result.type === 'collapse') {
     result.columns = new Array(3).fill('').map((e, index) => {
-      const data = renderFieldData('collapseCol')
+      const data = renderFieldData()
       data.label = `Tab ${index + 1}`
       data.options = {}
       return data
@@ -54,14 +66,15 @@ const wrapElement = (element:AllFieldType):AllFieldType => {
   }
   return result
 }
-const renderFieldData = (type:string) => {
-  const result = {
+const renderFieldData = ():FieldContainerInner => {
+  const result:FieldContainerInner = {
     id: nanoid(),
-    type,
+    type: 'col',
     label: '',
     list: [],
-    style: {},
-    options: {}
+    options: {},
+    span: 0,
+    offset: 0
   }
   return result
 }
@@ -80,9 +93,7 @@ const flatNodes = (nodes, excludes, fn, excludesFn) => {
   }, [])
 }
 const getAllFields = (store) => flatNodes(store, excludes)
-const pickFields = (list) => {
-  return flatNodes(list, excludes)
-}
+const pickFields = (list) => flatNodes(list, excludes)
 const disassemblyData1 = (data) => {
   const result = {
     list: data.list,
@@ -146,10 +157,9 @@ const disassemblyData2 = (list) => {
     nodes[currentIndex] = node.id && node.id
   })
 }
-const checkIslineChildren = (node) => {
-  // console.log(node)
+const isInlineChildren = (node:FieldItemBase|FieldItemContainer) => {
   if (node.context) {
-    return node.context.parent.type === 'inline'
+    return (node.context.parent as FieldItemContainer).type === 'inline'
   }
   return false
 }
@@ -157,7 +167,7 @@ const checkIslineChildren = (node) => {
  * 用来查看是否是 FormItem 类型
  * （不是 container 类型）
  */
-const checkIsField = (node:AllFieldType) => fieldsReg.test(node.type)
+const checkIsField = (node:AllFieldType) => ['input', 'textarea', 'number', 'radio', 'checkbox', 'select', 'time', 'date', 'rate', 'switch', 'slider', 'html', 'cascader', 'uploadfile', 'signature', 'region'].includes(node.type)
 const calculateAverage = (count, total = 100) => {
   const base = Number((total / count).toFixed(2))
   const result = []
@@ -197,20 +207,8 @@ const syncWidthByPlatform = (node, platform:PlatformType, syncFullPlatform = fal
     }
   })
 }
-const transferLabelPath = (node) => `rf.fields.${node.type === 'input' ? `${node.type}.${node.options.renderType - 1}` : `${node.type}`}`
 const fieldLabel = (t, node) => t(transferLabelPath(node))
-/**
- * 获取当前语言的信息
- */
-const transferData = (lang:string, path:string, locale:any, options = {}) => {
-  // let result = ''
-  if (isEmpty(options)) {
-    // result = get(locale[lang], path, '')
-  } else {
-    // result = _.template(get(locale[lang], path, ''))(options)
-  }
-  return result
-}
+
 export {
   syncWidthByPlatform,
   wrapElement,
@@ -220,11 +218,9 @@ export {
   combinationData1,
   disassemblyData2,
   combinationData2,
-  checkIslineChildren,
+  isInlineChildren,
   checkIsField,
   pickFields,
   fieldLabel,
-  transferData,
-  transferLabelPath,
   repairLayout
 }
