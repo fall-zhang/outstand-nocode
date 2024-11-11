@@ -1,26 +1,34 @@
-import { wrapElement, transferData, transferLabelPath } from '@/utils'
-export default function generatorData(node:any, {
+import { wrapElement } from '@/utils'
+import { useI18n } from 'vue-i18n'
+import { FieldItemBase, FieldItemContainer } from './types/rich-form-item'
+export default function generatorData(node: FieldItemBase | FieldItemContainer, {
   isWrap = true,
-  lang = 'zh-cn',
   isCreateLabel = true,
-  eachBack = true
 }) {
-  const newNode = isWrap
-    ? {
+  const t = useI18n().t
+  let newNode:FieldItemBase | FieldItemContainer
+
+  if (isWrap) {
+    newNode = {
       type: 'inline',
-      columns: [
+      innerData: [
         node
       ]
     }
-    : node
+  } else {
+    newNode = node
+  }
   const result = wrapElement(newNode)
+  if (!node.options) {
+    node.options = {}
+  }
   if (isCreateLabel) {
-    node.label = transferData(lang, transferLabelPath(node), '')
+    node.label = t(`rf.fields.${node.type}`)
     if (['select', 'cascader', 'region', 'date', 'time'].includes(node.type)) {
-      node.options.placeholder = transferData(lang, 'validateMsg.placeholder2', '请选择-未翻译') // 选择式 - 请选择
+      node.options.placeholder = t('validateMsg.placeholder2') // 选择式 - 请选择
     }
     if (['input', 'textarea', 'html'].includes(node.type)) {
-      node.options.placeholder = transferData(lang, 'validateMsg.placeholder1', '请输入-未翻译') // 输入式 - 请输入
+      node.options.placeholder = t('validateMsg.placeholder1') // 输入式 - 请输入
     }
   }
   return result

@@ -50,8 +50,6 @@ import FormItem from './form-item/FormItem.vue'
 import { Right as IconRight, Return as IconReturn, } from '@icon-park/vue-next'
 import formOptionList from './right-property'
 import HelpTooltip from './components/HelpTooltip.vue'
-import { ref } from 'vue'
-
 import { deepClone } from '@/utils/utils'
 const prop = defineProps({
   receiveValue: {
