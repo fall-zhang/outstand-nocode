@@ -5,7 +5,7 @@ import { ref, computed, reactive, watch, onMounted } from 'vue'
 import PanelsConfigComponentsPropsPanel from './components/PropsPanel.vue'
 import GlobalConfigPanel from './ConfigPanelGlobal.vue'
 import { isEmpty } from '@/utils/utils'
-import { fieldLabel } from '@/utils/field'
+import { fieldLabel } from '@Form/utils/field'
 import { useFormProvider } from '../../hooks/use-form-provider'
 defineOptions({
   name: 'ConfigPanel',

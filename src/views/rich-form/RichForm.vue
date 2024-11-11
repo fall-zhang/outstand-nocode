@@ -17,7 +17,7 @@ import defaultProps from './defaultProps'
 import generatorData from './generatorData'
 import { PlatformType, RichFormProvider } from './types/rich-form'
 import { fieldsConfig } from './config/componentsConfig'
-import { AllFieldType } from './types/rich-form-item'
+import { AllFieldType, FieldItemBase, FieldItemContainer } from './types/rich-form-item'
 import richFormConfig from './config/richFormConfig'
 import { generateOptions } from '@/utils/generateOptions'
 import { nanoid } from 'nanoid'
@@ -58,11 +58,12 @@ const setSelection = (node: AllFieldType) => {
   }
   formState.selected = result
 }
-const addFieldItem = (node: AllFieldType) => {
+const addFieldItem = (node: FieldItemBase | FieldItemContainer) => {
+
 
 }
-const delField = (node: any) => {
-  const fieldIndex = formState.fields.findIndex((item: any) => item.id === node.id)
+const delFieldItem = (node: FieldItemBase | FieldItemContainer) => {
+  const fieldIndex = formState.store.findIndex((item: any) => item.id === node.id)
   if (fieldIndex !== -1) {
     if (checkIdExistInLogic(node.id, formState.logic)) {
       ElMessage({
@@ -73,7 +74,6 @@ const delField = (node: any) => {
       })
       removeLogicDataById(node.id, formState.logic)
     }
-    formState.fields.splice(fieldIndex, 1)
   }
 }
 const addFieldData = (node: any, isCopy = false) => {
@@ -97,17 +97,15 @@ const addFieldData = (node: any, isCopy = false) => {
   }
 }
 
-const wrapElement = (el: AllFieldType, {
+const wrapElement = (el: FieldItemBase | FieldItemContainer, {
   isWrap = true,
   sourceBlock = true,
-  resetWidth = true
 }) => {
-  let node: AllFieldType
+  let node: FieldItemBase | FieldItemContainer
   if (sourceBlock) {
     node = generatorData(el, {
       isWrap,
       isCreateLabel: sourceBlock,
-
     })
   } else if (isWrap) {
     node = {
@@ -119,7 +117,7 @@ const wrapElement = (el: AllFieldType, {
   } else {
     node = el
   }
-  if (!sourceBlock && resetWidth) {
+  if (!sourceBlock) {
     if (el) {
       if (formState.platform === 'desktop') {
         el.desktop.style.width = '100%'
@@ -253,12 +251,12 @@ const formState = reactive<RichFormProvider>({
   config: richFormConfig,
   canvasScrollRef,
   handler: {
+    addFieldData,
+    addFieldItem,
     setSelection,
     switchPlatform,
-    addFieldData,
-    delete: delField,
-    addFieldItem,
-    wrapElement,
+    delete: delFieldItem,
+    // wrapElement,
     checkPropsBySelected() { },
     validator,
     copy: copyField,
@@ -293,6 +291,7 @@ const onResetData = () => {
     <div :class="$style.container">
       <el-header :class="$style.operation">
         <div style="display: flex;">
+          <!-- 设置 form 的宽度 -->
           <!-- <IconTooltip tip="保存">
             <Icon @click="onSaveData" class="fe-icon" icon="save"></Icon>
           </IconTooltip>

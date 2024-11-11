@@ -12,7 +12,7 @@
           <template #item="{ element }">
             <li @click="() => addStore(element)">
               <Icon :class="$style.icon" :icon="element.icon"></Icon>
-              <span>{{ fieldLabel(t, element) }}</span>
+              <span>{{ fieldLabel(element) }}</span>
             </li>
           </template>
         </DraggableWrap>
@@ -29,11 +29,12 @@ import { DraggableWrap } from '@Form/components/DraggableWrap'
 import { reactive } from 'vue'
 
 import Icon from '@/assets'
-import ControlInsertionPlugin from '@Form/components/FormContainer/ControlInsertionPlugin'
+import ControlInsertionPlugin from '@Form/utils/ControlInsertionPlugin'
 import $style from './index.module.scss'
-import { fieldLabel, wrapElement } from '@/utils/field'
+import { wrapFieldItem } from '@Form/utils/form-wrap'
 import { useFormProvider } from '@Form/hooks/use-form-provider'
 import type { FieldItemBase, FieldItemContainer } from '../../types/rich-form-item'
+
 defineProps({
   visible: {
     type: Boolean,
@@ -41,10 +42,13 @@ defineProps({
   }
 })
 const { t } = useI18n()
+function fieldLabel(element: FieldItemContainer | FieldItemBase) {
+  return t(`rf.fields.${element.type}`)
+}
 const FE = reactive(useFormProvider())
 const addStore = (element: FieldItemContainer | FieldItemBase) => {
   // 拖拽之后默认选中
-  const newElement = reactive(wrapElement(deepClone(element)))
+  const newElement = reactive(wrapFieldItem(deepClone(element)))
   // addContext(newElement, state.store)
   FE.handler.addFieldItem(newElement)
   FE.handler.setSelection(newElement)

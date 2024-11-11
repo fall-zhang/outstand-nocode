@@ -5,8 +5,8 @@ import { useI18n } from 'vue-i18n'
 import { unref } from 'vue'
 import { DraggableWrap } from '@Form/components/DraggableWrap'
 import Icon from '@/assets'
-import { renderFieldData } from '@/utils/field'
-import { useFormProvider } from '@/views/rich-form/hooks/use-form-provider'
+import { renderFieldData } from '@Form/utils/field'
+import { useFormProvider } from '@Form/hooks/use-form-provider'
 import { FieldItemContainer } from '@/views/rich-form/types/rich-form-item'
 defineOptions({
   name: 'ConfigData3'
@@ -15,7 +15,7 @@ const { selected, containerFiledList } = useFormProvider()
 const { t } = useI18n()
 const addTab = () => {
   const tar = unref(selected) as unknown as FieldItemContainer
-  const data = renderFieldData(`${tar.type}Col`)
+  const data = renderFieldData()
   data.label = `Tab ${tar.columns.length + 1}`
   unref(tar).columns.push(data)
   // addContext(data, tar)
