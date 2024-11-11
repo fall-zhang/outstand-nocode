@@ -1,13 +1,7 @@
 {
   "rf": {
     "fields": {
-      "input": [
-        "单行文本",
-        "邮箱",
-        "身份证号",
-        "手机号",
-        "网址"
-      ],
+      "input": "单行文本",
       "textarea": "多行文本",
       "number": "数字",
       "radio": "单选框",
@@ -31,6 +25,12 @@
       "container": "容器",
       "field": "基础字段",
       "defaultField": "预设字段"
+    },
+    "fieldInput": {
+      "email": "邮箱",
+      "identifyCode": "身份证号",
+      "phoneNumber": "手机号",
+      "url": "网址"
     },
     "layout": {
       "tabsCol": "标签面板",

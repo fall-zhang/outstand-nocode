@@ -4,13 +4,7 @@
       "config": "Form Attribute"
     },
     "fields": {
-      "input": [
-        "Input",
-        "Email",
-        "ID number",
-        "Cellphone",
-        "URL"
-      ],
+      "input": "Input",
       "textarea": "Textarea",
       "number": "Number",
       "radio": "Radio",
@@ -34,6 +28,12 @@
       "container": "Container",
       "field": "Basic field",
       "defaultField": "Default field"
+    },
+    "fieldInput": {
+      "email": "邮箱",
+      "identifyCode": "身份证号",
+      "phoneNumber": "手机号",
+      "url": "网址"
     },
     "layout": {
       "tabsCol": "Tab panel",
