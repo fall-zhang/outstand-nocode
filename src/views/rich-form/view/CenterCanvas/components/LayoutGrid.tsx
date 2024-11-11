@@ -1,5 +1,5 @@
 import { defineComponent, useAttrs } from 'vue'
-import Selection from '@Form/components/Selection/ElementSelection.vue'
+import Selection from '@Form/components/ElementSelection.vue'
 import LayoutDraggable from './DraggableDrop.vue'
 import { ElRow } from 'element-plus'
 import $style from './GridLayout.module.scss'

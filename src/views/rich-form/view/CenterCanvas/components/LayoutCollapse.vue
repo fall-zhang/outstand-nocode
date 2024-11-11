@@ -12,7 +12,7 @@
 
 <script lang="ts" setup>
 import { FieldItemContainer } from '@/views/rich-form/types/rich-form-item'
-import ElementSelection from '../Selection/ElementSelection.vue'
+import ElementSelection from '@Form/components/ElementSelection.vue'
 import LayoutDragGable from './DraggableDrop.vue'
 import { ElCollapse, ElCollapseItem } from 'element-plus'
 import { useFormProvider } from '@/views/rich-form/hooks/use-form-provider'

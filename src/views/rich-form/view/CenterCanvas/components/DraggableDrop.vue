@@ -1,8 +1,8 @@
 <!-- 将内容拖拽到的位置 -->
 <template>
   {{ data }}
-  <DraggableWrap handle=".handle" class="DragGableLayout edit" :tag="tag" item-key="id"
-    :move="handleMove" v-bind="dragOptions" :componentData="$attrs" @change="onDrag">
+  <DraggableWrap handle=".handle" class="DragGableLayout edit" :tag="tag" item-key="id" :move="handleMove"
+    v-bind="dragOptions" :componentData="$attrs" @change="onDrag">
     <template #item="{ element }">
       <LayoutGridLayout v-if="element.type === 'grid'" :data="element" :parent="data">
       </LayoutGridLayout>
@@ -59,8 +59,8 @@ import LayoutTabsLayout from './LayoutTabs.vue'
 import LayoutCollapseLayout from './LayoutCollapse.vue'
 import LayoutTableLayout from './LayoutTable'
 import LayoutInlineLayout from './LayoutInline'
-import Selection from '@Form/components/Selection/ElementSelection.vue'
-import ControlInsertionPlugin from './ControlInsertionPlugin'
+import Selection from '@Form/components/ElementSelection.vue'
+import ControlInsertionPlugin from '@Form/utils/ControlInsertionPlugin'
 import { DraggableWrap } from '@Form/components/DraggableWrap'
 import { isEmpty } from '@/utils/utils'
 import { useFormProvider } from '@Form/hooks/use-form-provider'
@@ -95,8 +95,9 @@ const loadComponent = () => {
   return function findComponent(type: string) {
     let info = componentMap[type]
     const compoName = type.slice(0, 1).toUpperCase() + type.slice(1)
+    console.log("🚀 ~ findComponent ~ compoName:", compoName)
     if (!info) {
-      info = componentMap[type] = defineAsyncComponent(() => import(`../FormTypes/${compoName}/${FE.platform}.vue`))
+      info = componentMap[type] = defineAsyncComponent(() => import(`@Form/components/FormTypes/${compoName}/${FE.platform}.vue`))
     }
     return info
   }
