@@ -3,9 +3,8 @@ import { ElLoading } from 'element-plus'
 import { ref, nextTick, watch, unref } from 'vue'
 import SignaturePad from 'signature_pad'
 import Icon from '@/assets'
-import utils from '@/utils'
-import { useI18n,  useFetch } from 'vue-i18n'
-import { fileToDataURL } from '@/utils/fileData'
+import { useI18n, useFetch } from 'vue-i18n'
+import { fileToDataURL, dataURLtoFile } from '@/utils/fileData'
 export default {
   name: 'FeSignatureMobile',
   inheritAttrs: false,
@@ -90,7 +89,7 @@ const handleAction = async (type) => {
       } else {
         const loading = ElLoading.service()
         const form = new FormData()
-        form.append('file', utils.dataURLtoFile(signaturePad.toDataURL(), 'signature.png'))
+        form.append('file', dataURLtoFile(signaturePad.toDataURL(), 'signature.png'))
         try {
           const response = await useFetch(props.data.options.action, {
             method: 'post',
@@ -108,7 +107,7 @@ const handleAction = async (type) => {
 }
 </script>
 <template>
-  <van-field  readonly v-bind="params" @click="handleOpen">
+  <van-field readonly v-bind="params" @click="handleOpen">
     <template #input>
       <template v-if="data.options.defaultValue">
         <van-image width="100%" height="100" fit="contain" :src="data.options.defaultValue.url" />
@@ -123,7 +122,8 @@ const handleAction = async (type) => {
       <van-icon @click.stop="data.options.defaultValue = ''" name="clear" />
     </template>
   </van-field>
-  <van-popup :class="$style.signatureMobile" v-model:show="dialogVisible" position="right" :style="{ width: '100%', height: '100%' }">
+  <van-popup :class="$style.signatureMobile" v-model:show="dialogVisible" position="right"
+    :style="{ width: '100%', height: '100%' }">
     <van-nav-bar :title="t('rf.form.addSignature')" :left-text="t('rf.public.back')" left-arrow
       @click-left="handleAction(1)">
       <template v-if="showClear" #right>

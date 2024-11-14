@@ -28,4 +28,4 @@ const props = defineProps({
   </el-select>
 </template>
 
-<style module lang="scss" src="./index.module.scss"></style>
+<style module lang="scss" ></style>

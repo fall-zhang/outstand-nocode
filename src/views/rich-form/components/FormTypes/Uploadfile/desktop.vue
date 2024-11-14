@@ -2,7 +2,6 @@
 import { ref, nextTick, watch, unref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { useI18n } from 'vue-i18n'
-import _ from 'lodash-es'
 import { deepClone } from '@/utils'
 export default {
   name: 'FeUploadDesktop',
@@ -34,7 +33,10 @@ watch(fileList, (arr) => {
     if (e.response) {
       result = e.response.data[0]
     } else {
-      result = _.pick(e, ['name', 'url'])
+      result = {
+        name: e.name,
+        url: e.url,
+      }
     }
     return result
   })

@@ -2,9 +2,8 @@
 import { ref, nextTick, watch, onBeforeUnmount, unref } from 'vue'
 import SignaturePad from 'signature_pad'
 import Icon from '@/assets'
-import utils from '@/utils'
 import { useI18n, useFetch } from 'vue-i18n'
-import { fileToDataURL } from '@/utils/fileData'
+import { fileToDataURL, dataURLtoFile } from '@/utils/fileData'
 export default {
   name: 'FeFeSignatureDesktop',
   inheritAttrs: false,
@@ -89,7 +88,7 @@ const handleCommit = async () => {
   }
   loading.value = true
   const form = new FormData()
-  form.append('file', utils.dataURLtoFile(signaturePad.toDataURL(), 'signature.png'))
+  form.append('file', dataURLtoFile(signaturePad.toDataURL(), 'signature.png'))
   try {
     const response = await useFetch(props.data.options.action, {
       method: 'post',

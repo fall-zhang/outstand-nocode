@@ -28,4 +28,4 @@ const props = defineProps({
   </el-radio-group>
 </template>
 
-<style src="index.module.scss" scoped module lang="scss"></style>
+<style src="./index.module.scss" scoped module lang="scss"></style>
