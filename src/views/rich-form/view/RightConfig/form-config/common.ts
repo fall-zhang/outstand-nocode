@@ -1,4 +1,14 @@
-export default {
+import { FormOption } from './form-config'
+
+export const configMap:Record<string, FormOption> = {
+  placeholder: {
+    keyId: 'placeholder',
+    keyName: '占位内容',
+    tips: '',
+    setters: ['input'],
+    default: '',
+  },
+  // box 的四个边
   margin: {
     keyId: 'margin',
     keyName: '外边距',
@@ -24,3 +34,33 @@ export default {
     default: '0',
   },
 }
+
+export const configCommon:FormOption[] = [{
+  keyId: 'id',
+  keyName: 'ID',
+  tips: '',
+  setters: ['input'],
+  default: '',
+},
+{
+  keyId: 'name',
+  keyName: '组件别名',
+  tips: '',
+  setters: ['input'],
+  default: '',
+},
+{
+  keyId: 'label',
+  keyName: '组件标签',
+  tips: '',
+  setters: ['input'],
+  default: '',
+},
+{
+  keyId: 'labelPosition',
+  keyName: '标签对齐',
+  tips: '',
+  setters: ['input'],
+  default: '',
+},
+]

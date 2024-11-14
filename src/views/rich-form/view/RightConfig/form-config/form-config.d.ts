@@ -1,10 +1,10 @@
 // 简单类型，同 form 表单
 type SettersSimple = 'input' | 'textarea' | 'color' | 'switch' | 'slider' | 'select' | 'number'
 
-// 复杂类型
+// 复杂类型 调用对应的组件
 // function，会提供并且创建一个函数进行书写
 // json 会使用 JSON.parse 进行解析的复杂数据
-type SettersComplex = 'function' | 'json'
+type SettersComplex = 'function' | 'json' | 'radio-button' | 'icon-picker'
 
 type MultiKeySetter = 'box-side'
 
@@ -18,12 +18,14 @@ type OptionalSelect = Array<{ label: string, value: string | boolean }>
 interface FormOption {
   keyId: string,
   keyName: string,
-  setters: Array<SettersSimple | SettersComplex | Recurrence |MultiKeySetter>,
+  setters: Array<SettersSimple | SettersComplex | Recurrence | MultiKeySetter>,
   multiKeys?:string[]
-  optionalValue?: OptionalSelect,
-  tips?: string,
-  default?: unknown,
-  children?: Array<EchartsOption>,
+  optionalValue?: OptionalSelect
+  // 如果只有一个 setter，作为这个 setter v-bind 的配置
+  config?: Record<string, unknown>
+  tips?: string
+  default?: unknown
+  children?: Array<EchartsOption>
 }
 
 // 示例

@@ -1,17 +1,21 @@
 import { FormOption } from './form-config'
-
 const configInput:FormOption[] = [{
   keyId: 'id',
-  keyName: 'ID',
+  keyName: '字段大小',
   tips: '',
-  setters: ['input'],
+  setters: ['radio-button'],
+  optionalValue: [
+    { label: '大', value: 'large' },
+    { label: '中', value: '' },
+    { label: '小', value: 'small' },
+  ],
   default: '',
 },
 {
   keyId: 'name',
-  keyName: '名称',
+  keyName: '标签对齐方式',
   tips: '',
-  setters: ['input'],
+  setters: ['icon-picker'],
   default: '',
 }]
 
