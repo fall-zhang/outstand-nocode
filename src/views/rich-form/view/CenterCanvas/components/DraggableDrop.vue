@@ -64,6 +64,7 @@ import ControlInsertionPlugin from '@Form/utils/ControlInsertionPlugin'
 import { DraggableWrap } from '@Form/components/DraggableWrap'
 import { isEmpty } from '@/utils/utils'
 import { useFormProvider } from '@Form/hooks/use-form-provider'
+import { MoveEvent } from 'sortablejs'
 defineOptions({
   name: 'DraggableDrop',
 })
@@ -95,7 +96,7 @@ const loadComponent = () => {
   return function findComponent(type: string) {
     let info = componentMap[type]
     const compoName = type.slice(0, 1).toUpperCase() + type.slice(1)
-    console.log("🚀 ~ findComponent ~ compoName:", compoName)
+    // console.log("🚀 ~ findComponent ~ compoName:", compoName)
     if (!info) {
       info = componentMap[type] = defineAsyncComponent(() => import(`@Form/components/FormTypes/${compoName}/${FE.platform}.vue`))
     }
@@ -106,6 +107,7 @@ const loadComponent = () => {
 const findComponent = loadComponent()
 const dragOptions = reactive({
   swapThreshold: 1,
+  animation: 200,
   list: props.data,
   group: {
     name: 'nocode-form'
@@ -118,9 +120,9 @@ const handleMove = () => {
   return true
 }
 
-function onDrag(ev: any) {
-  console.log('🚀 ~ onDrag ~ ev:',)
+function onDrag(ev: MoveEvent) {
 }
+
 </script>
 
 <style lang="scss" scoped>

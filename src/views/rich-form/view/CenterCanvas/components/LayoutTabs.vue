@@ -1,5 +1,4 @@
 <template>
-  {{ data }}
   <Selection v-bind="useAttrs()" :data="data" :parent="parent" hasCopy hasDel hasDrag hasWidthScale>
     <ElTabs :class="$style.tabsLayout" :modelValue="activeValue" @tabClick="onClickTab" :type="props.data.options.type"
       :tabPosition="props.data.options.tabPosition">

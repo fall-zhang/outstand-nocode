@@ -2,7 +2,7 @@ import { defineComponent, useAttrs } from 'vue'
 import Selection from '@Form/components/ElementSelection.vue'
 import LayoutDraggable from './DraggableDrop.vue'
 import $style from './TableLayout.module.scss'
-const isTrTag = (tagName) => tagName.toLocaleLowerCase() === 'td'
+const isTrTag = (tagName:string) => tagName.toLocaleLowerCase() === 'td'
 export default defineComponent({
   name: 'TableLayout',
   inheritAttrs: false,
