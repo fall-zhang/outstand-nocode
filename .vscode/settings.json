@@ -11,6 +11,8 @@
     "monthrange",
     "colspan",
     "rowspan",
+    "uploadfile",
+    "vuedraggable",
     "unplugin"
   ],
   // "i18n-ally.pathMatcher": "{locale}/{namespaces}.json",

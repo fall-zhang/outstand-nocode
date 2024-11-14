@@ -1,6 +1,6 @@
 import { StyleValue, CSSProperties } from 'vue'
 /**
- * 中间区域数据的存储类型
+ * 不同平台下，对应平台的配置
  */
 export type PlatformConf = {
   size: string
@@ -11,6 +11,7 @@ export type PlatformConf = {
 export type BaseItemType = 'input'|'number'|'select'|'textarea'|'radio'|'checkbox'|'time'|'date'|'rate'|'switch'|'slider'
 // 'table'
 type ContainerItemTypes = 'col' | 'grid' | 'tabs' |'collapse' | 'divider' | 'inline'
+
 
 type FieldItemRoot = {
   type: 'root'

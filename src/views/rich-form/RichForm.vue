@@ -59,8 +59,7 @@ const setSelection = (node: AllFieldType) => {
   formState.selected = result
 }
 const addFieldItem = (node: FieldItemBase | FieldItemContainer) => {
-
-
+  formState.store.push(node)
 }
 const delFieldItem = (node: FieldItemBase | FieldItemContainer) => {
   const fieldIndex = formState.store.findIndex((item: any) => item.id === node.id)
@@ -77,24 +76,24 @@ const delFieldItem = (node: FieldItemBase | FieldItemContainer) => {
   }
 }
 const addFieldData = (node: any, isCopy = false) => {
-  if (['radio', 'cascader', 'checkbox', 'select'].includes(node.type)) {
-    if (isCopy) {
-      formState.data[node.id] = deepClone(formState.data[node.options.dataKey])
-      node.options.dataKey = node.id
-    } else if (!formState.data[node.id]) {
-      node.options.dataKey = node.id
-      formState.data[node.id] = {
-        type: node.type,
-        list: generateOptions(3).map((e, i) => {
-          e.label += i + 1
-          return e
-        })
-      }
-    }
-  }
-  if (['uploadFile', 'signature', 'html'].includes(node.type)) {
-    node.options.action = ''
-  }
+  // if (['radio', 'cascader', 'checkbox', 'select'].includes(node.type)) {
+  //   if (isCopy) {
+  //     formState.data[node.id] = deepClone(formState.data[node.options.dataKey])
+  //     node.options.dataKey = node.id
+  //   } else if (!formState.data[node.id]) {
+  //     node.options.dataKey = node.id
+  //     formState.data[node.id] = {
+  //       type: node.type,
+  //       list: generateOptions(3).map((e, i) => {
+  //         e.label += i + 1
+  //         return e
+  //       })
+  //     }
+  //   }
+  // }
+  // if (['uploadFile', 'signature', 'html'].includes(node.type)) {
+  //   node.options.action = ''
+  // }
 }
 const wrapElement = (el: FieldItemBase | FieldItemContainer, {
   isWrap = true,
@@ -233,7 +232,6 @@ const formState = reactive<RichFormProvider>({
   widthScalable: false,
   data: {},
   validateStates: [],
-  // fields: [],
   logic: {},
   desktop: {
     style: {},
@@ -241,9 +239,16 @@ const formState = reactive<RichFormProvider>({
       size: '',
       labelPosition: 'left',
       hideRequiredAsterisk: false,
-      labelWidth: ''
+      labelWidth: '',
+      height: 0,
+      width: 0
     },
-    completeButton: {}
+    completeButton: {
+      text: '',
+      theme: 'default',
+      preset: '',
+      style: undefined
+    }
   },
   mobile: {
     style: {},
@@ -252,7 +257,12 @@ const formState = reactive<RichFormProvider>({
       hideRequiredAsterisk: false,
       labelWidth: ''
     },
-    completeButton: {}
+    completeButton: {
+      text: '',
+      theme: 'default',
+      preset: '',
+      style: undefined
+    }
   },
   config: richFormConfig,
   canvasScrollRef,
