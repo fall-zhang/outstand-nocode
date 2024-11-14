@@ -1,10 +1,15 @@
 import { FieldItemBase, FieldItemContainer } from '../types/rich-form-item'
 
-
+interface ItemContainer extends FieldItemContainer{
+  icon:string
+}
+interface ItemBase extends FieldItemBase{
+  icon:string
+}
 const containerConfig:{
   name:string
   id:string
-  list:(FieldItemContainer|{icon:string})[]
+  list:ItemContainer[]
 } = {
   name: '容器',
   id: 'container',
@@ -93,7 +98,7 @@ const containerConfig:{
 const basicConfig:{
   name:string
   id:string
-  list:(FieldItemBase|{icon:string})[]
+  list:ItemBase[]
 } = {
   name: '基础字段',
   id: 'field',
@@ -395,7 +400,6 @@ export const fieldsConfig = [
   containerConfig,
   basicConfig,
 ]
-
 
 // 点击 basicConfig 后下方展示当前 Form 相关的复杂 FormItem
 const complexConfig = {
