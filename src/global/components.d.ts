@@ -79,6 +79,13 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     VanButton: typeof import('vant/es')['Button']
+    VanCalendar: typeof import('vant/es')['Calendar']
+    VanDatePicker: typeof import('vant/es')['DatePicker']
+    VanField: typeof import('vant/es')['Field']
+    VanIcon: typeof import('vant/es')['Icon']
+    VanPickerGroup: typeof import('vant/es')['PickerGroup']
+    VanPopup: typeof import('vant/es')['Popup']
+    VanTimePicker: typeof import('vant/es')['TimePicker']
   }
   export interface ComponentCustomProperties {
     vLoading: typeof import('element-plus/es')['ElLoadingDirective']

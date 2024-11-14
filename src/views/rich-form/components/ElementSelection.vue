@@ -1,10 +1,8 @@
 <template>
   <component :is="isHTMLTag(props.tag) ? props.tag : resolveComponent(props.tag)" v-bind="$attrs" :span="props.span"
-    :label="props.label" :offset="props.offset" :pull="props.pull" :class="[
-      id,
-      'selectElement',
+    :label="props.label" :offset="props.offset" :pull="props.pull" :class="[id, 'selectElement',
       !isField && 'borderless',
-      Selected,
+      isSelected,
       isWarning && 'Warning'
     ]" ref="elementRef" @click="withModifiers(handleClick, ['stop'])">
     <slot></slot>
@@ -177,8 +175,8 @@ const isShowCopy = computed(() => {
   return props.hasCopy
 })
 
-const Selected = computed(() => {
-  return selected.value.id === props.data.id && $style.Selected
+const isSelected = computed(() => {
+  return selected.value.id === props.data.id
 })
 const isShowWidthScale = computed(() => props.hasWidthScale)
 const widthScaleElement = ref()
