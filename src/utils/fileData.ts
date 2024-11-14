@@ -1,4 +1,5 @@
-const dataURLtoFile = (dataurl, filename) => {
+
+const dataURLtoFile = (dataurl:string, filename:string) => {
   const arr = dataurl.split(',')
   const mime = arr[0].match(/:(.*?);/)[1]
   const bstr = atob(arr[1])
@@ -9,6 +10,7 @@ const dataURLtoFile = (dataurl, filename) => {
   }
   return new File([u8arr], filename, { type: mime })
 }
+
 const fileToDataURL = (dataurl) => {
   return new Promise((resolve, reject) => {
     const image = new Image()

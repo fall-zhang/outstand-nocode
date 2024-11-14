@@ -104,3 +104,15 @@ export function intersection(...arr:Array<unknown[]>) {
   })
   return firstArr
 }
+
+/**
+ * 生成 x 位随机字符串，默认 5 位，长度小，一个 form 肯定够用
+ * @param length
+ */
+export const getShortCode = (length:number = 5) => {
+  let result:string = ''
+  for (let i = 0; i < length; i++) {
+    result += (Math.floor(Math.random() * 26 + 10)).toString(36)
+  }
+  return result
+}
