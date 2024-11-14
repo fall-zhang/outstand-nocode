@@ -1,4 +1,4 @@
-<!-- 右侧用于 -->
+<!-- icon 选择 -->
 <script setup lang="ts">
 import Icon from '@/assets'
 const emit = defineEmits(['listener'])
@@ -26,7 +26,7 @@ const fireEvent = (property: string, item: unknown) => {
 }
 </script>
 <template>
-  <ul v-if="layoutType === 'breakLine'" ref="elements" class="form-content" :style="{ height: height + 2 + 'px' }">
+  <ul ref="elements" class="form-content" :style="{ height: height + 2 + 'px' }">
     <li @click="() => !item.disabled && fireEvent(property, item)" v-for="item in nodes" :key="item.value" :class="{
       'Selected': val !== undefined && item.value === val,
       'Disabled': item.disabled
