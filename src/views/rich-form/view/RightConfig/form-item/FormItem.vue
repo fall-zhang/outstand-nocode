@@ -1,11 +1,12 @@
 <!--
 作者：张博飞
 用作：单个 form
+基本 form 类型，且标题文字小于 7 字符，单行
+复杂数据，或题文字多于 7 字符，标题会独占一行
 -->
-<!-- type 类型为 array 或者 object 时，调用 FormZone -->
 <template>
-  <!-- 简单内容使用，且标题文字小于 7 字符，使用 one-line -->
-  <div class="form-item" :class="basicSetterType.includes(currentSetter) && formOption.keyName.length < 7 && 'on-line'">
+  <div class="form-item"
+    :class="basicSetterType.includes(currentSetter) && formOption.keyName.length < 7 && 'one-line-form'">
     <div class="basic-label">{{ formOption.keyName }}
       <HelpTooltip v-if="formOption.tips" :tip="formOption.tips" :path="path"></HelpTooltip>
     </div>
@@ -24,7 +25,7 @@
         style="width: 100px;margin-left: 8px;" :min="0" :max="60" @change="onChangeValue"></el-slider>
       <el-select v-else-if="currentSetter == 'select'" v-model="formValue" size="small" :min="0" :max="20"
         @change="onChangeValue">
-        <el-option v-for="optionItem in formOption.optionalValue" v-bind="optionItem"
+        <el-option v-for="optionItem in formOption.optionalValue " v-bind="optionItem"
           :key="optionItem.value"></el-option>
       </el-select>
     </div>
@@ -36,13 +37,15 @@
       </div>
     </template>
   </div>
-  <!-- 复杂数据，以及长标题配置，标题会独占一行 -->
   <div v-if="!basicSetterType.includes(currentSetter)" class="default-container">
     <el-input v-if="currentSetter === 'textarea'" v-model="formValue" size="small" type="textarea"
       style="max-height: 72px;" @input="onChangeInput"></el-input>
-    <FormJSON v-else-if="currentSetter === 'radio-button-icon'" v-model="formValue" class="complex-container"
+    <RadioButton v-else-if="currentSetter === 'radio-button'" :radioList="formOption.optionalValue" v-model="formValue"
+      class="complex-container" @change="onChangeComplexValue">
+    </RadioButton>
+    <IconPicker v-else-if="currentSetter === 'icon-picker'" v-model="formValue" class="complex-container"
       @change="onChangeComplexValue">
-    </FormJSON>
+    </IconPicker>
     <FormJSON v-else-if="currentSetter === 'json'" v-model="formValue" class="complex-container"
       @change="onChangeComplexValue">
     </FormJSON>
@@ -58,6 +61,8 @@ import HelpTooltip from './HelpTooltip.vue'
 import FormJSON from './FormItemJSON.vue'
 import { Refresh as IconRefresh } from '@icon-park/vue-next'
 import { FormOption } from '../form-config/form-config'
+import IconPicker from './IconPicker.vue'
+import RadioButton from './RadioButton.vue'
 const prop = defineProps<{
   formOption: FormOption
   path: Record<'keyName' | 'keyId', string>[],
@@ -72,14 +77,12 @@ const allSetters = ref<string[]>([])
 const basicSetterType = ref(['input', 'color', 'switch', 'slider', 'number', 'select'])
 const complexSetterType = ref(['json', 'textarea'])
 onBeforeMount(() => {
-  const devState = import.meta.env.DEV
-  // console.log(devState)
-  if (devState === true) {
+  const isDevelop = import.meta.env.DEV
+  if (isDevelop) {
     // 开发时打开，用于捕获默认值的错误
     catchError()
   }
   formValue.value = deepClone(prop.receiveValue)
-  // console.log(prop.receiveValue);
   // 赋值为初始值，如果有对象
   if (formValue.value === null) {
     if (typeof prop.formOption.default === 'object' && prop.formOption.children) {
@@ -97,6 +100,9 @@ function catchError() {
   const defaultSetter = prop.formOption.setters[0]
   const defaultVal = prop.formOption.default
   const hasChildren = !!prop.formOption.children
+  if (!basicSetterType.value.includes(defaultSetter) && !complexSetterType.value.includes(defaultSetter)) {
+    console.error('该配置的 setter 暂未实现', prop.formOption)
+  }
   if (defaultSetter === 'slider') {
     if (typeof defaultVal !== 'number') {
       console.error('该 slider 配置出现错误', prop.formOption)
@@ -139,7 +145,7 @@ function onChangeSetter() {
   display: flex;
   align-items: center;
 
-  &.on-line {
+  &.one-line-form {
     height: 26px;
     border-bottom: 1px solid #aeaeae67;
   }
