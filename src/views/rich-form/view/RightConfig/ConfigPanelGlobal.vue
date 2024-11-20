@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { ref, unref, computed } from 'vue'
+import { ref, computed } from 'vue'
 // import CompleteButton from '@Form/components/CompleteButton.vue'
 import TypeComponent from './components/TypeComponent.vue'
 import PanelsConfigComponentsLogicComponent from './components/LogicComponent.vue'
@@ -17,9 +17,8 @@ const { isDesktop, platform, selected, config, desktop, mobile } = useFormProvid
 
 const { t } = useI18n()
 const visible = ref(false)
-const buttonRef = ref()
-const popoverRef = ref()
-const radio1 = ref<'desktop' | 'mobile'>('desktop')
+// const buttonRef = ref()
+const platformSelect = ref<'desktop' | 'mobile'>('desktop')
 const handleModelValue = (type: string, value: any) => {
   const platforms = selected.value ? ['desktop', 'mobile'] : [platform]
   platforms.forEach((e) => {
@@ -82,15 +81,13 @@ const curPlatformConf = computed(() => {
 </script>
 <template>
   <div class="GlobalConfigPanel">
-    <el-popover virtual-triggering :visible="visible" ref="popoverRef" :virtual-ref="buttonRef" :width="200">
+    <!-- <el-popover ref="popoverRef" :width="200">
       <template #reference>
         <div class="syncContent">
-          <el-icon color="#f90">
-            <FileQuestion />
-          </el-icon>
+          <FileQuestion />
           {{ t('rf.config.globalConfig.sync.warning') }}
         </div>
-        <el-radio-group class="syncType" v-model="radio1">
+        <el-radio-group class="syncType" v-model="platformSelect">
           <el-radio value="desktop">desktop</el-radio>
           <el-radio value="mobile">mobile</el-radio>
         </el-radio-group>
@@ -101,8 +98,7 @@ const curPlatformConf = computed(() => {
           {{ t('rf.public.confirm') }}
         </el-button>
       </div>
-    </el-popover>
-    {{ 'layout-type-2' }}
+    </el-popover> -->
     <TypeComponent v-if="isDesktop" @change="onSizeChange" property="size" layoutType="singleLine"
       :label="t('rf.config.globalConfig.componentSize.label')" :val="desktop.formOption.size" :nodes="sizeOptionList" />
     {{ 'layout-type-1' }}
@@ -226,6 +222,9 @@ const curPlatformConf = computed(() => {
 
   .syncContent {
     display: flex;
+    // height: 40px;
+    // width: 40px;
+    background-color: pink;
     align-items: center;
 
     .el-icon {

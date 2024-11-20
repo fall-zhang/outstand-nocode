@@ -2,11 +2,12 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { ref, computed, reactive, watch, onMounted } from 'vue'
-import PanelsConfigComponentsPropsPanel from './components/PropsPanel.vue'
+import PropsPanel from './components/PropsPanel.vue'
 import GlobalConfigPanel from './ConfigPanelGlobal.vue'
 import { isEmpty } from '@/utils/utils'
 import { fieldLabel } from '@Form/utils/field'
 import { useFormProvider } from '../../hooks/use-form-provider'
+import PagePanel from './PagePanel.vue'
 defineOptions({
   name: 'ConfigPanel',
   inheritAttrs: false,
@@ -119,15 +120,10 @@ watch(selected, () => {
       </el-breadcrumb-item>
     </el-breadcrumb>
     <el-form ref="form" :model="selected" :rules="rules" label-width="120px" label-position="top">
-      <el-scrollbar>
-        <div :class="$style.wrap">
-          <div v-if="isSelectRoot">
-            <GlobalConfigPanel></GlobalConfigPanel>
-          </div>
-          <div v-else>
-            <PanelsConfigComponentsPropsPanel :key="selected.id" />
-          </div>
-        </div>
+      <el-scrollbar :class="$style.wrap">
+        <PagePanel type="root" :receive-value="{}"> </PagePanel>
+        <GlobalConfigPanel v-if="isSelectRoot"></GlobalConfigPanel>
+        <PropsPanel v-else :key="selected.id" />
       </el-scrollbar>
     </el-form>
   </el-aside>

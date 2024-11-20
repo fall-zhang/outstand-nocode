@@ -1,11 +1,12 @@
 <!-- 根据当前配置来展示配置内容 -->
+<!-- type 类型为 array 或者 object 时，可以跳转到子配置中，并修改 breadcrumb -->
 <template>
-  <div class="right-panel">
-    <div class="panel-title">
+  <!-- <div class="right-panel"> -->
+  <!-- <div class="panel-title">
       <h3 style="position: relative;">
         <IconReturn v-show="currentPath.length > 0" @click="onClickBack"
           style="cursor: pointer;position: absolute;left: 16px;top: 6px;" />
-        {{ currentPath.at(-1)?.keyName || "Echarts 属性" }}
+        {{ currentPath.at(-1)?.keyName }}
       </h3>
       <div>
         <a @click="onChangeOption(-1)">属性</a>
@@ -13,64 +14,66 @@
           / {{ item.keyName }}
         </a>
       </div>
-    </div>
-    <ul class="cell-group">
-      <template v-for="option in currentOptionList" :key="option.keyId">
-        <el-popover v-if="option.setters.includes('array')" placement="left" width="160px">
-          <template #default>
-            <el-button type="primary">添加</el-button>
-            <el-button type="danger">删除</el-button>
-          </template>
-          <template #reference>
-            <li class="cell-item link-cell" @click="onChangeSetting(option)">
-              <span style="display: flex;">
-                {{ option.keyName }}
-                <HelpTooltip v-if="option.tips" :tip="option.tips" :path="currentPath"></HelpTooltip>
-              </span>
-              <IconRight class="g-icon-center" size="18px" />
-            </li>
-          </template>
-        </el-popover>
-        <li v-else-if="option.children" class="cell-item link-cell" @click="onChangeSetting(option)">
-          <span style="display: flex;">
-            {{ option.keyName }}
-            <HelpTooltip v-if="option.tips" :tip="option.tips" :path="currentPath"></HelpTooltip>
-          </span>
-          <IconRight class="g-icon-center" size="18px" />
-        </li>
-        <FormItem v-else :receiveValue="currentForm[option.keyId]" @change="(value) => onFormValueChange(value, option)"
-          :form-option="option" :path="currentPath" />
-      </template>
-    </ul>
-  </div>
+    </div> -->
+  {{ currentOptionList }}
+  <ul class="cell-group">
+    <template v-for="option in currentOptionList" :key="option.keyId">
+      <el-popover v-if="option.setters.includes('array')" placement="left" width="160px">
+        <template #default>
+          <el-button type="primary">添加</el-button>
+          <el-button type="danger">删除</el-button>
+        </template>
+        <template #reference>
+          <li class="cell-item link-cell" @click="onChangeSetting(option)">
+            <span style="display: flex;">
+              {{ option.keyName }}
+              <!-- <HelpTooltip v-if="option.tips" :tip="option.tips" :path="currentPath"></HelpTooltip> -->
+            </span>
+            <IconRight class="g-icon-center" size="18px" />
+          </li>
+        </template>
+      </el-popover>
+      <li v-else-if="option.children" class="cell-item link-cell" @click="onChangeSetting(option)">
+        <span style="display: flex;">
+          {{ option.keyName }}
+          <!-- <HelpTooltip v-if="option.tips" :tip="option.tips" :path="currentPath"></HelpTooltip> -->
+        </span>
+        <IconRight class="g-icon-center" size="18px" />
+      </li>
+      <FormItem v-else :receiveValue="currentForm[option.keyId]" @change="(value) => onFormValueChange(value, option)"
+        :form-option="option" :path="currentPath" />
+    </template>
+  </ul>
+  <!-- </div> -->
 </template>
 
 <script setup lang="ts">
 import FormItem from './form-item/FormItem.vue'
-import { Right as IconRight, Return as IconReturn, } from '@icon-park/vue-next'
+import { Right as IconRight, Return as IconReturn } from '@icon-park/vue-next'
 import formOptionList from './right-property'
-import HelpTooltip from './components/HelpTooltip.vue'
+// import HelpTooltip from './components/HelpTooltip.vue'
 import { deepClone } from '@/utils/utils'
-const prop = defineProps({
-  receiveValue: {
-    require: true,
-    type: Object,
-    default: () => ({})
-  }
-})
+import { BaseItemType, ContainerItemTypes } from '../../types/rich-form-item.js'
+import { FormOption } from './form-config/form-config'
+const props = defineProps<{
+  receiveValue: Record<string, any>
+  type: BaseItemType | ContainerItemTypes | 'root'
+}>()
 const emit = defineEmits(['change'])
 const currentPath = ref<{
   keyName: string,
   keyId: string
 }[]>([])
 
-let mainForm = reactive(deepClone(prop.receiveValue))
-watch(() => prop.receiveValue, (newVal) => {
-  mainForm = reactive(deepClone(prop.receiveValue))
+let mainForm = reactive(deepClone(props.receiveValue))
+watch(() => props.receiveValue, (newVal) => {
+  mainForm = reactive(deepClone(props.receiveValue))
   refreshCurrentForm()
 })
 
-const currentOptionList = ref<Array<any>>(formOptionList)
+const currentOptionList = computed<FormOption[]>(() => {
+  return formOptionList[props.type]
+})
 const currentForm = ref<any>(mainForm)
 const refreshCurrentForm = () => {
   let newVal: unknown = formOptionList
@@ -86,15 +89,11 @@ const refreshCurrentForm = () => {
           newForm = newForm[path.keyId]
         } else {
           newForm[path.keyId] = {}
-          // console.log("🚀 ~ file: PropertyPagePanel.vue:70 ~ watch ~ path:", path)
           newForm = newForm[path.keyId]
-          // console.log('🚀 ~ file: PropertyPagePanel.vue:71 ~ watch ~ newForm:', newForm)
-          // throw new Error('键值不匹配')
         }
       }
     })
   })
-  currentOptionList.value = newVal as []
   currentForm.value = newForm
 }
 function onChangeOption(index: number) {

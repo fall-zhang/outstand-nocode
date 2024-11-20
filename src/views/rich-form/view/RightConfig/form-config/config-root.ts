@@ -1,5 +1,5 @@
 import { FormOption } from './form-config'
-const configInput:FormOption[] = [{
+const configRoot:FormOption[] = [{
   keyId: 'id',
   keyName: '字段大小',
   tips: '',
@@ -19,4 +19,4 @@ const configInput:FormOption[] = [{
   default: '',
 }]
 
-export default configInput
+export default configRoot

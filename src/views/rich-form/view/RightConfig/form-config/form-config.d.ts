@@ -14,7 +14,7 @@ type Recurrence = 'array' | 'object'
 // 以 children 的 keyId 作为 key 的对象构成
 
 
-type OptionalSelect = Array<{ label: string, value: string | boolean }>
+type OptionalSelect = Array<{ label: string, value: string}>
 interface FormOption {
   keyId: string,
   keyName: string,
