@@ -4,9 +4,9 @@
  */
 
 import { ElMessage } from 'element-plus'
-import { DecoupledEditor} from 'ckeditor5'
+import { DecoupledEditor } from 'ckeditor5'
 import { markRaw, defineComponent, onMounted, ref, onBeforeUnmount, watch } from 'vue'
-import { debounce } from 'lodash-es'
+import { debounce } from '@/utils/debounce'
 import './style/index.js'
 import $style from './index.module.scss'
 

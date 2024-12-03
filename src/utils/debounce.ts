@@ -1,4 +1,4 @@
-export default function debounce(fn:any, delay?:number) {
+export  function debounce(fn:any, delay?:number) {
   let timber = 0
   return () => {
     if (timber) {
