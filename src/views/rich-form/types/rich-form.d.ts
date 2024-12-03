@@ -43,6 +43,8 @@ export type RichFormProvider = {
   // 中心区域当前配置的内容
   store: AllFieldType[],
   storeMap: Map<string, AllFieldType>
+  // 当前 form 中正在编辑的内容
+  editForm:Record<string, unknown>
   canvasScrollRef:any
   // 当前选中的内容，默认选中 root
   selected: AllFieldType

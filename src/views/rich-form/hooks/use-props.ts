@@ -1,12 +1,19 @@
 import { computed } from 'vue'
 import { showToast } from 'vant'
 import dayjs from 'dayjs'
-import _ from 'lodash-es'
 import Region from './region/Region'
 import { areaList } from '@vant/area-data'
 import { useI18n } from 'vue-i18n'
 import { get, isEmpty } from '@/utils/utils'
-const addValidate = (result, node, isPC, t) => {
+import { RichFormProvider } from '../types/rich-form'
+import { FieldItemBase } from '../types/rich-form-item'
+import { FeatureProvider } from './use-form-provider'
+
+type MutablePartial<T> = {
+  -readonly [K in keyof T]?: T[K]
+}
+const addValidate = (result, node, isPC:boolean) => {
+  const { t } = useI18n()
   const { options } = node
   if (isPC) {
     result.prop = node.context && node.context.parents.map((e, index) => {
@@ -32,8 +39,7 @@ const addValidate = (result, node, isPC, t) => {
     }).join('.') + '.options.defaultValue'
   }
 
-  const obj = {
-  }
+  const obj = {  }
   // if (node.type === 'select') {
   //   // obj.type = 'array'
   // }
@@ -121,290 +127,285 @@ const addValidate = (result, node, isPC, t) => {
   result.rules = [obj]
 }
 
+type FormItemArg = {
+  state: RichFormProvider // FE
+  data: FieldItemBase // fieldItem 也叫 element
+  isDesktop?: boolean
+  isRoot?: boolean
+}
+/**
+ * 通过一系列信息，获取 el-form-item 的 props
+ */
 export const useProps = ({
   state,
   data,
   isDesktop = true,
-  isRoot = false
-}:any, specialHandling?:{
-  (type:string, result:unknown):void
-}) => {
+}:FormItemArg) => {
   const { t } = useI18n()
-  return computed(() => {
-    const optData = reactive(data)
-    let node = isRoot ? reactive(data).config : reactive(data)
-    // console.log("🚀 ~ t:", isRoot)
-    // console.log("🚀 ~ t:", unref(reactive(data)))
-    let result:Record<string, unknown> = {}
-    const platform = isDesktop ? 'desktop' : 'mobile'
-    if (isRoot) {
-      if (isDesktop) {
-        result.model = data.store
-        result.size = ''
-        result.labelPosition = optData[platform].labelPosition
-      } else {
-        result.labelAlign = optData[platform].labelPosition
+  let node = reactive(data)
+  let result:Record<string, unknown> = {}
+  node = unref(data)
+  const { options } = node
+  result = {
+    label: node.label,
+    disabled: options.disabled,
+    placeholder: options.placeholder,
+    clearable: options.clearable,
+    required: options.required
+  }
+  addValidate(result, node, isDesktop)
+  if (isDesktop) {
+    result.labelWidth =  options.labelWidth + 'px'
+  }
+  switch (node.type) {
+    case 'input':{
+      if (options.isShowWordLimit) {
+        result.maxlength = options.max
+        result['show-word-limit'] = options.isShowWordLimit
       }
-      return result
+      if (isDesktop) {
+        result.showPassword = options.showPassword
+        result.prepend = options.prepend
+        result.append = options.append
+      } else {
+        if (options.showPassword) {
+          result.type = 'password'
+        }
+        if (options.renderType === 4) {
+          result.type = 'tel'
+        }
+      }
+      break
     }
-    node = unref(data)
-    const { options } = node
-    result = {
-      label: options.isShowLabel ? node.label : '',
-      disabled: options.disabled,
-      placeholder: options.placeholder,
-      clearable: options.clearable,
-      required: options.required
+    case 'textarea':{
+      if (options.isShowWordLimit) {
+        result.maxlength = options.max
+        result['show-word-limit'] = options.isShowWordLimit
+      }
+      result.type = 'textarea'
+      result.rows = options.rows
+      break
     }
-    addValidate(result, node, isDesktop, t)
-    if (isDesktop) {
-      result.labelWidth = options.isShowLabel ? options.labelWidth + 'px' : 'auto'
+    case 'number':{
+      if (isDesktop) {
+        result.controls = options.controls
+        if (options.controls) {
+          result['controls-position'] = options.controlsPosition ? 'right' : ''
+        }
+      } else {
+        // result.inputWidth = '100px'
+        result.defaultValue = null
+        result.allowEmpty = true
+      }
+      if (options.isShowWordLimit) {
+        result.min = options.min
+        result.max = options.max
+      } else {
+        result.min = Number.NEGATIVE_INFINITY
+        result.max = Number.POSITIVE_INFINITY
+      }
+      result.step = options.step
+      result.precision = options.precision
+      break
     }
-    switch (node.type) {
-      case 'input':
-        if (options.isShowWordLimit) {
-          result.maxlength = options.max
-          result['show-word-limit'] = options.isShowWordLimit
+    case 'radio':
+    case 'checkbox':
+      result.options = get(state, `data[${options.dataKey}].list`, [])
+      break
+    case 'select':
+      result.options = get(state, `data[${options.dataKey}].list`, [])
+      result.multiple = options.multiple
+      result.filterable = options.filterable
+      break
+    case 'time':
+      result.format = options.format
+      if (isDesktop) {
+        result.valueFormat = options.valueFormat
+      }
+      break
+    case 'date':
+      result.placeholder = options.placeholder
+      // result.startPlaceholder = options.startPlaceholder
+      // result.endPlaceholder = options.endPlaceholder
+      result.format = options.format
+      result.type = options.type
+      if (isDesktop) {
+        result.valueFormat = 'X'
+        if (options.type === 'daterange') {
+          result.rangeSeparator = ''
+          result.startPlaceholder = options.placeholder
         }
-        if (isDesktop) {
-          result.showPassword = options.showPassword
-          result.prepend = options.prepend
-          result.append = options.append
-        } else {
-          if (options.showPassword) {
-            result.type = 'password'
-          }
-          if (options.renderType === 4) {
-            result.type = 'tel'
-          }
-        }
-        break
-      case 'textarea':
-        if (options.isShowWordLimit) {
-          result.maxlength = options.max
-          result['show-word-limit'] = options.isShowWordLimit
-        }
-        result.type = 'textarea'
-        result.rows = options.rows
-        break
-      case 'number':
-        if (isDesktop) {
-          result.controls = options.controls
-          if (options.controls) {
-            result['controls-position'] = options.controlsPosition ? 'right' : ''
-          }
-        } else {
-          // result.inputWidth = '100px'
-          result.defaultValue = null
-          result.allowEmpty = true
-        }
-        if (options.isShowWordLimit) {
-          result.min = options.min
-          result.max = options.max
-        } else {
-          result.min = Number.NEGATIVE_INFINITY
-          result.max = Number.POSITIVE_INFINITY
-        }
-        result.step = options.step
-        result.precision = options.precision
-        break
-      case 'radio':
-      case 'checkbox':
-        result.options = get(state, `data[${options.dataKey}].list`, [])
-        break
-      case 'select':
-        result.options = get(state, `data[${options.dataKey}].list`, [])
-        result.multiple = options.multiple
-        result.filterable = options.filterable
-        break
-      case 'time':
-        result.format = options.format
-        if (isDesktop) {
-          result.valueFormat = options.valueFormat
-        }
-        break
-      case 'date':
-        result.placeholder = options.placeholder
-        // result.startPlaceholder = options.startPlaceholder
-        // result.endPlaceholder = options.endPlaceholder
-        result.format = options.format
-        result.type = options.type
-        if (isDesktop) {
-          result.valueFormat = 'X'
-          if (options.type === 'daterange') {
-            result.rangeSeparator = ''
-            result.startPlaceholder = options.placeholder
-          }
-          result.disabledDate = (time) => {
-            const {
-              startTime,
-              endTime,
-            } = options
-            const startDate = dayjs.unix(startTime)
-            const endDate = dayjs.unix(endTime)
-            const currentDate = dayjs(time)
-            let result = false
-            if (options.isShowWordLimit) {
-              result = currentDate.isBefore(startDate) || currentDate.isAfter(endDate)
-            }
-            return result
-          }
-        } else {
+        result.disabledDate = (time) => {
           const {
             startTime,
             endTime,
           } = options
-          switch (options.type) {
-            case 'date':
-            case 'datetime':
-              if (startTime && options.isShowWordLimit) {
-                result.minDate = dayjs.unix(startTime).toDate()
-              } else {
-                result.minDate = dayjs.unix(0).toDate()
-              }
-              if (endTime && options.isShowWordLimit) {
-                result.maxDate = dayjs.unix(endTime).toDate()
-              } else {
-                result.maxDate = dayjs().add(20, 'year').toDate()
-              }
-              break
-            case 'dates':
-              if (isEmpty(options.defaultValue)) {
-                result.defaultDate = null
-              } else {
-                options.defaultValue.map(e => dayjs.unix(e).toDate())
-              }
-              if (startTime && options.isShowWordLimit) {
-                result.minDate = dayjs.unix(startTime).toDate()
-              } else {
-                result.minDate = dayjs().subtract(1, 'year').toDate()
-              }
-              if (endTime && options.isShowWordLimit) {
-                result.maxDate = dayjs.unix(endTime).toDate()
-              } else {
-                result.maxDate = dayjs().add(1, 'year').toDate()
-              }
-              break
-            case 'daterange':
-              if (options.defaultValue) {
-                result.defaultDate = options.defaultValue.map(e => dayjs.unix(e).toDate())
-              } else {
-                result.defaultDate = null
-              }
-              if (startTime && options.isShowWordLimit) {
-                result.minDate = dayjs.unix(startTime).toDate()
-              } else {
-                result.minDate = dayjs().subtract(1, 'year').toDate()
-              }
-              if (endTime && options.isShowWordLimit) {
-                result.maxDate = dayjs.unix(endTime).toDate()
-              } else {
-                result.maxDate = dayjs().add(1, 'year').toDate()
-              }
-              break
+          const startDate = dayjs.unix(startTime)
+          const endDate = dayjs.unix(endTime)
+          const currentDate = dayjs(time)
+          let result = false
+          if (options.isShowWordLimit) {
+            result = currentDate.isBefore(startDate) || currentDate.isAfter(endDate)
           }
+          return result
         }
-        break
-      case 'cascader':
-        result.options = get(state, `data[${options.dataKey}].list`, [])
-        result.props = {
-          multiple: options.multiple,
-          checkStrictly: options.checkStrictly
+      } else {
+        const { startTime, endTime } = options
+        switch (options.type) {
+          case 'date':
+          case 'datetime':
+            if (startTime && options.isShowWordLimit) {
+              result.minDate = dayjs.unix(startTime).toDate()
+            } else {
+              result.minDate = dayjs.unix(0).toDate()
+            }
+            if (endTime && options.isShowWordLimit) {
+              result.maxDate = dayjs.unix(endTime).toDate()
+            } else {
+              result.maxDate = dayjs().add(20, 'year').toDate()
+            }
+            break
+          case 'dates':
+            if (isEmpty(options.defaultValue)) {
+              result.defaultDate = null
+            } else {
+              options.defaultValue.map(e => dayjs.unix(e).toDate())
+            }
+            if (startTime && options.isShowWordLimit) {
+              result.minDate = dayjs.unix(startTime).toDate()
+            } else {
+              result.minDate = dayjs().subtract(1, 'year').toDate()
+            }
+            if (endTime && options.isShowWordLimit) {
+              result.maxDate = dayjs.unix(endTime).toDate()
+            } else {
+              result.maxDate = dayjs().add(1, 'year').toDate()
+            }
+            break
+          case 'daterange':
+            if (options.defaultValue) {
+              result.defaultDate = options.defaultValue.map(e => dayjs.unix(e).toDate())
+            } else {
+              result.defaultDate = null
+            }
+            if (startTime && options.isShowWordLimit) {
+              result.minDate = dayjs.unix(startTime).toDate()
+            } else {
+              result.minDate = dayjs().subtract(1, 'year').toDate()
+            }
+            if (endTime && options.isShowWordLimit) {
+              result.maxDate = dayjs.unix(endTime).toDate()
+            } else {
+              result.maxDate = dayjs().add(1, 'year').toDate()
+            }
+            break
         }
-        // result.options = options.options
-        break
-      case 'slider':
-        result.step = options.step
-        result.min = options.min
+      }
+      break
+    case 'slider':{
+      result.step = options.step
+      result.min = options.min
+      result.max = options.max
+      break
+    }
+    case 'rate':{
+      result.allowHalf = options.allowHalf
+      if (!isDesktop) {
+        result.count = options.max
+      } else {
         result.max = options.max
-        break
-      case 'divider':
-        result.contentPosition = options.contentPosition
-        break
-      case 'rate':
-        result.allowHalf = options.allowHalf
-        if (!isDesktop) {
-          result.count = options.max
-        } else {
-          result.max = options.max
-        }
-        break
-      case 'html':
-        result.type = 'textarea'
-        result.rows = 4
-        result.action = options.action
-        result.maxSize = options.size * 1024 * 1024
-        result.config = {
-          placeholder: options.placeholder
-        }
-        if (!isDesktop) {
-          result.config.toolbar = {
-            items: [
-              'formattingOptions',
-              '|',
-              'uploadImage',
-              'bold',
-              'italic',
-              'underline',
-              'strikethrough',
-              'link',
-              'undo',
-              'redo'
-            ]
-          }
-          result.config.formattingOptions = [
-            'fontFamily',
-            'fontSize',
-            'fontColor',
-            'fontBackgroundColor',
+      }
+      break
+    }
+    case 'cascader':
+      result.options = get(state, `data[${options.dataKey}].list`, [])
+      result.props = {
+        multiple: options.multiple,
+        checkStrictly: options.checkStrictly
+      }
+      // result.options = options.options
+      break
+    case 'divider':
+      result.contentPosition = options.contentPosition
+      break
+    case 'html':
+      result.type = 'textarea'
+      result.rows = 4
+      result.action = options.action
+      result.maxSize = options.size * 1024 * 1024
+      result.config = {
+        placeholder: options.placeholder
+      }
+      if (!isDesktop) {
+        result.config.toolbar = {
+          items: [
+            'formattingOptions',
             '|',
-            'alignment',
-            'blockQuote',
-            '|',
-            'bulletedList',
-            'numberedList',
-            '|',
-            'outdent',
-            'indent',
-            '|',
-            'insertTable',
-            'removeFormat'
+            'uploadImage',
+            'bold',
+            'italic',
+            'underline',
+            'strikethrough',
+            'link',
+            'undo',
+            'redo'
           ]
         }
-        break
-      case 'uploadfile':
-        result.multiple = options.multiple
-        result.action = options.action
-        // result.size = options.size
-        result.accept = options.accept
-        result.maxSize = options.size * 1024 * 1024
-        if (isDesktop) {
-          result.limit = options.limit
-        } else {
-          result.maxCount = options.limit
-          result.onOversize = (file) => {
-            showToast(t('rf.validateMsg.fileSize', { size: options.size }))
-          }
+        result.config.formattingOptions = [
+          'fontFamily',
+          'fontSize',
+          'fontColor',
+          'fontBackgroundColor',
+          '|',
+          'alignment',
+          'blockQuote',
+          '|',
+          'bulletedList',
+          'numberedList',
+          '|',
+          'outdent',
+          'indent',
+          '|',
+          'insertTable',
+          'removeFormat'
+        ]
+      }
+      break
+    case 'uploadfile':
+      result.multiple = options.multiple
+      result.action = options.action
+      // result.size = options.size
+      result.accept = options.accept
+      result.maxSize = options.size * 1024 * 1024
+      if (isDesktop) {
+        result.limit = options.limit
+      } else {
+        result.maxCount = options.limit
+        result.onOversize = (file) => {
+          showToast(t('rf.validateMsg.fileSize', { size: options.size }))
         }
-        break
-      case 'region':
-        if (isDesktop) {
-          const region = new Region(areaList, {
-            isFilter: false,
-            selectType: options.selectType
-          })
-          result.options = region.getAll()
-          result.props = {
-            emitPath: false
-          }
-          result.filterable = options.filterable
-        } else {
-          result.areaList = areaList
-          result.columnsNum = options.selectType
+      }
+      break
+    case 'region':
+      if (isDesktop) {
+        const region = new Region(areaList, {
+          isFilter: false,
+          selectType: options.selectType
+        })
+        result.options = region.getAll()
+        result.props = {
+          emitPath: false
         }
-        break
-    }
-    specialHandling && specialHandling(node.type, result)
-    return result
-  })
+        result.filterable = options.filterable
+      } else {
+        result.areaList = areaList
+        result.columnsNum = options.selectType
+      }
+      break
+  }
+  return result
+  // return formItemProps
+  // return {
+  //   label: 'node.label',
+  // }
 }

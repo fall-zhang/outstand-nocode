@@ -1,7 +1,14 @@
-import { inject } from 'vue'
+import { inject ,ToRefs } from 'vue'
 import { RichFormProvider } from '../types/rich-form'
 
-export const useFormProvider = () => {
+export interface FeatureProvider extends ToRefs<RichFormProvider> {
+  isDesktop:ComputedRef<boolean>
+  isSelectRoot:ComputedRef<boolean>
+  basicFieldList:Ref<string[]>
+  containerFiledList:Ref<string[]>
+}
+
+export const useFormProvider = ():FeatureProvider => {
   const storeMap = new Map()
 
   function errorHandler() {
@@ -12,7 +19,8 @@ export const useFormProvider = () => {
     fieldsList: [], // 左侧菜单的配置
     store: [], // 中心区域当前配置的内容
     storeMap,
-    canvasScrollRef: { // 画布区域的 scroll
+    editForm: {},
+    canvasScrollRef: {
       value: undefined
     },
     selected: {
@@ -48,10 +56,15 @@ export const useFormProvider = () => {
         size: 'default',
         labelPosition: 'left',
         hideRequiredAsterisk: false,
-        labelWidth: ''
+        labelWidth: '',
+        height: 0,
+        width: 0
       },
       completeButton: {
-        text: ''
+        text: '',
+        theme: 'default',
+        preset: '',
+        style: undefined
       },
     },
     mobile: {
@@ -62,7 +75,10 @@ export const useFormProvider = () => {
         labelWidth: ''
       },
       completeButton: {
-        text: ''
+        text: '',
+        theme: 'default',
+        preset: '',
+        style: undefined
       },
     },
   })
