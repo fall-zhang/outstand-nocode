@@ -2,7 +2,7 @@ import { defineComponent, useAttrs } from 'vue'
 import Selection from '@Form/components/ElementSelection.vue'
 import LayoutDraggable from './DraggableDrop.vue'
 import { ElRow } from 'element-plus'
-import $style from './GridLayout.module.scss'
+import $style from './Layout.module.scss'
 export default defineComponent({
   name: 'GridLayout',
   inheritAttrs: false,

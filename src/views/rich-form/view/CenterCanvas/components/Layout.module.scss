@@ -1,0 +1,33 @@
+.TableLayout {
+  padding: 20px !important;
+  table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+  }
+  .area {
+    outline: 1px dashed #ddd;
+  }
+}
+
+.inlineLayout {
+  position: relative;
+
+  &>div {
+    display: flex;
+  }
+}
+
+.gridLayoutArea {
+  outline: 1px dashed #ddd;
+}
+
+.GridLayout {
+  width: 100%;
+
+  .el-col {
+    width: 100% !important;
+    max-width: inherit;
+    flex: 0 0 auto;
+  }
+}

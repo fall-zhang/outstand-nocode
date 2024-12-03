@@ -1,6 +1,6 @@
 import { defineComponent, watch, inject } from 'vue'
 import LayoutDraggable from './DraggableDrop.vue'
-import $style from './InlineLayout.module.scss'
+import $style from './Layout.module.scss'
 import { syncWidthByPlatform } from '@/utils'
 import { useFormProvider } from '@Form/hooks/use-form-provider'
 export default defineComponent({
@@ -30,8 +30,7 @@ export default defineComponent({
     }
     return () => {
       return (
-        <div
-          class={$style.inlineLayout}>
+        <div class={$style.inlineLayout}>
           <LayoutDraggable
             data-layout-type={'inline'}
             class={''}
