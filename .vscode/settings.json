@@ -6,14 +6,23 @@
   // 一些 i18n（i18next） 拥有 NameSpace 功能，你也可以通过添加该功能启用
   "i18n-ally.namespace": false,
   "cSpell.words": [
+    "antv",
+    "ckeditor",
+    "colspan",
+    "commitlint",
     "daterange",
     "datetimerange",
+    "fantable",
+    "immer",
     "monthrange",
-    "colspan",
+    "ohash",
     "rowspan",
+    "sortablejs",
+    "unplugin",
     "uploadfile",
+    "vant",
     "vuedraggable",
-    "unplugin"
+    "vueuse"
   ],
   // "i18n-ally.pathMatcher": "{locale}/{namespaces}.json",
 }

@@ -5,9 +5,12 @@ import vueTsEslintConfig from '@vue/eslint-config-typescript'
 export default [
   {
     name: 'app/files-to-lint',
-    files: ['**/*.{js,ts,mts,tsx,vue}'],
+    files: ['**/*.{ts,mts,tsx,vue}'],
   },
-
+  {
+    name: 'app/js-lint',
+    files: ['**/*.{js}'],
+  },
   {
     name: 'app/files-to-ignore',
     ignores: ['**/dist/**', '**/dist-ssr/**', '**/coverage/**'],
@@ -17,10 +20,8 @@ export default [
   ...pluginVue.configs['flat/essential'],
   ...vueTsEslintConfig(),
   {
-    files: ['**/*.{ts,mts,tsx,vue}'],
     rules:{
       'no-undef': 0, // 交给 TS 处理未命名的变量
-      'no-unused-vars':1,
       'vue/html-self-closing': 'off',
       'vue/html-indent': ['off', 2],
       'vue/singleline-html-element-content-newline': 'off',

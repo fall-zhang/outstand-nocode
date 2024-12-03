@@ -35,11 +35,11 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: `
-        @use 'sass:math';
-        @use 'sass:map';
-        @use '@/styles/er-base.scss' as *;
-        `
+        // additionalData: `
+        // @use 'sass:math';
+        // @use 'sass:map';
+        // @use '@/styles/er-base.scss' as *;
+        // `
       }
     }
   },
