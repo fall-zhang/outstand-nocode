@@ -16,29 +16,34 @@
       </LayoutInlineLayout>
       <Selection v-else hasWidthScale hasCopy hasDel hasDrag hasMask :data="element" :parent="props.data">
         <template v-if="FE.isDesktop">
-          <component :is="findComponent(element.type)" v-if="element.type === 'divider'" :data="element" :params="useProps({
+          <component :is="findComponent(element.type)" v-if="element.type === 'divider'" :data="element" :params="useFormItemProps({
             state: FE,
             data: element,
             isDesktop: FE.isDesktop
           })">
           </component>
-          <el-form-item v-else v-bind="useProps({
-            state: FE,
-            element,
-            isDesktop: FE.isDesktop
-          })">
-            <component :is="findComponent(element.type)" :data="element" :params="useProps({
+          <template v-else>
+            <el-form-item v-bind="useFormItemProps({
               state: FE,
               data: element,
               isDesktop: FE.isDesktop
-            })"></component>
-          </el-form-item>
+            })">
+              {{ useFormItemProps({
+                state: FE,
+                data: element,
+                isDesktop: FE.isDesktop
+              }) }}
+              <component :is="findComponent(element.type)" :data="element" :params="element"></component>
+              {{ element }}
+            </el-form-item>
+          </template>
         </template>
-        <component v-else :is="findComponent(element.type)" :data="element" :params="useProps({
+        <component v-else :is="findComponent(element.type)" :data="element" :params="useFormItemProps({
           state: FE,
           data: element,
           isDesktop: FE.isDesktop
-        })"></component>
+        })">
+        </component>
       </Selection>
     </template>
     <template #footer>
@@ -53,7 +58,7 @@ import {
   defineAsyncComponent,
 } from 'vue'
 import type { Component } from 'vue'
-import { useProps } from '@Form/hooks/use-props'
+import { useProps as useFormItemProps } from '@Form/hooks/use-props'
 import LayoutGridLayout from './LayoutGrid'
 import LayoutTabsLayout from './LayoutTabs.vue'
 import LayoutCollapseLayout from './LayoutCollapse.vue'

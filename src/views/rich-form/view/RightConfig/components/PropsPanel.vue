@@ -244,11 +244,6 @@ const typeProps = useProps({
   state,
   data: selected.value,
   isDesktop: true,
-  isRoot: false
-}, (type: string, props: any) => {
-  if (selected.value.type === 'slider') {
-    delete props.disabled
-  }
 })
 const checkLogicData = () => {
   if (checkIdExistInLogic(selected.value.id, state.logic)) {

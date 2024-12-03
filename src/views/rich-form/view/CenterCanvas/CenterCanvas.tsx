@@ -1,5 +1,5 @@
 import DraggableDrop from './components/DraggableDrop.vue'
-import { useProps } from '@Form/hooks/use-props'
+import { useFormProps } from '@Form/hooks/use-form-props'
 import { ElForm, ElScrollbar } from 'element-plus'
 import { Form as VanForm } from 'vant'
 import $style from './CenterCanvas.module.scss'
@@ -12,11 +12,9 @@ export default defineComponent({
     const { isDesktop, handler, canvasScrollRef, store } = useFormProvider()
     const state = useFormProvider()
     const form = ref('')
-    const typeProps = useProps({
-      state,
-      data: state,
+    const typeProps = useFormProps({
+      state:state,
       isDesktop: unref(isDesktop),
-      isRoot: true
     })
     const RenderForm = unref(isDesktop) ? ElForm : VanForm
     function onClickCenter () {
