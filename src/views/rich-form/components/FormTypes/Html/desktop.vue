@@ -1,12 +1,10 @@
-<script>
-import CKEditor from '@/componets/module/ckeditor'
-export default {
+<script lang="ts" setup>
+import CKEditor from '@/components/module/ckeditor/index'
+defineOptions({
   name: 'FeHtmlDesktop',
   inheritAttrs: false,
   customOptions: {}
-}
-</script>
-<script setup>
+})
 const props = defineProps({
   data: {
     require: true,

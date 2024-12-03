@@ -1,14 +1,12 @@
-<script>
+<script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
 import { ref, computed } from 'vue'
-import CKEditor from '@/componets/module/ckeditor'
-export default {
+import CKEditor from '@/components/module/ckeditor/index'
+defineOptions({
   name: 'FeHtmlMobile',
   inheritAttrs: false,
   customOptions: {}
-}
-</script>
-<script setup>
+})
 const {
   t
 } = useI18n()
