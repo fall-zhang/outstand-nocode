@@ -77,7 +77,7 @@ const curSelect = computed(() => {
 
 .d-icon {
   &:hover {
-    color: $primary-color;
+    color: var(--primary-color);
   }
 }
 

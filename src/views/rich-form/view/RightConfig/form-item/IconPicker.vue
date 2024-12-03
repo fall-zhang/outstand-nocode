@@ -1,7 +1,7 @@
 <!-- icon 选择 -->
 <script setup lang="ts">
-import Icon from '@/assets'
-const emit = defineEmits(['listener'])
+import Icon from '@/assets/index.vue'
+const emit = defineEmits(['change', 'update:modelValue'])
 type NodeItem = {
   label: string
   value: string | number
@@ -9,26 +9,24 @@ type NodeItem = {
   icon?: string
 }
 type Prop = {
+  modelValue?: string | number | boolean
   label?: string
   nodes?: NodeItem[]
   height?: number
   property?: string
-  val?: string | number | boolean
   fontSize?: number
   layoutType?: 'breakLine' | 'inline' | 'slot'
 }
-const { height = 50, property = '', fontSize = 16, layoutType = 'breakLine' } = defineProps<Prop>()
-const fireEvent = (property: string, item: unknown) => {
-  emit('listener', {
-    property,
-    data: item
-  })
+const { height = 50, fontSize = 66 } = defineProps<Prop>()
+const fireEvent = (property: string | number) => {
+  emit('change', property)
+  emit('update:modelValue', property)
 }
 </script>
 <template>
   <ul ref="elements" class="form-content" :style="{ height: height + 2 + 'px' }">
-    <li @click="() => !item.disabled && fireEvent(property, item)" v-for="item in nodes" :key="item.value" :class="{
-      'Selected': val !== undefined && item.value === val,
+    <li @click="() => !item.disabled && fireEvent(item.value)" v-for="item in nodes" :key="item.value" :class="{
+      'selected': modelValue !== undefined && item.value === modelValue,
       'Disabled': item.disabled
     }">
       <Icon :icon="item.icon || ''" :fontSize="fontSize" />
@@ -36,37 +34,42 @@ const fireEvent = (property: string, item: unknown) => {
   </ul>
 </template>
 <style lang="scss" scoped>
-.radio-button-group {
-  padding: 0 0 10px;
+.form-content {
+  display: flex;
+  width: 100%;
 
-  .form-content {
-    display: flex;
-    width: 100%;
+  li {
+    flex: 1;
+    box-sizing: border-box;
+    border: 1px solid #DDDDDD;
+    border-radius: 4px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
 
-    li {
-      flex: 1;
-      border: 1px solid #DDDDDD;
-      border-radius: 4px;
-      display: inline-flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-
-      &:hover {
-        border-color: $primary-color;
-      }
-
-      &.Disabled {
-        background: #F2F2F2;
-        cursor: not-allowed;
-      }
+    &:hover {
+      border-color: var(--primary-color);
     }
 
-    li:not(:last-child) {
-      margin-right: 8px;
+    &.selected {
+      // background: #F2F2F2;
+      // border-width: 3px;
+      outline: 3px var(--primary-color);
+    }
+
+    &.Disabled {
+      background: #F2F2F2;
+      cursor: not-allowed;
     }
   }
 
+  li:not(:last-child) {
+    margin-right: 8px;
+  }
+}
+
+.radio-button-group {
   .el-form-item__label {
     padding-right: 0;
   }

@@ -14,13 +14,13 @@ type Recurrence = 'array' | 'object'
 // 以 children 的 keyId 作为 key 的对象构成
 
 
-type OptionalSelect = Array<{ label: string, value: string}>
-interface FormOption {
+type OptionalSelect = Array<{ label: string, value: string, icon?:string }>
+interface FormOption< T = OptionalSelect > {
   keyId: string,
   keyName: string,
   setters: Array<SettersSimple | SettersComplex | Recurrence | MultiKeySetter>,
   multiKeys?:string[]
-  optionalValue?: OptionalSelect
+  optionalValue?: T
   // 如果只有一个 setter，作为这个 setter v-bind 的配置
   config?: Record<string, unknown>
   tips?: string

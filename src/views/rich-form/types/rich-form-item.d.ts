@@ -10,7 +10,7 @@ export type PlatformConf = {
 }
 export type BaseItemType = 'input'|'number'|'select'|'textarea'|'radio'|'checkbox'|'time'|'date'|'rate'|'switch'|'slider'
 // 'table'
-type ContainerItemTypes = 'col' | 'grid' | 'tabs' |'collapse' | 'divider' | 'inline'
+export type ContainerItemTypes = 'col' | 'grid' | 'tabs' |'collapse' | 'divider' | 'inline'
 
 
 type FieldItemRoot = {

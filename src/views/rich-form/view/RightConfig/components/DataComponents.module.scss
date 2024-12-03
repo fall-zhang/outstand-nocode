@@ -3,7 +3,7 @@
     font-size: 16px;
 
     &:hover {
-      color: $primary-color;
+      color: var(--primary-color);
     }
   }
 
@@ -84,8 +84,8 @@
     &.Selected {
       border-color: var(--el-color-primary);
 
-      &>.#{$namespace}-ConfigData2__del,
-      &>.#{$namespace}-ConfigData2__hide {
+      &>.ConfigData2__del,
+      &>.ConfigData2__hide {
         display: block;
       }
     }

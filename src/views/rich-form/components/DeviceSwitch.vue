@@ -33,7 +33,7 @@ const emit = defineEmits(['update:modelValue'])
     border-radius: 4px 0px 0px 4px;
 
     &.active+i {
-      border-left-color: $primary-color;
+      border-left-color: var(--primary-color);
     }
   }
 
@@ -43,8 +43,8 @@ const emit = defineEmits(['update:modelValue'])
 
   &.active,
   &:hover {
-    color: $primary-color;
-    border-color: $primary-color;
+    color: var(--primary-color);
+    border-color: var(--primary-color);
   }
 }
 </style>

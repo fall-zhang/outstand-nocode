@@ -100,7 +100,7 @@ const handleTypeListener = ({ property, data }: any) => {
 
       &:hover,
       &.active {
-        border-color: $primary-color;
+        border-color: var(--primary-color);
       }
     }
   }

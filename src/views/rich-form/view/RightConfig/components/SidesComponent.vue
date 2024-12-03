@@ -44,7 +44,6 @@ function onChangeValue(prop: 'left' | 'top' | 'right' | 'bottom', value?: number
     currentSelect.value.desktop = {
       size: '',
       labelPosition: '',
-      label: '',
       style: {
         marginLeft: ''
       }

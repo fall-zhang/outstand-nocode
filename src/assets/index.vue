@@ -53,7 +53,7 @@ const element = ref('')
   }
 
   &.is-disabled {
-    color: $disabled-color;
+    color: var(--disabled-color);
     cursor: not-allowed;
   }
 }

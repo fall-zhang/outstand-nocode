@@ -721,7 +721,7 @@ onMounted(() => {
 
     .el-tooltip__trigger {
       font-size: 12px;
-      color: $primary-color;
+      color: var(--primary-color);
     }
   }
 

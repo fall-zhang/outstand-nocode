@@ -277,7 +277,7 @@ defineOptions({
   }
 
   &.Selected {
-    outline: 1px solid $primary-color;
+    outline: 1px solid var(--primary-color);
 
     &>.topLeft,
     &>.topRight,
@@ -306,7 +306,7 @@ defineOptions({
   .dragIcon,
   .addCol {
     border-radius: 4px;
-    background: $primary-color;
+    background: var(--primary-color);
     width: 24px;
     height: 24px;
     color: #fff;

@@ -294,10 +294,10 @@ const handleSuccess = () => {
     }
 
     li.selectedBg {
-      border-color: $primary-color;
+      border-color: var(--primary-color);
 
       &+li {
-        border-left-color: $primary-color;
+        border-left-color: var(--primary-color);
       }
     }
   }
@@ -320,7 +320,7 @@ const handleSuccess = () => {
       }
 
       &.selectedBg {
-        border-color: $primary-color;
+        border-color: var(--primary-color);
       }
     }
   }

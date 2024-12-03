@@ -16,6 +16,11 @@ const configRoot:FormOption[] = [{
   keyName: '标签对齐方式',
   tips: '',
   setters: ['icon-picker'],
+  optionalValue: [
+    { label: 'top', value: 'large', icon:'labelStructureP1' },
+    { label: 'left', value: '' , icon:'labelStructureP2' },
+    { label: 'right', value: 'small', icon:'labelStructureP3' },
+  ],
   default: '',
 }]
 

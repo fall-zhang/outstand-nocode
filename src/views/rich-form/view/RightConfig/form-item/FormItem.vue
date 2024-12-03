@@ -25,8 +25,7 @@
         style="width: 100px;margin-left: 8px;" :min="0" :max="60" @change="onChangeValue"></el-slider>
       <el-select v-else-if="currentSetter == 'select'" v-model="formValue" size="small" :min="0" :max="20"
         @change="onChangeValue">
-        <el-option v-for="optionItem in formOption.optionalValue " v-bind="optionItem"
-          :key="optionItem.value"></el-option>
+        <el-option v-for="optionItem in formOption.optionalValue " v-bind="optionItem" :key="optionItem.value" />
       </el-select>
     </div>
     <!-- 切换按钮 -->
@@ -43,8 +42,8 @@
     <RadioButton v-else-if="currentSetter === 'radio-button'" :radioList="formOption.optionalValue" v-model="formValue"
       class="complex-container" @change="onChangeComplexValue">
     </RadioButton>
-    <IconPicker v-else-if="currentSetter === 'icon-picker'" v-model="formValue" class="complex-container"
-      @change="onChangeComplexValue">
+    <IconPicker v-else-if="currentSetter === 'icon-picker'" v-model="formValue" :nodes="formOption.optionalValue"
+      class="complex-container" @change="onChangeComplexValue">
     </IconPicker>
     <FormJSON v-else-if="currentSetter === 'json'" v-model="formValue" class="complex-container"
       @change="onChangeComplexValue">
@@ -75,7 +74,7 @@ const setterIndex = ref<number>(0)
 const currentSetter = ref<string>('')
 const allSetters = ref<string[]>([])
 const basicSetterType = ref(['input', 'color', 'switch', 'slider', 'number', 'select'])
-const complexSetterType = ref(['json', 'textarea'])
+const complexSetterType = ref(['json', 'textarea', 'radio-button','icon-picker'])
 onBeforeMount(() => {
   const isDevelop = import.meta.env.DEV
   if (isDevelop) {

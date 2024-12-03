@@ -4,7 +4,7 @@
  */
 
 import { ElMessage } from 'element-plus'
-import * as CKEDITOR from 'ckeditor5'
+import { DecoupledEditor} from 'ckeditor5'
 import { markRaw, defineComponent, onMounted, ref, onBeforeUnmount, watch } from 'vue'
 import { debounce } from 'lodash-es'
 import './style/index.js'
@@ -201,11 +201,11 @@ export default defineComponent({
       if (props.modelValue) {
         editorConfig.initialData = props.modelValue
       }
-      if (props.platform === 'mobile') {
-        // console.log(CKEDITOR)
-        editorConfig.extraPlugins.push(CKEDITOR.plugins.FormattingOptions)
-      }
-      CKEDITOR.DecoupledEditor.create(element.value, editorConfig)
+      // if (props.platform === 'mobile') {
+      //   // console.log(CKEDITOR)
+      //   // editorConfig.extraPlugins.push(Plugin.FormattingOptions)
+      // }
+      DecoupledEditor.create(element.value, editorConfig)
         .then(editor => {
           toolbar.value.appendChild(editor.ui.view.toolbar.element)
           container.value.appendChild(editor.ui.view.editable.element)

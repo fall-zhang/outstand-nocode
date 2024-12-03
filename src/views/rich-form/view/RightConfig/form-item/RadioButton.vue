@@ -1,6 +1,6 @@
 <!-- 右侧用于 -->
 <script setup lang="ts">
-const emit = defineEmits(['listener'])
+const emit = defineEmits(['change', 'update:modelValue'])
 type NodeItem = {
   label: string | number
   value: string | number
@@ -15,16 +15,14 @@ type Prop = {
   fontSize?: number
   layoutType?: 'breakLine' | 'inline' | 'slot'
 }
-const { property = '', fontSize = 16, layoutType = 'breakLine' } = defineProps<Prop>()
-const fireEvent = (property: string, item: unknown) => {
-  emit('listener', {
-    property,
-    data: item
-  })
+defineProps<Prop>()
+const onChangeRadio = (property: string | number | boolean | undefined) => {
+  emit('change', property)
+  emit('update:modelValue', property)
 }
 </script>
 <template>
-  <el-radio-group size="small" :modelValue="modelValue" @change="(curVal) => fireEvent(property, { value: curVal })">
+  <el-radio-group size="small" :modelValue="modelValue" @change="onChangeRadio">
     <el-radio-button v-for="item in radioList" :label="item.label" :value="item.value" :key="item.value">
       <!-- {{ item.label }} -->
     </el-radio-button>
@@ -48,7 +46,7 @@ const fireEvent = (property: string, item: unknown) => {
       cursor: pointer;
 
       &:hover {
-        border-color: $primary-color;
+        border-color: var(--primary-color);
       }
 
       &.Disabled {

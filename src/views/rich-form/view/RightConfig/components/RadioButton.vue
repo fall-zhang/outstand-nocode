@@ -74,7 +74,7 @@ const fireEvent = (property: string, item: unknown) => {
       cursor: pointer;
 
       &:hover {
-        border-color: $primary-color;
+        border-color: var(--primary-color);
       }
 
       &.Disabled {

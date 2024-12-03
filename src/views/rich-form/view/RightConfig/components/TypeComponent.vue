@@ -49,13 +49,12 @@ const fireEvent = (item: any) => {
   </el-form-item>
 </template>
 <style lang="scss" scoped>
-:deep(.radio-button-group) {
-  padding: 0 0 10px;
 
+.radio-button-group {
   .form-content {
     display: flex;
     width: 100%;
-
+  
     li {
       flex: 1;
       border: 1px solid #DDDDDD;
@@ -64,21 +63,23 @@ const fireEvent = (item: any) => {
       justify-content: center;
       align-items: center;
       cursor: pointer;
-
+  
       &:hover {
-        border-color: $primary-color;
+        border-color: var(--primary-color);
       }
-
+  
       &.Disabled {
         background: #F2F2F2;
         cursor: not-allowed;
       }
     }
-
+  
     li:not(:last-child) {
       margin-right: 8px;
     }
   }
+  padding: 0 0 10px;
+
 
   .el-form-item__label {
     padding-right: 0;

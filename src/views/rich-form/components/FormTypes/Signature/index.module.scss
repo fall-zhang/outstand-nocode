@@ -5,7 +5,7 @@
   border: black 1px solid;
 
   .clear {
-    color: $primary-color;
+    color: var(--primary-color);
     position: absolute;
     z-index: 1;
     right: 10px;
@@ -44,7 +44,7 @@
   }
 
   .clear {
-    color: $primary-color;
+    color: var(--primary-color);
     position: absolute;
     z-index: 1;
     right: 10px;

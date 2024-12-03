@@ -22,7 +22,6 @@
 </template>
 
 <script lang="ts" setup>
-
 import { useI18n } from 'vue-i18n'
 import { deepClone } from '@/utils'
 import { DraggableWrap } from '@Form/components/DraggableWrap'
@@ -85,4 +84,6 @@ const dragOptions = reactive({
 
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+
+</style>

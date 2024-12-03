@@ -7,7 +7,8 @@ import GlobalConfigPanel from './ConfigPanelGlobal.vue'
 import { isEmpty } from '@/utils/utils'
 import { fieldLabel } from '@Form/utils/field'
 import { useFormProvider } from '../../hooks/use-form-provider'
-import PagePanel from './PagePanel.vue'
+import ConfigPanelConf from './ConfigPanelConf.vue'
+import { BaseItemType, ContainerItemTypes } from '../../types/rich-form-item'
 defineOptions({
   name: 'ConfigPanel',
   inheritAttrs: false,
@@ -110,6 +111,11 @@ watch(selected, () => {
 }, {
   immediate: true
 })
+const config = ref<Record<string, any>>({})
+const selectType = ref<BaseItemType | ContainerItemTypes | 'root'>()
+function onChangeConfig(newVal: Record<string, any>) {
+  config.value = newVal
+}
 </script>
 <template>
   <el-aside :class="['right-panel', $style.config]" width="320px">
@@ -121,7 +127,7 @@ watch(selected, () => {
     </el-breadcrumb>
     <el-form ref="form" :model="selected" :rules="rules" label-width="120px" label-position="top">
       <el-scrollbar :class="$style.wrap">
-        <PagePanel type="root" :receive-value="{}"> </PagePanel>
+        <ConfigPanelConf type="root" :receive-value="config" @change="onChangeConfig"></ConfigPanelConf>
         <GlobalConfigPanel v-if="isSelectRoot"></GlobalConfigPanel>
         <PropsPanel v-else :key="selected.id" />
       </el-scrollbar>

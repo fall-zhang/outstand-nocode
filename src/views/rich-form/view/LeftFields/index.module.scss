@@ -39,8 +39,8 @@
       display: flex;
 
       &:hover {
-        border-color: $primary-color;
-        color: $primary-color;
+        border-color: var(--primary-color);
+        color: var(--primary-color);
       }
 
       &[draggable="true"] {

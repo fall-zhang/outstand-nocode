@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import './theme/index.scss'
+
 import { ClickOutside as vClickOutside, ElMessage } from 'element-plus'
 import { reactive, watch } from 'vue'
 import IconTooltip from '@/components/more-layer/tooltip/IconTooltip.vue'
@@ -21,6 +22,7 @@ import { AllFieldType, FieldItemBase, FieldItemContainer } from './types/rich-fo
 import richFormConfig from './config/richFormConfig'
 import { generateOptions } from '@/utils/generateOptions'
 import { nanoid } from 'nanoid'
+// import PagePanel from './view/RightConfig/PagePanel.vue'
 const emit = defineEmits(['changeParams', 'save', 'changeLang'])
 const props = defineProps({
   ...defaultProps,
@@ -335,6 +337,7 @@ const onResetData = () => {
       <Icon @click="onCollapseRight" :class="[$style.arrowRight, !isFoldConfig && $style.close]" icon="arrowRight" />
     </div>
     <ConfigPanel v-show="isFoldConfig" v-if="isShowConfig"></ConfigPanel>
+    <!-- <PagePanel></PagePanel> -->
   </el-container>
 </template>
 
@@ -374,7 +377,7 @@ const onResetData = () => {
       align-items: center;
 
       &:hover {
-        color: $primary-color;
+        color: var(--primary-color);
         background: #ECF6FF;
       }
     }
@@ -417,7 +420,7 @@ const onResetData = () => {
     transition: .3s;
 
     &:hover {
-      color: $primary-color;
+      color: var(--primary-color);
     }
 
     svg {

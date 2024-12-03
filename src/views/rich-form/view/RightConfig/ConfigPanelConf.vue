@@ -15,8 +15,9 @@
         </a>
       </div>
     </div> -->
-  {{ currentOptionList }}
+  <!-- {{ currentOptionList }} -->
   <ul class="cell-group">
+    {{ currentForm }}
     <template v-for="option in currentOptionList" :key="option.keyId">
       <el-popover v-if="option.setters.includes('array')" placement="left" width="160px">
         <template #default>

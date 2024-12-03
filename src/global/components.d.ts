@@ -81,10 +81,13 @@ declare module 'vue' {
     VanButton: typeof import('vant/es')['Button']
     VanCalendar: typeof import('vant/es')['Calendar']
     VanDatePicker: typeof import('vant/es')['DatePicker']
+    VanDivider: typeof import('vant/es')['Divider']
     VanField: typeof import('vant/es')['Field']
     VanIcon: typeof import('vant/es')['Icon']
     VanPickerGroup: typeof import('vant/es')['PickerGroup']
     VanPopup: typeof import('vant/es')['Popup']
+    VanRate: typeof import('vant/es')['Rate']
+    VanStepper: typeof import('vant/es')['Stepper']
     VanTimePicker: typeof import('vant/es')['TimePicker']
   }
   export interface ComponentCustomProperties {
