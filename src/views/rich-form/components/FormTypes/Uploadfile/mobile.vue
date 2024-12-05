@@ -1,15 +1,14 @@
-<script>
-import { ref, nextTick, watch } from 'vue'
+<script lang="ts" setup>
+import { ref } from 'vue'
 import { showToast } from 'vant'
-import _ from 'lodash-es'
-import { useI18n, useFetch } from 'vue-i18n'
-export default {
+import { useI18n } from 'vue-i18n'
+import { useFetch } from '@vueuse/core'
+import { deepClone } from '@/utils/utils'
+defineOptions({
   name: 'FeUploadMobile',
   inheritAttrs: false,
   customOptions: {}
-}
-</script>
-<script setup>
+})
 const {
   t
 } = useI18n()
@@ -25,7 +24,7 @@ const props = defineProps({
     default: () => ({})
   }
 })
-const fileList = ref(_.cloneDeep(props.data.options.defaultValue))
+const fileList = ref(deepClone(props.data.options.defaultValue))
 const afterRead = async (file) => {
   const files = Array.isArray(file) ? file : [file]
   console.log(files)
