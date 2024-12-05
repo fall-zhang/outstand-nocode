@@ -1,11 +1,9 @@
-<script>
-export default {
+<script lang="ts" setup>
+defineOptions({
   name: 'FeCascaderMobile',
   inheritAttrs: false,
   customOptions: {}
-}
-</script>
-<script setup>
+})
 const props = defineProps({
   data: {
     require: true,
@@ -20,7 +18,7 @@ const props = defineProps({
 })
 </script>
 <template>
-  <el-cascader :class="$style.cascaderPC" v-model="data.options.defaultValue" v-bind="params" />
+  <el-cascader :class="$style.cascaderPC" :model-value="data.options.defaultValue" v-bind="params" />
 </template>
 
 <style scoped module lang="scss" src="./index.module.scss"></style>

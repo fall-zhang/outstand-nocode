@@ -1,11 +1,10 @@
-<script>
-export default {
+<script lang="ts" setup>
+defineOptions({
   name: 'FeRateMobile',
   inheritAttrs: false,
   customOptions: {}
-}
-</script>
-<script setup>
+})
+defineEmits(['change'])
 const props = defineProps({
   data: {
     require: true,
@@ -20,19 +19,11 @@ const props = defineProps({
 })
 </script>
 <template>
-  <van-field
-    readonly
-    v-bind="params"
-  >
+  <van-field readonly v-bind="params">
     <template #input>
-      <van-rate
-        v-model="data.options.defaultValue"
-        v-bind="params"
-      />
+      <van-rate :model-value="data.options.defaultValue" @change="ev => $emit('change', ev)" v-bind="params" />
     </template>
   </van-field>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

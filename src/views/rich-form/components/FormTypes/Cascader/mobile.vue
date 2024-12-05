@@ -1,11 +1,9 @@
-<script>
-export default {
+<script lang="ts" setup>
+defineOptions({
   name: 'FeCascaderMobile',
   inheritAttrs: false,
   customOptions: {}
-}
-</script>
-<script setup>
+})
 const props = defineProps({
   data: {
     require: true,
@@ -25,7 +23,7 @@ const onClear = () => {
 <template>
   <van-field readonly :class="$style.cascaderMobile" v-bind="params">
     <template #input>
-      <el-cascader v-model="data.options.defaultValue" v-bind="params" :popper-class="$style.cascader" />
+      <el-cascader :model-value="data.options.defaultValue" v-bind="params" :popper-class="$style.cascader" />
     </template>
     <template v-if="data.options.defaultValue && data.options.defaultValue.length && params.clearable" #button>
       <van-icon @touchstart.stop="onClear" name="clear" />

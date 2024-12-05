@@ -1,11 +1,9 @@
-<script>
-export default {
+<script lang="ts" setup>
+defineOptions({
   name: 'FeCheckboxDesktop',
   inheritAttrs: false,
   customOptions: {}
-}
-</script>
-<script setup>
+})
 const props = defineProps({
   data: {
     require: true,
@@ -23,7 +21,7 @@ const emit = defineEmits(['change'])
 const defaultValue = ref()
 </script>
 <template>
-  <el-checkbox-group :class="[radioGroup, data.options.displayStyle === 'block' && $style.blockLayout]"
+  <el-checkbox-group :class="[data.options.displayStyle === 'block' && $style.blockLayout]"
     v-model="defaultValue" v-bind="params" @change="(newVal) => emit('change', newVal)">
     <el-checkbox v-for="item in params.options" :key="item.value" :label="item.value">
       {{ item.label }}
