@@ -1,4 +1,4 @@
-import { FormOption } from './form-config'
+import { FormOption } from '../form-config'
 
 export const configStyle:FormOption[] = [
   {

@@ -1,4 +1,4 @@
-import { configMap } from './common'
+import { configMap } from './common/common'
 import { FormOption } from './form-config'
 
 const configInput:FormOption[] = [
