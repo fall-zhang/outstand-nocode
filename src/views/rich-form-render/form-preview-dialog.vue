@@ -12,9 +12,9 @@
 </template>
 
 <script lang="ts" setup>
-import FormPreview from './form-preview/form-preview.vue'
+import FormPreview from './form-render.vue'
 const previewPlatform = ref<'pc' | 'mobile'>('pc')
- defineProps({
+defineProps({
   visible: {
     default: false,
     type: Boolean

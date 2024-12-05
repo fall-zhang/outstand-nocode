@@ -33,13 +33,13 @@ import { v4 as uuid } from 'uuid'
 
 // const jsonEditor = ref(null)
 const ChartCanvas = defineAsyncComponent(() => import('./chart-canvas/ChartCanvas.vue'))
-const RightPanel = defineAsyncComponent(() => import('./right-panel/RightPanel.vue'))
+const RightPanel = defineAsyncComponent(() => import('./right-panel/PagePanel.vue'))
 const router = useRouter()
 
 const onClickBack = () => router.go(-1)
 
 const currentKey = ref(uuid())
-let chartOption = ref({
+const chartOption = ref({
   xAxis: {
     show: true,
     type: 'category',
