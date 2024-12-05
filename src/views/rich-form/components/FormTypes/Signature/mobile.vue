@@ -1,17 +1,16 @@
-<script>
+<script lang="ts" setup>
 import { ElLoading } from 'element-plus'
 import { ref, nextTick, watch, unref } from 'vue'
 import SignaturePad from 'signature_pad'
 import Icon from '@/assets'
-import { useI18n, useFetch } from 'vue-i18n'
+import { useI18n } from 'vue-i18n'
+import { useFetch } from '@vueuse/core'
 import { fileToDataURL, dataURLtoFile } from '@/utils/fileData'
-export default {
+defineOptions({
   name: 'FeSignatureMobile',
   inheritAttrs: false,
   customOptions: {}
-}
-</script>
-<script setup>
+})
 const {
   t
 } = useI18n()
