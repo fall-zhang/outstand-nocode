@@ -16,7 +16,7 @@
       </LayoutInlineLayout>
       <Selection v-else hasWidthScale hasCopy hasDel hasDrag hasMask :data="element" :parent="props.data">
         <template v-if="FE.isDesktop">
-          <component :is="findComponent(element.type)" v-if="element.type === 'divider'" :data="element" :params="useFormItemProps({
+          <component :is="currentCompoList(element.type)" v-if="element.type === 'divider'" :data="element" :params="useFormItemProps({
             state: FE,
             data: element,
             isDesktop: FE.isDesktop
@@ -33,12 +33,13 @@
                 data: element,
                 isDesktop: FE.isDesktop
               }) }}
-              <component :is="findComponent(element.type)" :data="element" :params="element"></component>
+              {{ loadComponentAsync[element.type] }}
+              <component :is="loadComponentAsync[element.type]" :data="element" :params="element"></component>
               {{ element }}
             </el-form-item>
           </template>
         </template>
-        <component v-else :is="findComponent(element.type)" :data="element" :params="useFormItemProps({
+        <component v-else :is="currentCompoList(element.type)" :data="element" :params="useFormItemProps({
           state: FE,
           data: element,
           isDesktop: FE.isDesktop
@@ -57,7 +58,7 @@ import {
   watch,
   defineAsyncComponent,
 } from 'vue'
-import type { Component } from 'vue'
+import type { AsyncComponentLoader, Component } from 'vue'
 import { useProps as useFormItemProps } from '@Form/hooks/use-props'
 import LayoutGridLayout from './LayoutGrid'
 import LayoutTabsLayout from './LayoutTabs.vue'
@@ -103,13 +104,41 @@ const loadComponent = () => {
     const compoName = type.slice(0, 1).toUpperCase() + type.slice(1)
     // console.log("🚀 ~ findComponent ~ compoName:", compoName)
     if (!info) {
-      info = componentMap[type] = defineAsyncComponent(() => import(`@Form/components/FormTypes/${compoName}/${FE.platform}.vue`))
+      componentMap[type] = defineAsyncComponent(() => import(`@Form/components/FormTypes/${compoName}/${FE.platform}.vue`))
+      info = componentMap[type]
     }
     return info
   }
 }
 
-const findComponent = loadComponent()
+const loadComponentAsync = computed(() => {
+  const componentMap: Record<string, Component> = {}
+  if (FE.platform === 'desktop') {
+    const desktopCompo = import.meta.glob(`@Form/components/FormTypes/**/desktop.vue`)
+    // 示例 key： '/src/views/rich-form/components/FormTypes/Cascader/desktop.vue'
+    Object.keys(desktopCompo).forEach((key) => {
+      const startIndex = '/src/views/rich-form/components/FormTypes/'.length
+      const endIndex = key.lastIndexOf('/desktop.vue')
+      const fileKey = key.slice(startIndex, endIndex)
+      const componentKey = fileKey.slice(0, 1).toLowerCase() + fileKey.slice(1)
+      componentMap[componentKey] = defineAsyncComponent(desktopCompo[key] as AsyncComponentLoader)
+    })
+  } else if (FE.platform === 'mobile') {
+    const mobileCompo = import.meta.glob(`@Form/components/FormTypes/**/mobile.vue`)
+    // 示例 key：'/src/views/rich-form/components/FormTypes/Cascader/mobile.vue'
+    Object.keys(mobileCompo).forEach((key) => {
+      const startIndex = '/src/views/rich-form/components/FormTypes/'.length
+      const endIndex = key.lastIndexOf('/mobile.vue')
+      const fileKey = key.slice(startIndex, endIndex)
+      const componentKey = fileKey.slice(0, 1).toLowerCase() + fileKey.slice(1)
+      componentMap[componentKey] = defineAsyncComponent(mobileCompo[key] as AsyncComponentLoader)
+    })
+  }
+  return componentMap
+})
+
+
+const currentCompoList = loadComponent()
 const dragOptions = reactive({
   swapThreshold: 1,
   animation: 200,
