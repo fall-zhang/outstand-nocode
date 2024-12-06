@@ -1,4 +1,4 @@
-import { FormOption } from './form-config'
+import { FormOption } from '../types/form-config'
 const configRoot:FormOption[] = [
   {
     keyId: 'size',

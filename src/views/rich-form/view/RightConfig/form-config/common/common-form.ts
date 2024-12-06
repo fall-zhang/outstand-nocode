@@ -1,4 +1,4 @@
-import { FormOption } from './form-config'
+import { FormOption } from '../../types/form-config'
 
 export const configCommon:FormOption[] = [{
   keyId: 'id',
@@ -29,3 +29,20 @@ export const configCommon:FormOption[] = [{
   default: '',
 },
 ]
+
+export const configMap:Record<string,FormOption> = {
+  placeholder:{
+    keyId: 'placeholder',
+    keyName: '标签对齐',
+    tips: '',
+    setters: ['input'],
+    default: '',
+  },
+  defaultValue:{
+    keyId: 'defaultValue',
+    keyName: '默认值',
+    tips: '',
+    setters: ['input'],
+    default: '',
+  }
+}

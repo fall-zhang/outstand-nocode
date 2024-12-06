@@ -1,5 +1,5 @@
-import { configMap } from './common/common'
-import { FormOption } from './form-config'
+import { configMap } from './common/common-form'
+import { FormOption } from '../types/form-config'
 
 const configInput:FormOption[] = [
   {
