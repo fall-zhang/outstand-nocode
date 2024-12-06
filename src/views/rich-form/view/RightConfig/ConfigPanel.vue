@@ -9,12 +9,13 @@ import { fieldLabel } from '@Form/utils/field'
 import { useFormProvider } from '../../hooks/use-form-provider'
 import ConfigPanelConf from './ConfigPanelConf.vue'
 import { BaseItemType, ContainerItemTypes } from '../../types/rich-form-item'
+import { DesktopFormOption, MobileFormOption } from '../../types/rich-form-config'
 defineOptions({
   name: 'ConfigPanel',
   inheritAttrs: false,
   customOptions: {}
 })
-const { selected, isSelectRoot, handler } = useFormProvider()
+const { selected, isSelectRoot, handler, platform, desktop, mobile } = useFormProvider()
 const { t } = useI18n()
 const activeName0 = ref('props')
 const form = ref()
@@ -114,6 +115,11 @@ watch(selected, () => {
 const config = ref<Record<string, any>>({})
 const selectType = ref<BaseItemType | ContainerItemTypes | 'root'>()
 function onChangeConfig(newVal: Record<string, any>) {
+  if (platform.value === 'mobile') {
+    mobile.value.formOption = newVal as MobileFormOption
+  } else if (platform.value === 'desktop') {
+    desktop.value.formOption = newVal as DesktopFormOption
+  }
   config.value = newVal
 }
 </script>

@@ -14,26 +14,27 @@ export type GlobalConfig = {
   inlineMax:number // 每行最多放置多少个 form
 }
 
+export type DesktopFormOption = {
+  height:number // 画布的高度
+  width:number// 画布的宽度
+  size: 'default'| 'large' | 'small'| ''
+  labelPosition:'left'|'top'|'right'
+  hideRequiredAsterisk:boolean // 必填的 * 是否隐藏
+  labelWidth:string // 以数字结束时，默认加上 px
+}
 
 export type DesktopConfig ={
   style:CSSProperties
-  formOption:{
-    height:number // 画布的高度
-    width:number// 画布的宽度
-    size: 'default'| 'large' | 'small'| ''
-    labelPosition:'left'|'top'|'right'
-    hideRequiredAsterisk:boolean // 必填的 * 是否隐藏
-    labelWidth:string // 以数字结束时，默认加上 px
-  }
+  formOption:DesktopFormOption
   completeButton: CompleteButton
 }
-
+export type MobileFormOption = {
+  labelPosition:'left'|'top'
+  hideRequiredAsterisk:boolean // 必填的 * 是否隐藏
+  labelWidth:string // 以数字结束时，默认加上 px
+}
 export type MobileConfig ={
-  style:CSSProperties
-  formOption:{
-    labelPosition:'left'|'top'
-    hideRequiredAsterisk:boolean // 必填的 * 是否隐藏
-    labelWidth:string // 以数字结束时，默认加上 px
-  }
+  style: CSSProperties
+  formOption: MobileFormOption
   completeButton: CompleteButton
 }
