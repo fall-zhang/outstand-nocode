@@ -8,6 +8,7 @@ import { get, isEmpty } from '@/utils/utils'
 import { RichFormProvider } from '../types/rich-form'
 import { FieldItemBase } from '../types/rich-form-item'
 import { FeatureProvider } from './use-form-provider'
+import { FormItemProps } from 'element-plus'
 
 type MutablePartial<T> = {
   -readonly [K in keyof T]?: T[K]
@@ -143,25 +144,41 @@ export const useProps = ({
 }:FormItemArg) => {
   const { t } = useI18n()
   let node = reactive(data)
-  let result:Record<string, unknown> = {}
+  let result:MutablePartial<FormItemProps> = {}
   node = unref(data)
   const { options } = node
   result = {
     label: node.label,
-    disabled: options.disabled,
-    placeholder: options.placeholder,
-    clearable: options.clearable,
+    // disabled: options.disabled,
+    // placeholder: options.placeholder,
+    // clearable: options.clearable,
     required: options.required
   }
   addValidate(result, node, isDesktop)
   if (isDesktop) {
-    result.labelWidth =  options.labelWidth + 'px'
+    result.labelWidth =  options.labelWidth
   }
+
+  return result
+  // return formItemProps
+  // return {
+  //   label: 'node.label',
+  // }
+}
+/**
+ * 通过一系列信息，获取 formItemField 的 props 信息
+ * 当前并未使用
+ */
+export const useFormItemFieldProps = ({
+  state,
+  isDesktop = true,
+}:FormItemArg) => {
+  const result = {}
   switch (node.type) {
     case 'input':{
       if (options.isShowWordLimit) {
         result.maxlength = options.max
-        result['show-word-limit'] = options.isShowWordLimit
+        result.showWordLimit = options.isShowWordLimit
       }
       if (isDesktop) {
         result.showPassword = options.showPassword
@@ -403,9 +420,4 @@ export const useProps = ({
       }
       break
   }
-  return result
-  // return formItemProps
-  // return {
-  //   label: 'node.label',
-  // }
 }

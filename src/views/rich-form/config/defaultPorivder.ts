@@ -6,6 +6,7 @@ export function getDefaultProvide(handler:FormHandler) {
   const defaultProvide:RichFormProvider = {
     lang: 'zh',
     fieldsList: fieldsConfig,
+    editForm: {},
     storeMap: storeMap.value,
     store: [],
     selected: {
@@ -66,7 +67,7 @@ export function getDefaultProvide(handler:FormHandler) {
       ],
     },
     canvasScrollRef: ref(),
-    handler
+    handler,
   }
   return defaultProvide
 }
