@@ -41,7 +41,7 @@
         <component v-else :is="loadComponentAsync[element.type]" :data="element" :params="useFormItemProps({
           state: FE,
           data: element,
-          isDesktop: FE.isDesktop
+          isDesktop: false
         })">
         </component>
       </Selection>
@@ -53,10 +53,7 @@
 </template>
 
 <script lang="ts" setup>
-import {
-  watch,
-  defineAsyncComponent,
-} from 'vue'
+import { defineAsyncComponent, } from 'vue'
 import type { AsyncComponentLoader, Component } from 'vue'
 import { useProps as useFormItemProps } from '@Form/hooks/use-props'
 import LayoutGridLayout from './LayoutGrid'
