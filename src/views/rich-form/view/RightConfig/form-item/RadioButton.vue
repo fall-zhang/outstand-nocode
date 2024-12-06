@@ -17,8 +17,8 @@ type Prop = {
 }
 defineProps<Prop>()
 const onChangeRadio = (property: string | number | boolean | undefined) => {
-  emit('change', property)
   emit('update:modelValue', property)
+  emit('change', property)
 }
 </script>
 <template>

@@ -19,8 +19,8 @@ type Prop = {
 }
 const { height = 50, fontSize = 66 } = defineProps<Prop>()
 const fireEvent = (property: string | number) => {
-  emit('change', property)
   emit('update:modelValue', property)
+  emit('change', property)
 }
 </script>
 <template>

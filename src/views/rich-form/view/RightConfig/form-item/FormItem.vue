@@ -74,7 +74,7 @@ const setterIndex = ref<number>(0)
 const currentSetter = ref<string>('')
 const allSetters = ref<string[]>([])
 const basicSetterType = ref(['input', 'color', 'switch', 'slider', 'number', 'select'])
-const complexSetterType = ref(['json', 'textarea', 'radio-button','icon-picker'])
+const complexSetterType = ref(['json', 'textarea', 'radio-button', 'icon-picker'])
 onBeforeMount(() => {
   const isDevelop = import.meta.env.DEV
   if (isDevelop) {
@@ -139,6 +139,14 @@ function onChangeSetter() {
 }
 </script>
 <style lang="scss" scoped>
+.form-item :deep(.el-input__wrapper) {
+  outline: transparent;
+  // background-color: pink;
+  // border: 1px solid magenta;
+  box-shadow: none;
+  outline: none;
+}
+
 .form-item {
   padding: 6px 24px;
   display: flex;
