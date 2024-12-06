@@ -25,3 +25,29 @@ import {
   Switch,
   Uploader
 } from 'vant'
+export const elementList = [
+  ElCascader,
+  ElCheckbox,
+  ElCheckboxGroup,
+  ElInputNumber,
+  ElInput,
+  ElRadio,
+  ElRadioGroup,
+  ElRate,
+  ElSlider,
+  ElSwitch,
+  ElUpload,
+  ElImageViewer
+]
+
+export const vantList = [
+  Field,
+  Icon,
+  Stepper,
+  Rate,
+  Popup,
+  Area,
+  Slider,
+  Switch,
+  Uploader
+]

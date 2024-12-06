@@ -9,7 +9,7 @@ export default {
   customOptions: {}
 }
 </script>
-<script setup>
+<script lang="ts" setup>
 const { t } = useI18n()
 const props = defineProps({
   data: {

@@ -1,12 +1,9 @@
-<script>
-import { ref } from 'vue'
-export default {
+<script lang="ts" setup>
+defineOptions({
   name: 'FeRadioMobile',
   inheritAttrs: false,
   customOptions: {}
-}
-</script>
-<script setup>
+})
 const props = defineProps({
   data: {
     require: true,

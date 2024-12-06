@@ -1,5 +1,5 @@
 
-<script setup>
+<script lang="ts" setup>
 defineOptions({
   name: 'FeTextareaMobile',
   inheritAttrs: false,

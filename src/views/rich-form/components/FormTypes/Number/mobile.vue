@@ -1,13 +1,9 @@
-<script>
-import { computed } from 'vue'
-
-export default {
+<script lang="ts" setup>
+defineOptions({
   name: 'FeNumberMobile',
   inheritAttrs: false,
   customOptions: {}
-}
-</script>
-<script setup>
+})
 const props = defineProps({
   data: {
     require: true,

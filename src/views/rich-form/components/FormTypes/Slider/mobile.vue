@@ -5,7 +5,7 @@ export default {
   customOptions: {}
 }
 </script>
-<script setup>
+<script lang="ts" setup>
 const props = defineProps({
   data: {
     require: true,

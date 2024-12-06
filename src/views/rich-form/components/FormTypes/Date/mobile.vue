@@ -1,15 +1,13 @@
-<script>
+<script lang="ts" setup>
 import dayjs from 'dayjs'
 import { useI18n } from 'vue-i18n'
 import { ref, computed, watch } from 'vue'
 // 统一交换时间戳
-export default {
+defineOptions({
   name: 'FeDateMobile',
   inheritAttrs: false,
   customOptions: {}
-}
-</script>
-<script setup>
+})
 const {
   t
 } = useI18n()

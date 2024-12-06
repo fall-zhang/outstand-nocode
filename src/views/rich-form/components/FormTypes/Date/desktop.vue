@@ -1,11 +1,9 @@
-<script>
-export default {
+<script lang="ts" setup>
+defineOptions ({
   name: 'FeDateDesktop',
   inheritAttrs: false,
   customOptions: {}
-}
-</script>
-<script setup>
+})
 defineProps({
   data: {
     type: Object,

@@ -1,15 +1,13 @@
-<script>
+<script lang="ts" setup>
 import { ref, computed, watch } from 'vue'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat.js'
 dayjs.extend(customParseFormat)
-export default {
+defineOptions({
   name: 'FeTimeMobile',
   inheritAttrs: false,
   customOptions: {}
-}
-</script>
-<script setup>
+})
 const props = defineProps({
   data: {
     require: true,

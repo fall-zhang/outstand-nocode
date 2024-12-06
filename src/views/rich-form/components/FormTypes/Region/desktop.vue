@@ -1,5 +1,5 @@
 <!-- 省市区 -->
-<script setup>
+<script lang="ts" setup>
 defineOptions({
   name: 'FeRegionDesktop',
   inheritAttrs: false,

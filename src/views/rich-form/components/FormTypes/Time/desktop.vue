@@ -1,4 +1,4 @@
-<script setup>
+<script lang="ts" setup>
 defineOptions({
   name: 'FeTimeDesktop',
   inheritAttrs: false,
