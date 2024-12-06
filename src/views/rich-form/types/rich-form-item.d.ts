@@ -3,12 +3,13 @@ import { StyleValue, CSSProperties } from 'vue'
  * 不同平台下，对应平台的配置
  */
 export type PlatformConf = {
+  [ string ]:any
   size: string
   labelPosition:string
   children?: FormItem[]
   style:CSSProperties
 }
-export type BaseItemType = 'input'|'number'|'select'|'textarea'|'radio'|'checkbox'|'time'|'date'|'rate'|'switch'|'slider'
+export type BaseItemType = 'input'|'number'|'select'|'textarea'|'radio'|'checkbox'|'time'|'date'|'rate'|'switch'|'slider' | 'cascader'
 // 'table'
 export type ContainerItemTypes = 'col' | 'grid' | 'tabs' |'collapse' | 'divider' | 'inline'
 
@@ -19,7 +20,7 @@ type FieldItemRoot = {
   label: string
 }
 /**
- * 通常 form 的类型
+ * 无嵌套 form 的类型
  */
 export type FieldItemBase = {
   type: BaseItemType
@@ -27,8 +28,10 @@ export type FieldItemBase = {
   key: string, // form 中的 key
   name?: string // 用户定义的名称，如果没有使用 label 代替
   id: string, // 唯一标志符
+  // 需要区分移动端和桌面端的配置，就需要分开为两个对象
   desktop?:PlatformConf
   mobile?:PlatformConf
+  // 改造 option 建议作为 el-form-item 以及 field 的 props 使用，即可实现所有通用
   options:Record<string, any>
   context?:{
     parent: FieldItemRoot | unknown // 父元素
