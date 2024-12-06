@@ -1,6 +1,6 @@
 <!-- 将内容拖拽到的位置 -->
 <template>
-  {{ data }}
+  {{ FE.desktop.formOption }}
   <DraggableWrap handle=".handle" class="DragGableLayout edit" :tag="tag" item-key="id" :move="handleMove"
     v-bind="dragOptions" :componentData="$attrs" @change="onDrag">
     <template #item="{ element }">
@@ -16,30 +16,29 @@
       </LayoutInlineLayout>
       <Selection v-else hasWidthScale hasCopy hasDel hasDrag hasMask :data="element" :parent="props.data">
         <template v-if="FE.isDesktop">
-          <component :is="currentCompoList(element.type)" v-if="element.type === 'divider'" :data="element" :params="useFormItemProps({
+          <component :is="loadComponentAsync[element.type]" v-if="element.type === 'divider'" :data="element" :params="useFormItemProps({
             state: FE,
             data: element,
             isDesktop: FE.isDesktop
           })">
           </component>
-          <template v-else>
-            <el-form-item v-bind="useFormItemProps({
-              state: FE,
-              data: element,
-              isDesktop: FE.isDesktop
-            })">
-              {{ useFormItemProps({
+          <el-form-item v-else v-bind="useFormItemProps({
+            state: FE,
+            data: element,
+            isDesktop: FE.isDesktop
+          })">
+            <!-- {{ useFormItemProps({
                 state: FE,
                 data: element,
                 isDesktop: FE.isDesktop
-              }) }}
-              {{ loadComponentAsync[element.type] }}
-              <component :is="loadComponentAsync[element.type]" :data="element" :params="element"></component>
-              {{ element }}
-            </el-form-item>
-          </template>
+              }) }} -->
+            <!-- params 是 v-bind 到对应的内容上，data 是一些配置 -->
+            <component :is="loadComponentAsync[element.type]" :data="element" :params="element"
+              @change="(ev: any) => onChangeDefaultValue(element, ev)"></component>
+            {{ element }}
+          </el-form-item>
         </template>
-        <component v-else :is="currentCompoList(element.type)" :data="element" :params="useFormItemProps({
+        <component v-else :is="loadComponentAsync[element.type]" :data="element" :params="useFormItemProps({
           state: FE,
           data: element,
           isDesktop: FE.isDesktop
@@ -71,6 +70,7 @@ import { DraggableWrap } from '@Form/components/DraggableWrap'
 import { isEmpty } from '@/utils/utils'
 import { useFormProvider } from '@Form/hooks/use-form-provider'
 import { MoveEvent } from 'sortablejs'
+import { FieldItemBase, FieldItemContainer } from '@Form/types/rich-form-item'
 defineOptions({
   name: 'DraggableDrop',
 })
@@ -94,22 +94,23 @@ const props = defineProps({
   }
 })
 const FE = reactive(useFormProvider())
-const loadComponent = () => {
-  let componentMap: Record<string, Component> = {}
-  watch(() => FE.platform, () => {
-    componentMap = {}
-  })
-  return function findComponent(type: string) {
-    let info = componentMap[type]
-    const compoName = type.slice(0, 1).toUpperCase() + type.slice(1)
-    // console.log("🚀 ~ findComponent ~ compoName:", compoName)
-    if (!info) {
-      componentMap[type] = defineAsyncComponent(() => import(`@Form/components/FormTypes/${compoName}/${FE.platform}.vue`))
-      info = componentMap[type]
-    }
-    return info
-  }
-}
+// const loadComponent = () => {
+//   let componentMap: Record<string, Component> = {}
+//   watch(() => FE.platform, () => {
+//     componentMap = {}
+//   })
+//   return function findComponent(type: string) {
+//     let info = componentMap[type]
+//     const compoName = type.slice(0, 1).toUpperCase() + type.slice(1)
+//     // console.log("🚀 ~ findComponent ~ compoName:", compoName)
+//     if (!info) {
+//       componentMap[type] = defineAsyncComponent(() => import(`@Form/components/FormTypes/${compoName}/${FE.platform}.vue`))
+//       info = componentMap[type]
+//     }
+//     return info
+//   }
+// }
+// const currentCompoList = loadComponent()
 
 const loadComponentAsync = computed(() => {
   const componentMap: Record<string, Component> = {}
@@ -136,9 +137,15 @@ const loadComponentAsync = computed(() => {
   }
   return componentMap
 })
+/**
+ * 当更新了新的值之后
+ * @param element FormItem
+ * @param newVal 新的值
+ */
+const onChangeDefaultValue = (element: FieldItemContainer | FieldItemBase, newVal: any) => {
 
+}
 
-const currentCompoList = loadComponent()
 const dragOptions = reactive({
   swapThreshold: 1,
   animation: 200,
