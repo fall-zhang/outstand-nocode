@@ -5,6 +5,7 @@
   "i18n-ally.localesPaths": "src/locales",
   // 一些 i18n（i18next） 拥有 NameSpace 功能，你也可以通过添加该功能启用
   "i18n-ally.namespace": false,
+  "GitCommitPlugin.MaxSubjectCharacters":30,
   "cSpell.words": [
     "antv",
     "ckeditor",

@@ -220,6 +220,7 @@ function onCollapseRight() {
 const canvasScrollRef = ref()
 const storeMap = ref<Map<string, AllFieldType>>(new Map())
 const formState = reactive<RichFormProvider>({
+  editForm: {},
   lang: 'zh',
   fieldsList: fieldsConfig,
   storeMap: storeMap.value,

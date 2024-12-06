@@ -1,4 +1,4 @@
-<script setup lang="tsx">
+<script setup lang="ts">
 // import ToDoList from '@C/ToDoList.vue'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
 // import CollectionItem from '@/components/_collection/CollectionItem.vue'

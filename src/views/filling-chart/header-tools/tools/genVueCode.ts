@@ -42,7 +42,7 @@ export function genVue3SetupCode(option: any) {
   const templateCode = genTemplateCode(option)
 
   return templateCode + `
-<script setup>
+<script lang="ts" setup>
   import { init } from 'echarts';
   import {shallowRef,onMounted} from 'vue'
   const currentChart = shallowRef(null)
