@@ -23,7 +23,7 @@ const defaultValue = ref()
 <template>
   <el-checkbox-group :class="[data.options.displayStyle === 'block' && $style.blockLayout]"
     v-model="defaultValue" v-bind="params" @change="(newVal) => emit('change', newVal)">
-    <el-checkbox v-for="item in params.options" :key="item.value" :label="item.value">
+    <el-checkbox v-for="item in params.options" :key="item.value" :value="item.value">
       {{ item.label }}
     </el-checkbox>
   </el-checkbox-group>

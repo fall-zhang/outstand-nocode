@@ -2,26 +2,25 @@
   <component :is="isHTMLTag(props.tag) ? props.tag : resolveComponent(props.tag)" v-bind="$attrs" :span="props.span"
     :label="props.label" :offset="props.offset" :pull="props.pull" :class="[id, 'selectElement',
       !isField && 'borderless',
-      isSelected,
+      isSelected && 'Selected',
       isWarning && 'Warning'
-    ]" ref="elementRef" @click="withModifiers(handleClick, ['stop'])">
+    ]" ref="elementRef" @click="handleClick">
     <slot></slot>
     <!-- 排序功能 -->
     <div :class="'topLeft'">
       <Icon v-if="hasDrag" :class="['handle', 'dragIcon']" icon="Rank"></Icon>
     </div>
     <!-- 其它功能 -->
-    <div :class="'bottomRight'">
-      <Icon :class="['handle', 'selectParent']" @click.stop="(e) => handleAction('select-parent')" icon="top" />
-      <Icon v-if="props.hasDel" :class="'copy'" @click.stop="(e) => handleAction('delete')" icon="delete">
-      </Icon>
+    <div class="bottomRight">
+      <Icon :class="['handle', 'selectParent']" @click="(ev) => handleAction(ev, 'select-parent')" icon="top" />
+      <Icon v-if="props.hasDel" class="copy" @click="(ev) => handleAction(ev, 'delete')" icon="delete" />
       <!-- <Icon v-if="props.hasInsertColumn" :class="'insertColIcon'"
-        @click.stop="(e) => handleAction('table-insert-col')" icon="tableInsertCol"></Icon>
-      <Icon v-if="props.hasInsertRow" :class="'insertRowIcon'" @click.stop="(e) =>
-        handleAction('table-insert-row')" icon="tableInsertRow"></Icon> -->
-      <Icon v-if="props.hasAddCol" :class="'addCol'" @click.stop="(e) => handleAction('plus')" icon="plus">
+        @click="(ev)=>handleAction(evl,'table-insert-col')" icon="tableInsertCol"></Icon>
+      <Icon v-if="props.hasInsertRow" :class="'insertRowIcon'" @click="(e) =>
+        (ev)=>handleAction(evl,'table-insert-row')" icon="tableInsertRow"></Icon> -->
+      <Icon v-if="props.hasAddCol" class="addCol" @click="(ev) => handleAction(ev, 'plus')" icon="plus">
       </Icon>
-      <Icon v-if="isShowCopy" :class="'copyIcon'" @click.stop="(e) => handleAction('copy')" icon="copy">
+      <Icon v-if="isShowCopy" class="copyIcon" @click="(ev) => handleAction(ev, 'copy')" icon="copy">
       </Icon>
       <div v-if="isShowWidthScale" ref="widthScaleElement">
         <Icon :class="'widthScale'" icon="dragWidth"></Icon>
@@ -36,6 +35,7 @@
             <el-dropdown-item command="insert-right">{{ t('rf.selection.insertRight') }}</el-dropdown-item>
             <el-dropdown-item command="insert-top">{{ t('rf.selection.insertTop') }}</el-dropdown-item>
             <el-dropdown-item command="insert-bottom">{{ t('rf.selection.insertBottom') }}</el-dropdown-item>
+            <!-- table layout 相关内容 -->
             <!-- <el-dropdown-item command="merge-left" :disabled="props.data.context.isDisableMargeLeft" divided>
               {{ t('rf.selection.mergeLeft') }}</el-dropdown-item>
             <el-dropdown-item command="merge-right" :disabled="props.data.context.isDisableMargeRight">
@@ -68,7 +68,6 @@
 <script lang="ts" setup>
 
 import {
-  withModifiers,
   resolveComponent,
   ref,
   onMounted,
@@ -83,7 +82,7 @@ import { useFormProvider } from '../hooks/use-form-provider'
 import { AllFieldType, FieldItemBase, FieldItemContainer } from '../types/rich-form-item'
 const props = withDefaults(defineProps<{
   data: FieldItemBase | FieldItemContainer,
-  parent: Array<any>,
+  parent: Array<FieldItemBase | FieldItemContainer> | FieldItemContainer,
   tag?: string, // div
   hasMask?: boolean, // false
   hasDrag?: boolean, // false
@@ -121,13 +120,15 @@ const isInlineChildren = isInlineChild(props.data)
 
 const { selected, handler, platform, widthScalable } = useFormProvider()
 const isWarning = ref(false)
-const handleClick = () => {
+const handleClick = (ev: MouseEvent) => {
+  if (ev.stopPropagation) { ev.stopPropagation() }
   handler.value.setSelection(props.data)
 }
 const elementRef = useTemplateRef<any>('elementRef')
 
 type OptAction = 'select-parent' | 'delete' | 'table-insert-col' | 'table-insert-row' | 'copy' | 'plus'
-const handleAction = (type: OptAction) => {
+const handleAction = (ev: MouseEvent, type: OptAction) => {
+  if (ev) { ev.stopPropagation() }
   const index = props.parent.indexOf(props.data)
   switch (type) {
     case 'delete': {
@@ -325,7 +326,6 @@ defineOptions({
   .topRight,
   .bottomRight {
     position: absolute;
-    bottom: 0;
     height: 30px;
     display: none;
     align-items: center;

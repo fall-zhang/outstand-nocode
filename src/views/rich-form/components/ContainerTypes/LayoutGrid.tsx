@@ -1,5 +1,5 @@
 import { defineComponent, useAttrs } from 'vue'
-import Selection from '@Form/components/ElementSelection.vue'
+import ElementSelection from '@Form/components/ElementSelection.vue'
 import LayoutDraggable from './DraggableDrop.vue'
 import { ElRow } from 'element-plus'
 import $style from './Layout.module.scss'
@@ -17,13 +17,13 @@ export default defineComponent({
       default: () => ([])
     }
   },
-  setup (props) {
+  setup (props,{ attrs }) {
     return () => (
-      <Selection {...useAttrs()} hasWidthScale hasCopy hasAddCol hasDel hasDrag data={props.data} parent={props.parent}>
+      <ElementSelection {...attrs} hasWidthScale hasCopy hasAddCol hasDel hasDrag data={props.data} parent={props.parent}>
         {'GridLayout'}
         <ElRow data-layout-type={'grid'} gutter={props.data.options.gutter} justify={props.data.options.justify} align={props.data.options.align} class={$style.gridLayoutArea}>
           { props.data.columns.map((element:any) => (
-            <Selection
+            <ElementSelection
               key={element.id}
               hasCopy
               hasDel={props.data.columns.length > 1}
@@ -42,11 +42,11 @@ export default defineComponent({
                 data-layout-type={'grid-col'}
                 parent={element}
               />
-            </Selection>
+            </ElementSelection>
           ))
           }
         </ElRow>
-      </Selection>
+      </ElementSelection>
     )
   }
 })
