@@ -52,32 +52,29 @@ function onChangeValue(prop: 'left' | 'top' | 'right' | 'bottom', value?: number
 }
 </script>
 <template>
-  <div class="configAllSides">
-    {{ 'all side components' }}
-    <el-row :gutter="14" justify="center">
-      <el-col :span="12">
-        <el-input-number :precision="1" :step="10" :min="props.min" :model-value="currentState.left"
-          @input="(newVal) => onChangeValue('left', newVal)" controls-position="right" />
-      </el-col>
-      <el-col :span="12">
-        <el-input-number :step="10" :min="props.min" :model-value="currentState.top"
-          @input="(newVal) => onChangeValue('top', newVal)" controls-position="right" />
-      </el-col>
-    </el-row>
-    <el-row :gutter="14" justify="center">
-      <el-col :span="12">
-        <el-input-number :step="10" :min="props.min" :model-value="currentState.right"
-          @input="(newVal) => onChangeValue('right', newVal)" controls-position="right" />
-      </el-col>
-      <el-col :span="12">
-        <el-input-number :step="10" :min="props.min" :model-value="currentState.bottom"
-          @input="(newVal) => onChangeValue('bottom', newVal)" controls-position="right" />
-      </el-col>
-    </el-row>
-  </div>
+  <el-row class="configAllSides" :gutter="14" justify="center">
+    <el-col :span="12">
+      <el-input-number :precision="1" :step="10" :min="props.min" :model-value="currentState.left"
+        @input="(newVal) => onChangeValue('left', newVal)" controls-position="right" />
+    </el-col>
+    <el-col :span="12">
+      <el-input-number :step="10" :min="props.min" :model-value="currentState.top"
+        @input="(newVal) => onChangeValue('top', newVal)" controls-position="right" />
+    </el-col>
+  </el-row>
+  <el-row :gutter="14" justify="center">
+    <el-col :span="12">
+      <el-input-number :step="10" :min="props.min" :model-value="currentState.right"
+        @input="(newVal) => onChangeValue('right', newVal)" controls-position="right" />
+    </el-col>
+    <el-col :span="12">
+      <el-input-number :step="10" :min="props.min" :model-value="currentState.bottom"
+        @input="(newVal) => onChangeValue('bottom', newVal)" controls-position="right" />
+    </el-col>
+  </el-row>
 </template>
 <style scoped lang="scss">
-.configAllSides {
+:deep(.configAllSides) {
   background: #F9F9F9;
   border-radius: 4px;
   padding: 16px;

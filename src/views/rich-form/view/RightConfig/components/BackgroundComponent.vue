@@ -3,6 +3,7 @@ import { reactive, ref, onMounted, inject, watch, nextTick } from 'vue'
 import { ElMessage, UploadRawFile } from 'element-plus'
 import { useI18n } from 'vue-i18n'
 import { useFormProvider } from '@/views/rich-form/hooks/use-form-provider'
+import { Plus } from '@icon-park/vue-next'
 defineOptions({
   name: 'ConfigBackground',
   inheritAttrs: false,
@@ -28,12 +29,6 @@ const state = reactive<PageState>({
     backgroundColor: '',
     backgroundImage: '',
   }
-})
-const bgStatus = inject<Ref<boolean>>('rich-form-bg')!
-watch(bgStatus, (newVal) => {
-  state.value0 = newVal
-}, {
-  immediate: true
 })
 const quickColors = config.value.colorList
 
@@ -66,6 +61,9 @@ const options0 = [
     'contain'
   ]
 ]
+if (!selected.value.style) {
+  selected.value.style = {}
+}
 if (!selected.value.style.background) {
   selected.value.style.background = {
     color: '',
@@ -82,8 +80,6 @@ if (!(!selected.value.style.background.color && !selected.value.style.background
   } else {
     state.defaultBackground.backgroundImage = selected.value.style.background.image
   }
-
-  bgStatus.value = !selected.value.style.background.color
 }
 const modifyBackBackground = (key: string, value: any) => {
   const keys = ['color', 'image']
@@ -192,9 +188,7 @@ const handleSuccess = () => {
           <el-upload accept=".png,.jpg" :action="'candidate-feature'" list-type="picture-card" ref="element"
             :show-file-list="false" :before-upload="beforeAvatarUpload" :on-success="handleSuccess"
             :on-error="handleError">
-            <el-icon>
-              <Plus />
-            </el-icon>
+            <Plus />
           </el-upload>
         </li>
         <li v-for="(item0, index0) in quickColors" :key="index0" :data-value="item0"
@@ -204,7 +198,7 @@ const handleSuccess = () => {
         </li>
       </ul>
     </div>
-    <div v-if="state.defaultBackground.backgroundImage">
+    <div class="" v-if="state.defaultBackground.backgroundImage">
       <el-row :gutter="14">
         <el-col :span="12">
           <div>Repeat</div>
@@ -253,6 +247,7 @@ const handleSuccess = () => {
 
   .background {
     display: flex;
+    width: 100%;
 
     .el-color-picker {
       .el-color-picker__trigger {
@@ -278,6 +273,8 @@ const handleSuccess = () => {
   }
 
   .quickColor {
+    display: flex;
+    width: 100%;
     overflow: hidden;
 
     li:not(:last-child) {
@@ -291,15 +288,16 @@ const handleSuccess = () => {
     li {
       border: 1px solid #DCDFE6;
       flex: 1;
-    }
 
-    li.selectedBg {
-      border-color: var(--primary-color);
+      &.selectedBg {
+        border-color: var(--primary-color);
 
-      &+li {
-        border-left-color: var(--primary-color);
+        &+li {
+          border-left-color: var(--primary-color);
+        }
       }
     }
+
   }
 
   .quickImage {

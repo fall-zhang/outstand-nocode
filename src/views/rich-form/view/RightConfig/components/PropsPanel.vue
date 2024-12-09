@@ -39,10 +39,6 @@ const isSelectTabs = computed(() => {
 const isSelectCollapse = computed(() => {
   return checkSelectedType(['collapse'])
 })
-const isSelectGrid = computed(() => {
-  return checkSelectedType(['grid'])
-})
-// provide('rich-form-bg', bgStatus)
 const dialogVisible = ref(false)
 const dataRef = ref()
 const titleRef = ref()
@@ -240,11 +236,6 @@ const options10 = computed(() => {
     }
   ]
 })
-const typeProps = useProps({
-  state,
-  data: selected.value,
-  isDesktop: true,
-})
 const checkLogicData = () => {
   if (checkIdExistInLogic(selected.value.id, state.logic)) {
     ElMessage({
@@ -258,7 +249,7 @@ const checkLogicData = () => {
 }
 const handleChange0 = (value: string) => {
   checkLogicData()
-  if (/^(dates|daterange)$/.test(value)) {
+  if (['dates', 'daterange'].includes(value)) {
     selected.value.options.defaultValue = []
   } else {
     selected.value.options.defaultValue = ''
@@ -378,7 +369,7 @@ onMounted(() => {
       'region'
     ])">
       <template v-if="checkSelectedType(['cascader', 'region'])">
-        <el-cascader v-model="selected.options.defaultValue" v-bind="typeProps" clearable style="width: 100%;" />
+        <el-cascader v-model="selected.options.defaultValue" clearable style="width: 100%;" />
       </template>
       <template v-else-if="checkSelectedType(['textarea'])">
         <el-input type="textarea" :rows="4" v-model="selected.options.defaultValue" />
@@ -387,24 +378,24 @@ onMounted(() => {
         <el-input v-model="selected.options.defaultValue" clearable />
       </template>
       <template v-else-if="checkSelectedType(['number'])">
-        <el-input-number style="width: 100%;" v-bind="typeProps" v-model="selected.options.defaultValue" />
+        <el-input-number style="width: 100%;" v-model="selected.options.defaultValue" />
       </template>
       <template v-else-if="checkSelectedType(['time'])">
-        <el-time-picker v-bind="typeProps" style="width: 100%" clearable v-model="selected.options.defaultValue" />
+        <el-time-picker style="width: 100%" clearable v-model="selected.options.defaultValue" />
       </template>
       <template v-else-if="checkSelectedType(['date'])">
-        <el-date-picker v-bind="typeProps" style="width: 100%" v-model="selected.options.defaultValue" clearable />
+        <el-date-picker style="width: 100%" v-model="selected.options.defaultValue" clearable />
       </template>
       <template v-else-if="checkSelectedType(['rate'])">
-        <el-rate v-bind="typeProps" v-model="selected.options.defaultValue" />
+        <el-rate v-model="selected.options.defaultValue" />
         <el-button v-if="selected.options.defaultValue > 0" link @click="selected.options.defaultValue = 0">{{
           t('rf.public.clear') }}</el-button>
       </template>
       <template v-else-if="checkSelectedType(['switch'])">
-        <el-switch v-bind="typeProps" v-model="selected.options.defaultValue" />
+        <el-switch v-model="selected.options.defaultValue" />
       </template>
       <template v-else-if="checkSelectedType(['slider'])">
-        <el-slider v-bind="typeProps" v-model="selected.options.defaultValue" style="padding: 0 14px;" />
+        <el-slider v-model="selected.options.defaultValue" style="padding: 0 14px;" />
       </template>
     </RadioButton>
     <RadioButton :label="t('rf.public.Data')" layoutType="slot"
@@ -544,7 +535,7 @@ onMounted(() => {
     </PanelItemCheckbox>
     <PanelItemCheckbox v-if="isSelectRoot && !checkSelectedType(['rate', 'switch', 'slider', 'divider'])"
       :label="t('rf.validateMsg.required')" field="required" />
-    <RadioButton v-if="isSelectGrid" @listener="handleTypeListener" property="justify"
+    <RadioButton v-if="checkSelectedType(['grid'])" @listener="handleTypeListener" property="justify"
       :label="t('rf.config.gridLayout.justify.label')" :height="40" :fontSize="40" :val="selected.options.justify"
       :nodes="[
         {
@@ -608,7 +599,7 @@ onMounted(() => {
                 <el-dropdown-item :command="1">{{ t('rf.public.image') }}</el-dropdown-item>
               </el-dropdown-menu>
             </template>
-          </el-dropdown> -->
+  </el-dropdown> -->
         </div>
       </template>
       <template #content>
