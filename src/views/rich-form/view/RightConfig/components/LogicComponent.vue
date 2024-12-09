@@ -1,9 +1,8 @@
 <script lang="ts" setup>
 import { ref, nextTick, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import _ from 'lodash-es'
 import Icon from '@/assets'
-import { get } from '@/utils/utils'
+import { get, isEmpty } from '@/utils/utils'
 import { useFormProvider } from '@/views/rich-form/hooks/use-form-provider'
 defineOptions({
   name: 'ConfigLogicComponent'
@@ -56,7 +55,7 @@ const getTabData = (tab) => {
 const checkTab = (tab) => {
   let result = false
   if (tab.rules.length) {
-    result = [...tab.ifRefs, ...tab.thenRefs].every(e => !_.isEmpty(e.getData()))
+    result = [...tab.ifRefs, ...tab.thenRefs].every(e => !isEmpty(e.getData()))
   } else {
     result = true
   }
@@ -114,7 +113,7 @@ const handleAction = (type) => {
         closeDialog()
       } else {
         const data = getData()
-        if (!_.isEmpty(data)) {
+        if (!isEmpty(data)) {
           ER.logic = getData(activeTab.value)
           closeDialog()
         }

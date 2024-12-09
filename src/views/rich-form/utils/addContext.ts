@@ -1,7 +1,7 @@
 import { computed, reactive, toRaw } from 'vue'
 import dayjs from 'dayjs'
 import { nanoid } from 'nanoid'
-import { wrapElement } from './field'
+import { wrapFieldItem } from './form-wrap'
 import { deepClone } from '@/utils/utils'
 import { AllFieldType } from '@/views/rich-form/types/rich-form-item'
 
@@ -243,7 +243,7 @@ const appendNodes = (node, dir, key) => {
   }
   if (key === 'colspan') {
     nodes.forEach((e) => {
-      const newNode = wrapElement({
+      const newNode = wrapFieldItem({
         type: 'td',
         options: {
           colspan: 1,
@@ -281,7 +281,7 @@ const appendNodes = (node, dir, key) => {
         ranges
       }
     })
-    const tr = wrapElement({
+    const tr = wrapFieldItem({
       type: 'tr',
       columns: Array.from(Array(node.context.parent.columns.length), (e, i0) => {
         const newNode = {
@@ -555,7 +555,7 @@ export const addContext = (node:AllFieldType, parent:any) => {
       arr.splice(arr.indexOf(node), 1)
     },
     appendCol() {
-      const newNode = wrapElement({
+      const newNode = wrapFieldItem({
         options: {
           span: 6,
           offset: 0,

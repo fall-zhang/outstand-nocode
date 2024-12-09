@@ -1,7 +1,9 @@
 
 import { defineComponent, } from 'vue'
 import VueDraggable from 'vuedraggable'
-
+/**
+ * 对所有中心画布内侧可拖拽内容进行包装
+ */
 export const DraggableWrap = defineComponent({
   inheritAttrs: false,
   name: 'CustomDragGable',
@@ -34,6 +36,10 @@ export const DraggableWrap = defineComponent({
         return true
       }
     },
+    animation:{
+      type:Number,
+      default:200
+    },
     handle: {
       type: String,
       default: ''
@@ -48,6 +54,7 @@ export const DraggableWrap = defineComponent({
     VueDraggable
   },
   setup(props, { attrs, slots }) {
+    // 既然是包装，应该把 attrs，隐式数据传递给去掉
     return () => (
       <VueDraggable
         {...attrs} {...props} v-slots={slots}>

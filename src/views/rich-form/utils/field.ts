@@ -3,69 +3,6 @@ import { PlatformType } from '@/views/rich-form/types/rich-form'
 import { isEmpty } from '@/utils/utils'
 import { AllFieldType, FieldContainerInner, FieldItemBase, FieldItemContainer } from '@/views/rich-form/types/rich-form-item'
 
-
-type FieldItem = FieldItemBase | FieldItemContainer
-/**
- * 从左侧拖拽到中心后，默认进行一次包装
- */
-const wrapElement = (element: FieldItem): FieldItem => {
-  const result: FieldItem = {
-    ...element
-  }
-  if (element.id === 'root') {
-    return result
-  }
-  if (!result.desktop) {
-    result.desktop = {
-      size: '',
-      labelPosition: 'left',
-      style: {}
-    }
-  }
-  if (!result.mobile) {
-    result.mobile = {
-      size: '',
-      labelPosition: 'left',
-      style: {}
-    }
-  }
-  if (!result.id) {
-    result.id = nanoid()
-  }
-  if (!result.key) {
-    result.key = `${result.type}_${result.id}`
-  }
-  if (['grid', 'tabs', 'collapse', 'table', 'divider'].includes(result.type)) {
-    result.desktop.style = {
-      width: '100%'
-    }
-  }
-  if (checkIsField(result)) {
-    result.desktop.style = {
-      width: '100%'
-    }
-    result.mobile.style = {
-      width: '100%'
-    }
-  }
-  if (result.type === 'tabs') {
-    result.columns = new Array(3).fill('').map((e, index) => {
-      const data = renderFieldData()
-      data.label = `Tab ${index + 1}`
-      data.options = {}
-      return data
-    })
-  }
-  if (result.type === 'collapse') {
-    result.columns = new Array(3).fill('').map((e, index) => {
-      const data = renderFieldData()
-      data.label = `Tab ${index + 1}`
-      data.options = {}
-      return data
-    })
-  }
-  return result
-}
 const renderFieldData = ():FieldContainerInner => {
   const result:FieldContainerInner = {
     id: nanoid(),
@@ -78,8 +15,9 @@ const renderFieldData = ():FieldContainerInner => {
   }
   return result
 }
-const excludes = ['grid', 'col', 'table', 'tr', 'td', 'tabs', 'tabsCol', 'collapse', 'collapseCol', 'divider', 'inline']
-const flatNodes = (nodes, excludes, fn, excludesFn) => {
+
+const excludes:Array<string> = ['grid', 'col', 'table', 'tr', 'td', 'tabs', 'tabsCol', 'collapse', 'collapseCol', 'divider', 'inline']
+const flatNodes = (nodes:any[], excludes:any[], fn:any, excludesFn:any = null) => {
   return nodes.reduce((res, node, currentIndex) => {
     if (excludes.indexOf(node.type) === -1) {
       res.push(node)
@@ -207,11 +145,9 @@ const syncWidthByPlatform = (node, platform:PlatformType, syncFullPlatform = fal
     }
   })
 }
-const fieldLabel = (t:any, node:any) => t(node)
 
 export {
   syncWidthByPlatform,
-  wrapElement,
   renderFieldData,
   getAllFields,
   disassemblyData1,
@@ -221,6 +157,5 @@ export {
   isInlineChildren,
   checkIsField,
   pickFields,
-  fieldLabel,
   repairLayout
 }
