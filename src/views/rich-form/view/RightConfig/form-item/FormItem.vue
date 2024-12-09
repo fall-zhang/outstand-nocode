@@ -59,9 +59,9 @@ import { deepClone } from '@/utils/utils'
 import HelpTooltip from './HelpTooltip.vue'
 import FormJSON from './FormItemJSON.vue'
 import { Refresh as IconRefresh } from '@icon-park/vue-next'
-import { FormOption } from '../form-config/form-config'
 import IconPicker from './IconPicker.vue'
 import RadioButton from './RadioButton.vue'
+import type { FormOption } from '../types/form-config'
 const prop = defineProps<{
   formOption: FormOption
   path: Record<'keyName' | 'keyId', string>[],
