@@ -1,24 +1,28 @@
-import { wrapElement } from '@/utils'
 import { useI18n } from 'vue-i18n'
 import { FieldItemBase, FieldItemContainer } from './types/rich-form-item'
+import { wrapFieldItem } from './utils/form-wrap'
 export default function generatorData(node: FieldItemBase | FieldItemContainer, {
   isWrap = true,
   isCreateLabel = true,
 }) {
-  const t = useI18n().t
+  const { t } = useI18n()
   let newNode:FieldItemBase | FieldItemContainer
 
   if (isWrap) {
     newNode = {
       type: 'inline',
       innerData: [
-        node
-      ]
+        (node as FieldItemBase)
+      ],
+      columns:[],
+      id:'' ,
+      key:'',
+      label:''
     }
   } else {
     newNode = node
   }
-  const result = wrapElement(newNode)
+  const result = wrapFieldItem(newNode)
   if (!node.options) {
     node.options = {}
   }

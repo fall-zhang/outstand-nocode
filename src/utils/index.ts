@@ -13,4 +13,4 @@ export {
   checkIdExistInLogic,
   removeLogicDataById,
 }
-export { wrapElement, checkIsField, disassemblyData1, repairLayout, syncWidthByPlatform, isInlineChildren, disassemblyData2, combinationData2, pickFields, combinationData1 } from '@Form/utils/field'
+export {  checkIsField, disassemblyData1, repairLayout, syncWidthByPlatform, isInlineChildren, disassemblyData2, combinationData2, pickFields, combinationData1 } from '@Form/utils/field'

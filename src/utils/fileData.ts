@@ -1,6 +1,6 @@
 
-const dataURLtoFile = (dataurl:string, filename:string) => {
-  const arr = dataurl.split(',')
+const dataURLtoFile = (dataUrl:string, filename:string) => {
+  const arr = dataUrl.split(',')
   const mime = arr[0].match(/:(.*?);/)[1]
   const bstr = atob(arr[1])
   let n = bstr.length
@@ -11,10 +11,10 @@ const dataURLtoFile = (dataurl:string, filename:string) => {
   return new File([u8arr], filename, { type: mime })
 }
 
-const fileToDataURL = (dataurl) => {
+const fileToDataURL = (dataUrl:string) => {
   return new Promise((resolve, reject) => {
     const image = new Image()
-    image.src = dataurl
+    image.src = dataUrl
     image.onload = function () {
       const canvas = document.createElement('canvas')
       canvas.width = image.width
@@ -22,8 +22,8 @@ const fileToDataURL = (dataurl) => {
       const ctx = canvas.getContext('2d')!
       ctx.drawImage(image, 0, 0, image.width, image.height)
       const ext = image.src.substring(image.src.lastIndexOf('.') + 1).toLowerCase()
-      const dataURL = canvas.toDataURL('image/' + ext)
-      resolve(dataURL)
+      const resultUrl = canvas.toDataURL('image/' + ext)
+      resolve(resultUrl)
     }
   })
 }

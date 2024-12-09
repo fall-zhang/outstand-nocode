@@ -275,7 +275,6 @@ const formState = reactive<RichFormProvider>({
     setSelection,
     switchPlatform,
     delete: delFieldItem,
-    // wrapElement,
     checkPropsBySelected() { },
     validator,
     copy: copyField,
