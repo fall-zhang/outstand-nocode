@@ -9,7 +9,7 @@ export default defineComponent({
   inheritAttrs: false,
   customOptions: {},
   setup () {
-    const { isDesktop, handler, canvasScrollRef, store } = useFormProvider()
+    const { isDesktop, handler, canvasScrollRef } = useFormProvider()
     const state = useFormProvider()
     const form = ref('')
     const typeProps = useFormProps({
@@ -35,7 +35,7 @@ export default defineComponent({
       ] } style={{ height: '100%' }} onClick={onClickCenter}>
       <ElScrollbar class={$style.subject} ref={canvasScrollRef}>
         <RenderForm ref={form} {...typeProps.value}>
-          <DraggableDrop data-layout-type={'root'} class={$style.wrap} data={store.value} parent={state.store} isRoot></DraggableDrop>
+          <DraggableDrop data-layout-type={'root'} class={$style.wrap} data={state.store.value} parent={state.store.value} isRoot></DraggableDrop>
         </RenderForm>
       </ElScrollbar>
       {/* <h2>预览页面暂为空，需要专门的渲染逻辑</h2> */}

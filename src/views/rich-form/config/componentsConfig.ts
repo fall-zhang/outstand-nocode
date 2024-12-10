@@ -27,7 +27,7 @@ const containerConfig:{
           type: 'col',
           span: 12,
           offset: 0,
-          list: [],
+          // list: [],
           label: '',
           options: {}
         },
@@ -36,7 +36,7 @@ const containerConfig:{
           type: 'col',
           span: 12,
           offset: 0,
-          list: [],
+          // list: [],
           label: '',
           options: {}
         },

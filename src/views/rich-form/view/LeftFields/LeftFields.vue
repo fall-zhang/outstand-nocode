@@ -79,7 +79,7 @@ const dragOptions = reactive({
   direction: 'horizontal',
   scroll: false,
   group: { name: 'nocode-form', pull: 'clone', put: false },
-  plugins: [ControlInsertionPlugin(FE)]
+  // plugins: [ControlInsertionPlugin(FE)]
 })
 
 </script>

@@ -41,7 +41,7 @@ export type RichFormProvider = {
     list: Array<FieldItemContainer|FieldItemBase>;
   })[]
   // 中心区域当前配置的内容
-  store: AllFieldType[],
+  store: Array<FieldItemContainer|FieldItemBase>,
   storeMap: Map<string, AllFieldType>
   // 当前 form 中正在编辑的内容
   editForm:Record<string, unknown>

@@ -36,6 +36,7 @@ export type FieldItemBase = {
   // 上下文相关
   context?:{
     parentId?: string // 父元素的 id
+    isContainerChild?: boolean // 父容器是否为容器
     parent?: FieldItemRoot | unknown // 父元素
   }
   // options: {
@@ -49,7 +50,7 @@ export type FieldItemBase = {
 
 
 /**
- * 容器嵌套的子类型
+ * 容器内子容器类型，以及配置
  */
 export type FieldContainerInner = {
   id: string,
@@ -58,7 +59,7 @@ export type FieldContainerInner = {
   span: number,
   offset: number,
   options:Record<string, any>
-  list?:FieldItemBase[] // 传到该容器上的 data
+  // list?:FieldItemBase[] // 传到该容器上的 data
 }
 /**
  * 容器的类型

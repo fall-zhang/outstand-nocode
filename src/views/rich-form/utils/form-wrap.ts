@@ -67,7 +67,7 @@ const getContainerInnerData = (type:'col') => {
   const result:FieldContainerInner = {
     id: nanoid(),
     type,
-    list: [],
+    // list: [],
     span: 0,
     offset: 0,
     label: '',
