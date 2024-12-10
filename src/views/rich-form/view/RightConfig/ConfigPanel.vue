@@ -3,9 +3,9 @@
 import { useI18n } from 'vue-i18n'
 import { ref, computed, reactive, watch, onMounted } from 'vue'
 import PropsPanel from './components/PropsPanel.vue'
-import GlobalConfigPanel from './ConfigPanelGlobal.vue'
+import ConfigPanelGlobal from './ConfigPanelGlobal.vue'
+import BackgroundComponent from './components/BackgroundComponent.vue'
 import { isEmpty } from '@/utils/utils'
-import { fieldLabel } from '@Form/utils/field'
 import { useFormProvider } from '../../hooks/use-form-provider'
 import ConfigPanelConf from './ConfigPanelConf.vue'
 import { BaseItemType, ContainerItemTypes } from '../../types/rich-form-item'
@@ -53,47 +53,53 @@ const rules = reactive({
     }
   ]
 })
-const breadcrumbList = computed(() => {
-  const nodes = ['root']
-  let result = []
-  if (!isSelectRoot.value) {
-    // const targetNodes = selected.value?.context?.parents.filter((e: any) => !['inline', 'tr'].includes(e.type))
-    // if (targetNodes) {
-    // nodes = nodes.concat(targetNodes)
-    // }
-  }
-  if (nodes.length > 4) {
-    result.push(nodes[0])
-    result.push({
-      value: 'placeholder'
-    })
-    result.push(nodes.at(-2))
-    result.push(nodes.at(-1))
-  } else {
-    result = nodes
-  }
-  result = result.map((node: any) => {
-    const result = {
-      node,
-      label: ''
-    }
-    if (node === 'root') {
-      result.label = t('rf.panels.config')
-    } else if (node && node.value !== 'placeholder') {
-      if (['col' + 'collapseCol' + 'tabsCol' + 'td'].includes(node.type)) {
-        result.label = t(`er.layout.${node.type}`)
-      } else {
-        result.label = fieldLabel(t, node)
-      }
-    }
-    return result
+
+type BreadcrumbItemProps = {
+  id: string
+  label: string,
+  formType: string
+  renderType: 'text' | 'ellipsis'
+}
+const breadcrumbList = computed<BreadcrumbItemProps[]>(() => {
+  const result: BreadcrumbItemProps[] = []
+  result.push({
+    formType: 'root',
+    id: 'root',
+    label: t('rf.panels.config'),
+    renderType: 'text'
   })
+  if (selected.value.id !== 'root') {
+    result.push({
+      formType: selected.value.type,
+      id: selected.value.id,
+      label: t('rf.fields.' + selected.value.type),
+      renderType: 'text',
+    })
+  }
+
   return result
+
+  // 超出 4 个节点，只显示前两个和后两个
+  // if (nodes.length > 4) {
+  //   result.push(nodes[0])
+  //   result.push({
+  //     type: 'ellipsis'
+  //   })
+  //   result.push(nodes.at(-2))
+  //   result.push(nodes.at(-1))
+  // } else {
+  //   result = nodes
+  // }
 })
-const handleBreadcrumbClick = (item: any, index: number) => {
-  if (index !== breadcrumbList.value.length - 1 && item.node.value !== 'placeholder') {
-    if (item !== 'root') {
-      handler.value.setSelection(item)
+const onBreadcrumbClick = (item: BreadcrumbItemProps, index: number) => {
+  if (index !== breadcrumbList.value.length - 1 && item.renderType !== 'ellipsis') {
+    if (item.id !== 'root') {
+      handler.value.setSelection({
+        ...item,
+        type: item.formType as BaseItemType,
+        key: '',
+        options: {}
+      })
     } else {
       handler.value.setSelection({
         type: 'root',
@@ -125,17 +131,18 @@ function onChangeConfig(newVal: Record<string, any>) {
 </script>
 <template>
   <el-aside :class="['right-panel', $style.config]" width="320px">
-    <el-breadcrumb :class="$style.breadcrumb" separator-icon="ArrowRight">
-      <el-breadcrumb-item @click="handleBreadcrumbClick(item.node, index)" v-for="(item, index) in breadcrumbList"
-        :key="index">
-        {{ item.node.value === 'placeholder' ? '...' : item.label }}
+    <el-breadcrumb :class="$style.breadcrumb" separator="/">
+      <el-breadcrumb-item>全局</el-breadcrumb-item>
+      <el-breadcrumb-item @click="onBreadcrumbClick(item, index)" v-for="(item, index) in breadcrumbList" :key="index">
+        {{ item.renderType === 'ellipsis' ? '...' : item.label }}
       </el-breadcrumb-item>
     </el-breadcrumb>
     <el-form ref="form" :model="selected" :rules="rules" label-width="120px" label-position="top">
       <el-scrollbar :class="$style.wrap">
         <ConfigPanelConf type="root" :receive-value="config" @change="onChangeConfig"></ConfigPanelConf>
-        <GlobalConfigPanel v-if="isSelectRoot"></GlobalConfigPanel>
-        <PropsPanel v-else :key="selected.id" />
+        <!-- <ConfigPanelGlobal v-if="isSelectRoot"></ConfigPanelGlobal> -->
+        <!-- <PropsPanel v-else :key="selected.id" /> -->
+        <!-- <BackgroundComponent></BackgroundComponent> -->
       </el-scrollbar>
     </el-form>
   </el-aside>

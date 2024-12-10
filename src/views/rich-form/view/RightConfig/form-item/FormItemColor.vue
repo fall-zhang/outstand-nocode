@@ -58,26 +58,6 @@ const state = reactive<PageState>({
 
 const quickColors = config.value.colorList
 
-if (!selected.value.style) {
-  selected.value.style = {}
-}
-if (!selected.value.style.background) {
-  selected.value.style.background = {
-    color: '',
-    image: '',
-    repeat: 'repeat',
-    position: 'center center',
-    attachment: 'scroll',
-    size: 'auto'
-  }
-}
-if (!(!selected.value.style.background.color && !selected.value.style.background.image)) {
-  if (selected.value.style.background.color) {
-    state.defaultBackground.backgroundColor = selected.value.style.background.color
-  } else {
-    state.defaultBackground.backgroundImage = selected.value.style.background.image
-  }
-}
 const modifyBackBackground = (key: string, value: any) => {
   const keys = ['color', 'image']
   let i = 0

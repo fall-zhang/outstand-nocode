@@ -55,7 +55,7 @@ import formOptionList from './right-property'
 // import HelpTooltip from './components/HelpTooltip.vue'
 import { deepClone } from '@/utils/utils'
 import { BaseItemType, ContainerItemTypes } from '../../types/rich-form-item.js'
-import { FormOption } from './form-config/form-config'
+import { FormOption } from './types/form-config'
 const props = defineProps<{
   receiveValue: Record<string, any>
   type: BaseItemType | ContainerItemTypes | 'root'
