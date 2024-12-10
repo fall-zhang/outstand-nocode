@@ -20,7 +20,7 @@ const props = defineProps({
 <template>
   <el-radio-group :class="[$style.feRadio, data.options.displayStyle === 'block' && $style.blockLayout]"
     :model-value="data.options.defaultValue" v-bind="params">
-    <el-radio v-for="item in params.options" :key="item.value" :label="item.value">
+    <el-radio v-for="item in params.options" :key="item.value" :value="item.value" label>
       {{ item.label }}
     </el-radio>
   </el-radio-group>

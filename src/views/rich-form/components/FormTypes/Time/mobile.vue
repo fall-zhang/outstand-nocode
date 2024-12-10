@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref, computed, watch } from 'vue'
-import dayjs from 'dayjs'
+import dayjs, { Dayjs } from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat.js'
 dayjs.extend(customParseFormat)
 defineOptions({
@@ -24,11 +24,9 @@ const showPicker = ref(false)
 const currentTime = ref()
 const columnsType = ['hour', 'minute', 'second']
 watch(() => props.data.options.defaultValue, (newVal) => {
-  let date = ''
+  let date: Dayjs = dayjs()
   if (newVal) {
     date = dayjs(newVal, props.data.options.valueFormat)
-  } else {
-    date = dayjs()
   }
   currentTime.value = date.format(props.data.options.valueFormat).split(':')
 }, {

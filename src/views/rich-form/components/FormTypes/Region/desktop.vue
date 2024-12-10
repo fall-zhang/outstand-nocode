@@ -19,7 +19,7 @@ const props = defineProps({
 })
 </script>
 <template>
-  <el-cascader class="region_pc" v-model="data.options.defaultValue" v-bind="params" />
+  <el-cascader class="region_pc" :model-value="data.options.defaultValue" v-bind="params" />
 </template>
 
 <style scoped>

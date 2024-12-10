@@ -1,11 +1,9 @@
-<script>
-export default {
+<script lang="ts" setup>
+defineOptions({
   name: 'FeNumberDesktop',
   inheritAttrs: false,
   customOptions: {}
-}
-</script>
-<script lang="ts" setup>
+})
 const props = defineProps({
   data: {
     require: true,
@@ -20,7 +18,7 @@ const props = defineProps({
 })
 </script>
 <template>
-  <el-input-number class="fe-number" v-model="data.options.defaultValue" v-bind="params" />
+  <el-input-number class="fe-number" :model-value="data.options.defaultValue" v-bind="params" />
 </template>
 
 <style scoped>

@@ -1,11 +1,9 @@
-<script>
-export default {
+<script lang="ts" setup>
+defineOptions({
   name: 'FeSliderMobile',
   inheritAttrs: false,
   customOptions: {}
-}
-</script>
-<script lang="ts" setup>
+})
 const props = defineProps({
   data: {
     require: true,
@@ -24,7 +22,7 @@ const props = defineProps({
     <template #input>
       <van-slider v-model="data.options.defaultValue" v-bind="params">
         <template #button>
-          <div :class="ns.e('customButton')">{{ data.options.defaultValue }}</div>
+          <div class="customButton">{{ data.options.defaultValue }}</div>
         </template>
       </van-slider>
     </template>

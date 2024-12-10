@@ -1,11 +1,9 @@
-<script>
-export default {
+<script lang="ts" setup>
+defineOptions({
   name: 'FeRateDesktop',
   inheritAttrs: false,
   customOptions: {}
-}
-</script>
-<script lang="ts" setup>
+})
 const props = defineProps({
   data: {
     require: true,
@@ -21,7 +19,7 @@ const props = defineProps({
 </script>
 <template>
   <el-rate
-    v-model="data.options.defaultValue"
+    :model-value="data.options.defaultValue"
     v-bind="params"
   />
 </template>

@@ -20,8 +20,8 @@ const model = computed({
   get() {
     return props.data.options.defaultValue === null ? '' : props.data.options.defaultValue
   },
-  set(value) {
-    props.data.options.defaultValue = value
+  set() {
+    // props.data.options.defaultValue = value
   }
 })
 </script>

@@ -21,7 +21,7 @@ const element = ref()
 <template>
   <van-field readonly v-bind="params" ref="element">
     <template #input>
-      <el-radio-group @change="element.resetValidation()" v-model="data.options.defaultValue"
+      <el-radio-group @change="element.resetValidation()" :model-value="data.options.defaultValue"
         :class="['radioGroup', data.options.displayStyle === 'block' && 'blockLayout']" v-bind="params">
         <el-radio v-for="item in params.options" :key="item.value" :label="item.value">
           {{ item.label }}

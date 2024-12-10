@@ -1,11 +1,9 @@
-<script>
-export default {
+<script lang="ts" setup>
+defineOptions({
   name: 'FeSliderDesktop',
   inheritAttrs: false,
   customOptions: {}
-}
-</script>
-<script lang="ts" setup>
+})
 const props = defineProps({
   data: {
     require: true,
@@ -20,12 +18,7 @@ const props = defineProps({
 })
 </script>
 <template>
-  <el-slider
-    v-model="data.options.defaultValue"
-    v-bind="params"
-  />
+  <el-slider :model-value="data.options.defaultValue" v-bind="params" />
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
