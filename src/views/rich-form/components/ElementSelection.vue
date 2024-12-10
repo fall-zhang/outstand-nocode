@@ -81,7 +81,9 @@ import { useCss } from '../hooks/use-css'
 import { useFormProvider } from '../hooks/use-form-provider'
 import { AllFieldType, FieldItemBase, FieldItemContainer } from '../types/rich-form-item'
 const props = withDefaults(defineProps<{
+  // 当前 selection 包裹的内容
   data: FieldItemBase | FieldItemContainer,
+  // 包裹当前 selection 的父组件
   parent: Array<FieldItemBase | FieldItemContainer>,
   tag?: string, // div
   hasMask?: boolean, // false
@@ -240,7 +242,7 @@ const handleCommand = (command: string) => {
 }
 const isShowCell = ref(false)
 defineOptions({
-  name: 'SelectElement',
+  name: 'ElementSelection',
   inheritAttrs: false,
   customOptions: {},
 })
