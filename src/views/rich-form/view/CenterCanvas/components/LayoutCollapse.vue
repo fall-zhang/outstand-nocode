@@ -3,7 +3,7 @@
     <ElCollapse :modelValue="props.data.options.defaultValue" :accordion="props.data.options.accordion">
       <ElCollapseItem v-for="element in props.data.columns" :title="element.label" :key="element.id" :name="element.id">
         <Selection class="outline" :data="element" :parent="props.data">
-          <LayoutDragGable :data="element.list" data-layout-type="collapse-col" :parent="element" />
+          <DraggableDrop :data="element.list" data-layout-type="collapse-col" :parent="element" />
         </Selection>
       </ElCollapseItem>
     </ElCollapse>
@@ -13,7 +13,7 @@
 <script lang="ts" setup>
 import { FieldItemContainer } from '@/views/rich-form/types/rich-form-item'
 import ElementSelection from '@Form/components/ElementSelection.vue'
-import LayoutDragGable from './DraggableDrop.vue'
+import DraggableDrop from './DraggableDrop.vue'
 import { ElCollapse, ElCollapseItem } from 'element-plus'
 import { useFormProvider } from '@/views/rich-form/hooks/use-form-provider'
 const props = defineProps<{

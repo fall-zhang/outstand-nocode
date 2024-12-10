@@ -1,6 +1,6 @@
 import { defineComponent, useAttrs } from 'vue'
 import Selection from '@Form/components/ElementSelection.vue'
-import LayoutDraggable from './DraggableDrop.vue'
+import DraggableDrop from './DraggableDrop.vue'
 import $style from './Layout.module.scss'
 const isTrTag = (tagName:string) => tagName.toLocaleLowerCase() === 'td'
 export default defineComponent({
@@ -59,7 +59,7 @@ export default defineComponent({
                       onMousemove={!rowIndex && handleMousemove}
                       width={element1.style && element1.style.width}
                     >
-                      <LayoutDraggable
+                      <DraggableDrop
                         data-layout-type={'td'}
                         data={element1.list}
                         parent={element1}/>

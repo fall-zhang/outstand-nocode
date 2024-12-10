@@ -1,19 +1,19 @@
 <!-- 将内容拖拽到的位置 -->
 <template>
-  {{ FE.desktop.formOption }}
-  <DraggableWrap handle=".handle" class="DragGableLayout edit" :tag="tag" item-key="id" :move="handleMove"
-    v-bind="dragOptions" :componentData="$attrs" @change="onDrag">
+  {{ $attrs }}
+  <DraggableWrap class="DragGableLayout edit" :tag="tag" :move="handleMove" v-bind="dragOptions" :componentData="$attrs"
+    @change="onDrag">
     <template #item="{ element }">
-      <LayoutGridLayout v-if="element.type === 'grid'" :data="element" :parent="data">
-      </LayoutGridLayout>
-      <LayoutTableLayout v-else-if="element.type === 'table'" :data="element" :parent="data">
-      </LayoutTableLayout>
-      <LayoutTabsLayout v-else-if="element.type === 'tabs'" :data="element" :parent="data">
-      </LayoutTabsLayout>
-      <LayoutCollapseLayout v-else-if="element.type === 'collapse'" :data="element" :parent="data">
-      </LayoutCollapseLayout>
-      <LayoutInlineLayout v-else-if="element.type === 'inline'" :data="element" :parent="data">
-      </LayoutInlineLayout>
+      <LayoutGrid v-if="element.type === 'grid'" :data="element" :parent="data">
+      </LayoutGrid>
+      <LayoutTable v-else-if="element.type === 'table'" :data="element" :parent="data">
+      </LayoutTable>
+      <LayoutTabs v-else-if="element.type === 'tabs'" :data="element" :parent="data">
+      </LayoutTabs>
+      <LayoutCollapse v-else-if="element.type === 'collapse'" :data="element" :parent="data">
+      </LayoutCollapse>
+      <LayoutInline v-else-if="element.type === 'inline'" :data="element" :parent="data">
+      </LayoutInline>
       <ElementSelection v-else hasWidthScale hasCopy hasDel hasDrag hasMask :data="element" :parent="props.data">
         <template v-if="FE.isDesktop">
           <component :is="loadComponentAsync[element.type]" v-if="element.type === 'divider'" :data="element" :params="useFormItemProps({
@@ -27,15 +27,9 @@
             data: element,
             isDesktop: FE.isDesktop
           })">
-            <!-- {{ useFormItemProps({
-                state: FE,
-                data: element,
-                isDesktop: FE.isDesktop
-              }) }} -->
             <!-- params 是 v-bind 到对应的内容上，data 是一些配置 -->
             <component :is="loadComponentAsync[element.type]" :data="element" :params="element"
               @change="(ev: any) => onChangeDefaultValue(element, ev)"></component>
-            {{ element }}
           </el-form-item>
         </template>
         <component v-else :is="loadComponentAsync[element.type]" :data="element" :params="useFormItemProps({
@@ -56,11 +50,11 @@
 import { defineAsyncComponent, } from 'vue'
 import type { AsyncComponentLoader, Component } from 'vue'
 import { useProps as useFormItemProps } from '@Form/hooks/use-props'
-import LayoutGridLayout from './LayoutGrid'
-import LayoutTabsLayout from './LayoutTabs.vue'
-import LayoutCollapseLayout from './LayoutCollapse.vue'
-import LayoutTableLayout from './LayoutTable'
-import LayoutInlineLayout from './LayoutInline'
+import LayoutGrid from './LayoutGrid.vue'
+import LayoutTabs from './LayoutTabs.vue'
+import LayoutCollapse from './LayoutCollapse.vue'
+import LayoutTable from './LayoutTable'
+import LayoutInline from './LayoutInline'
 import ElementSelection from '@Form/components/ElementSelection.vue'
 import ControlInsertionPlugin from '@Form/utils/ControlInsertionPlugin'
 import { DraggableWrap } from '@Form/components/DraggableWrap'
@@ -73,8 +67,9 @@ defineOptions({
 })
 const props = defineProps<{
   isRoot?: boolean
-  data: FieldItemBase[]
-  parent: FieldItemContainer
+  // 当前拖拽区域内部的内容
+  data: Array<FieldItemBase | FieldItemContainer>
+  parent: Array<FieldItemBase | FieldItemContainer>
   tag?: string
 }>()
 // ({
@@ -150,21 +145,26 @@ const onChangeDefaultValue = (element: FieldItemContainer | FieldItemBase, newVa
 }
 
 const dragOptions = reactive({
+  itemKey: 'id',
+  handle: '.handle',
+  sort: true,
   swapThreshold: 1,
   animation: 200,
   list: props.data,
   group: {
     name: 'nocode-form'
   },
-  parent: props.parent,
-  plugins: [ControlInsertionPlugin(FE)],
+  // parent: props.parent,
+  // plugins: [ControlInsertionPlugin(FE)],
   ControlInsertion: true
 })
 const handleMove = () => {
+  // console.log(777)
   return true
 }
 
 function onDrag(ev: MoveEvent) {
+  // console.log("🚀 ~ onDrag ~ ev:", ev)
 }
 
 </script>
