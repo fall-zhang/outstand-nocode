@@ -4,6 +4,7 @@ import _ from 'lodash-es'
 import jss from 'jss'
 import preset from 'jss-preset-default'
 import { deepClone } from '@/utils'
+import { isObject } from '@vueuse/core'
 jss.setup({
   ...preset(),
 })
@@ -133,10 +134,10 @@ const renderStyleSheets = (node, uid, platform) => {
   const style = deepClone(node.style)
   isShowKeys.forEach((key) => {
     if (key === 'border' && node.type === 'table') {
-      if (style[`isShow${_.upperFirst(key)}`]) {
+      if (style[`isShowBorder`]) {
         Object.assign(style, renderTableBorder(node.style))
       }
-    } else if (!(style[`isShow${_.upperFirst(key)}`])) {
+    } else if (!(style[`isShow${key[0].toUpperCase() + key.slice(1)}`])) {
       delete style[key]
       if (key === 'border') {
         delete style.borderRadius
@@ -144,7 +145,7 @@ const renderStyleSheets = (node, uid, platform) => {
       delete style[`isShow${_.upperFirst(key)}`]
     }
   })
-  if (_.isObject(node.style.width)) {
+  if (isObject(node.style.width)) {
     delete style.width
     style.width = node.style.width[platform]
   }

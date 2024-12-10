@@ -7,8 +7,7 @@
           {{ t(`rf.fields.${eleGroup.id}`) }}
         </template>
         <DraggableWrap :class="$style.dragContent" :list="eleGroup.list" :clone="handleClone" tag="ul" :sort="false"
-          :move="handleMove" v-bind="dragOptions" :group="{ name: 'nocode-form', pull: 'clone', put: false }"
-          item-key="null">
+          :move="handleMove" v-bind="dragOptions" item-key="null">
           <template #item="{ element }">
             <li @click="onClickFieldItem(element)">
               <Icon :class="$style.icon" :icon="element.icon"></Icon>
@@ -79,11 +78,10 @@ const dragOptions = reactive({
   dataSource: 'block',
   direction: 'horizontal',
   scroll: false,
+  group: { name: 'nocode-form', pull: 'clone', put: false },
   plugins: [ControlInsertionPlugin(FE)]
 })
 
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

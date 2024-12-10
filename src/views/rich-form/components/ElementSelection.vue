@@ -82,7 +82,7 @@ import { useFormProvider } from '../hooks/use-form-provider'
 import { AllFieldType, FieldItemBase, FieldItemContainer } from '../types/rich-form-item'
 const props = withDefaults(defineProps<{
   data: FieldItemBase | FieldItemContainer,
-  parent: Array<FieldItemBase | FieldItemContainer> | FieldItemContainer,
+  parent: Array<FieldItemBase | FieldItemContainer>,
   tag?: string, // div
   hasMask?: boolean, // false
   hasDrag?: boolean, // false
@@ -222,8 +222,6 @@ onMounted(() => {
           if (offset <= 6) {
             offset = 6
           }
-          // eslint-disable-next-line vue/no-mutating-props
-          // props.data.options.span = offset
         } else {
           const curNewWidth = oldWidth + e.clientX - oldX
           let curWidth = Math.round(curNewWidth / hoverEl.parentNode.offsetWidth * 100)
@@ -301,7 +299,6 @@ defineOptions({
   .widthScale,
   .tableOperator,
   .insertColIcon,
-  .charuhang,
   .insertRowIcon,
   .selectParent,
   .dragIcon,

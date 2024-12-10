@@ -6,7 +6,7 @@ import VueDraggable from 'vuedraggable'
  */
 export const DraggableWrap = defineComponent({
   inheritAttrs: false,
-  name: 'CustomDragGable',
+  name: 'DragGableWrap',
   props: {
     group: {
       type: Object,

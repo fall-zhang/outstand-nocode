@@ -13,16 +13,16 @@ function getWindowScrollingElement () {
   }
   return document.documentElement
 }
-function getParentAutoScrollElement (el, includeSelf) {
+function getParentAutoScrollElement (el:any, includeSelf:any) {
   // skip to window
   if (!el || !el.getBoundingClientRect) return getWindowScrollingElement()
 
   let elem = el
   let gotSelf = false
   do {
-    // we don't need to get elem css if it isn't even overflowing in the first place (performance)
+    // we don't need to get elem getCssStyle if it isn't even overflowing in the first place (performance)
     if (elem.clientWidth < elem.scrollWidth || elem.clientHeight < elem.scrollHeight) {
-      const elemCSS = css(elem)
+      const elemCSS = getCssStyle(elem)
       if (
         elem.clientWidth < elem.scrollWidth && (elemCSS.overflowX === 'auto' || elemCSS.overflowX === 'scroll') ||
         elem.clientHeight < elem.scrollHeight && (elemCSS.overflowY === 'auto' || elemCSS.overflowY === 'scroll')
@@ -39,7 +39,7 @@ function getParentAutoScrollElement (el, includeSelf) {
 
   return getWindowScrollingElement()
 }
-const getOffset = (el, key) => {
+const getOffset = (el:any, key:any) => {
   let offset = 0
   let parent = el
 
@@ -65,20 +65,16 @@ function matches (el, selector:string) {
     try {
       if (el.matches) {
         return el.matches(selector)
-      } else if (el.msMatchesSelector) {
-        return el.msMatchesSelector(selector)
-      } else if (el.webkitMatchesSelector) {
-        return el.webkitMatchesSelector(selector)
       }
     } catch (err) {
       console.warn(err)
       return false
     }
   }
-
   return false
 }
-function css (el, prop) {
+
+function getCssStyle (el:any, prop?:any) {
   const style = el && el.style
   if (style) {
     let val
@@ -88,20 +84,21 @@ function css (el, prop) {
     } else if (el.currentStyle) {
       val = el.currentStyle
     }
-    // eslint-disable-next-line
+
     return prop === undefined ? val : val[prop]
   }
 }
 function lastChild (el) {
   let last = el.lastElementChild
-  // eslint-disable-next-line
-  while (last && (css(last, 'display') === 'none')) {
+
+  while (last && (getCssStyle(last, 'display') === 'none')) {
     last = last.previousElementSibling
   }
 
   return last || null
 }
-const getDirection0 = (target, originalEvent) => {
+type MoveDirection = 'top' | 'right' | 'bottom' | 'left' | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
+const getDirection0 = (target:any, originalEvent:any) => {
   console.log('🚀 ~ getDirection0 ~ originalEvent:', originalEvent)
   console.log('🚀 ~ getDirection0 ~ target:', target)
   let direction:string = ''
@@ -268,6 +265,9 @@ const resetStates = () => {
   }
   prevEl = prevSortable = insertColIndex = insertRowIndex = ''
 }
+type OperateProp ={
+  dragEl: HTMLElement
+}
 function ControlInsertionPlugin (ER:RichFormProvider) {
   function ControlInsertion () { }
   ControlInsertion.prototype = {
@@ -304,10 +304,6 @@ function ControlInsertionPlugin (ER:RichFormProvider) {
               list
             }
           },
-          el,
-          constructor: {
-            utils: sortableUtils
-          }
         } = prevSortable
         list.splice(insertColIndex, 0, newElement)
         // addContext(newElement, prevSortable.options.parent[sortableUtils.index(prevSortable.el.parentNode)])
@@ -476,7 +472,7 @@ class NewControlInsertion {
     if (dragEl.contains(newTarget)) {
       return false
     }
-    if (/^(grid-col|tabs-col|td|collapse-col|root|inline)$/.test(target.dataset.layoutType)) {
+    if (['grid-col','tabs-col','td','collapse-col','root','inline'].includes(target.dataset.layoutType)) {
       newTarget = target
       const state = (newTarget.__draggable_component__ || newTarget.children[0].__draggable_component__)
       if (!state.list.length) {

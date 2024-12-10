@@ -1,6 +1,6 @@
 import { StyleValue, CSSProperties } from 'vue'
 /**
- * 不同平台下，对应平台的配置
+ * 不同平台下，对应平台的 form-item 中配置
  */
 export type PlatformConf = {
   [ string ]:any
@@ -33,8 +33,10 @@ export type FieldItemBase = {
   mobile?:PlatformConf
   // 改造 option 建议作为 el-form-item 以及 field 的 props 使用，即可实现所有通用
   options:Record<string, any>
+  // 上下文相关
   context?:{
-    parent: FieldItemRoot | unknown // 父元素
+    parentId?: string // 父元素的 id
+    parent?: FieldItemRoot | unknown // 父元素
   }
   // options: {
   //   contentPosition?: 'center'|'left'|'right',
@@ -69,9 +71,11 @@ export type FieldItemContainer = {
   label: string
   desktop?:PlatformConf
   mobile?:PlatformConf
-  columns: FieldContainerInner[] // 除 inline 外，都是放置在 column 中
+  // column 中放置各个子容器的配置
+  columns: FieldContainerInner[]
   options?:Record<string, any>
-  innerData:FieldItemBase[] // inline 内部嵌入的为 fieldItemBase，放置在这里
+  // 内部的数据
+  innerData:FieldItemBase[]
   context?:{
     parent: FieldItemRoot | unknown // 父元素
   }

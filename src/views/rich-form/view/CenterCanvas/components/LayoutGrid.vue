@@ -1,7 +1,7 @@
 <template>
   <ElementSelection v-bind="$attrs" hasWidthScale hasCopy hasAddCol hasDel hasDrag :data="props.data"
     :parent="props.parent">
-    'GridLayout'
+    GridLayout
     <ElRow data-layout-type="grid" :gutter="props.data.options?.gutter" :justify="props.data.options?.justify"
       :align="props.data.options?.align" :class="$style.gridLayoutArea">
       <ElementSelection v-for="element in props.data.columns" :key="element.id" hasCopy
