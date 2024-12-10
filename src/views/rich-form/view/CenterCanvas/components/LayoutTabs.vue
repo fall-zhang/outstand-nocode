@@ -1,34 +1,26 @@
 <template>
-  <Selection v-bind="useAttrs()" :data="data" :parent="parent" hasCopy hasDel hasDrag hasWidthScale>
-    <ElTabs :class="$style.tabsLayout" :modelValue="activeValue" @tabClick="onClickTab" :type="props.data.options.type"
-      :tabPosition="props.data.options.tabPosition">
-      <Selection v-for="(element, index) in props.data.columns" :key="index" :class="$style.area" tag="el-tab-pane"
+  <ElementSelection v-bind="useAttrs()" :data="data" :parent="parent" hasCopy hasDel hasDrag hasWidthScale>
+    <ElTabs :class="$style.tabsLayout" :modelValue="activeValue" @tabClick="onClickTab" :type="props.data.options?.type"
+      :tabPosition="props.data.options?.tabPosition">
+      <ElementSelection v-for="(element, index) in props.data.columns" :key="index" :class="$style.area" tag="el-tab-pane"
         label="element.label" name="element.value" :data="element" :parent="props.data">
-        <LayoutDraggable data-layout-type="tabs-col" :data="element.list" ControlInsertion :parent="element" />
-      </Selection>
+        <DraggableDrop data-layout-type="tabs-col" :data="element.list" ControlInsertion :parent="element" />
+      </ElementSelection>
     </ElTabs>
-  </Selection>
+  </ElementSelection>
 
 </template>
 <script lang="ts" setup>
 import { useAttrs } from 'vue'
-import Selection from '@Form/components/ElementSelection.vue'
-import LayoutDraggable from './DraggableDrop.vue'
+import ElementSelection from '@Form/components/ElementSelection.vue'
+import DraggableDrop from './DraggableDrop.vue'
 import { ElTabs } from 'element-plus'
+import { FieldItemContainer } from '@Form/types/rich-form-item'
 const activeValue = ref()
-const props = defineProps({
-  data: {
-    type: Object,
-    default: () => ({
-      options: {},
-      column: []
-    })
-  },
-  parent: {
-    type: Array,
-    default: () => ([])
-  }
-})
+const props = defineProps<{
+  data: FieldItemContainer
+  parent: any[]
+}>()
 function onClickTab(newActive: any) {
   activeValue.value = newActive
 }

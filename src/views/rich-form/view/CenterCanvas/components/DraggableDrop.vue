@@ -14,7 +14,7 @@
       </LayoutCollapseLayout>
       <LayoutInlineLayout v-else-if="element.type === 'inline'" :data="element" :parent="data">
       </LayoutInlineLayout>
-      <Selection v-else hasWidthScale hasCopy hasDel hasDrag hasMask :data="element" :parent="props.data">
+      <ElementSelection v-else hasWidthScale hasCopy hasDel hasDrag hasMask :data="element" :parent="props.data">
         <template v-if="FE.isDesktop">
           <component :is="loadComponentAsync[element.type]" v-if="element.type === 'divider'" :data="element" :params="useFormItemProps({
             state: FE,
@@ -44,7 +44,7 @@
           isDesktop: false
         })">
         </component>
-      </Selection>
+      </ElementSelection>
     </template>
     <template #footer>
       <div v-if="isEmpty(data) && !isRoot" class="dropHere">放置在此处</div>
@@ -61,7 +61,7 @@ import LayoutTabsLayout from './LayoutTabs.vue'
 import LayoutCollapseLayout from './LayoutCollapse.vue'
 import LayoutTableLayout from './LayoutTable'
 import LayoutInlineLayout from './LayoutInline'
-import Selection from '@Form/components/ElementSelection.vue'
+import ElementSelection from '@Form/components/ElementSelection.vue'
 import ControlInsertionPlugin from '@Form/utils/ControlInsertionPlugin'
 import { DraggableWrap } from '@Form/components/DraggableWrap'
 import { isEmpty } from '@/utils/utils'
@@ -71,25 +71,31 @@ import { FieldItemBase, FieldItemContainer } from '@Form/types/rich-form-item'
 defineOptions({
   name: 'DraggableDrop',
 })
-const props = defineProps({
-  isRoot: {
-    type: Boolean,
-    default: false
-  },
-  data: {
-    require: true,
-    type: Array,
-    default: () => ([])
-  },
-  parent: {
-    type: Object,
-    default: () => ({})
-  },
-  tag: {
-    type: String,
-    default: 'div'
-  }
-})
+const props = defineProps<{
+  isRoot?: boolean
+  data: FieldItemBase[]
+  parent: FieldItemContainer
+  tag?: string
+}>()
+// ({
+//   isRoot: {
+//     type: Boolean,
+//     default: false
+//   },
+//   data: {
+//     require: true,
+//     type: Array,
+//     default: () => ([])
+//   },
+//   parent: {
+//     type: Object,
+//     default: () => ({})
+//   },
+//   tag: {
+//     type: String,
+//     default: 'div'
+//   }
+// })
 const FE = reactive(useFormProvider())
 // const loadComponent = () => {
 //   let componentMap: Record<string, Component> = {}

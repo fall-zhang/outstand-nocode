@@ -78,6 +78,7 @@ export default [
       'no-irregular-whitespace': 2,
       // ts
       '@typescript-eslint/no-unused-vars': 1, // 未使用的文件变量警告不报错
+      '@typescript-eslint/no-unused-expressions': 0, // 未使用的方法不报错
       '@typescript-eslint/no-explicit-any': 1, // 使用 any 时警告
     }
   }
