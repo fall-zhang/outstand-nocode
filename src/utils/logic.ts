@@ -1,5 +1,5 @@
 import { get } from '@/utils/utils'
-export const checkIdExistInLogic = (fieldId, logic) => {
+export const checkIdExistInLogic = (fieldId:string, logic:any) => {
   return new RegExp(`"${fieldId}"`).test(JSON.stringify(logic))
 }
 export const removeLogicDataById = (fieldId, logic) => {
