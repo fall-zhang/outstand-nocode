@@ -1,6 +1,6 @@
 <template>
   <ElementSelection hasCopy hasDel hasDrag hasWidthScale :data="props.data" :parent="props.parent">
-    <ElCollapse :modelValue="props.data.options.defaultValue" :accordion="props.data.options.accordion">
+    <ElCollapse :modelValue="props.data.options?.defaultValue" :accordion="props.data.options?.accordion">
       <ElCollapseItem v-for="element in props.data.columns" :title="element.label" :key="element.id" :name="element.id">
         <Selection class="outline" :data="element" :parent="props.data">
           <DraggableDrop :data="element.list" data-layout-type="collapse-col" :parent="element" />

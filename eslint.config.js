@@ -21,20 +21,8 @@ export default [
   ...vueTsEslintConfig(),
   {
     rules:{
-      'no-undef': 0, // 交给 TS 处理未命名的变量
-      'vue/html-self-closing': 'off',
-      'vue/html-indent': ['off', 2],
-      'vue/singleline-html-element-content-newline': 'off',
-      'vue/multiline-html-element-content-newline': 'off',
-      'vue/html-quotes': ['error', 'double'],
-      'vue/multi-word-component-names': ['off'],
-      'vue/first-attribute-linebreak': 0,
-      'vue/html-closing-bracket-newline': 0, //  结尾标签必须换行
-      'vue/max-attributes-per-line': 0, // 每行最多多少个属性
-      'vue/attribute-hyphenation': 0, // 使用 - 分割去代替标签中大写的属性
-      'vue/no-multiple-template-root': 0,
-      'vue/v-on-event-hyphenation': 0, // vue 事件必须使用 - 连接
       // js
+      'no-undef': 0, // 交给 TS 处理未命名的变量
       indent: ['warn', 2, { SwitchCase: 1 }], // 2 行缩进，防止与默认格式化功能冲突，关闭
       semi: ['error', 'never'], // 禁止使用分号
       'no-else-return': 'error', // 如果 if 语句里面有 return ,后面不能跟 else 语句，减少括号
@@ -68,7 +56,7 @@ export default [
       'space-before-function-paren': 0,
       'eol-last': 0,
       quotes: [
-        2,
+        'error',
         'single',
         {
           avoidEscape: true,
@@ -76,6 +64,19 @@ export default [
         }
       ],
       'no-irregular-whitespace': 2,
+      // vue
+      'vue/html-self-closing': 'off',
+      'vue/html-indent': ['off', 2],
+      'vue/singleline-html-element-content-newline': 'off',
+      'vue/multiline-html-element-content-newline': 'off',
+      'vue/html-quotes': ['error', 'double'],
+      'vue/multi-word-component-names': ['off'],
+      'vue/first-attribute-linebreak': 0,
+      'vue/html-closing-bracket-newline': 0, //  结尾标签必须换行
+      'vue/max-attributes-per-line': 0, // 每行最多多少个属性
+      'vue/attribute-hyphenation': 0, // 使用 - 分割去代替标签中大写的属性
+      'vue/no-multiple-template-root': 0,
+      'vue/v-on-event-hyphenation': 0, // vue 事件必须使用 - 连接
       // ts
       '@typescript-eslint/no-unused-vars': 1, // 未使用的文件变量警告不报错
       '@typescript-eslint/no-unused-expressions': 0, // 未使用的方法不报错
